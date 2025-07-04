@@ -123,7 +123,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
       setTimeout(() => {
         setSpins(spins => spins.map(s => ({ ...s, isSpinning: false })));
         setTimeout(() => {
-          setSpins(spins => spins.map(s => ({ ...s, isOpening: false, showResults: true, result: s.winningItem })));
+          setSpins(spins => spins.map(s => ({ ...s, isOpening: false, showResults: true, result: s.rouletteItems[s.winningIndex] })));
         }, 800);
       }, 3000);
     } else if (!isOpen) {
