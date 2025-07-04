@@ -44,6 +44,8 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
 }) => {
   // Массив состояний для каждой рулетки
   const [spins, setSpins] = useState([]);
+  // Отслеживаем обработанные предметы (проданные или добавленные в инвентарь)
+  const [processedItems, setProcessedItems] = useState(new Set());
 
   const ITEM_WIDTH = 112; // px
   const GAP = 8; // px (gap-2)
@@ -102,6 +104,9 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
 
   useEffect(() => {
     if (isOpen && caseData) {
+      // Сбрасываем обработанные предметы при открытии нового модального окна
+      setProcessedItems(new Set());
+      
       // Для каждого открытия генерируем своё состояние
       const newSpins = Array.from({ length: openingCount }).map(() => {
         // Выбираем выигрышный предмет заранее
@@ -243,37 +248,70 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                           Выпал предмет: <span className="text-yellow-400">{spin.result.name}</span>
                         </div>
                         <div className="flex gap-4">
-                          <Button onClick={() => {
-                            const sellPrice = Math.floor(spin.result.price * 0.8);
-                            setBalance(balance + sellPrice);
-                            onSellItem(spin.result, sellPrice);
-                            toast({
-                              title: "Предмет продан!",
-                              description: `Вы получили ${sellPrice}₽ за продажу ${spin.result.name}`,
-                            });
-                            // Закрываем модальное окно после продажи
-                            setTimeout(() => {
-                              onClose();
-                            }, 1500);
-                          }} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(spin.result.price * 0.8)}₽)</Button>
-                          <Button onClick={() => {
-                            addItem({
-                              name: spin.result.name,
-                              price: spin.result.price,
-                              rarity: spin.result.rarity,
-                              caseId: caseData?.id,
-                              image: caseData?.image
-                            });
-                            onKeepItem(spin.result);
-                            toast({
-                              title: "Предмет добавлен в инвентарь!",
-                              description: `${spin.result.name} добавлен в ваш профиль`,
-                            });
-                            // Закрываем модальное окно после добавления в инвентарь
-                            setTimeout(() => {
-                              onClose();
-                            }, 1500);
-                          }} className="bg-green-600 hover:bg-green-700">В профиль</Button>
+                          <Button 
+                            onClick={() => {
+                              const itemKey = `${idx}-${spin.result.name}`;
+                              if (processedItems.has(itemKey)) return; // Предотвращаем повторную продажу
+                              
+                              const sellPrice = Math.floor(spin.result.price * 0.8);
+                              setBalance(balance + sellPrice);
+                              onSellItem(spin.result, sellPrice);
+                              setProcessedItems(prev => new Set([...prev, itemKey]));
+                              
+                              toast({
+                                title: "Предмет продан!",
+                                description: `Вы получили ${sellPrice}₽ за продажу ${spin.result.name}`,
+                              });
+                            }} 
+                            disabled={processedItems.has(`${idx}-${spin.result.name}`)}
+                            className={`${
+                              processedItems.has(`${idx}-${spin.result.name}`)
+                                ? 'bg-gray-600 cursor-not-allowed opacity-50'
+                                : 'bg-red-600 hover:bg-red-700'
+                            }`}
+                          >
+                            {processedItems.has(`${idx}-${spin.result.name}`) ? 'Продан' : `Продать (${Math.floor(spin.result.price * 0.8)}₽)`}
+                          </Button>
+                          <Button 
+                            onClick={() => {
+                              const itemKey = `${idx}-${spin.result.name}`;
+                              if (processedItems.has(itemKey)) return; // Предотвращаем повторное добавление
+                              
+                              addItem({
+                                name: spin.result.name,
+                                price: spin.result.price,
+                                rarity: spin.result.rarity,
+                                caseId: caseData?.id,
+                                image: caseData?.image
+                              });
+                              onKeepItem(spin.result);
+                              setProcessedItems(prev => new Set([...prev, itemKey]));
+                              
+                              toast({
+                                title: "Предмет добавлен в инвентарь!",
+                                description: `${spin.result.name} добавлен в ваш профиль`,
+                              });
+                            }} 
+                            disabled={processedItems.has(`${idx}-${spin.result.name}`)}
+                            className={`${
+                              processedItems.has(`${idx}-${spin.result.name}`)
+                                ? 'bg-gray-600 cursor-not-allowed opacity-50'
+                                : 'bg-green-600 hover:bg-green-700'
+                            }`}
+                          >
+                            {processedItems.has(`${idx}-${spin.result.name}`) ? 'Добавлен' : 'В профиль'}
+                          </Button>
+                        </div>
+                        
+                        {/* Кнопка закрытия */}
+                        <div className="mt-4 text-center">
+                          <Button 
+                            variant="outline" 
+                            onClick={onClose}
+                            className="border-gray-600 text-gray-300 hover:border-red-500 hover:text-red-400"
+                          >
+                            Закрыть
+                          </Button>
                         </div>
                       </div>
                     )}
