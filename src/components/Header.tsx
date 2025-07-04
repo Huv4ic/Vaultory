@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,9 +28,23 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   // Telegram Login Widget встроенный
-  const handleTelegramAuth = () => {
+  const handleTelegramAuth = useCallback(() => {
     setShowTelegramWidget(true);
-  };
+    setTimeout(() => {
+      if (widgetRef.current) {
+        widgetRef.current.innerHTML = '';
+        const script = document.createElement('script');
+        script.src = 'https://telegram.org/js/telegram-widget.js?7';
+        script.async = true;
+        script.setAttribute('data-telegram-login', TELEGRAM_BOT);
+        script.setAttribute('data-size', 'large');
+        script.setAttribute('data-userpic', 'true');
+        script.setAttribute('data-request-access', 'write');
+        script.setAttribute('data-onauth', 'TelegramLoginWidget.dataOnauth(user)');
+        widgetRef.current.appendChild(script);
+      }
+    }, 0);
+  }, []);
 
   // Callback для Telegram Login Widget
   useEffect(() => {
@@ -127,14 +141,8 @@ const Header = () => {
                   Войти через Telegram
                 </Button>
                 {showTelegramWidget && (
-                  <div ref={widgetRef} className="absolute z-50 top-20 right-4 bg-gray-900 p-4 rounded-xl shadow-xl border border-gray-700">
-                    <script async src="https://telegram.org/js/telegram-widget.js?7"
-                      data-telegram-login="vaultory_notify_bot"
-                      data-size="large"
-                      data-userpic="true"
-                      data-request-access="write"
-                      data-onauth="TelegramLoginWidget.dataOnauth(user)"
-                    ></script>
+                  <div className="absolute z-50 top-20 right-4 bg-gray-900 p-4 rounded-xl shadow-xl border border-gray-700">
+                    <div ref={widgetRef}></div>
                     <Button size="sm" variant="outline" className="mt-2 w-full" onClick={() => setShowTelegramWidget(false)}>Отмена</Button>
                   </div>
                 )}
