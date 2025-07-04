@@ -5,13 +5,18 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { products } from '@/data/products';
+import { useCart } from '@/hooks/useCart';
+import { useToast } from '@/hooks/use-toast';
 import { Star, ShoppingCart, Shield, Clock, ArrowLeft, Plus, Minus } from 'lucide-react';
 
 const ProductPage = () => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
+  const { addItem, items } = useCart();
+  const { toast } = useToast();
   
   const product = products.find(p => p.id === id);
+  const inCart = items.some(i => i.id === id);
   
   if (!product) {
     return (
@@ -30,6 +35,14 @@ const ProductPage = () => {
 
   const handleQuantityChange = (change: number) => {
     setQuantity(Math.max(1, quantity + change));
+  };
+
+  const handleAddToCart = () => {
+    addItem({ id: product.id, name: product.name, price: product.price, image: product.image });
+    toast({
+      title: "Товар добавлен в корзину",
+      description: `${product.name} добавлен в корзину`,
+    });
   };
 
   const totalPrice = product.price * quantity;
@@ -118,10 +131,12 @@ const ProductPage = () => {
 
               <Button
                 size="lg"
-                className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none text-lg py-6 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25"
+                onClick={handleAddToCart}
+                disabled={inCart}
+                className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none text-lg py-6 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                Добавить в корзину
+                {inCart ? 'Товар в корзине' : 'Добавить в корзину'}
               </Button>
             </div>
 

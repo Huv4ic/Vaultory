@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 
 const TELEGRAM_BOT = 'vaultory_notify_bot';
 
@@ -22,6 +23,7 @@ const Header = () => {
     signInWithTelegram,
     signOutTelegram
   } = useAuth();
+  const { items: cartItems } = useCart();
   const [showTelegramWidget, setShowTelegramWidget] = useState(false);
   const widgetRef = useRef(null);
 
@@ -121,9 +123,11 @@ const Header = () => {
             {/* Корзина */}
             <Link to="/cart" className="relative p-2 text-gray-400 hover:text-red-400 transition-colors">
               <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-xs rounded-full flex items-center justify-center text-white">
-                0
-              </span>
+              {cartItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-xs rounded-full flex items-center justify-center text-white">
+                  {cartItems.length}
+                </span>
+              )}
             </Link>
 
             {/* Профиль */}

@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, DollarSign, Package } from 'lucide-react';
+import { useInventory } from '@/hooks/useInventory';
+import { useAuth } from '@/hooks/useAuth';
 
 interface CaseItem {
   name: string;
@@ -49,6 +51,9 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   // refs для рулеток и элементов
   const rouletteRefs = useRef([]);
   const itemRefs = useRef([]);
+
+  const { addItem } = useInventory();
+  const { setBalance, balance } = useAuth();
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -236,8 +241,20 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                           Выпал предмет: <span className="text-yellow-400">{spin.result.name}</span>
                         </div>
                         <div className="flex gap-4">
-                          <Button onClick={() => onSellItem(spin.result, Math.floor(spin.result.price * 0.8))} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(spin.result.price * 0.8)}₽)</Button>
-                          <Button onClick={() => onKeepItem(spin.result)} className="bg-green-600 hover:bg-green-700">В профиль</Button>
+                          <Button onClick={() => {
+                            setBalance(balance + Math.floor(spin.result.price * 0.8));
+                            // убрать предмет из результатов (например, скрыть блок или дизейблить кнопки)
+                          }} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(spin.result.price * 0.8)}₽)</Button>
+                          <Button onClick={() => {
+                            addItem({
+                              name: spin.result.name,
+                              price: spin.result.price,
+                              rarity: spin.result.rarity,
+                              caseId: caseData?.id,
+                              image: caseData?.image
+                            });
+                            // убрать предмет из результатов (например, скрыть блок или дизейблить кнопки)
+                          }} className="bg-green-600 hover:bg-green-700">В профиль</Button>
                         </div>
                       </div>
                     )}

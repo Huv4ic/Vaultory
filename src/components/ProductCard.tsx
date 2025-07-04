@@ -1,7 +1,7 @@
-
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useCart } from '@/hooks/useCart';
 
 interface ProductCardProps {
   id: string;
@@ -16,6 +16,8 @@ interface ProductCardProps {
 
 const ProductCard = ({ id, name, price, originalPrice, image, category, rating, sales }: ProductCardProps) => {
   const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+  const { items, addItem } = useCart();
+  const inCart = items.some(i => i.id === id);
 
   return (
     <div className="group bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 overflow-hidden hover:border-red-500/50 transition-all duration-300 hover:transform hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-500/10">
@@ -68,6 +70,8 @@ const ProductCard = ({ id, name, price, originalPrice, image, category, rating, 
           <Button
             size="sm"
             className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
+            onClick={() => addItem({ id, name, price, image })}
+            disabled={inCart}
           >
             <ShoppingCart className="w-4 h-4" />
           </Button>
