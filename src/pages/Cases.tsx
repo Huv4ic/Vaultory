@@ -19,17 +19,17 @@ interface HistoryItem {
 }
 
 const CASE_ITEMS: CaseItem[] = [
-  { name: 'Гемы x100', price: 150, rarity: 'common', chance: 70 },
+  { name: 'Гемы x100', price: 150, rarity: 'common', chance: 77 },
   { name: 'Гемы x500', price: 750, rarity: 'rare', chance: 20 },
-  { name: 'Гемы x1000', price: 1500, rarity: 'epic', chance: 9 },
+  { name: 'Гемы x1000', price: 1500, rarity: 'epic', chance: 2 },
   { name: 'Легендарный Боец', price: 5000, rarity: 'legendary', chance: 1 },
 ];
 
 const CASE_PRICE = 299;
-const EPIC_MIN = 10;
-const EPIC_MAX = 20;
-const LEG_MIN = 100;
-const LEG_MAX = 200;
+const EPIC_MIN = 30;
+const EPIC_MAX = 50;
+const LEG_MIN = 300;
+const LEG_MAX = 500;
 
 function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -75,6 +75,17 @@ export default function Cases() {
   useEffect(() => { setToStorage('nextLegendaryAt', nextLegendaryAt); }, [nextLegendaryAt]);
   useEffect(() => { setToStorage('balance', balance); }, [balance]);
   useEffect(() => { setToStorage('history', history); }, [history]);
+
+  // Очистка старых счетчиков гарантии при обновлении логики
+  useEffect(() => {
+    if (localStorage.getItem('pityVersion') !== 'v2') {
+      localStorage.removeItem('sinceLastEpic');
+      localStorage.removeItem('sinceLastLegendary');
+      localStorage.removeItem('nextEpicAt');
+      localStorage.removeItem('nextLegendaryAt');
+      localStorage.setItem('pityVersion', 'v2');
+    }
+  }, []);
 
   function getRandomItem(): CaseItem {
     const rand = Math.random() * 100;
