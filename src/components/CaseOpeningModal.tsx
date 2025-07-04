@@ -42,6 +42,9 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   // Массив состояний для каждой рулетки
   const [spins, setSpins] = useState([]);
 
+  const ITEM_WIDTH = 112; // px, должен совпадать с min-w/max-w
+  const CONTAINER_WIDTH = 700; // px, должен совпадать с maxWidth контейнера
+
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'bg-gray-600';
@@ -144,55 +147,63 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
 
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {spins.map((spin, idx) => (
-              <div key={idx}>
-                {/* Рулетка */}
-                <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
-                  <h3 className="text-xl font-bold mb-4 text-center">🎰 Рулетка #{idx + 1}</h3>
-                  <div className="relative mb-4">
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-20">
-                      <div className="w-1 h-8 bg-red-500 shadow-lg shadow-red-500/50"></div>
-                      <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-red-500 mx-auto"></div>
-                    </div>
-                    <div className="overflow-hidden bg-gray-700/50 rounded-lg p-2" style={{ maxWidth: 700, margin: '0 auto' }}>
-                      <div
-                        className="flex gap-2"
-                        style={{
-                          width: spin.rouletteItems.length * 112,
-                          transition: spin.isSpinning ? 'transform 3s cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
-                          transform: spin.isSpinning && spin.winningIndex !== null
-                            ? `translateX(-${(spin.winningIndex * 112) - 350}px)`
-                            : 'translateX(0px)',
-                        }}
-                      >
-                        {spin.rouletteItems.map((item, index) => (
-                          <div
-                            key={index}
-                            className={`rounded-lg px-4 py-2 flex flex-col items-center justify-center min-w-[112px] max-w-[112px] ${index === spin.winningIndex ? 'ring-4 ring-yellow-400' : ''}`}
-                            style={{ background: '#23272f' }}
-                          >
-                            <span className="font-bold text-white text-sm mb-1">{item.name}</span>
-                            <span className="text-green-400 font-semibold text-xs">{item.price}₽</span>
-                          </div>
-                        ))}
+            {spins.map((spin, idx) => {
+              const pointerOffset = CONTAINER_WIDTH / 2;
+              const currentTranslateX = spin.isSpinning && spin.winningIndex !== null
+                ? (spin.winningIndex * ITEM_WIDTH) - (CONTAINER_WIDTH / 2) + (ITEM_WIDTH / 2)
+                : 0;
+              const pointerIndex = Math.round((pointerOffset + currentTranslateX) / ITEM_WIDTH);
+              const resultItem = spin.rouletteItems[pointerIndex];
+              return (
+                <div key={idx}>
+                  {/* Рулетка */}
+                  <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
+                    <h3 className="text-xl font-bold mb-4 text-center">🎰 Рулетка #{idx + 1}</h3>
+                    <div className="relative mb-4">
+                      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-20">
+                        <div className="w-1 h-8 bg-red-500 shadow-lg shadow-red-500/50"></div>
+                        <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-red-500 mx-auto"></div>
+                      </div>
+                      <div className="overflow-hidden bg-gray-700/50 rounded-lg p-2" style={{ maxWidth: CONTAINER_WIDTH, margin: '0 auto' }}>
+                        <div
+                          className="flex gap-2"
+                          style={{
+                            width: spin.rouletteItems.length * ITEM_WIDTH,
+                            transition: spin.isSpinning ? 'transform 3s cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
+                            transform: spin.isSpinning && spin.winningIndex !== null
+                              ? `translateX(-${(spin.winningIndex * ITEM_WIDTH) - (CONTAINER_WIDTH / 2) + (ITEM_WIDTH / 2)}px)`
+                              : 'translateX(0px)',
+                          }}
+                        >
+                          {spin.rouletteItems.map((item, index) => (
+                            <div
+                              key={index}
+                              className={`rounded-lg px-4 py-2 flex flex-col items-center justify-center min-w-[112px] max-w-[112px] ${index === spin.winningIndex ? 'ring-4 ring-yellow-400' : ''}`}
+                              style={{ background: '#23272f' }}
+                            >
+                              <span className="font-bold text-white text-sm mb-1">{item.name}</span>
+                              <span className="text-green-400 font-semibold text-xs">{item.price}₽</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
+                    {/* После остановки — показать результат и кнопки */}
+                    {spin.showResults && (
+                      <div className="mt-4 flex flex-col items-center">
+                        <div className="text-lg font-bold text-white mb-2">
+                          Выпал предмет: <span className="text-yellow-400">{resultItem?.name}</span>
+                        </div>
+                        <div className="flex gap-4">
+                          <Button onClick={() => onSellItem(resultItem, Math.floor(resultItem.price * 0.8))} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(resultItem.price * 0.8)}₽)</Button>
+                          <Button onClick={() => onKeepItem(resultItem)} className="bg-green-600 hover:bg-green-700">В профиль</Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {/* После остановки — показать результат и кнопки */}
-                  {spin.showResults && (
-                    <div className="mt-4 flex flex-col items-center">
-                      <div className="text-lg font-bold text-white mb-2">
-                        Выпал предмет: <span className="text-yellow-400">{spin.rouletteItems[spin.winningIndex]?.name}</span>
-                      </div>
-                      <div className="flex gap-4">
-                        <Button onClick={() => onSellItem(spin.rouletteItems[spin.winningIndex], Math.floor(spin.rouletteItems[spin.winningIndex].price * 0.8))} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(spin.rouletteItems[spin.winningIndex].price * 0.8)}₽)</Button>
-                        <Button onClick={() => onKeepItem(spin.rouletteItems[spin.winningIndex])} className="bg-green-600 hover:bg-green-700">В профиль</Button>
-                      </div>
-                    </div>
-                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </DialogContent>
