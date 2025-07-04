@@ -4,6 +4,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import CaseOpeningModal from '@/components/CaseOpeningModal';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 // Пример данных кейсов (лучше вынести в отдельный файл или получать из API)
 const cases = [
@@ -72,8 +74,9 @@ const cases = [
 const CasePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { balance, setBalance, telegramUser } = useAuth();
+  const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [balance, setBalance] = useState(1250);
   const [selectedCase, setSelectedCase] = useState(null);
   const [openingCount, setOpeningCount] = useState(1);
 
@@ -81,17 +84,30 @@ const CasePage = () => {
 
   const openCase = () => {
     if (!caseData) return;
-    if (balance < caseData.price * openingCount) {
-      alert('Недостаточно средств!');
+    
+    if (!telegramUser) {
+      toast({
+        title: "Требуется авторизация",
+        description: "Войдите через Telegram для открытия кейсов",
+      });
       return;
     }
-    setBalance(prev => prev - caseData.price * openingCount);
+    
+    if (balance < caseData.price * openingCount) {
+      toast({
+        title: "Недостаточно средств",
+        description: `Для открытия ${openingCount} кейса(ов) нужно ${caseData.price * openingCount}₽, у вас ${balance}₽`,
+      });
+      return;
+    }
+    
+    setBalance(balance - caseData.price * openingCount);
     setSelectedCase(caseData);
     setIsModalOpen(true);
   };
 
-  const handleSellItem = (item, sellPrice) => {
-    setBalance(prev => prev + sellPrice);
+  const handleSellItem = (item: any, sellPrice: number) => {
+    setBalance(balance + sellPrice);
   };
 
   const handleKeepItem = (item) => {

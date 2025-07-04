@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/hooks/useCart';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { 
   ShoppingCart, 
@@ -14,11 +15,14 @@ import {
   ArrowLeft, 
   CreditCard,
   Package,
-  AlertCircle
+  AlertCircle,
+  User,
+  DollarSign
 } from 'lucide-react';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clear, total } = useCart();
+  const { balance, setBalance, telegramUser } = useAuth();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -47,17 +51,35 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
+    if (!telegramUser) {
+      toast({
+        title: "Требуется авторизация",
+        description: "Войдите через Telegram для оформления заказа",
+      });
+      return;
+    }
+
+    if (balance < total) {
+      toast({
+        title: "Недостаточно средств",
+        description: `Для покупки нужно ${total}₽, у вас ${balance}₽`,
+      });
+      return;
+    }
+
     setIsProcessing(true);
     
     // Имитация процесса оплаты
     await new Promise(resolve => setTimeout(resolve, 2000));
     
+    // Списываем баланс
+    setBalance(balance - total);
     clear();
     setIsProcessing(false);
     
     toast({
       title: "Заказ оформлен!",
-      description: "Спасибо за покупку! Ваш заказ успешно оформлен.",
+      description: `Спасибо за покупку! С вашего баланса списано ${total}₽`,
     });
   };
 
@@ -216,18 +238,44 @@ const Cart = () => {
                     <span>{total}₽</span>
                   </div>
                 </div>
+                
+                {telegramUser && (
+                  <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-xl p-3 border border-green-500/30">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300 text-sm">Ваш баланс:</span>
+                      <span className={`font-bold ${balance >= total ? 'text-green-400' : 'text-red-400'}`}>
+                        {balance}₽
+                      </span>
+                    </div>
+                    {balance < total && (
+                      <div className="text-red-400 text-xs mt-1">
+                        Недостаточно средств. Нужно еще {total - balance}₽
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               <Button
                 onClick={handleCheckout}
-                disabled={isProcessing}
-                className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none text-lg py-4 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25"
+                disabled={isProcessing || !telegramUser || balance < total}
+                className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none text-lg py-4 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {isProcessing ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                     Обработка...
                   </div>
+                ) : !telegramUser ? (
+                  <>
+                    <User className="w-5 h-5 mr-2" />
+                    Войти для покупки
+                  </>
+                ) : balance < total ? (
+                  <>
+                    <DollarSign className="w-5 h-5 mr-2" />
+                    Недостаточно средств
+                  </>
                 ) : (
                   <>
                     <CreditCard className="w-5 h-5 mr-2" />

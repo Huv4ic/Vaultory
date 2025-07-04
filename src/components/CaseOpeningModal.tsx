@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, DollarSign, Package } from 'lucide-react';
 import { useInventory } from '@/hooks/useInventory';
 import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 interface CaseItem {
   name: string;
@@ -54,6 +55,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
 
   const { addItem } = useInventory();
   const { setBalance, balance } = useAuth();
+  const { toast } = useToast();
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -242,8 +244,17 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                         </div>
                         <div className="flex gap-4">
                           <Button onClick={() => {
-                            setBalance(balance + Math.floor(spin.result.price * 0.8));
-                            // убрать предмет из результатов (например, скрыть блок или дизейблить кнопки)
+                            const sellPrice = Math.floor(spin.result.price * 0.8);
+                            setBalance(balance + sellPrice);
+                            onSellItem(spin.result, sellPrice);
+                            toast({
+                              title: "Предмет продан!",
+                              description: `Вы получили ${sellPrice}₽ за продажу ${spin.result.name}`,
+                            });
+                            // Закрываем модальное окно после продажи
+                            setTimeout(() => {
+                              onClose();
+                            }, 1500);
                           }} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(spin.result.price * 0.8)}₽)</Button>
                           <Button onClick={() => {
                             addItem({
@@ -253,7 +264,15 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                               caseId: caseData?.id,
                               image: caseData?.image
                             });
-                            // убрать предмет из результатов (например, скрыть блок или дизейблить кнопки)
+                            onKeepItem(spin.result);
+                            toast({
+                              title: "Предмет добавлен в инвентарь!",
+                              description: `${spin.result.name} добавлен в ваш профиль`,
+                            });
+                            // Закрываем модальное окно после добавления в инвентарь
+                            setTimeout(() => {
+                              onClose();
+                            }, 1500);
                           }} className="bg-green-600 hover:bg-green-700">В профиль</Button>
                         </div>
                       </div>
