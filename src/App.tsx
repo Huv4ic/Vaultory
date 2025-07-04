@@ -19,6 +19,7 @@ import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import CasePage from './pages/CasePage';
 import Cart from './pages/Cart';
+import Profile from './pages/Profile';
 
 const queryClient = new QueryClient();
 
@@ -42,11 +43,10 @@ const App = () => (
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin" element={<Admin />} />
-                <Route path="/case/:id" element={<CasePage />} />
-                <Route path="/cart" element={<Cart />} />
-                {/* Заглушки для страниц в разработке */}
-                <Route path="/profile" element={<div className="min-h-screen bg-gray-900 text-white flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Профиль</h1><p className="text-gray-400">Войдите через Telegram</p></div></div>} />
-                <Route path="*" element={<NotFound />} />
+                            <Route path="/case/:id" element={<CasePage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
           </TooltipProvider>
