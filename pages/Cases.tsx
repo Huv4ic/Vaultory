@@ -1,10 +1,10 @@
+
 import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Zap, Gift, Star, Sparkles, DollarSign, Package } from 'lucide-react';
+import CaseOpeningModal from '@/components/CaseOpeningModal';
+import CaseGrid from '@/components/CaseGrid';
+import BalanceDisplay from '@/components/BalanceDisplay';
 
 interface CaseItem {
   name: string;
@@ -27,12 +27,9 @@ interface GameCase {
 const Cases = () => {
   const [selectedCase, setSelectedCase] = useState<GameCase | null>(null);
   const [openingCount, setOpeningCount] = useState(1);
-  const [isOpening, setIsOpening] = useState(false);
-  const [results, setResults] = useState<CaseItem[]>([]);
   const [totalSiteRevenue, setTotalSiteRevenue] = useState(50000);
-  const [showResults, setShowResults] = useState(false);
-  const [rouletteItems, setRouletteItems] = useState<CaseItem[]>([]);
-  const [balance, setBalance] = useState(1250); // Симуляция баланса пользователя
+  const [balance, setBalance] = useState(1250);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const cases: GameCase[] = [
     {
@@ -40,7 +37,7 @@ const Cases = () => {
       name: 'Мега Бокс',
       game: 'Brawl Stars',
       price: 299,
-      image: '/lovable-uploads/310ea150-158a-4dd8-ab20-190510cef972.png',
+      image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
       gradient: 'from-purple-600 via-pink-600 to-red-600',
       icon: '🎮',
       items: [
@@ -55,7 +52,7 @@ const Cases = () => {
       name: 'Operation Case',
       game: 'CS:GO',
       price: 499,
-      image: '/lovable-uploads/310ea150-158a-4dd8-ab20-190510cef972.png',
+      image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
       gradient: 'from-blue-600 via-cyan-600 to-teal-600',
       icon: '🔫',
       items: [
@@ -70,7 +67,7 @@ const Cases = () => {
       name: 'Военный Кейс',
       game: 'PUBG Mobile',
       price: 199,
-      image: '/lovable-uploads/310ea150-158a-4dd8-ab20-190510cef972.png',
+      image: 'https://images.unsplash.com/photo-1614294148960-9aa740632a87?w=400&h=300&fit=crop',
       gradient: 'from-orange-600 via-red-600 to-pink-600',
       icon: '🪖',
       items: [
@@ -85,7 +82,7 @@ const Cases = () => {
       name: 'Robux Сундук',
       game: 'Roblox',
       price: 399,
-      image: '/lovable-uploads/310ea150-158a-4dd8-ab20-190510cef972.png',
+      image: 'https://images.unsplash.com/photo-1606041008023-472dfb5e530f?w=400&h=300&fit=crop',
       gradient: 'from-green-600 via-emerald-600 to-teal-600',
       icon: '🎲',
       items: [
@@ -97,99 +94,29 @@ const Cases = () => {
     }
   ];
 
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case 'common': return 'bg-gray-600';
-      case 'rare': return 'bg-blue-600';
-      case 'epic': return 'bg-purple-600';
-      case 'legendary': return 'bg-yellow-600';
-      default: return 'bg-gray-600';
-    }
-  };
-
-  const getRarityGradient = (rarity: string) => {
-    switch (rarity) {
-      case 'common': return 'from-gray-500 to-gray-700';
-      case 'rare': return 'from-blue-500 to-blue-700';
-      case 'epic': return 'from-purple-500 to-purple-700';
-      case 'legendary': return 'from-yellow-400 to-orange-600';
-      default: return 'from-gray-500 to-gray-700';
-    }
-  };
-
-  const canDropExpensiveItem = (item: CaseItem) => {
-    const requiredRevenue = Math.floor(item.price / 500) * 20000;
-    return totalSiteRevenue >= requiredRevenue;
-  };
-
-  const generateRouletteItems = (caseData: GameCase) => {
-    const items: CaseItem[] = [];
-    // Генерируем 50 предметов для рулетки
-    for (let i = 0; i < 50; i++) {
-      const random = Math.random() * 100;
-      let cumulativeChance = 0;
-      let selectedItem = caseData.items[0];
-
-      for (const item of caseData.items) {
-        cumulativeChance += item.chance;
-        if (random <= cumulativeChance) {
-          selectedItem = item;
-          break;
-        }
-      }
-      items.push(selectedItem);
-    }
-    return items;
-  };
-
   const openCase = (caseData: GameCase) => {
-    setIsOpening(true);
-    setResults([]);
-    setShowResults(false);
-
-    // Генерируем предметы для рулетки
-    const roulette = generateRouletteItems(caseData);
-    setRouletteItems(roulette);
-
-    setTimeout(() => {
-      const newResults: CaseItem[] = [];
-      
-      for (let i = 0; i < openingCount; i++) {
-        const random = Math.random() * 100;
-        let cumulativeChance = 0;
-        let selectedItem = caseData.items[0];
-
-        for (const item of caseData.items) {
-          cumulativeChance += item.chance;
-          if (random <= cumulativeChance) {
-            if (item.rarity === 'legendary' && !canDropExpensiveItem(item)) {
-              selectedItem = caseData.items.find(i => i.rarity === 'epic') || caseData.items[0];
-            } else {
-              selectedItem = item;
-            }
-            break;
-          }
-        }
-        
-        newResults.push(selectedItem);
-      }
-      
-      setResults(newResults);
-      setTotalSiteRevenue(prev => prev + (caseData.price * openingCount));
-      setIsOpening(false);
-      setShowResults(true);
-    }, 3000);
+    if (balance < caseData.price * openingCount) {
+      alert('Недостаточно средств!');
+      return;
+    }
+    
+    setBalance(prev => prev - (caseData.price * openingCount));
+    setSelectedCase(caseData);
+    setIsModalOpen(true);
+    setTotalSiteRevenue(prev => prev + (caseData.price * openingCount));
   };
 
-  const sellItem = (item: CaseItem, index: number) => {
-    const sellPrice = Math.floor(item.price * 0.8); // 80% от стоимости
+  const handleSellItem = (item: CaseItem, sellPrice: number) => {
     setBalance(prev => prev + sellPrice);
-    setResults(prev => prev.filter((_, i) => i !== index));
   };
 
-  const keepItem = (item: CaseItem, index: number) => {
-    // Логика добавления в профиль
-    setResults(prev => prev.filter((_, i) => i !== index));
+  const handleKeepItem = (item: CaseItem) => {
+    console.log('Предмет сохранен в профиль:', item);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedCase(null);
   };
 
   return (
@@ -204,204 +131,28 @@ const Cases = () => {
           <p className="text-xl text-gray-300 max-w-2xl mx-auto animate-slide-up">
             Открывай кейсы и получай редкие предметы для своих любимых игр!
           </p>
-          <div className="mt-4 text-lg text-green-400 font-semibold">
-            Ваш баланс: {balance}₽
+          <div className="mt-4 flex items-center justify-center space-x-4">
+            <BalanceDisplay balance={balance} />
           </div>
         </div>
 
-        {!selectedCase ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {cases.map((caseData) => (
-              <Card 
-                key={caseData.id} 
-                className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 cursor-pointer transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-red-500/20 animate-fade-in"
-                onClick={() => setSelectedCase(caseData)}
-              >
-                <CardHeader className="text-center relative overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${caseData.gradient} opacity-20`}></div>
-                  <div className="relative z-10">
-                    <div className="w-full h-40 mb-4 rounded-lg overflow-hidden">
-                      <img 
-                        src={caseData.image} 
-                        alt={caseData.name}
-                        className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700"
-                      />
-                    </div>
-                    <CardTitle className="text-white text-xl mb-2">{caseData.name}</CardTitle>
-                    <p className="text-gray-300">{caseData.game}</p>
-                  </div>
-                </CardHeader>
-                <CardContent className="text-center relative z-10">
-                  <div className="text-3xl font-bold text-white mb-4">{caseData.price}₽</div>
-                  <Button 
-                    className={`w-full bg-gradient-to-r ${caseData.gradient} hover:opacity-90 text-white border-none transform hover:scale-105 transition-all duration-300`}
-                  >
-                    <Gift className="w-4 h-4 mr-2" />
-                    Открыть кейс
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="max-w-6xl mx-auto">
-            <Button 
-              onClick={() => {
-                setSelectedCase(null);
-                setResults([]);
-                setShowResults(false);
-              }}
-              className="mb-6 bg-gray-700 hover:bg-gray-600"
-            >
-              ← Назад к кейсам
-            </Button>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Кейс и управление */}
-              <div>
-                <Card className={`bg-gradient-to-br ${selectedCase.gradient} border-none mb-8 transform hover:scale-105 transition-all duration-500`}>
-                  <CardContent className="p-8 text-center">
-                    <div className="w-full h-60 mb-6 rounded-xl overflow-hidden">
-                      <img 
-                        src={selectedCase.image} 
-                        alt={selectedCase.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <h2 className="text-3xl font-bold text-white mb-2">{selectedCase.name}</h2>
-                    <p className="text-white/80 text-lg">{selectedCase.game}</p>
-                    <div className="text-3xl font-bold text-white mt-4">{selectedCase.price}₽</div>
-                  </CardContent>
-                </Card>
-
-                <div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700/50">
-                  <h3 className="text-xl font-bold mb-4">Открыть кейс</h3>
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Количество кейсов (1-5)</label>
-                    <div className="flex items-center space-x-2">
-                      {[1, 2, 3, 4, 5].map((count) => (
-                        <Button
-                          key={count}
-                          variant={openingCount === count ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setOpeningCount(count)}
-                          className={openingCount === count ? "bg-red-500 hover:bg-red-600" : "border-gray-600 text-gray-300"}
-                        >
-                          {count}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="text-xl font-bold mb-4">
-                    Общая стоимость: {selectedCase.price * openingCount}₽
-                  </div>
-
-                  <Button
-                    onClick={() => openCase(selectedCase)}
-                    disabled={isOpening}
-                    className={`w-full bg-gradient-to-r ${selectedCase.gradient} hover:opacity-90 text-lg py-6 rounded-xl transform hover:scale-105 transition-all duration-300`}
-                  >
-                    {isOpening ? (
-                      <div className="flex items-center">
-                        <Sparkles className="w-5 h-5 mr-2 animate-spin" />
-                        Открываю...
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <Gift className="w-5 h-5 mr-2" />
-                        Открыть {openingCount} {openingCount === 1 ? 'кейс' : 'кейса'}
-                      </div>
-                    )}
-                  </Button>
-                </div>
-              </div>
-
-              {/* Рулетка и результаты */}
-              <div>
-                {isOpening && (
-                  <div className="mb-6">
-                    <h3 className="text-xl font-bold mb-4 text-center">🎰 Рулетка</h3>
-                    <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-4 overflow-hidden">
-                      <div className="flex space-x-2 animate-pulse">
-                        {rouletteItems.slice(0, 10).map((item, index) => (
-                          <div 
-                            key={index}
-                            className={`min-w-[100px] h-24 bg-gradient-to-br ${getRarityGradient(item.rarity)} rounded-lg flex items-center justify-center text-xs text-white font-bold text-center p-2 animate-slide-up`}
-                            style={{ animationDelay: `${index * 0.1}s` }}
-                          >
-                            {item.name}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-4 text-center text-gray-400">
-                        <div className="animate-spin inline-block">🎯</div>
-                        <p className="mt-2">Определяем победителя...</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Возможные предметы */}
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold mb-4">Возможные предметы</h3>
-                  <div className="space-y-3 max-h-64 overflow-y-auto">
-                    {selectedCase.items.map((item, index) => (
-                      <div key={index} className="flex items-center justify-between bg-gray-800/30 backdrop-blur-sm p-3 rounded-xl border border-gray-700/30">
-                        <div className="flex items-center space-x-3">
-                          <Badge className={`${getRarityColor(item.rarity)} text-white`}>
-                            {item.rarity}
-                          </Badge>
-                          <span className="text-white">{item.name}</span>
-                        </div>
-                        <div className="text-green-400 font-semibold">{item.price}₽</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Результаты открытия */}
-                {showResults && results.length > 0 && (
-                  <div className="animate-scale-in">
-                    <h4 className="text-xl font-bold mb-4">🎉 Поздравляем! Вы выиграли:</h4>
-                    <div className="space-y-4">
-                      {results.map((result, index) => (
-                        <div key={index} className={`bg-gradient-to-br ${getRarityGradient(result.rarity)} p-4 rounded-xl animate-fade-in border-2 border-white/20`}>
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center space-x-3">
-                              <Badge className={`${getRarityColor(result.rarity)} text-white`}>
-                                {result.rarity}
-                              </Badge>
-                              <span className="text-white font-bold">{result.name}</span>
-                            </div>
-                            <div className="text-white font-bold text-lg">{result.price}₽</div>
-                          </div>
-                          <div className="flex space-x-2">
-                            <Button
-                              onClick={() => sellItem(result, index)}
-                              className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                            >
-                              <DollarSign className="w-4 h-4 mr-2" />
-                              Продать за {Math.floor(result.price * 0.8)}₽
-                            </Button>
-                            <Button
-                              onClick={() => keepItem(result, index)}
-                              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
-                            >
-                              <Package className="w-4 h-4 mr-2" />
-                              В профиль
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
+        <CaseGrid
+          cases={cases}
+          openingCount={openingCount}
+          balance={balance}
+          onOpeningCountChange={setOpeningCount}
+          onOpenCase={openCase}
+        />
       </div>
+
+      <CaseOpeningModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        caseData={selectedCase}
+        openingCount={openingCount}
+        onSellItem={handleSellItem}
+        onKeepItem={handleKeepItem}
+      />
       
       <Footer />
     </div>

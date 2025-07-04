@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +15,7 @@ import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import CasePage from './pages/CasePage';
 
 const queryClient = new QueryClient();
 
@@ -37,6 +37,7 @@ const App = () => (
             <Route path="/terms" element={<Terms />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/case/:id" element={<CasePage />} />
             {/* Заглушки для страниц в разработке */}
             <Route path="/profile" element={<div className="min-h-screen bg-gray-900 text-white flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Профиль</h1><p className="text-gray-400">Войдите через Telegram</p></div></div>} />
             <Route path="/cart" element={<div className="min-h-screen bg-gray-900 text-white flex items-center justify-center"><div className="text-center"><h1 className="text-4xl font-bold mb-4">Корзина</h1><p className="text-gray-400">Ваша корзина пуста</p></div></div>} />

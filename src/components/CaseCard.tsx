@@ -1,8 +1,9 @@
-
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Gift } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface CaseItem {
   name: string;
@@ -37,6 +38,8 @@ const CaseCard = ({
   onOpeningCountChange, 
   onOpenCase 
 }: CaseCardProps) => {
+  const navigate = useNavigate();
+
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'bg-gray-600';
@@ -48,7 +51,10 @@ const CaseCard = ({
   };
 
   return (
-    <Card className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 animate-fade-in">
+    <Card 
+      className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 animate-fade-in cursor-pointer"
+      onClick={() => navigate(`/case/${caseData.id}`)}
+    >
       <CardHeader className="text-center relative overflow-hidden">
         <div className={`absolute inset-0 bg-gradient-to-br ${caseData.gradient} opacity-20`}></div>
         <div className="relative z-10">
