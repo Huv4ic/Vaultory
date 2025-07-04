@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ const TELEGRAM_BOT = 'vaultory_notify_bot';
 declare global {
   interface Window {
     TelegramLoginWidget: any;
+    onTelegramAuth: (user: any) => void;
   }
 }
 
@@ -24,24 +25,28 @@ const Header = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Telegram Login Widget callback
+  // Telegram Login Widget popup
   const handleTelegramAuth = () => {
-    // eslint-disable-next-line no-undef
-    window.TelegramLoginWidget = {
-      dataOnauth: (user) => {
-        signInWithTelegram(user);
+    const popup = window.open(
+      `https://oauth.telegram.org/auth?bot_id=8017714761&origin=${encodeURIComponent(window.location.origin)}&embed=1&request_access=write`,
+      'tg_auth',
+      'width=500,height=600,status=1,scrollbars=yes,resizable=yes'
+    );
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data && event.data.telegramUser) {
+        signInWithTelegram(event.data.telegramUser);
+        popup && popup.close();
       }
-    };
-    const script = document.createElement('script');
-    script.src = `https://telegram.org/js/telegram-widget.js?7`;
-    script.setAttribute('data-telegram-login', TELEGRAM_BOT);
-    script.setAttribute('data-size', 'large');
-    script.setAttribute('data-userpic', 'true');
-    script.setAttribute('data-request-access', 'write');
-    script.setAttribute('data-onauth', 'TelegramLoginWidget.dataOnauth(user)');
-    script.async = true;
-    document.body.appendChild(script);
+    }, { once: true });
   };
+
+  useEffect(() => {
+    // Listen for Telegram auth from popup
+    window.onTelegramAuth = (user) => {
+      signInWithTelegram(user);
+    };
+  }, [signInWithTelegram]);
 
   return (
     <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-red-500/20">
@@ -97,7 +102,7 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             {/* Телеграм */}
             <a
-              href="https://t.me/vaultory"
+              href="https://t.me/vaultorysell"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-gray-400 hover:text-blue-400 transition-colors"

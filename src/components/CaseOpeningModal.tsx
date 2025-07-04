@@ -163,7 +163,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
 
   const getContainerStyle = (count) => {
     if (count === 1) {
-      return { maxWidth: '90vw', minWidth: 350, margin: '0 auto' };
+      return { maxWidth: '1200px', minWidth: 500, width: '100%', margin: '0 auto' };
     }
     return { maxWidth: 700, margin: '0 auto' };
   };
