@@ -1,38 +1,12 @@
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, Send, LogOut } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-interface TelegramUser {
-  id: number;
-  first_name: string;
-  last_name?: string;
-  username?: string;
-  photo_url?: string;
-}
-
-const TG_BOT = 'vaultory_notify_bot';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const [tgUser, setTgUser] = useState<TelegramUser | null>(() => {
-    const raw = localStorage.getItem('tgUser');
-    return raw ? JSON.parse(raw) : null;
-  });
-
-  useEffect(() => {
-    // Функция для обработки данных из Telegram Widget
-    (window as any).onTelegramAuth = (user: TelegramUser) => {
-      setTgUser(user);
-      localStorage.setItem('tgUser', JSON.stringify(user));
-    };
-  }, []);
-
-  const handleLogout = () => {
-    setTgUser(null);
-    localStorage.removeItem('tgUser');
-  };
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -106,44 +80,15 @@ const Header = () => {
               </span>
             </Link>
 
-            {/* Профиль или Telegram Login */}
-            {tgUser ? (
-              <div className="flex items-center space-x-2">
-                {tgUser.photo_url && (
-                  <img src={tgUser.photo_url} alt="avatar" className="w-8 h-8 rounded-full border-2 border-purple-500" />
-                )}
-                <span className="text-white font-semibold">{tgUser.first_name}</span>
-                <Button onClick={handleLogout} size="icon" className="bg-gray-800 hover:bg-red-600 ml-2">
-                  <LogOut className="w-5 h-5" />
-                </Button>
-              </div>
-            ) : (
-              <div>
-                <div id="telegram-login-widget"></div>
-                <Button
-                  className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
-                  onClick={() => {
-                    if (!document.getElementById('telegram-login-script')) {
-                      const script = document.createElement('script');
-                      script.id = 'telegram-login-script';
-                      script.src = `https://telegram.org/js/telegram-widget.js?7`;
-                      script.setAttribute('data-telegram-login', TG_BOT);
-                      script.setAttribute('data-size', 'large');
-                      script.setAttribute('data-userpic', 'true');
-                      script.setAttribute('data-radius', '8');
-                      script.setAttribute('data-request-access', 'write');
-                      script.setAttribute('data-userpic', 'true');
-                      script.setAttribute('data-lang', 'ru');
-                      script.setAttribute('data-auth-url', window.location.origin + '/tg-auth');
-                      script.setAttribute('data-callback', 'onTelegramAuth');
-                      document.getElementById('telegram-login-widget')?.appendChild(script);
-                    }
-                  }}
-                >
-                  Войти через Telegram
-                </Button>
-              </div>
-            )}
+            {/* Профиль */}
+            <Link to="/profile" className="p-2 text-gray-400 hover:text-red-400 transition-colors">
+              <User className="w-5 h-5" />
+            </Link>
+
+            {/* Кнопка входа */}
+            <Button className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none">
+              Войти через Telegram
+            </Button>
 
             {/* Мобильное меню */}
             <button
