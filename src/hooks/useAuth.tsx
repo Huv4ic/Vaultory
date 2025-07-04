@@ -1,8 +1,17 @@
-
 import { useState, useEffect, createContext, useContext } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+
+export interface TelegramUser {
+  id: number;
+  first_name: string;
+  last_name?: string;
+  username?: string;
+  photo_url?: string;
+  auth_date: number;
+  hash: string;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -14,6 +23,11 @@ interface AuthContextType {
   signUp: (email: string, password: string, username: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  telegramUser: TelegramUser | null;
+  balance: number;
+  signInWithTelegram: (user: TelegramUser) => void;
+  signOutTelegram: () => void;
+  setBalance: (balance: number) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,6 +37,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null);
+  const [balance, setBalance] = useState<number>(() => {
+    const saved = localStorage.getItem('vaultory_balance');
+    return saved ? parseInt(saved, 10) : 1250;
+  });
 
   const isAdmin = profile?.role === 'admin';
 
@@ -99,6 +118,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await supabase.auth.signOut();
   };
 
+  const signInWithTelegram = (user: TelegramUser) => {
+    setTelegramUser(user);
+    localStorage.setItem('vaultory_telegram_user', JSON.stringify(user));
+  };
+
+  const signOutTelegram = () => {
+    setTelegramUser(null);
+    localStorage.removeItem('vaultory_telegram_user');
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem('vaultory_telegram_user');
+    if (saved) {
+      setTelegramUser(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('vaultory_balance', balance.toString());
+  }, [balance]);
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -109,7 +149,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       signIn,
       signUp,
       signOut,
-      refreshProfile
+      refreshProfile,
+      telegramUser,
+      balance,
+      signInWithTelegram,
+      signOutTelegram,
+      setBalance
     }}>
       {children}
     </AuthContext.Provider>

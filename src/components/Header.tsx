@@ -1,14 +1,47 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
+
+const TELEGRAM_BOT = 'vaultory_notify_bot';
+
+declare global {
+  interface Window {
+    TelegramLoginWidget: any;
+  }
+}
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const {
+    telegramUser,
+    balance,
+    signInWithTelegram,
+    signOutTelegram
+  } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Telegram Login Widget callback
+  const handleTelegramAuth = () => {
+    // eslint-disable-next-line no-undef
+    window.TelegramLoginWidget = {
+      dataOnauth: (user) => {
+        signInWithTelegram(user);
+      }
+    };
+    const script = document.createElement('script');
+    script.src = `https://telegram.org/js/telegram-widget.js?7`;
+    script.setAttribute('data-telegram-login', TELEGRAM_BOT);
+    script.setAttribute('data-size', 'large');
+    script.setAttribute('data-userpic', 'true');
+    script.setAttribute('data-request-access', 'write');
+    script.setAttribute('data-onauth', 'TelegramLoginWidget.dataOnauth(user)');
+    script.async = true;
+    document.body.appendChild(script);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-red-500/20">
@@ -85,10 +118,28 @@ const Header = () => {
               <User className="w-5 h-5" />
             </Link>
 
-            {/* Кнопка входа */}
-            <Button className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none">
-              Войти через Telegram
-            </Button>
+            {/* Telegram Auth/Avatar+Balance */}
+            {!telegramUser ? (
+              <Button
+                className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
+                onClick={handleTelegramAuth}
+              >
+                Войти через Telegram
+              </Button>
+            ) : (
+              <div className="flex items-center space-x-3">
+                {telegramUser.photo_url && (
+                  <img
+                    src={telegramUser.photo_url}
+                    alt={telegramUser.username || telegramUser.first_name}
+                    className="w-9 h-9 rounded-full border-2 border-purple-500 shadow"
+                  />
+                )}
+                <span className="font-semibold text-white">{telegramUser.username || telegramUser.first_name}</span>
+                <span className="bg-gray-800 px-3 py-1 rounded-lg text-green-400 font-bold">Баланс: {balance}₽</span>
+                <Button size="sm" variant="outline" onClick={signOutTelegram}>Выйти</Button>
+              </div>
+            )}
 
             {/* Мобильное меню */}
             <button

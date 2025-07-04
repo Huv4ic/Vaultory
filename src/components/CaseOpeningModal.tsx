@@ -161,6 +161,13 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     }
   }, [isOpen, caseData, openingCount]);
 
+  const getContainerStyle = (count) => {
+    if (count === 1) {
+      return { maxWidth: '90vw', minWidth: 350, margin: '0 auto' };
+    }
+    return { maxWidth: 700, margin: '0 auto' };
+  };
+
   if (!caseData) return null;
 
   return (
@@ -192,7 +199,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                       </div>
                       <div
                         className="overflow-hidden bg-gray-700/50 rounded-lg p-2"
-                        style={{ maxWidth: CONTAINER_WIDTH, margin: '0 auto' }}
+                        style={getContainerStyle(openingCount)}
                         ref={el => rouletteRefs.current[idx] = el}
                       >
                         <div
