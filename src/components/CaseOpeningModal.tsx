@@ -42,8 +42,9 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   // Массив состояний для каждой рулетки
   const [spins, setSpins] = useState([]);
 
-  const ITEM_WIDTH = 112; // px, должен совпадать с min-w/max-w
-  const CONTAINER_WIDTH = 700; // px, должен совпадать с maxWidth контейнера
+  const ITEM_WIDTH = 112; // px
+  const GAP = 8; // px (gap-2)
+  const CONTAINER_WIDTH = 700; // px
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -153,7 +154,20 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                 ? (spin.winningIndex * ITEM_WIDTH) - (CONTAINER_WIDTH / 2) + (ITEM_WIDTH / 2)
                 : 0;
               const pointerIndex = Math.round((pointerOffset + currentTranslateX) / ITEM_WIDTH);
-              const resultItem = spin.rouletteItems[pointerIndex];
+              let resultItem = null;
+              if (spin.showResults && spin.rouletteItems.length > 0) {
+                let minDist = Infinity;
+                let foundIndex = 0;
+                for (let i = 0; i < spin.rouletteItems.length; i++) {
+                  const elementCenter = i * (ITEM_WIDTH + GAP) + ITEM_WIDTH / 2;
+                  const dist = Math.abs(elementCenter - pointerOffset);
+                  if (dist < minDist) {
+                    minDist = dist;
+                    foundIndex = i;
+                  }
+                }
+                resultItem = spin.rouletteItems[foundIndex];
+              }
               return (
                 <div key={idx}>
                   {/* Рулетка */}
@@ -189,10 +203,10 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                       </div>
                     </div>
                     {/* После остановки — показать результат и кнопки */}
-                    {spin.showResults && (
+                    {spin.showResults && resultItem && (
                       <div className="mt-4 flex flex-col items-center">
                         <div className="text-lg font-bold text-white mb-2">
-                          Выпал предмет: <span className="text-yellow-400">{resultItem?.name}</span>
+                          Выпал предмет: <span className="text-yellow-400">{resultItem.name}</span>
                         </div>
                         <div className="flex gap-4">
                           <Button onClick={() => onSellItem(resultItem, Math.floor(resultItem.price * 0.8))} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(resultItem.price * 0.8)}₽)</Button>
