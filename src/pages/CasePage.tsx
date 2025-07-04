@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import CaseOpeningModal from '@/components/CaseOpeningModal';
 
 // Пример данных кейсов (лучше вынести в отдельный файл или получать из API)
 const cases = [
@@ -71,10 +72,35 @@ const cases = [
 const CasePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [openingCount, setOpeningCount] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(1250);
+  const [selectedCase, setSelectedCase] = useState(null);
 
   const caseData = cases.find(c => c.id === id);
+
+  const openCase = () => {
+    if (!caseData) return;
+    if (balance < caseData.price) {
+      alert('Недостаточно средств!');
+      return;
+    }
+    setBalance(prev => prev - caseData.price);
+    setSelectedCase(caseData);
+    setIsModalOpen(true);
+  };
+
+  const handleSellItem = (item, sellPrice) => {
+    setBalance(prev => prev + sellPrice);
+  };
+
+  const handleKeepItem = (item) => {
+    // Можно реализовать сохранение предмета в профиль пользователя
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedCase(null);
+  };
 
   if (!caseData) {
     return (
@@ -90,53 +116,25 @@ const CasePage = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-          <div className="w-full md:w-1/3">
-            <img src={caseData.image} alt={caseData.name} className="rounded-xl w-full object-cover mb-4" />
-            <h2 className="text-3xl font-bold mb-2">{caseData.name}</h2>
-            <p className="text-gray-400 mb-2">{caseData.game}</p>
-            <div className="text-2xl font-bold text-white mb-4">{caseData.price}₽</div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-2 text-gray-300">Количество</label>
-              <div className="flex space-x-2">
-                {[1, 2, 3, 4, 5].map((count) => (
-                  <Button
-                    key={count}
-                    variant={openingCount === count ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setOpeningCount(count)}
-                    className={openingCount === count ? "bg-purple-500 hover:bg-purple-600" : "border-gray-600 text-gray-300"}
-                  >
-                    {count}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <div className="text-lg font-semibold text-yellow-400 mb-4">
-              Общая стоимость: {caseData.price * openingCount}₽
-            </div>
-            <Button 
-              className={`w-full bg-gradient-to-r ${caseData.gradient} hover:opacity-90 text-white border-none transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed`}
-              disabled={balance < caseData.price * openingCount}
-            >
-              Открыть {openingCount} {openingCount === 1 ? 'кейс' : 'кейса'}
-            </Button>
-          </div>
-          <div className="w-full md:w-2/3">
-            <h3 className="text-xl font-semibold mb-4">Возможные предметы:</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {caseData.items.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between bg-gray-800/60 p-4 rounded-lg">
-                  <span className="font-semibold capitalize text-white">{item.name}</span>
-                  <span className="text-green-400 font-bold">{item.price}₽</span>
-                  <span className={`ml-2 px-2 py-1 rounded text-xs ${item.rarity === 'common' ? 'bg-gray-600' : item.rarity === 'rare' ? 'bg-blue-600' : item.rarity === 'epic' ? 'bg-purple-600' : 'bg-yellow-600'} text-white`}>{item.rarity}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="container mx-auto px-4 py-16 flex justify-center items-center">
+        <div className="bg-gray-800/70 rounded-2xl shadow-xl p-8 max-w-sm w-full text-center">
+          <img src={caseData.image} alt={caseData.name} className="rounded-xl w-full object-cover mb-6" />
+          <h2 className="text-3xl font-bold mb-2">{caseData.name}</h2>
+          <p className="text-gray-400 mb-4">{caseData.game}</p>
+          <Button className={`w-full bg-gradient-to-r ${caseData.gradient} hover:opacity-90 text-white border-none transform hover:scale-105 transition-all duration-300 mb-4`} onClick={openCase}>
+            Открыть кейс
+          </Button>
+          <div className="text-lg font-semibold text-yellow-400">Стоимость: {caseData.price}₽ за 1 кейс</div>
         </div>
       </div>
+      <CaseOpeningModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        caseData={selectedCase}
+        openingCount={1}
+        onSellItem={handleSellItem}
+        onKeepItem={handleKeepItem}
+      />
       <Footer />
     </div>
   );
