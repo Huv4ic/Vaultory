@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,29 +22,23 @@ const Header = () => {
     signInWithTelegram,
     signOutTelegram
   } = useAuth();
+  const [showTelegramWidget, setShowTelegramWidget] = useState(false);
+  const widgetRef = useRef(null);
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Telegram Login Widget popup
+  // Telegram Login Widget встроенный
   const handleTelegramAuth = () => {
-    const popup = window.open(
-      `https://oauth.telegram.org/auth?bot_id=8017714761&origin=${encodeURIComponent(window.location.origin)}&embed=1&request_access=write`,
-      'tg_auth',
-      'width=500,height=600,status=1,scrollbars=yes,resizable=yes'
-    );
-    window.addEventListener('message', (event) => {
-      if (event.origin !== window.location.origin) return;
-      if (event.data && event.data.telegramUser) {
-        signInWithTelegram(event.data.telegramUser);
-        popup && popup.close();
-      }
-    }, { once: true });
+    setShowTelegramWidget(true);
   };
 
+  // Callback для Telegram Login Widget
   useEffect(() => {
-    // Listen for Telegram auth from popup
-    window.onTelegramAuth = (user) => {
-      signInWithTelegram(user);
+    window.TelegramLoginWidget = {
+      dataOnauth: (user) => {
+        signInWithTelegram(user);
+        setShowTelegramWidget(false);
+      }
     };
   }, [signInWithTelegram]);
 
@@ -125,12 +119,26 @@ const Header = () => {
 
             {/* Telegram Auth/Avatar+Balance */}
             {!telegramUser ? (
-              <Button
-                className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
-                onClick={handleTelegramAuth}
-              >
-                Войти через Telegram
-              </Button>
+              <>
+                <Button
+                  className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
+                  onClick={handleTelegramAuth}
+                >
+                  Войти через Telegram
+                </Button>
+                {showTelegramWidget && (
+                  <div ref={widgetRef} className="absolute z-50 top-20 right-4 bg-gray-900 p-4 rounded-xl shadow-xl border border-gray-700">
+                    <script async src="https://telegram.org/js/telegram-widget.js?7"
+                      data-telegram-login="vaultory_notify_bot"
+                      data-size="large"
+                      data-userpic="true"
+                      data-request-access="write"
+                      data-onauth="TelegramLoginWidget.dataOnauth(user)"
+                    ></script>
+                    <Button size="sm" variant="outline" className="mt-2 w-full" onClick={() => setShowTelegramWidget(false)}>Отмена</Button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="flex items-center space-x-3">
                 {telegramUser.photo_url && (
