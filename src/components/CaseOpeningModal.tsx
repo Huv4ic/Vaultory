@@ -181,10 +181,12 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                   {/* После остановки — показать результат и кнопки */}
                   {spin.showResults && (
                     <div className="mt-4 flex flex-col items-center">
-                      <div className="text-lg font-bold text-white mb-2">Выпал предмет: <span className="text-yellow-400">{spin.result.name}</span></div>
+                      <div className="text-lg font-bold text-white mb-2">
+                        Выпал предмет: <span className="text-yellow-400">{spin.rouletteItems[spin.winningIndex]?.name}</span>
+                      </div>
                       <div className="flex gap-4">
-                        <Button onClick={() => onSellItem(spin.result, Math.floor(spin.result.price * 0.8))} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(spin.result.price * 0.8)}₽)</Button>
-                        <Button onClick={() => onKeepItem(spin.result)} className="bg-green-600 hover:bg-green-700">В профиль</Button>
+                        <Button onClick={() => onSellItem(spin.rouletteItems[spin.winningIndex], Math.floor(spin.rouletteItems[spin.winningIndex].price * 0.8))} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(spin.rouletteItems[spin.winningIndex].price * 0.8)}₽)</Button>
+                        <Button onClick={() => onKeepItem(spin.rouletteItems[spin.winningIndex])} className="bg-green-600 hover:bg-green-700">В профиль</Button>
                       </div>
                     </div>
                   )}
