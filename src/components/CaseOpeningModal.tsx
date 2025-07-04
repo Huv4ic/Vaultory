@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -45,6 +45,10 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   const ITEM_WIDTH = 112; // px
   const GAP = 8; // px (gap-2)
   const CONTAINER_WIDTH = 700; // px
+
+  // refs для рулеток и элементов
+  const rouletteRefs = useRef([]);
+  const itemRefs = useRef([]);
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -127,7 +131,29 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
       setTimeout(() => {
         setSpins(spins => spins.map(s => ({ ...s, isSpinning: false })));
         setTimeout(() => {
-          setSpins(spins => spins.map(s => ({ ...s, isOpening: false, showResults: true, result: s.rouletteItems[s.winningIndex] })));
+          // После остановки анимации определяем результат через DOM
+          setSpins(spins => spins.map((s, idx) => {
+            let resultItem = null;
+            if (rouletteRefs.current[idx] && itemRefs.current[idx]) {
+              const containerRect = rouletteRefs.current[idx].getBoundingClientRect();
+              const pointerX = containerRect.left + containerRect.width / 2;
+              let minDist = Infinity;
+              let foundIndex = 0;
+              for (let i = 0; i < itemRefs.current[idx].length; i++) {
+                const el = itemRefs.current[idx][i];
+                if (!el) continue;
+                const rect = el.getBoundingClientRect();
+                const elCenter = rect.left + rect.width / 2;
+                const dist = Math.abs(elCenter - pointerX);
+                if (dist < minDist) {
+                  minDist = dist;
+                  foundIndex = i;
+                }
+              }
+              resultItem = s.rouletteItems[foundIndex];
+            }
+            return { ...s, isOpening: false, showResults: true, result: resultItem };
+          }));
         }, 800);
       }, 3000);
     } else if (!isOpen) {
@@ -154,20 +180,6 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                 ? (spin.winningIndex * ITEM_WIDTH) - (CONTAINER_WIDTH / 2) + (ITEM_WIDTH / 2)
                 : 0;
               const pointerIndex = Math.round((pointerOffset + currentTranslateX) / ITEM_WIDTH);
-              let resultItem = null;
-              if (spin.showResults && spin.rouletteItems.length > 0) {
-                let minDist = Infinity;
-                let foundIndex = 0;
-                for (let i = 0; i < spin.rouletteItems.length; i++) {
-                  const elementCenter = i * (ITEM_WIDTH + GAP) + ITEM_WIDTH / 2;
-                  const dist = Math.abs(elementCenter - pointerOffset);
-                  if (dist < minDist) {
-                    minDist = dist;
-                    foundIndex = i;
-                  }
-                }
-                resultItem = spin.rouletteItems[foundIndex];
-              }
               return (
                 <div key={idx}>
                   {/* Рулетка */}
@@ -178,7 +190,11 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                         <div className="w-1 h-8 bg-red-500 shadow-lg shadow-red-500/50"></div>
                         <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-red-500 mx-auto"></div>
                       </div>
-                      <div className="overflow-hidden bg-gray-700/50 rounded-lg p-2" style={{ maxWidth: CONTAINER_WIDTH, margin: '0 auto' }}>
+                      <div
+                        className="overflow-hidden bg-gray-700/50 rounded-lg p-2"
+                        style={{ maxWidth: CONTAINER_WIDTH, margin: '0 auto' }}
+                        ref={el => rouletteRefs.current[idx] = el}
+                      >
                         <div
                           className="flex gap-2"
                           style={{
@@ -189,10 +205,14 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                               : 'translateX(0px)',
                           }}
                         >
-                          {spin.rouletteItems.map((item, index) => (
+                          {spin.rouletteItems.map((item, i) => (
                             <div
-                              key={index}
-                              className={`rounded-lg px-4 py-2 flex flex-col items-center justify-center min-w-[112px] max-w-[112px] ${index === spin.winningIndex ? 'ring-4 ring-yellow-400' : ''}`}
+                              key={i}
+                              ref={el => {
+                                if (!itemRefs.current[idx]) itemRefs.current[idx] = [];
+                                itemRefs.current[idx][i] = el;
+                              }}
+                              className={`rounded-lg px-4 py-2 flex flex-col items-center justify-center min-w-[112px] max-w-[112px] ${i === spin.winningIndex ? 'ring-4 ring-yellow-400' : ''}`}
                               style={{ background: '#23272f' }}
                             >
                               <span className="font-bold text-white text-sm mb-1">{item.name}</span>
@@ -203,14 +223,14 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                       </div>
                     </div>
                     {/* После остановки — показать результат и кнопки */}
-                    {spin.showResults && resultItem && (
+                    {spin.showResults && spin.result && (
                       <div className="mt-4 flex flex-col items-center">
                         <div className="text-lg font-bold text-white mb-2">
-                          Выпал предмет: <span className="text-yellow-400">{resultItem.name}</span>
+                          Выпал предмет: <span className="text-yellow-400">{spin.result.name}</span>
                         </div>
                         <div className="flex gap-4">
-                          <Button onClick={() => onSellItem(resultItem, Math.floor(resultItem.price * 0.8))} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(resultItem.price * 0.8)}₽)</Button>
-                          <Button onClick={() => onKeepItem(resultItem)} className="bg-green-600 hover:bg-green-700">В профиль</Button>
+                          <Button onClick={() => onSellItem(spin.result, Math.floor(spin.result.price * 0.8))} className="bg-red-600 hover:bg-red-700">Продать ({Math.floor(spin.result.price * 0.8)}₽)</Button>
+                          <Button onClick={() => onKeepItem(spin.result)} className="bg-green-600 hover:bg-green-700">В профиль</Button>
                         </div>
                       </div>
                     )}
