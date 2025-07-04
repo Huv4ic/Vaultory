@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -103,34 +102,35 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     const winIndex = Math.floor(Math.random() * 10) + 20;
     setWinningIndex(winIndex);
 
-    // Запускаем анимацию
+    // Фаза 1: быстрое вращение
     setTimeout(() => {
       setIsSpinning(true);
     }, 100);
 
-    // Показываем результат
+    // Фаза 2: плавное замедление
     setTimeout(() => {
-      const newResults: CaseItem[] = [];
-      
-      for (let i = 0; i < openingCount; i++) {
-        const random = Math.random() * 100;
-        let cumulativeChance = 0;
-        let selectedItem = caseData.items[0];
-
-        for (const item of caseData.items) {
-          cumulativeChance += item.chance;
-          if (random <= cumulativeChance) {
-            selectedItem = item;
-            break;
+      setIsSpinning(false);
+      // Показываем результат через небольшую паузу
+      setTimeout(() => {
+        const newResults = [];
+        for (let i = 0; i < openingCount; i++) {
+          const random = Math.random() * 100;
+          let cumulativeChance = 0;
+          let selectedItem = caseData.items[0];
+          for (const item of caseData.items) {
+            cumulativeChance += item.chance;
+            if (random <= cumulativeChance) {
+              selectedItem = item;
+              break;
+            }
           }
+          newResults.push(selectedItem);
         }
-        newResults.push(selectedItem);
-      }
-      
-      setResults(newResults);
-      setIsOpening(false);
-      setShowResults(true);
-    }, 3500);
+        setResults(newResults);
+        setIsOpening(false);
+        setShowResults(true);
+      }, 800);
+    }, 3000); // 1.2s быстро + 1.8s замедление
   };
 
   const handleSellItem = (item: CaseItem, index: number) => {
@@ -155,7 +155,49 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
 
   useEffect(() => {
     if (isOpen && caseData) {
-      openCase();
+      setIsOpening(true);
+      setResults([]);
+      setShowResults(false);
+      setWinningIndex(null);
+      setIsSpinning(false);
+
+      // Генерируем предметы для рулетки
+      const roulette = generateRouletteItems(caseData);
+      setRouletteItems(roulette);
+
+      // Определяем выигрышный индекс
+      const winIndex = Math.floor(Math.random() * 10) + 20;
+      setWinningIndex(winIndex);
+
+      // Фаза 1: быстрое вращение
+      setTimeout(() => {
+        setIsSpinning(true);
+      }, 100);
+
+      // Фаза 2: плавное замедление
+      setTimeout(() => {
+        setIsSpinning(false);
+        // Показываем результат через небольшую паузу
+        setTimeout(() => {
+          const newResults = [];
+          for (let i = 0; i < openingCount; i++) {
+            const random = Math.random() * 100;
+            let cumulativeChance = 0;
+            let selectedItem = caseData.items[0];
+            for (const item of caseData.items) {
+              cumulativeChance += item.chance;
+              if (random <= cumulativeChance) {
+                selectedItem = item;
+                break;
+              }
+            }
+            newResults.push(selectedItem);
+          }
+          setResults(newResults);
+          setIsOpening(false);
+          setShowResults(true);
+        }, 800);
+      }, 3000); // 1.2s быстро + 1.8s замедление
     }
   }, [isOpen, caseData]);
 
@@ -184,26 +226,25 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                 </div>
                 
                 {/* Рулетка */}
-                <div className="overflow-hidden bg-gray-700/50 rounded-lg p-2">
+                <div className="overflow-hidden bg-gray-700/50 rounded-lg p-2" style={{ maxWidth: 700, margin: '0 auto' }}>
                   <div 
-                    className={`flex gap-2 transition-transform duration-[3000ms] ease-out ${
-                      isSpinning ? 'animate-none' : ''
-                    }`}
+                    className="flex gap-2"
                     style={{
+                      width: rouletteItems.length * 112,
+                      transition: isSpinning ? 'transform 3s cubic-bezier(0.22, 1, 0.36, 1)' : undefined,
                       transform: isSpinning && winningIndex !== null 
-                        ? `translateX(-${(winningIndex * 112) - 300}px)` 
+                        ? `translateX(-${(winningIndex * 112) - 350}px)` // 350 = 700/2
                         : 'translateX(0px)',
                     }}
                   >
                     {rouletteItems.map((item, index) => (
                       <div 
                         key={index}
-                        className={`min-w-[110px] h-24 bg-gradient-to-br ${getRarityGradient(item.rarity)} rounded-lg flex flex-col items-center justify-center text-xs text-white font-bold text-center p-2 border-2 ${
-                          winningIndex === index && isSpinning ? 'border-yellow-400 shadow-lg shadow-yellow-400/50' : 'border-white/20'
-                        } flex-shrink-0`}
+                        className={`rounded-lg px-4 py-2 flex flex-col items-center justify-center min-w-[112px] max-w-[112px] ${index === winningIndex ? 'ring-4 ring-yellow-400' : ''}`}
+                        style={{ background: '#23272f' }}
                       >
-                        <div className="truncate w-full mb-1">{item.name}</div>
-                        <div className="text-green-300">{item.price}₽</div>
+                        <span className="font-bold text-white text-sm mb-1">{item.name}</span>
+                        <span className="text-green-400 font-semibold text-xs">{item.price}₽</span>
                       </div>
                     ))}
                   </div>

@@ -75,16 +75,17 @@ const CasePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [balance, setBalance] = useState(1250);
   const [selectedCase, setSelectedCase] = useState(null);
+  const [openingCount, setOpeningCount] = useState(1);
 
   const caseData = cases.find(c => c.id === id);
 
   const openCase = () => {
     if (!caseData) return;
-    if (balance < caseData.price) {
+    if (balance < caseData.price * openingCount) {
       alert('Недостаточно средств!');
       return;
     }
-    setBalance(prev => prev - caseData.price);
+    setBalance(prev => prev - caseData.price * openingCount);
     setSelectedCase(caseData);
     setIsModalOpen(true);
   };
@@ -121,17 +122,33 @@ const CasePage = () => {
           <img src={caseData.image} alt={caseData.name} className="rounded-xl w-full object-cover mb-6" />
           <h2 className="text-3xl font-bold mb-2">{caseData.name}</h2>
           <p className="text-gray-400 mb-4">{caseData.game}</p>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2 text-gray-300">Количество</label>
+            <div className="flex justify-center space-x-2">
+              {[1, 2, 3, 4, 5].map((count) => (
+                <Button
+                  key={count}
+                  variant={openingCount === count ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setOpeningCount(count)}
+                  className={openingCount === count ? "bg-purple-500 hover:bg-purple-600" : "border-gray-600 text-gray-300"}
+                >
+                  {count}
+                </Button>
+              ))}
+            </div>
+          </div>
           <Button className={`w-full bg-gradient-to-r ${caseData.gradient} hover:opacity-90 text-white border-none transform hover:scale-105 transition-all duration-300 mb-4`} onClick={openCase}>
-            Открыть кейс
+            Открыть {openingCount} {openingCount === 1 ? 'кейс' : 'кейса'}
           </Button>
-          <div className="text-lg font-semibold text-yellow-400">Стоимость: {caseData.price}₽ за 1 кейс</div>
+          <div className="text-lg font-semibold text-yellow-400">Общая стоимость: {caseData.price * openingCount}₽</div>
         </div>
       </div>
       <CaseOpeningModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         caseData={selectedCase}
-        openingCount={1}
+        openingCount={openingCount}
         onSellItem={handleSellItem}
         onKeepItem={handleKeepItem}
       />
