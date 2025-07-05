@@ -10,7 +10,7 @@ const Support = () => {
       icon: <Send className="w-6 h-6" />,
       title: 'Telegram',
       description: 'Быстрый ответ в течение 5 минут',
-      contact: '@Vaultory_manager',
+      contact: '@VaultorySupport',
       action: 'Написать в Telegram',
       primary: true
     },
@@ -86,7 +86,11 @@ const Support = () => {
                 <p className="text-gray-400 text-sm">{method.description}</p>
               </CardHeader>
               <CardContent className="text-center">
-                <div className="text-red-400 font-semibold mb-4">{method.contact}</div>
+                <div className="text-red-400 font-semibold mb-4">
+                  <a href="https://t.me/Vaultory_manager" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-pink-500 transition-colors duration-200">
+                    {method.contact}
+                  </a>
+                </div>
                 <Button 
                   className={`w-full ${
                     method.primary 
@@ -152,15 +156,15 @@ const Support = () => {
         </div>
 
         {/* Экстренная помощь */}
-        <Card className="bg-gradient-to-r from-red-900/30 to-purple-900/30 border-red-500/50 mt-16">
-          <CardContent className="p-8 text-center">
-            <MessageCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-4">Нужна срочная помощь?</h3>
-            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+        <Card className="bg-white/90 dark:bg-gray-900/90 border-2 border-pink-300/60 shadow-xl rounded-2xl mt-16">
+          <CardContent className="p-10 text-center">
+            <MessageCircle className="w-12 h-12 text-pink-500 mx-auto mb-4" />
+            <h3 className="text-2xl font-extrabold mb-4 text-gray-900 dark:text-white">Нужна срочная помощь?</h3>
+            <p className="text-gray-700 dark:text-gray-200 mb-6 max-w-2xl mx-auto text-lg">
               Если у вас проблемы с заказом или аккаунтом, напишите нам в Telegram для получения мгновенной помощи
             </p>
             <a href="https://t.me/Vaultory_manager" target="_blank" rel="noopener noreferrer">
-              <Button className="w-full bg-gradient-to-r from-red-500 to-purple-500 text-white font-bold text-lg py-3 rounded-lg mt-6">
+              <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-lg py-3 rounded-lg mt-6 shadow-lg hover:from-pink-600 hover:to-purple-600 transition-all duration-200">
                 Написать в Telegram
               </Button>
             </a>

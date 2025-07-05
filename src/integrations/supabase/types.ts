@@ -52,6 +52,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "accounts_sold_to_user_id_fkey"
+            columns: ["sold_to_user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
         ]
       }
       admin_logs: {
@@ -93,6 +100,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "admin_logs_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
         ]
       }
       case_items: {
@@ -124,6 +138,13 @@ export type Database = {
           rarity?: Database["public"]["Enums"]["item_rarity"]
         }
         Relationships: [
+          {
+            foreignKeyName: "case_items_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "case_stats"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "case_items_case_id_fkey"
             columns: ["case_id"]
@@ -163,6 +184,13 @@ export type Database = {
             foreignKeyName: "case_openings_case_id_fkey"
             columns: ["case_id"]
             isOneToOne: false
+            referencedRelation: "case_stats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_openings_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
             referencedRelation: "cases"
             referencedColumns: ["id"]
           },
@@ -178,6 +206,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_openings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
             referencedColumns: ["id"]
           },
         ]
@@ -339,6 +374,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "media_files_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
         ]
       }
       orders: {
@@ -397,6 +439,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
             referencedColumns: ["id"]
           },
         ]
@@ -479,31 +528,37 @@ export type Database = {
       profiles: {
         Row: {
           balance: number | null
+          cases_opened: number | null
           created_at: string | null
           id: string
-          is_banned: boolean | null
-          cases_opened: number | null
           role: Database["public"]["Enums"]["user_role"] | null
+          status: string | null
+          total_deposited: number | null
+          total_spent: number | null
           updated_at: string | null
           username: string | null
         }
         Insert: {
           balance?: number | null
+          cases_opened?: number | null
           created_at?: string | null
           id: string
-          is_banned?: boolean | null
-          cases_opened?: number | null
           role?: Database["public"]["Enums"]["user_role"] | null
+          status?: string | null
+          total_deposited?: number | null
+          total_spent?: number | null
           updated_at?: string | null
           username?: string | null
         }
         Update: {
           balance?: number | null
+          cases_opened?: number | null
           created_at?: string | null
           id?: string
-          is_banned?: boolean | null
-          cases_opened?: number | null
           role?: Database["public"]["Enums"]["user_role"] | null
+          status?: string | null
+          total_deposited?: number | null
+          total_spent?: number | null
           updated_at?: string | null
           username?: string | null
         }
@@ -563,11 +618,43 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
     Views: {
-      [_ in never]: never
+      case_stats: {
+        Row: {
+          id: string | null
+          name: string | null
+          price: number | null
+          total_openings: number | null
+          total_revenue: number | null
+          unique_users: number | null
+        }
+        Relationships: []
+      }
+      user_stats: {
+        Row: {
+          balance: number | null
+          cases_opened: number | null
+          created_at: string | null
+          id: string | null
+          orders_total: number | null
+          status: string | null
+          total_deposited: number | null
+          total_orders: number | null
+          total_spent: number | null
+          username: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       is_admin: {

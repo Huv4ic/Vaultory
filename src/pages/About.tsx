@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Shield, Zap, Users, Trophy, Clock, CheckCircle } from 'lucide-react';
@@ -130,44 +129,6 @@ const About = () => {
                 Сегодня нам доверяют тысячи игроков по всей стране, и мы продолжаем 
                 развиваться, добавляя новые игры и улучшая сервис.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Команда */}
-      <section className="py-16 px-4 bg-gradient-to-r from-gray-800/50 to-gray-900/50">
-        <div className="container mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            Наша команда
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center p-6 bg-gray-800/30 backdrop-blur-sm rounded-xl border border-gray-700/50">
-              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                А
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Алексей</h3>
-              <p className="text-red-400 mb-2">CEO & Основатель</p>
-              <p className="text-gray-400 text-sm">Создатель проекта и вдохновитель команды</p>
-            </div>
-            
-            <div className="text-center p-6 bg-gray-800/30 backdrop-blur-sm rounded-xl border border-gray-700/50">
-              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                М
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Мария</h3>
-              <p className="text-red-400 mb-2">Head of Support</p>
-              <p className="text-gray-400 text-sm">Руководитель службы поддержки клиентов</p>
-            </div>
-            
-            <div className="text-center p-6 bg-gray-800/30 backdrop-blur-sm rounded-xl border border-gray-700/50">
-              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                Д
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Дмитрий</h3>
-              <p className="text-red-400 mb-2">Tech Lead</p>
-              <p className="text-gray-400 text-sm">Технический директор и архитектор платформы</p>
             </div>
           </div>
         </div>

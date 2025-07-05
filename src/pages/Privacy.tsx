@@ -1,3 +1,4 @@
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -118,7 +119,7 @@ const Privacy = () => {
                   </p>
                   <ul className="space-y-2">
                     <li><strong>Email:</strong> privacy@vaultory.com</li>
-                    <li><strong>Telegram:</strong> @Vaultory_manager</li>
+                    <li><strong>Telegram:</strong> @VaultorySupport</li>
                     <li><strong>Адрес:</strong> Россия, г. Москва</li>
                   </ul>
                   <p className="leading-relaxed mt-4">

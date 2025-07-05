@@ -77,7 +77,7 @@ const CasePage = () => {
   const { balance, setBalance, telegramUser } = useAuth();
   const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCase, setSelectedCase] = useState(null);
+  const [selectedCase, setSelectedCase] = useState<any>(null);
   const [openingCount, setOpeningCount] = useState(1);
 
   const caseData = cases.find(c => c.id === id);
@@ -110,7 +110,7 @@ const CasePage = () => {
     setBalance(balance + sellPrice);
   };
 
-  const handleKeepItem = (item) => {
+  const handleKeepItem = (item: any) => {
     // Можно реализовать сохранение предмета в профиль пользователя
   };
 

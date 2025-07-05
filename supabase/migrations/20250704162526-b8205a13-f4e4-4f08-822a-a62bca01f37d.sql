@@ -1,3 +1,4 @@
+
 -- Проверим и создадим недостающие столбцы в таблице games если их нет
 DO $$ 
 BEGIN
@@ -67,21 +68,3 @@ CREATE POLICY "Anyone can view active games" ON public.games FOR SELECT USING (i
 -- Обновляем политику для кейсов чтобы показывать только активные
 DROP POLICY IF EXISTS "Anyone can view cases" ON public.cases;
 CREATE POLICY "Anyone can view active cases" ON public.cases FOR SELECT USING (is_active = true);
-
--- Add is_banned field to profiles table
-ALTER TABLE profiles ADD COLUMN is_banned BOOLEAN DEFAULT FALSE;
-
--- Add index for better performance on banned users queries
-CREATE INDEX idx_profiles_is_banned ON profiles(is_banned);
-
--- Add comment for documentation
-COMMENT ON COLUMN profiles.is_banned IS 'Whether the user is banned from the platform';
-
--- Add cases_opened field to profiles table
-ALTER TABLE profiles ADD COLUMN cases_opened INTEGER DEFAULT 0;
-
--- Add index for better performance on analytics
-CREATE INDEX idx_profiles_cases_opened ON profiles(cases_opened);
-
--- Add comment for documentation
-COMMENT ON COLUMN profiles.cases_opened IS 'Total number of cases opened by the user';

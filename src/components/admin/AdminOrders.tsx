@@ -3,37 +3,29 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Package, Eye, RefreshCw } from 'lucide-react';
+import { Package, Eye, RefreshCw, Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import type { Tables } from '@/integrations/supabase/types';
 
-interface Order {
-  id: string;
-  user_id: string;
-  product_id: string;
-  quantity: number;
-  total_amount: number;
-  status: string;
-  payment_method: string;
-  account_data: any;
-  replacement_requested: boolean;
-  replacement_reason: string;
-  created_at: string;
-  profiles: { username: string };
-  products: { name: string };
-}
+type Order = Tables<'orders'> & {
+  profiles?: { username: string };
+  products?: { name: string };
+};
 
 const AdminOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const { data: orders, isLoading } = useQuery({
-    queryKey: ['admin-orders', statusFilter],
+    queryKey: ['admin-orders', statusFilter, searchTerm],
     queryFn: async () => {
       let query = supabase
         .from('orders')
@@ -50,7 +42,20 @@ const AdminOrders = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data as Order[];
+      
+      // Фильтрация по поисковому запросу на клиенте
+      let filteredData = data as Order[];
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        filteredData = filteredData.filter(order => 
+          order.id.toLowerCase().includes(searchLower) ||
+          order.profiles?.username?.toLowerCase().includes(searchLower) ||
+          order.products?.name?.toLowerCase().includes(searchLower) ||
+          new Date(order.created_at).toLocaleDateString('ru-RU').includes(searchLower)
+        );
+      }
+      
+      return filteredData;
     }
   });
 
@@ -104,19 +109,30 @@ const AdminOrders = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-white">Управление заказами</h2>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-48 bg-gray-700 border-gray-600">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Все заказы</SelectItem>
-            <SelectItem value="pending">Ожидают</SelectItem>
-            <SelectItem value="processing">В обработке</SelectItem>
-            <SelectItem value="completed">Выполнены</SelectItem>
-            <SelectItem value="cancelled">Отменены</SelectItem>
-            <SelectItem value="refunded">Возвраты</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex gap-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              placeholder="Поиск по ID, пользователю, товару, дате..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 w-80 bg-gray-700 border-gray-600 text-white"
+            />
+          </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-48 bg-gray-700 border-gray-600">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Все заказы</SelectItem>
+              <SelectItem value="pending">Ожидают</SelectItem>
+              <SelectItem value="processing">В обработке</SelectItem>
+              <SelectItem value="completed">Выполнены</SelectItem>
+              <SelectItem value="cancelled">Отменены</SelectItem>
+              <SelectItem value="refunded">Возвраты</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

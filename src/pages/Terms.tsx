@@ -1,3 +1,4 @@
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -139,7 +140,7 @@ const Terms = () => {
                   </p>
                   <ul className="space-y-2">
                     <li><strong>Email:</strong> legal@vaultory.com</li>
-                    <li><strong>Telegram:</strong> @Vaultory_manager</li>
+                    <li><strong>Telegram:</strong> @VaultorySupport</li>
                     <li><strong>Время работы:</strong> Пн-Вс 9:00-23:00 (МСК)</li>
                   </ul>
                 </div>

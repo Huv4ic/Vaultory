@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCart } from '@/hooks/useCart';
 
 interface ProductCardProps {
   id: string;
@@ -16,8 +15,6 @@ interface ProductCardProps {
 
 const ProductCard = ({ id, name, price, originalPrice, image, category, rating, sales }: ProductCardProps) => {
   const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
-  const { items, addItem } = useCart();
-  const inCart = items.some(i => i.id === id);
 
   return (
     <div className="group bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 overflow-hidden hover:border-red-500/50 transition-all duration-300 hover:transform hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-500/10">
@@ -62,18 +59,16 @@ const ProductCard = ({ id, name, price, originalPrice, image, category, rating, 
           <Link to={`/product/${id}`} className="flex-1">
             <Button
               variant="outline"
-              className="w-full border-2 border-gray-600 text-gray-300 font-semibold rounded-lg shadow transition-all duration-200 hover:border-pink-500 hover:text-pink-500 hover:bg-pink-500/10"
+              className="w-full border-2 border-cyan-600 text-cyan-600 font-bold rounded-lg shadow transition-all duration-200 bg-white hover:bg-cyan-50 hover:border-cyan-700 hover:text-cyan-700 text-base py-3"
             >
               Подробнее
             </Button>
           </Link>
           <Button
             size="sm"
-            className={`w-12 h-12 flex items-center justify-center rounded-lg shadow-lg font-bold text-white bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 transition-all duration-200 ${inCart ? 'opacity-60 cursor-not-allowed' : ''}`}
-            onClick={() => addItem({ id, name, price, image })}
-            disabled={inCart}
+            className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
           >
-            <ShoppingCart className="w-5 h-5" />
+            <ShoppingCart className="w-4 h-4" />
           </Button>
         </div>
       </div>

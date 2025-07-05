@@ -121,7 +121,7 @@ const Profile = () => {
               <CardContent className="space-y-6">
                 {/* Аватарка */}
                 <div className="flex justify-center">
-                  {telegramUser.photo_url ? (
+                  {telegramUser?.photo_url ? (
                     <img
                       src={telegramUser.photo_url}
                       alt={telegramUser.username || telegramUser.first_name}
@@ -137,9 +137,9 @@ const Profile = () => {
                 {/* Имя пользователя */}
                 <div className="text-center">
                   <h2 className="text-2xl font-bold text-white mb-1">
-                    {telegramUser.first_name} {telegramUser.last_name || ''}
+                    {telegramUser?.first_name} {telegramUser?.last_name || ''}
                   </h2>
-                  {telegramUser.username && (
+                  {telegramUser?.username && (
                     <p className="text-gray-400">@{telegramUser.username}</p>
                   )}
                 </div>

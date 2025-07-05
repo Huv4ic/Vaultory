@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Send, Mail, Phone } from 'lucide-react';
 
@@ -22,7 +23,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://t.me/vaultorysell"
+                href="https://t.me/vaultory"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-gray-800 rounded-lg text-blue-400 hover:bg-gray-700 transition-colors"
@@ -65,7 +66,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2 text-gray-400">
                 <Send className="w-4 h-4" />
-                <span>@Vaultory_manager</span>
+                <span>@VaultorySupport</span>
               </div>
             </div>
           </div>

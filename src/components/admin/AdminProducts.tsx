@@ -13,31 +13,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import type { Tables } from '@/integrations/supabase/types';
 
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  discount_price: number | null;
-  category_id: string | null;
-  game_id: string | null;
-  images: string[] | null;
-  is_available: boolean | null;
-  is_featured: boolean | null;
-  stock_quantity: number | null;
-  sort_order: number | null;
-  tags: string[] | null;
-  video_url: string | null;
-  created_at: string;
+type Product = Tables<'products'> & {
   categories?: { name: string };
   games?: { name: string };
-  total_sales: number;
-  total_revenue: number;
-  total_quantity: number;
-  category_name: string;
-  game_name: string;
-}
+};
 
 const AdminProducts = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -48,6 +29,7 @@ const AdminProducts = () => {
     price: 0,
     discount_price: null as number | null,
     category_id: '',
+    game_id: '',
     images: [] as string[],
     video_url: '',
     stock_quantity: 0,
@@ -59,9 +41,9 @@ const AdminProducts = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: products = [], isLoading } = useQuery({
-    queryKey: ['products'],
-    queryFn: async (): Promise<any[]> => {
+  const { data: products, isLoading } = useQuery({
+    queryKey: ['admin-products'],
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('products')
         .select(`
@@ -70,32 +52,9 @@ const AdminProducts = () => {
           games(name)
         `)
         .order('created_at', { ascending: false });
-
+      
       if (error) throw error;
-
-      // Получаем статистику по покупкам
-      const { data: ordersData, error: ordersError } = await supabase
-        .from('orders')
-        .select('product_id, total_amount, quantity');
-
-      if (ordersError) throw ordersError;
-
-      // Объединяем данные
-      return data.map(product => {
-        const productOrders = ordersData.filter(o => o.product_id === product.id);
-        const totalSales = productOrders.length;
-        const totalRevenue = productOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
-        const totalQuantity = productOrders.reduce((sum, o) => sum + (o.quantity || 1), 0);
-
-        return {
-          ...product,
-          total_sales: totalSales,
-          total_revenue: totalRevenue,
-          total_quantity: totalQuantity,
-          category_name: product.categories?.name || 'Без категории',
-          game_name: product.games?.name || 'Неизвестная игра'
-        };
-      });
+      return data as Product[];
     }
   });
 
@@ -104,6 +63,19 @@ const AdminProducts = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('categories')
+        .select('*')
+        .order('name');
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  const { data: games } = useQuery({
+    queryKey: ['games'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('games')
         .select('*')
         .order('name');
       
@@ -195,6 +167,7 @@ const AdminProducts = () => {
       price: 0,
       discount_price: null,
       category_id: '',
+      game_id: '',
       images: [],
       video_url: '',
       stock_quantity: 0,
@@ -214,6 +187,7 @@ const AdminProducts = () => {
       price: product.price,
       discount_price: product.discount_price,
       category_id: product.category_id || '',
+      game_id: product.game_id || '',
       images: product.images || [],
       video_url: product.video_url || '',
       stock_quantity: product.stock_quantity,
@@ -294,6 +268,18 @@ const AdminProducts = () => {
                   />
                 </div>
               </div>
+
+              <div>
+                <Label htmlFor="discount_price">Старая цена (для скидки)</Label>
+                <Input
+                  id="discount_price"
+                  type="number"
+                  value={formData.discount_price || ''}
+                  onChange={(e) => setFormData({ ...formData, discount_price: e.target.value ? parseInt(e.target.value) : null })}
+                  className="bg-gray-700 border-gray-600"
+                  placeholder="Оставьте пустым, если скидки нет"
+                />
+              </div>
               
               <div>
                 <Label htmlFor="description">Описание</Label>
@@ -306,6 +292,21 @@ const AdminProducts = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="game">Игра</Label>
+                  <Select value={formData.game_id} onValueChange={(value) => setFormData({ ...formData, game_id: value })}>
+                    <SelectTrigger className="bg-gray-700 border-gray-600">
+                      <SelectValue placeholder="Выберите игру" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {games?.map((game) => (
+                        <SelectItem key={game.id} value={game.id}>
+                          {game.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div>
                   <Label htmlFor="category">Категория</Label>
                   <Select value={formData.category_id} onValueChange={(value) => setFormData({ ...formData, category_id: value })}>
@@ -321,16 +322,17 @@ const AdminProducts = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
-                  <Label htmlFor="stock">Количество</Label>
-                  <Input
-                    id="stock"
-                    type="number"
-                    value={formData.stock_quantity}
-                    onChange={(e) => setFormData({ ...formData, stock_quantity: parseInt(e.target.value) })}
-                    className="bg-gray-700 border-gray-600"
-                  />
-                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="stock">Количество</Label>
+                <Input
+                  id="stock"
+                  type="number"
+                  value={formData.stock_quantity}
+                  onChange={(e) => setFormData({ ...formData, stock_quantity: parseInt(e.target.value) })}
+                  className="bg-gray-700 border-gray-600"
+                />
               </div>
 
               <div className="flex gap-4">
@@ -360,7 +362,12 @@ const AdminProducts = () => {
                 >
                   {editingProduct ? 'Обновить' : 'Создать'}
                 </Button>
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsDialogOpen(false)}
+                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                >
                   Отмена
                 </Button>
               </div>
@@ -381,13 +388,11 @@ const AdminProducts = () => {
             <TableHeader>
               <TableRow>
                 <TableHead className="text-gray-300">Название</TableHead>
-                <TableHead className="text-gray-300">Категория</TableHead>
                 <TableHead className="text-gray-300">Игра</TableHead>
+                <TableHead className="text-gray-300">Категория</TableHead>
                 <TableHead className="text-gray-300">Цена</TableHead>
                 <TableHead className="text-gray-300">Количество</TableHead>
                 <TableHead className="text-gray-300">Статус</TableHead>
-                <TableHead className="text-gray-300">Продаж</TableHead>
-                <TableHead className="text-gray-300">Доход</TableHead>
                 <TableHead className="text-gray-300">Действия</TableHead>
               </TableRow>
             </TableHeader>
@@ -401,16 +406,16 @@ const AdminProducts = () => {
                     )}
                   </TableCell>
                   <TableCell className="text-gray-300">
-                    {product.category_name}
+                    {product.games?.name || 'Не указано'}
                   </TableCell>
                   <TableCell className="text-gray-300">
-                    {product.game_name}
+                    {product.categories?.name || 'Без категории'}
                   </TableCell>
                   <TableCell className="text-gray-300">
                     {product.discount_price ? (
                       <div>
-                        <span className="line-through text-gray-500">{product.price}₽</span>
-                        <span className="ml-2 text-green-400">{product.discount_price}₽</span>
+                        <span className="line-through text-gray-500">{product.discount_price}₽</span>
+                        <span className="ml-2 text-green-400">{product.price}₽</span>
                       </div>
                     ) : (
                       `${product.price}₽`
@@ -421,18 +426,6 @@ const AdminProducts = () => {
                     <Badge variant={product.is_available ? 'default' : 'destructive'}>
                       {product.is_available ? 'В наличии' : 'Нет в наличии'}
                     </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-center">
-                      <div className="font-medium text-lg">{product.total_sales}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-center">
-                      <div className="font-medium text-lg text-green-600">
-                        {product.total_revenue.toLocaleString()} ₽
-                      </div>
-                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
