@@ -8,11 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { products, gameCategories } from '@/data/products';
 import { Star, Users, CheckCircle, ChevronDown } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [visibleProducts, setVisibleProducts] = useState(15);
   const [cart, setCart] = useState([]);
+  const { telegramUser } = useAuth();
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -51,6 +53,10 @@ const Index = () => {
   ];
 
   const handleAddToCart = (product) => {
+    if (!telegramUser) {
+      alert('Войдите через Telegram, чтобы добавить в корзину!');
+      return;
+    }
     setCart([...cart, product]);
   };
 

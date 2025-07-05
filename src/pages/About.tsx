@@ -1,5 +1,3 @@
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { Shield, Zap, Users, Trophy, Clock, CheckCircle } from 'lucide-react';
 
 const About = () => {
@@ -44,8 +42,6 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
-      
       {/* Hero секция */}
       <section className="relative py-20 px-4 overflow-hidden">
         <div className="absolute inset-0">
@@ -132,8 +128,6 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

@@ -1,5 +1,3 @@
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, Mail, Phone, Clock, MessageCircle, HelpCircle } from 'lucide-react';
@@ -55,8 +53,6 @@ const Support = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
-      
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
@@ -158,10 +154,12 @@ const Support = () => {
         {/* Экстренная помощь */}
         <Card className="bg-white/90 dark:bg-gray-900/90 border-2 border-pink-300/60 shadow-xl rounded-2xl mt-16">
           <CardContent className="p-10 text-center">
-            <MessageCircle className="w-12 h-12 text-pink-500 mx-auto mb-4" />
-            <h3 className="text-2xl font-extrabold mb-4 text-gray-900 dark:text-white">Нужна срочная помощь?</h3>
-            <p className="text-gray-700 dark:text-gray-200 mb-6 max-w-2xl mx-auto text-lg">
-              Если у вас проблемы с заказом или аккаунтом, напишите нам в Telegram для получения мгновенной помощи
+            <MessageCircle className="w-12 h-12 text-pink-500 mx-auto mb-4 drop-shadow-lg" />
+            <h3 className="text-3xl font-extrabold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
+              Нужна срочная помощь?
+            </h3>
+            <p className="mb-6 max-w-2xl mx-auto text-lg text-gray-100 dark:text-gray-200 leading-relaxed drop-shadow-md" style={{textShadow: '0 2px 8px rgba(80,0,80,0.18)'}}>
+              Если у вас проблемы с заказом или аккаунтом, <span className="font-semibold text-pink-400">напишите нам в Telegram</span> для получения мгновенной помощи
             </p>
             <a href="https://t.me/Vaultory_manager" target="_blank" rel="noopener noreferrer">
               <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-lg py-3 rounded-lg mt-6 shadow-lg hover:from-pink-600 hover:to-purple-600 transition-all duration-200">
@@ -171,8 +169,6 @@ const Support = () => {
           </CardContent>
         </Card>
       </div>
-      
-      <Footer />
     </div>
   );
 };

@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/hooks/useCart';
@@ -23,7 +21,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { user, profile, balance, setBalance, refreshProfile } = useAuth();
+  const { telegramUser, profile, balance, setBalance, refreshProfile } = useAuth();
   const { items, removeItem, updateQuantity, clear, total } = useCart();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -53,10 +51,10 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    if (!user) {
+    if (!telegramUser) {
       toast({
-        title: "Требуется авторизация",
-        description: "Войдите в систему для оформления заказа",
+        title: 'Требуется авторизация',
+        description: 'Войдите через Telegram для оформления заказа',
       });
       return;
     }
@@ -76,7 +74,7 @@ const Cart = () => {
       const { error: balanceError } = await supabase
         .from('profiles')
         .update({ balance: newBalance })
-        .eq('id', user.id);
+        .eq('id', telegramUser.id);
 
       if (balanceError) throw balanceError;
 
@@ -103,10 +101,24 @@ const Cart = () => {
     }
   };
 
+  if (!telegramUser) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center">
+        <div className="mx-auto w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6">
+          <User className="w-12 h-12 text-gray-400" />
+        </div>
+        <h1 className="text-3xl font-bold text-white mb-4">Войдите через Telegram</h1>
+        <p className="text-gray-400 mb-8 max-w-md text-center">
+          Для доступа к корзине и покупкам необходимо авторизоваться через Telegram
+        </p>
+        {/* Можно вставить Telegram Login Widget или ссылку на профиль */}
+      </div>
+    );
+  }
+
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-gray-900">
-        <Header />
         <div className="container mx-auto px-4 py-16">
           <div className="text-center">
             <div className="mx-auto w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6">
@@ -124,15 +136,12 @@ const Cart = () => {
             </Link>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Header />
-      
       <div className="container mx-auto px-4 py-8">
         {/* Заголовок */}
         <div className="flex items-center justify-between mb-8">
@@ -263,8 +272,6 @@ const Cart = () => {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

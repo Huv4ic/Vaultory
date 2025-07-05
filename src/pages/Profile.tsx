@@ -1,7 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,27 +13,44 @@ import {
   ArrowLeft
 } from 'lucide-react';
 
+const TELEGRAM_BOT = 'vaultory_notify_bot';
+
 const Profile = () => {
   const { telegramUser, balance, signOutTelegram, setBalance, profile, setTelegramUser } = useAuth();
   const { items: inventoryItems, sellItem } = useInventory();
   const { toast } = useToast();
   const [sellingItem, setSellingItem] = useState<number | null>(null);
+  const tgWidgetRef = useRef<HTMLDivElement>(null);
 
-  // Мок-функция для авторизации через Telegram (заменить на реальную интеграцию)
-  const handleTelegramLogin = () => {
-    setTelegramUser({
-      id: 1,
-      first_name: 'Имя',
-      last_name: 'Фамилия',
-      username: 'username',
-      photo_url: '',
-    });
-  };
+  // Вставка Telegram Login Widget (как в Header)
+  useEffect(() => {
+    if (telegramUser) return;
+    if (tgWidgetRef.current) {
+      tgWidgetRef.current.innerHTML = '';
+      const script = document.createElement('script');
+      script.src = 'https://telegram.org/js/telegram-widget.js?7';
+      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
+      script.setAttribute('data-size', 'large');
+      script.setAttribute('data-userpic', 'true');
+      script.setAttribute('data-radius', '10');
+      script.setAttribute('data-request-access', 'write');
+      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+      script.async = true;
+      tgWidgetRef.current.appendChild(script);
+    }
+    (window as any).onTelegramAuth = function(user: any) {
+      window.dispatchEvent(new CustomEvent('tg-auth', { detail: user }));
+    };
+    function handleTgAuth(e: any) {
+      setTelegramUser(e.detail);
+    }
+    window.addEventListener('tg-auth', handleTgAuth);
+    return () => window.removeEventListener('tg-auth', handleTgAuth);
+  }, [telegramUser, setTelegramUser]);
 
   if (!telegramUser) {
     return (
       <div className="min-h-screen bg-gray-900 flex flex-col">
-        <Header />
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="mx-auto w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6">
             <User className="w-12 h-12 text-gray-400" />
@@ -44,12 +59,7 @@ const Profile = () => {
           <p className="text-gray-400 mb-8 max-w-md text-center">
             Для просмотра профиля необходимо войти через Telegram
           </p>
-          <Button
-            className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none text-lg px-8 py-3 font-bold"
-            onClick={handleTelegramLogin}
-          >
-            Войти через Telegram
-          </Button>
+          <div ref={tgWidgetRef} />
           <Link to="/" className="mt-8">
             <Button variant="outline" className="border-gray-600 text-gray-300 hover:border-red-500 hover:text-red-400">
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -57,7 +67,6 @@ const Profile = () => {
             </Button>
           </Link>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -82,7 +91,6 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto bg-gray-800/90 text-white rounded-2xl shadow-2xl p-8 mt-8 animate-fade-in flex flex-col items-center border border-gray-700">
           {/* Аватар и имя */}
@@ -101,8 +109,15 @@ const Profile = () => {
           {displayUsername && <div className="text-gray-400 mb-2">{displayUsername}</div>}
           <div className="flex items-center gap-4 mb-6">
             <span className="flex items-center">
-              <span className="text-xs text-gray-300 mr-1">Баланс</span>
-              <span className="bg-gradient-to-r from-green-400 to-green-600 text-white font-bold px-4 py-2 rounded-lg shadow border border-green-500 text-lg">{balance}₽</span>
+              <div className="flex items-center">
+                <span className="text-xs text-gray-300 mr-2"></span>
+                <span className="ml-0">
+                  {/* Баланс в стиле шапки */}
+                  <div className="bg-gradient-to-r from-green-400 to-green-600 text-white font-bold px-4 py-1 rounded-lg shadow border border-green-500 text-base flex items-center gap-1">
+                    Баланс&nbsp;{balance}₽
+                  </div>
+                </span>
+              </div>
             </span>
             <Button
               onClick={signOutTelegram}
@@ -213,7 +228,6 @@ const Profile = () => {
           </Card>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
