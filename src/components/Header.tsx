@@ -115,23 +115,23 @@ const Header = () => {
               href="https://t.me/vaultorysell"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-gray-400 hover:text-blue-400 transition-colors"
+              className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold shadow-md border border-blue-400/60 transition-all duration-200 hover:from-blue-600 hover:to-purple-700"
             >
               <Send className="w-5 h-5" />
             </a>
 
             {/* Корзина */}
-            <Link to="/cart" className="relative p-2 text-gray-400 hover:text-red-400 transition-colors">
+            <Link to="/cart" className="relative p-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md border border-red-400/60 transition-all duration-200 hover:from-red-600 hover:to-pink-600">
               <ShoppingCart className="w-5 h-5" />
               {cartItems.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-xs rounded-full flex items-center justify-center text-white">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-white text-red-500 text-xs rounded-full flex items-center justify-center font-bold border border-red-400">
                   {cartItems.length}
                 </span>
               )}
             </Link>
 
             {/* Профиль */}
-            <Link to="/profile" className="p-2 text-gray-400 hover:text-red-400 transition-colors">
+            <Link to="/profile" className="p-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold shadow-md border border-purple-400/60 transition-all duration-200 hover:from-purple-600 hover:to-indigo-700">
               <User className="w-5 h-5" />
             </Link>
 
@@ -161,7 +161,9 @@ const Header = () => {
                   />
                 )}
                 <span className="font-semibold text-white">{telegramUser.username || telegramUser.first_name}</span>
-                <span className="bg-gray-800 px-3 py-1 rounded-lg text-green-400 font-bold">Баланс: {balance}₽</span>
+                <span className="bg-gradient-to-r from-green-400 to-green-600 px-3 py-1 rounded-lg text-white font-bold shadow-md border border-green-500/60 transition-all duration-200 hover:from-green-500 hover:to-green-700">
+                  Баланс: {balance}₽
+                </span>
                 <Button size="sm" variant="outline" onClick={signOutTelegram}>Выйти</Button>
               </div>
             )}

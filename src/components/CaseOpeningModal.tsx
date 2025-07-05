@@ -6,6 +6,7 @@ import { Sparkles, DollarSign, Package } from 'lucide-react';
 import { useInventory } from '@/hooks/useInventory';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CaseItem {
   name: string;
@@ -56,7 +57,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   const itemRefs = useRef([]);
 
   const { addItem } = useInventory();
-  const { setBalance, balance } = useAuth();
+  const { setBalance, balance, profile, refreshProfile } = useAuth();
   const { toast } = useToast();
 
   const getRarityColor = (rarity: string) => {
@@ -168,6 +169,24 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
           }));
         }, 800);
       }, 3000);
+
+      if (isOpen && caseData && profile?.id) {
+        // Для каждого открытия кейса
+        Array.from({ length: openingCount }).forEach(async () => {
+          await supabase.from('case_openings').insert({
+            case_id: caseData.id,
+            user_id: profile.id,
+            total_cost: caseData.price
+          });
+          // Инкрементируем счетчик в профиле
+          if (typeof profile.cases_opened === 'number') {
+            await supabase.from('profiles').update({ cases_opened: profile.cases_opened + 1 }).eq('id', profile.id);
+          } else {
+            await supabase.from('profiles').update({ cases_opened: 1 }).eq('id', profile.id);
+          }
+          refreshProfile();
+        });
+      }
     } else if (!isOpen) {
       setSpins([]);
     }
