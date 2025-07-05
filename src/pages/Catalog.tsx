@@ -10,7 +10,7 @@ import { Search, Filter, SlidersHorizontal } from 'lucide-react';
 
 const Catalog = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { telegramUser } = useAuth();
   const { addItem, items } = useCart();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,11 +55,11 @@ const Catalog = () => {
   const displayedProducts = filteredProducts.slice(0, visibleProducts);
 
   const handleAddToCart = (product) => {
-    if (!user) {
-      alert('Необходимо войти в систему!');
+    if (!telegramUser) {
+      alert('Войдите через Telegram, чтобы добавить в корзину!');
       return;
     }
-    addItem(product);
+    addItem(product, 1);
   };
 
   const handleProductDetails = (product) => {

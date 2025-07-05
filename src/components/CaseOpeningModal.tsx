@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, DollarSign, Package } from 'lucide-react';
+import { Sparkles, DollarSign, Package, Plus, User, ShoppingCart } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -31,6 +31,7 @@ interface CaseOpeningModalProps {
   openingCount: number;
   onSellItem: (item: CaseItem, price: number) => void;
   onKeepItem: (item: CaseItem) => void;
+  onAddToProfile: (item: CaseItem) => void;
 }
 
 const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
@@ -40,6 +41,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   openingCount,
   onSellItem,
   onKeepItem,
+  onAddToProfile,
 }) => {
   const { user, balance, setBalance, refreshProfile } = useAuth();
   const [isOpening, setIsOpening] = useState(false);
@@ -169,6 +171,18 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     }
   };
 
+  const handleAddToProfile = async () => {
+    if (!user || soldOrAdded) return;
+    
+    try {
+      setSoldOrAdded(true);
+      onAddToProfile(caseData.items[winningIndex]);
+    } catch (error) {
+      console.error('Ошибка при добавлении в профиль:', error);
+      alert('Произошла ошибка при добавлении в профиль');
+    }
+  };
+
   const handleSell = async () => {
     if (!user || soldOrAdded) return;
     
@@ -225,19 +239,29 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
               <span className="bg-gray-800 text-yellow-200 px-4 py-2 rounded-lg font-bold shadow">Шанс: {caseData.items[winningIndex].chance}%</span>
               <span className="bg-gray-800 text-green-300 px-4 py-2 rounded-lg font-bold shadow">Цена: {caseData.items[winningIndex].price}₽</span>
             </div>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6 mt-8">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-8">
               <button
-                className={`w-full md:w-48 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full md:w-40 bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
                 onClick={handleAddToInventory}
                 disabled={soldOrAdded}
               >
-                Добавить в инвентарь
+                <ShoppingCart className="w-5 h-5" />
+                В инвентарь
               </button>
               <button
-                className={`w-full md:w-48 bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full md:w-40 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
+                onClick={handleAddToProfile}
+                disabled={soldOrAdded}
+              >
+                <User className="w-5 h-5" />
+                В профиль
+              </button>
+              <button
+                className={`w-full md:w-40 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
                 onClick={handleSell}
                 disabled={soldOrAdded}
               >
+                <DollarSign className="w-5 h-5" />
                 Продать
               </button>
             </div>

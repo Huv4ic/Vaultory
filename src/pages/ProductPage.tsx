@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button';
 import { products } from '@/data/products';
 import { Star, ShoppingCart, Shield, Clock, ArrowLeft, Plus, Minus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/useCart';
 
 const ProductPage = () => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const { telegramUser } = useAuth();
+  const { addItem, items } = useCart();
   
   const product = products.find(p => p.id === id);
   
@@ -39,8 +41,10 @@ const ProductPage = () => {
       alert('Войдите через Telegram, чтобы добавить в корзину!');
       return;
     }
-    // ... логика добавления товара в корзину ...
+    addItem(product, quantity);
   };
+
+  const isInCart = items.some((item) => item.id === product.id);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -125,9 +129,10 @@ const ProductPage = () => {
                 size="lg"
                 className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none text-lg py-6 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25"
                 onClick={handleAddToCart}
+                disabled={isInCart}
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                Добавить в корзину
+                {isInCart ? 'В корзине' : 'Добавить в корзину'}
               </Button>
             </div>
 

@@ -10,14 +10,15 @@ import {
   User, 
   DollarSign, 
   Package, 
-  ArrowLeft
+  ArrowLeft,
+  Download
 } from 'lucide-react';
 
 const TELEGRAM_BOT = 'vaultory_notify_bot';
 
 const Profile = () => {
   const { telegramUser, balance, signOutTelegram, setBalance, profile, setTelegramUser } = useAuth();
-  const { items: inventoryItems, sellItem } = useInventory();
+  const { items: inventoryItems, sellItem, withdrawItem, getTotalValue, getCasesOpened } = useInventory();
   const { toast } = useToast();
   const [sellingItem, setSellingItem] = useState<number | null>(null);
   const tgWidgetRef = useRef<HTMLDivElement>(null);
@@ -80,6 +81,14 @@ const Profile = () => {
     toast({
       title: "Предмет продан!",
       description: `Вы получили ${soldAmount}₽ за продажу предмета`,
+    });
+  };
+
+  const handleWithdrawItem = (index: number) => {
+    withdrawItem(index);
+    toast({
+      title: "Заявка на вывод отправлена!",
+      description: `Предмет будет обработан и выдан в ближайшее время`,
     });
   };
 
@@ -151,6 +160,8 @@ const Profile = () => {
                 <Badge variant="secondary" className="ml-2">
                   {inventoryItems.length} предметов
                 </Badge>
+                <span className="ml-4 text-green-400 font-bold">Сумма: {getTotalValue()}₽</span>
+                <span className="ml-4 text-blue-400 font-bold">Открыто кейсов: {getCasesOpened()}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -200,25 +211,39 @@ const Profile = () => {
                             {item.price}₽
                           </span>
                         </div>
-                        {/* Кнопка продажи */}
-                        <Button
-                          size="sm"
-                          onClick={() => handleSellItem(index)}
-                          disabled={sellingItem === index}
-                          className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 border-none"
-                        >
-                          {sellingItem === index ? (
-                            <div className="flex items-center">
-                              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
-                              Продажа...
-                            </div>
-                          ) : (
-                            <>
-                              <DollarSign className="w-3 h-3 mr-1" />
-                              Продать
-                            </>
-                          )}
-                        </Button>
+                        <div className="flex gap-2 mt-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleSellItem(index)}
+                            disabled={item.status === 'sold' || item.status === 'withdrawn' || sellingItem === index}
+                            className={`w-1/2 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 border-none flex items-center justify-center gap-1 ${item.status === 'sold' ? 'opacity-60 cursor-not-allowed' : ''}`}
+                          >
+                            {item.status === 'sold' ? 'Продано' : sellingItem === index ? (
+                              <div className="flex items-center">
+                                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
+                                Продажа...
+                              </div>
+                            ) : (
+                              <>
+                                <DollarSign className="w-3 h-3" />
+                                Продать
+                              </>
+                            )}
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => handleWithdrawItem(index)}
+                            disabled={item.status === 'withdrawn' || item.status === 'sold'}
+                            className={`w-1/2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 border-none flex items-center justify-center gap-1 ${item.status === 'withdrawn' ? 'opacity-60 cursor-not-allowed' : ''}`}
+                          >
+                            {item.status === 'withdrawn' ? 'Получено' : (
+                              <>
+                                <Download className="w-3 h-3" />
+                                Получить
+                              </>
+                            )}
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))}

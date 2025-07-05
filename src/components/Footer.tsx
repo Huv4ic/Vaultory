@@ -7,8 +7,8 @@ const Footer = () => {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
         <div className="text-2xl font-bold mb-4 md:mb-0">Vaultory</div>
         <div className="flex space-x-6">
-          <a href="/about" className="hover:underline text-lg font-semibold transition-colors duration-200">О нас</a>
-          <a href="/support" className="hover:underline text-lg font-semibold transition-colors duration-200">Поддержка</a>
+          <Link to="/about" className="hover:underline text-lg font-semibold transition-colors duration-200">О нас</Link>
+          <Link to="/support" className="hover:underline text-lg font-semibold transition-colors duration-200">Поддержка</Link>
           <a href="https://t.me/Vaultory_manager" target="_blank" rel="noopener noreferrer" className="hover:underline text-lg font-semibold transition-colors duration-200">Telegram</a>
         </div>
         <div className="text-sm mt-4 md:mt-0">© 2024 Vaultory. Все права защищены.</div>

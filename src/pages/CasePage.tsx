@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import { useInventory } from '@/hooks/useInventory';
 import { useToast } from '@/hooks/use-toast';
+import CaseOpeningModal from '@/components/CaseOpeningModal';
 
 // Пример данных кейсов (лучше вынести в отдельный файл или получать из API)
 const cases = [
@@ -98,8 +100,11 @@ const CasePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { balance, setBalance, telegramUser } = useAuth();
+  const { addItem } = useInventory();
   const { toast } = useToast();
   const [openingCount, setOpeningCount] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentCase, setCurrentCase] = useState(null);
 
   const caseData = cases.find(c => c.id === id);
 
@@ -119,9 +124,47 @@ const CasePage = () => {
       });
       return;
     }
+    
     setBalance(balance - caseData.price * openingCount);
-    // Здесь можно добавить открытие модального окна с анимацией
-    toast({ title: 'Кейс открыт!', description: `Вы открыли ${openingCount} кейс(ов)` });
+    setCurrentCase(caseData);
+    setIsModalOpen(true);
+  };
+
+  const handleSellItem = (item, price) => {
+    setBalance(balance + price);
+    toast({
+      title: "Предмет продан!",
+      description: `Вы получили ${price}₽ за продажу предмета`,
+    });
+  };
+
+  const handleKeepItem = (item) => {
+    addItem({
+      ...item,
+      caseId: caseData.id,
+      status: 'new'
+    });
+    toast({
+      title: "Предмет добавлен в инвентарь!",
+      description: `Предмет "${item.name}" добавлен в ваш инвентарь`,
+    });
+  };
+
+  const handleAddToProfile = (item) => {
+    addItem({
+      ...item,
+      caseId: caseData.id,
+      status: 'withdrawn'
+    });
+    toast({
+      title: "Заявка на вывод отправлена!",
+      description: `Предмет "${item.name}" будет обработан и выдан в ближайшее время`,
+    });
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setCurrentCase(null);
   };
 
   if (!caseData) {
@@ -181,6 +224,15 @@ const CasePage = () => {
           </div>
         </div>
       </div>
+      <CaseOpeningModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        caseData={currentCase}
+        openingCount={openingCount}
+        onSellItem={handleSellItem}
+        onKeepItem={handleKeepItem}
+        onAddToProfile={handleAddToProfile}
+      />
     </div>
   );
 };
