@@ -1,13 +1,9 @@
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Shield, Lock, Eye, Database } from 'lucide-react';
 
 const Privacy = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
-      
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -130,8 +126,6 @@ const Privacy = () => {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };
