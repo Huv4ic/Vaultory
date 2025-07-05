@@ -227,7 +227,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                     <h3 className="text-xl font-bold mb-4 text-center">🎰 Рулетка #{idx + 1}</h3>
                     <div className="relative mb-4">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-20">
-                        <div className="w-1 h-8 bg-red-500 shadow-lg shadow-red-500/50"></div>
+                        {/* <div className="w-1 h-8 bg-red-500 shadow-lg shadow-red-500/50"></div> */}
                         <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-red-500 mx-auto"></div>
                       </div>
                       <div
@@ -282,7 +282,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                               });
                             }} 
                             disabled={isProcessed}
-                            className={`${isProcessed ? 'bg-gray-600 cursor-not-allowed opacity-50' : 'bg-red-600 hover:bg-red-700'}`}
+                            className={`w-40 h-12 text-lg font-bold rounded-lg shadow-lg transition-all duration-200 ${isProcessed ? 'bg-gray-600 cursor-not-allowed opacity-50' : 'bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600'}`}
                           >
                             {isProcessed ? 'Продан' : `Продать (${Math.floor(spin.result.price * 0.8)}₽)`}
                           </Button>
@@ -304,7 +304,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                               });
                             }} 
                             disabled={isProcessed}
-                            className={`${isProcessed ? 'bg-gray-600 cursor-not-allowed opacity-50' : 'bg-green-600 hover:bg-green-700'}`}
+                            className={`w-40 h-12 text-lg font-bold rounded-lg shadow-lg transition-all duration-200 ${isProcessed ? 'bg-gray-600 cursor-not-allowed opacity-50' : 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700'}`}
                           >
                             {isProcessed ? 'Добавлен' : 'В профиль'}
                           </Button>

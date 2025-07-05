@@ -62,18 +62,18 @@ const ProductCard = ({ id, name, price, originalPrice, image, category, rating, 
           <Link to={`/product/${id}`} className="flex-1">
             <Button
               variant="outline"
-              className="w-full border-gray-600 text-gray-300 hover:border-red-500 hover:text-red-400 hover:bg-red-500/10"
+              className="w-full border-2 border-gray-600 text-gray-300 font-semibold rounded-lg shadow transition-all duration-200 hover:border-pink-500 hover:text-pink-500 hover:bg-pink-500/10"
             >
               Подробнее
             </Button>
           </Link>
           <Button
             size="sm"
-            className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
+            className={`w-12 h-12 flex items-center justify-center rounded-lg shadow-lg font-bold text-white bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 transition-all duration-200 ${inCart ? 'opacity-60 cursor-not-allowed' : ''}`}
             onClick={() => addItem({ id, name, price, image })}
             disabled={inCart}
           >
-            <ShoppingCart className="w-4 h-4" />
+            <ShoppingCart className="w-5 h-5" />
           </Button>
         </div>
       </div>

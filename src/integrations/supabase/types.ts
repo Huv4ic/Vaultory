@@ -482,6 +482,7 @@ export type Database = {
           created_at: string | null
           id: string
           is_banned: boolean | null
+          cases_opened: number | null
           role: Database["public"]["Enums"]["user_role"] | null
           updated_at: string | null
           username: string | null
@@ -491,6 +492,7 @@ export type Database = {
           created_at?: string | null
           id: string
           is_banned?: boolean | null
+          cases_opened?: number | null
           role?: Database["public"]["Enums"]["user_role"] | null
           updated_at?: string | null
           username?: string | null
@@ -500,6 +502,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           is_banned?: boolean | null
+          cases_opened?: number | null
           role?: Database["public"]["Enums"]["user_role"] | null
           updated_at?: string | null
           username?: string | null
