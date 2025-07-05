@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
@@ -66,8 +64,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
-      
       <section className="relative py-24 px-4 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white overflow-hidden animate-fade-in">
         <div className="container mx-auto text-center">
           <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
@@ -245,8 +241,6 @@ const Index = () => {
           </Accordion>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };
