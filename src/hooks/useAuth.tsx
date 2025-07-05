@@ -18,7 +18,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [telegramUser, setTelegramUserState] = useState(null);
+  const [telegramUser, setTelegramUserState] = useState(() => {
+    const saved = localStorage.getItem('vaultory_telegram_user');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [balance, setBalance] = useState(1000);
 
   const isAdmin = profile?.role === 'admin';
@@ -26,6 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signOutTelegram = () => {
     setTelegramUserState(null);
     setBalance(0);
+    localStorage.removeItem('vaultory_telegram_user');
     // Здесь можно добавить логику выхода из Telegram
   };
 
@@ -50,6 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setTelegramUser = async (tgUser: TelegramUser) => {
     setTelegramUserState(tgUser);
+    localStorage.setItem('vaultory_telegram_user', JSON.stringify(tgUser));
     // Проверяем, есть ли профиль в Supabase
     const { data } = await supabase
       .from('profiles')
