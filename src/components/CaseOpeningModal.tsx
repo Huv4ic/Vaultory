@@ -202,6 +202,8 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     }
   };
 
+  const winningItem = (winningIndex !== null && caseData && caseData.items && caseData.items[winningIndex]) ? caseData.items[winningIndex] : null;
+
   useEffect(() => {
     if (isOpen && caseData) {
       openCase();
@@ -213,6 +215,9 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-lg w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl p-8 animate-fade-in z-50">
+        <DialogHeader>
+          <DialogTitle>Результат открытия кейса</DialogTitle>
+        </DialogHeader>
         <button
           className="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold focus:outline-none transition-colors duration-200"
           onClick={onClose}
@@ -220,16 +225,16 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
         >
           ×
         </button>
-        {winningIndex !== null && (
+        {winningItem && (
           <div className="flex flex-col items-center">
             <div className="text-6xl mb-4 animate-bounce">{caseData.icon}</div>
             <div className="text-2xl font-bold text-white mb-2 animate-fade-in">Поздравляем!</div>
             <div className="bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 text-black font-bold text-xl px-6 py-3 rounded-lg shadow-lg mb-4 animate-fade-in">
-              {caseData.items[winningIndex].name}
+              {winningItem.name}
             </div>
             <div className="flex space-x-4 mb-6">
-              <span className="bg-gray-800 text-yellow-200 px-4 py-2 rounded-lg font-bold shadow">Шанс: {caseData.items[winningIndex].chance}%</span>
-              <span className="bg-gray-800 text-green-300 px-4 py-2 rounded-lg font-bold shadow">Цена: {caseData.items[winningIndex].price}₽</span>
+              <span className="bg-gray-800 text-yellow-200 px-4 py-2 rounded-lg font-bold shadow">Шанс: {winningItem.chance}%</span>
+              <span className="bg-gray-800 text-green-300 px-4 py-2 rounded-lg font-bold shadow">Цена: {winningItem.price}₽</span>
             </div>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-8">
               <button
