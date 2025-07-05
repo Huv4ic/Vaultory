@@ -106,8 +106,7 @@ const Cases = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
+    <div className="bg-gray-900 text-white min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-fade-in text-center">
           Игровые Кейсы
@@ -129,7 +128,6 @@ const Cases = () => {
           ))}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

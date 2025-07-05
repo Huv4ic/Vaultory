@@ -138,8 +138,7 @@ const CasePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
+    <div className="bg-gray-900 text-white min-h-screen">
       <div className="container mx-auto px-4 py-12 flex flex-col items-center">
         <div className="bg-gray-800/80 rounded-2xl shadow-xl p-8 max-w-md w-full text-center mb-8 border border-gray-700">
           <img src={caseData.image} alt={caseData.name} className="rounded-xl w-32 h-32 object-cover mx-auto mb-4 border-4 border-gray-700" />
@@ -184,7 +183,6 @@ const CasePage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

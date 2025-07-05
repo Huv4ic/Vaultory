@@ -132,9 +132,8 @@ const Header = () => {
                     <User className="w-7 h-7 text-gray-300" />
                   )}
                   <span className="text-white font-semibold text-sm">{telegramUser.username ? `@${telegramUser.username}` : telegramUser.first_name}</span>
-                  <span className="ml-2 flex items-center">
-                    <span className="text-xs text-gray-200 mr-1">Баланс</span>
-                    <span className="bg-gradient-to-r from-green-400 to-green-600 text-white font-bold px-3 py-1 rounded-lg shadow border border-green-500">{balance}₽</span>
+                  <span className="ml-2 bg-gradient-to-r from-green-400 to-green-600 text-white font-bold px-4 py-1 rounded-lg shadow border border-green-500 text-base flex items-center gap-1">
+                    Баланс&nbsp;{balance}₽
                   </span>
                 </Link>
                 <Button
