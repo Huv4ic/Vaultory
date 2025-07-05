@@ -109,6 +109,8 @@ const CasePage = () => {
   const caseData = cases.find(c => c.id === id);
 
   const openCase = () => {
+    console.log('openCase called:', { caseData, telegramUser, balance, openingCount });
+    
     if (!caseData) return;
     if (!telegramUser) {
       toast({
@@ -125,6 +127,7 @@ const CasePage = () => {
       return;
     }
     
+    console.log('Opening case, setting modal to true');
     setBalance(balance - caseData.price * openingCount);
     setCurrentCase(caseData);
     setIsModalOpen(true);

@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, DollarSign, Package, Plus, User, ShoppingCart } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 
 interface CaseItem {
   name: string;
@@ -43,7 +42,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   onKeepItem,
   onAddToProfile,
 }) => {
-  const { user, balance, setBalance, refreshProfile } = useAuth();
+  const { telegramUser, balance, setBalance } = useAuth();
   const [isOpening, setIsOpening] = useState(false);
   const [results, setResults] = useState<CaseItem[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -51,6 +50,8 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   const [winningIndex, setWinningIndex] = useState<number | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [soldOrAdded, setSoldOrAdded] = useState(false);
+
+  console.log('CaseOpeningModal render:', { isOpen, caseData, winningIndex });
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -159,7 +160,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   };
 
   const handleAddToInventory = async () => {
-    if (!user || soldOrAdded) return;
+    if (!telegramUser || soldOrAdded) return;
     
     try {
       // Пока просто сохраняем в локальное состояние
@@ -172,7 +173,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   };
 
   const handleAddToProfile = async () => {
-    if (!user || soldOrAdded) return;
+    if (!telegramUser || soldOrAdded) return;
     
     try {
       setSoldOrAdded(true);
@@ -184,23 +185,14 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   };
 
   const handleSell = async () => {
-    if (!user || soldOrAdded) return;
+    if (!telegramUser || soldOrAdded) return;
     
     try {
       const sellPrice = Math.floor(caseData.items[winningIndex].price * 0.7); // 70% от цены
       const newBalance = balance + sellPrice;
       
-      // Обновляем баланс в базе данных
-      const { error } = await supabase
-        .from('profiles')
-        .update({ balance: newBalance })
-        .eq('id', user.id);
-
-      if (error) throw error;
-
       // Обновляем локальное состояние
       setBalance(newBalance);
-      await refreshProfile();
       
       setSoldOrAdded(true);
       onSellItem(caseData.items[winningIndex], sellPrice);
@@ -220,7 +212,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl p-8 animate-fade-in">
+      <DialogContent className="max-w-lg w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl p-8 animate-fade-in z-50">
         <button
           className="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold focus:outline-none transition-colors duration-200"
           onClick={onClose}
