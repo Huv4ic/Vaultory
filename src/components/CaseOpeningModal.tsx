@@ -199,6 +199,8 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                 ? (spin.winningIndex * ITEM_WIDTH) - (CONTAINER_WIDTH / 2) + (ITEM_WIDTH / 2)
                 : 0;
               const pointerIndex = Math.round((pointerOffset + currentTranslateX) / ITEM_WIDTH);
+              const itemKey = `${idx}-${spin.result?.name}`;
+              const isProcessed = processedItems.has(itemKey);
               return (
                 <div key={idx}>
                   {/* Рулетка */}
@@ -210,7 +212,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                         <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-red-500 mx-auto"></div>
                       </div>
                       <div
-                        className="overflow-hidden bg-gray-700/50 rounded-lg p-2"
+                        className="overflow-x-auto bg-gray-700/50 rounded-lg p-2"
                         style={getContainerStyle(openingCount)}
                         ref={el => rouletteRefs.current[idx] = el}
                       >
@@ -250,33 +252,24 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                         <div className="flex gap-4">
                           <Button 
                             onClick={() => {
-                              const itemKey = `${idx}-${spin.result.name}`;
-                              if (processedItems.has(itemKey)) return; // Предотвращаем повторную продажу
-                              
+                              if (isProcessed) return;
                               const sellPrice = Math.floor(spin.result.price * 0.8);
                               setBalance(balance + sellPrice);
                               onSellItem(spin.result, sellPrice);
                               setProcessedItems(prev => new Set([...prev, itemKey]));
-                              
                               toast({
                                 title: "Предмет продан!",
                                 description: `Вы получили ${sellPrice}₽ за продажу ${spin.result.name}`,
                               });
                             }} 
-                            disabled={processedItems.has(`${idx}-${spin.result.name}`)}
-                            className={`${
-                              processedItems.has(`${idx}-${spin.result.name}`)
-                                ? 'bg-gray-600 cursor-not-allowed opacity-50'
-                                : 'bg-red-600 hover:bg-red-700'
-                            }`}
+                            disabled={isProcessed}
+                            className={`${isProcessed ? 'bg-gray-600 cursor-not-allowed opacity-50' : 'bg-red-600 hover:bg-red-700'}`}
                           >
-                            {processedItems.has(`${idx}-${spin.result.name}`) ? 'Продан' : `Продать (${Math.floor(spin.result.price * 0.8)}₽)`}
+                            {isProcessed ? 'Продан' : `Продать (${Math.floor(spin.result.price * 0.8)}₽)`}
                           </Button>
                           <Button 
                             onClick={() => {
-                              const itemKey = `${idx}-${spin.result.name}`;
-                              if (processedItems.has(itemKey)) return; // Предотвращаем повторное добавление
-                              
+                              if (isProcessed) return;
                               addItem({
                                 name: spin.result.name,
                                 price: spin.result.price,
@@ -286,31 +279,15 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
                               });
                               onKeepItem(spin.result);
                               setProcessedItems(prev => new Set([...prev, itemKey]));
-                              
                               toast({
                                 title: "Предмет добавлен в инвентарь!",
                                 description: `${spin.result.name} добавлен в ваш профиль`,
                               });
                             }} 
-                            disabled={processedItems.has(`${idx}-${spin.result.name}`)}
-                            className={`${
-                              processedItems.has(`${idx}-${spin.result.name}`)
-                                ? 'bg-gray-600 cursor-not-allowed opacity-50'
-                                : 'bg-green-600 hover:bg-green-700'
-                            }`}
+                            disabled={isProcessed}
+                            className={`${isProcessed ? 'bg-gray-600 cursor-not-allowed opacity-50' : 'bg-green-600 hover:bg-green-700'}`}
                           >
-                            {processedItems.has(`${idx}-${spin.result.name}`) ? 'Добавлен' : 'В профиль'}
-                          </Button>
-                        </div>
-                        
-                        {/* Кнопка закрытия */}
-                        <div className="mt-4 text-center">
-                          <Button 
-                            variant="outline" 
-                            onClick={onClose}
-                            className="border-gray-600 text-gray-300 hover:border-red-500 hover:text-red-400"
-                          >
-                            Закрыть
+                            {isProcessed ? 'Добавлен' : 'В профиль'}
                           </Button>
                         </div>
                       </div>

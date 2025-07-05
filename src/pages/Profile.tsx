@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 
 const Profile = () => {
-  const { telegramUser, balance, signOutTelegram, setBalance } = useAuth();
+  const { telegramUser, balance, signOutTelegram, setBalance, profile } = useAuth();
   const { items: inventoryItems, sellItem } = useInventory();
   const { toast } = useToast();
   const [sellingItem, setSellingItem] = useState<number | null>(null);
@@ -104,11 +104,9 @@ const Profile = () => {
           </div>
           
           <Button
-            variant="outline"
             onClick={signOutTelegram}
-            className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:border-red-500"
+            className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-xl shadow-md transition-all duration-200 transform hover:scale-105 border-none text-base"
           >
-            <LogOut className="w-4 h-4 mr-2" />
             Выйти
           </Button>
         </div>
@@ -165,7 +163,7 @@ const Profile = () => {
                   </div>
                   <div className="flex justify-between text-gray-300">
                     <span>Всего открыто кейсов</span>
-                    <span className="font-semibold text-white">0</span>
+                    <span className="font-semibold text-white">{profile?.cases_opened ?? 0}</span>
                   </div>
                 </div>
               </CardContent>

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,15 +21,22 @@ interface Product {
   price: number;
   discount_price: number | null;
   category_id: string | null;
-  images: string[];
+  game_id: string | null;
+  images: string[] | null;
+  is_available: boolean | null;
+  is_featured: boolean | null;
+  stock_quantity: number | null;
+  sort_order: number | null;
+  tags: string[] | null;
   video_url: string | null;
-  stock_quantity: number;
-  is_available: boolean;
-  is_featured: boolean;
-  sort_order: number;
-  tags: string[];
   created_at: string;
   categories?: { name: string };
+  games?: { name: string };
+  total_sales: number;
+  total_revenue: number;
+  total_quantity: number;
+  category_name: string;
+  game_name: string;
 }
 
 const AdminProducts = () => {
@@ -53,19 +59,43 @@ const AdminProducts = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: products, isLoading } = useQuery({
-    queryKey: ['admin-products'],
-    queryFn: async () => {
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ['products'],
+    queryFn: async (): Promise<any[]> => {
       const { data, error } = await supabase
         .from('products')
         .select(`
           *,
-          categories(name)
+          categories(name),
+          games(name)
         `)
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
-      return data as Product[];
+
+      // Получаем статистику по покупкам
+      const { data: ordersData, error: ordersError } = await supabase
+        .from('orders')
+        .select('product_id, total_amount, quantity');
+
+      if (ordersError) throw ordersError;
+
+      // Объединяем данные
+      return data.map(product => {
+        const productOrders = ordersData.filter(o => o.product_id === product.id);
+        const totalSales = productOrders.length;
+        const totalRevenue = productOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+        const totalQuantity = productOrders.reduce((sum, o) => sum + (o.quantity || 1), 0);
+
+        return {
+          ...product,
+          total_sales: totalSales,
+          total_revenue: totalRevenue,
+          total_quantity: totalQuantity,
+          category_name: product.categories?.name || 'Без категории',
+          game_name: product.games?.name || 'Неизвестная игра'
+        };
+      });
     }
   });
 
@@ -352,9 +382,12 @@ const AdminProducts = () => {
               <TableRow>
                 <TableHead className="text-gray-300">Название</TableHead>
                 <TableHead className="text-gray-300">Категория</TableHead>
+                <TableHead className="text-gray-300">Игра</TableHead>
                 <TableHead className="text-gray-300">Цена</TableHead>
                 <TableHead className="text-gray-300">Количество</TableHead>
                 <TableHead className="text-gray-300">Статус</TableHead>
+                <TableHead className="text-gray-300">Продаж</TableHead>
+                <TableHead className="text-gray-300">Доход</TableHead>
                 <TableHead className="text-gray-300">Действия</TableHead>
               </TableRow>
             </TableHeader>
@@ -368,7 +401,10 @@ const AdminProducts = () => {
                     )}
                   </TableCell>
                   <TableCell className="text-gray-300">
-                    {product.categories?.name || 'Без категории'}
+                    {product.category_name}
+                  </TableCell>
+                  <TableCell className="text-gray-300">
+                    {product.game_name}
                   </TableCell>
                   <TableCell className="text-gray-300">
                     {product.discount_price ? (
@@ -385,6 +421,18 @@ const AdminProducts = () => {
                     <Badge variant={product.is_available ? 'default' : 'destructive'}>
                       {product.is_available ? 'В наличии' : 'Нет в наличии'}
                     </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-center">
+                      <div className="font-medium text-lg">{product.total_sales}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-center">
+                      <div className="font-medium text-lg text-green-600">
+                        {product.total_revenue.toLocaleString()} ₽
+                      </div>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">

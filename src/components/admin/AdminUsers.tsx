@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Edit, Crown, User } from 'lucide-react';
 
 const AdminUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingBalance, setEditingBalance] = useState(null);
   const [newBalance, setNewBalance] = useState('');
@@ -21,14 +20,69 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const { data, error } = await supabase
+      setLoading(true);
+      
+      // Получаем пользователей с аналитикой
+      const { data: usersData, error: usersError } = await supabase
         .from('profiles')
-        .select('*')
+        .select(`
+          id,
+          username,
+          role,
+          balance,
+          created_at,
+          is_banned
+        `)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setUsers(data || []);
+      if (usersError) throw usersError;
+
+      // Получаем статистику по кейсам
+      const { data: casesData, error: casesError } = await supabase
+        .from('case_openings')
+        .select('user_id, total_cost');
+
+      if (casesError) throw casesError;
+
+      // Получаем статистику по покупкам
+      const { data: ordersData, error: ordersError } = await supabase
+        .from('orders')
+        .select('user_id, total_amount');
+
+      if (ordersError) throw ordersError;
+
+      // Получаем статистику по транзакциям
+      const { data: transactionsData, error: transactionsError } = await supabase
+        .from('transactions')
+        .select('user_id, amount, type');
+
+      if (transactionsError) throw transactionsError;
+
+      // Объединяем данные
+      const usersWithAnalytics = usersData.map(user => {
+        const userCases = casesData.filter(c => c.user_id === user.id);
+        const userOrders = ordersData.filter(o => o.user_id === user.id);
+        const userTransactions = transactionsData.filter(t => t.user_id === user.id);
+
+        const totalSpent = userCases.reduce((sum, c) => sum + (c.total_cost || 0), 0) +
+                          userOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+        
+        const totalDeposit = userTransactions
+          .filter(t => t.type === 'deposit')
+          .reduce((sum, t) => sum + (t.amount || 0), 0);
+
+        return {
+          ...user,
+          cases_opened: userCases.length,
+          products_bought: userOrders.length,
+          total_spent: totalSpent,
+          total_deposit: totalDeposit
+        };
+      });
+
+      setUsers(usersWithAnalytics);
     } catch (error) {
+      console.error('Error fetching users:', error);
       toast({
         title: "Ошибка",
         description: "Не удалось загрузить пользователей",
@@ -109,6 +163,11 @@ const AdminUsers = () => {
                 <TableHead className="text-gray-300">Пользователь</TableHead>
                 <TableHead className="text-gray-300">Роль</TableHead>
                 <TableHead className="text-gray-300">Баланс</TableHead>
+                <TableHead className="text-gray-300">Пополнено</TableHead>
+                <TableHead className="text-gray-300">Потрачено</TableHead>
+                <TableHead className="text-gray-300">Открыто кейсов</TableHead>
+                <TableHead className="text-gray-300">Куплено товаров</TableHead>
+                <TableHead className="text-gray-300">Статус</TableHead>
                 <TableHead className="text-gray-300">Дата регистрации</TableHead>
                 <TableHead className="text-gray-300">Действия</TableHead>
               </TableRow>
@@ -156,7 +215,7 @@ const AdminUsers = () => {
                       </div>
                     ) : (
                       <div className="flex items-center space-x-2">
-                        <span className="text-green-400">{user.balance}₽</span>
+                        <span className="text-green-400 font-bold">{user.balance}₽</span>
                         <Button
                           size="sm"
                           variant="ghost"
@@ -170,17 +229,49 @@ const AdminUsers = () => {
                       </div>
                     )}
                   </TableCell>
+                  <TableCell className="text-blue-400 font-semibold">{user.total_deposit ?? 0}₽</TableCell>
+                  <TableCell className="text-red-400 font-semibold">{user.total_spent ?? 0}₽</TableCell>
+                  <TableCell className="text-purple-400 font-semibold">{user.cases_opened ?? 0}</TableCell>
+                  <TableCell className="text-yellow-400 font-semibold">{user.products_bought ?? 0}</TableCell>
+                  <TableCell>
+                    {user.is_banned ? (
+                      <span className="text-red-500 font-bold">Забанен</span>
+                    ) : (
+                      <span className="text-green-400 font-bold">Активен</span>
+                    )}
+                  </TableCell>
                   <TableCell className="text-gray-300">
                     {new Date(user.created_at).toLocaleDateString('ru-RU')}
                   </TableCell>
                   <TableCell>
-                    <Button
-                      size="sm"
-                      variant={user.role === 'admin' ? 'destructive' : 'default'}
-                      onClick={() => toggleRole(user.id, user.role)}
-                    >
-                      {user.role === 'admin' ? 'Снять админа' : 'Сделать админом'}
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={async () => {
+                          await supabase
+                            .from('profiles')
+                            .update({ role: user.role === 'admin' ? 'user' : 'admin' })
+                            .eq('id', user.id);
+                          fetchUsers();
+                        }}
+                      >
+                        {user.role === 'admin' ? 'Снять админа' : 'Сделать админом'}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={user.is_banned ? 'default' : 'destructive'}
+                        onClick={async () => {
+                          await supabase
+                            .from('profiles')
+                            .update({ is_banned: !user.is_banned })
+                            .eq('id', user.id);
+                          fetchUsers();
+                        }}
+                      >
+                        {user.is_banned ? 'Разбанить' : 'Забанить'}
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

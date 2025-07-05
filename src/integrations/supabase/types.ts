@@ -481,6 +481,7 @@ export type Database = {
           balance: number | null
           created_at: string | null
           id: string
+          is_banned: boolean | null
           role: Database["public"]["Enums"]["user_role"] | null
           updated_at: string | null
           username: string | null
@@ -489,6 +490,7 @@ export type Database = {
           balance?: number | null
           created_at?: string | null
           id: string
+          is_banned?: boolean | null
           role?: Database["public"]["Enums"]["user_role"] | null
           updated_at?: string | null
           username?: string | null
@@ -497,6 +499,7 @@ export type Database = {
           balance?: number | null
           created_at?: string | null
           id?: string
+          is_banned?: boolean | null
           role?: Database["public"]["Enums"]["user_role"] | null
           updated_at?: string | null
           username?: string | null

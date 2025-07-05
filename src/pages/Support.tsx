@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,7 @@ const Support = () => {
       icon: <Send className="w-6 h-6" />,
       title: 'Telegram',
       description: 'Быстрый ответ в течение 5 минут',
-      contact: '@VaultorySupport',
+      contact: '@Vaultory_manager',
       action: 'Написать в Telegram',
       primary: true
     },
@@ -160,13 +159,11 @@ const Support = () => {
             <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
               Если у вас проблемы с заказом или аккаунтом, напишите нам в Telegram для получения мгновенной помощи
             </p>
-            <Button 
-              size="lg"
-              className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 px-8 py-6 text-lg"
-            >
-              <Send className="w-5 h-5 mr-2" />
-              Написать в Telegram
-            </Button>
+            <a href="https://t.me/Vaultory_manager" target="_blank" rel="noopener noreferrer">
+              <Button className="w-full bg-gradient-to-r from-red-500 to-purple-500 text-white font-bold text-lg py-3 rounded-lg mt-6">
+                Написать в Telegram
+              </Button>
+            </a>
           </CardContent>
         </Card>
       </div>

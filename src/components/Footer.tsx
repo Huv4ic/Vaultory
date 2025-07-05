@@ -65,7 +65,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2 text-gray-400">
                 <Send className="w-4 h-4" />
-                <span>@VaultorySupport</span>
+                <span>@Vaultory_manager</span>
               </div>
             </div>
           </div>
