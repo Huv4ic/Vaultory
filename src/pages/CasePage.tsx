@@ -3,88 +3,110 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import CaseOpeningModal from '@/components/CaseOpeningModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
 // Пример данных кейсов (лучше вынести в отдельный файл или получать из API)
 const cases = [
   {
-    id: 'brawl-stars',
-    name: 'Мега Бокс',
-    game: 'Brawl Stars',
-    price: 299,
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
-    gradient: 'from-purple-600 via-pink-600 to-red-600',
-    icon: '🎮',
+    id: 'vaultory-premium',
+    name: 'Vaultory Premium',
+    game: 'Все игры',
+    price: 999,
+    image: '/public/placeholder.svg',
+    gradient: 'from-yellow-400 via-pink-500 to-purple-600',
+    icon: '💎',
     items: [
-      { name: 'Гемы x100', price: 150, rarity: 'common', chance: 30 },
-      { name: 'Гемы x500', price: 750, rarity: 'rare', chance: 20 },
-      { name: 'Гемы x1000', price: 1500, rarity: 'epic', chance: 15 },
-      { name: 'Легендарный Бойец', price: 5000, rarity: 'legendary', chance: 5 },
+      { name: 'Steam ключ AAA', price: 2500, rarity: 'legendary', chance: 2 },
+      { name: 'Скин CS:GO (редкий)', price: 1200, rarity: 'epic', chance: 8 },
+      { name: 'Подписка Spotify', price: 500, rarity: 'rare', chance: 15 },
+      { name: '1000 Robux', price: 800, rarity: 'rare', chance: 15 },
+      { name: 'Случайная игра Steam', price: 300, rarity: 'common', chance: 30 },
+      { name: '50 UC PUBG', price: 150, rarity: 'common', chance: 30 }
     ]
   },
   {
-    id: 'csgo',
-    name: 'Operation Case',
+    id: 'csgo-knife',
+    name: 'CS:GO Ножи',
     game: 'CS:GO',
+    price: 1499,
+    image: '/public/placeholder.svg',
+    gradient: 'from-blue-500 via-purple-500 to-pink-500',
+    icon: '🔪',
+    items: [
+      { name: 'Karambit | Doppler', price: 15000, rarity: 'legendary', chance: 1 },
+      { name: 'Butterfly Knife | Fade', price: 9000, rarity: 'epic', chance: 4 },
+      { name: 'M9 Bayonet | Marble Fade', price: 7000, rarity: 'epic', chance: 5 },
+      { name: 'Flip Knife | Tiger Tooth', price: 3500, rarity: 'rare', chance: 10 },
+      { name: 'Shadow Daggers | Slaughter', price: 2000, rarity: 'rare', chance: 15 },
+      { name: 'Наклейка CS:GO', price: 300, rarity: 'common', chance: 65 }
+    ]
+  },
+  {
+    id: 'brawl-stars-mega',
+    name: 'Brawl Stars Мега',
+    game: 'Brawl Stars',
     price: 499,
-    image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
-    gradient: 'from-blue-600 via-cyan-600 to-teal-600',
-    icon: '🔫',
+    image: '/public/placeholder.svg',
+    gradient: 'from-cyan-400 via-blue-500 to-purple-500',
+    icon: '⭐',
     items: [
-      { name: 'AK-47 Redline', price: 400, rarity: 'common', chance: 35 },
-      { name: 'AWP Dragon Lore', price: 2500, rarity: 'rare', chance: 25 },
-      { name: 'Knife Karambit', price: 8000, rarity: 'epic', chance: 10 },
-      { name: 'StatTrak™ AK-47', price: 15000, rarity: 'legendary', chance: 3 },
+      { name: 'Легендарный боец', price: 5000, rarity: 'legendary', chance: 2 },
+      { name: 'Гемы x1000', price: 1500, rarity: 'epic', chance: 8 },
+      { name: 'Гемы x500', price: 750, rarity: 'rare', chance: 15 },
+      { name: 'Гемы x100', price: 150, rarity: 'common', chance: 75 }
     ]
   },
   {
-    id: 'pubg',
-    name: 'Военный Кейс',
-    game: 'PUBG Mobile',
-    price: 199,
-    image: 'https://images.unsplash.com/photo-1614294148960-9aa740632a87?w=400&h=300&fit=crop',
-    gradient: 'from-orange-600 via-red-600 to-pink-600',
-    icon: '🪖',
-    items: [
-      { name: 'UC x100', price: 150, rarity: 'common', chance: 40 },
-      { name: 'UC x500', price: 750, rarity: 'rare', chance: 25 },
-      { name: 'UC x1000', price: 1500, rarity: 'epic', chance: 12 },
-      { name: 'Эксклюзивный Скин', price: 4000, rarity: 'legendary', chance: 7 },
-    ]
-  },
-  {
-    id: 'roblox',
-    name: 'Robux Сундук',
+    id: 'roblox-royale',
+    name: 'Roblox Royale',
     game: 'Roblox',
     price: 399,
-    image: 'https://images.unsplash.com/photo-1606041008023-472dfb5e530f?w=400&h=300&fit=crop',
-    gradient: 'from-green-600 via-emerald-600 to-teal-600',
+    image: '/public/placeholder.svg',
+    gradient: 'from-green-400 via-emerald-500 to-teal-500',
     icon: '🎲',
     items: [
-      { name: 'Robux x100', price: 200, rarity: 'common', chance: 30 },
-      { name: 'Robux x500', price: 1000, rarity: 'rare', chance: 20 },
-      { name: 'Robux x1000', price: 2000, rarity: 'epic', chance: 15 },
-      { name: 'Robux x5000', price: 10000, rarity: 'legendary', chance: 2 },
+      { name: 'Robux x5000', price: 10000, rarity: 'legendary', chance: 1 },
+      { name: 'Robux x1000', price: 2000, rarity: 'epic', chance: 4 },
+      { name: 'Robux x500', price: 1000, rarity: 'rare', chance: 10 },
+      { name: 'Robux x100', price: 200, rarity: 'common', chance: 85 }
+    ]
+  },
+  {
+    id: 'pubg-elite',
+    name: 'PUBG Elite',
+    game: 'PUBG Mobile',
+    price: 599,
+    image: '/public/placeholder.svg',
+    gradient: 'from-orange-400 via-red-500 to-pink-500',
+    icon: '🪖',
+    items: [
+      { name: 'Эксклюзивный скин', price: 4000, rarity: 'legendary', chance: 2 },
+      { name: 'UC x1000', price: 1500, rarity: 'epic', chance: 8 },
+      { name: 'UC x500', price: 750, rarity: 'rare', chance: 15 },
+      { name: 'UC x100', price: 150, rarity: 'common', chance: 75 }
     ]
   }
 ];
+
+const rarityColors = {
+  legendary: 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-yellow-900',
+  epic: 'bg-gradient-to-r from-purple-400 to-purple-700 text-purple-100',
+  rare: 'bg-gradient-to-r from-blue-400 to-blue-700 text-blue-100',
+  common: 'bg-gradient-to-r from-gray-500 to-gray-700 text-gray-100',
+};
 
 const CasePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { balance, setBalance, telegramUser } = useAuth();
   const { toast } = useToast();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCase, setSelectedCase] = useState<any>(null);
   const [openingCount, setOpeningCount] = useState(1);
 
   const caseData = cases.find(c => c.id === id);
 
   const openCase = () => {
     if (!caseData) return;
-    
     if (!telegramUser) {
       toast({
         title: "Требуется авторизация",
@@ -92,7 +114,6 @@ const CasePage = () => {
       });
       return;
     }
-    
     if (balance < caseData.price * openingCount) {
       toast({
         title: "Недостаточно средств",
@@ -100,23 +121,9 @@ const CasePage = () => {
       });
       return;
     }
-    
     setBalance(balance - caseData.price * openingCount);
-    setSelectedCase(caseData);
-    setIsModalOpen(true);
-  };
-
-  const handleSellItem = (item: any, sellPrice: number) => {
-    setBalance(balance + sellPrice);
-  };
-
-  const handleKeepItem = (item: any) => {
-    // Можно реализовать сохранение предмета в профиль пользователя
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedCase(null);
+    // Здесь можно добавить открытие модального окна с анимацией
+    toast({ title: 'Кейс открыт!', description: `Вы открыли ${openingCount} кейс(ов)` });
   };
 
   if (!caseData) {
@@ -133,41 +140,50 @@ const CasePage = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Header />
-      <div className="container mx-auto px-4 py-16 flex justify-center items-center">
-        <div className="bg-gray-800/70 rounded-2xl shadow-xl p-8 max-w-sm w-full text-center">
-          <img src={caseData.image} alt={caseData.name} className="rounded-xl w-full object-cover mb-6" />
+      <div className="container mx-auto px-4 py-12 flex flex-col items-center">
+        <div className="bg-gray-800/80 rounded-2xl shadow-xl p-8 max-w-md w-full text-center mb-8 border border-gray-700">
+          <img src={caseData.image} alt={caseData.name} className="rounded-xl w-32 h-32 object-cover mx-auto mb-4 border-4 border-gray-700" />
           <h2 className="text-3xl font-bold mb-2">{caseData.name}</h2>
-          <p className="text-gray-400 mb-4">{caseData.game}</p>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2 text-gray-300">Количество</label>
-            <div className="flex justify-center space-x-2">
-              {[1, 2, 3, 4, 5].map((count) => (
-                <Button
-                  key={count}
-                  variant={openingCount === count ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setOpeningCount(count)}
-                  className={openingCount === count ? "bg-purple-500 hover:bg-purple-600" : "border-gray-600 text-gray-300"}
-                >
-                  {count}
-                </Button>
-              ))}
-            </div>
+          <div className="text-gray-400 mb-2">{caseData.game}</div>
+          <div className="text-2xl font-bold text-green-400 mb-4">{caseData.price * openingCount}₽</div>
+          <div className="mb-4 flex justify-center gap-2">
+            {[1, 2, 3, 4, 5].map((count) => (
+              <Button
+                key={count}
+                variant={openingCount === count ? "default" : "outline"}
+                size="sm"
+                onClick={() => setOpeningCount(count)}
+                className={
+                  (openingCount === count
+                    ? "bg-gray-700 text-white border-gray-500"
+                    : "bg-gray-900 text-gray-300 border-gray-700 hover:bg-gray-800") +
+                  " rounded-md px-4 py-2 text-base font-semibold transition-all duration-200"
+                }
+              >
+                {count}
+              </Button>
+            ))}
           </div>
-          <Button className={`w-full bg-gradient-to-r ${caseData.gradient} hover:opacity-90 text-white border-none transform hover:scale-105 transition-all duration-300 mb-4`} onClick={openCase}>
-            Открыть {openingCount} {openingCount === 1 ? 'кейс' : 'кейса'}
+          <Button
+            className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
+            onClick={openCase}
+          >
+            Открыть {openingCount === 1 ? 'кейс' : `${openingCount} кейса`}
           </Button>
-          <div className="text-lg font-semibold text-yellow-400">Общая стоимость: {caseData.price * openingCount}₽</div>
+        </div>
+        <div className="bg-gray-800/80 rounded-2xl shadow-xl p-8 max-w-2xl w-full text-center border border-gray-700">
+          <h3 className="text-2xl font-bold mb-6 text-white">Содержимое кейса</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {caseData.items.map((item, idx) => (
+              <div key={idx} className={`rounded-xl p-4 flex flex-col items-center ${rarityColors[item.rarity]} shadow-md`}>
+                <div className="font-bold text-lg mb-2">{item.name}</div>
+                <div className="text-sm text-gray-200 mb-1">Редкость: <span className="capitalize">{item.rarity}</span></div>
+                <div className="text-green-200 font-bold">{item.price}₽</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      <CaseOpeningModal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        caseData={selectedCase}
-        openingCount={openingCount}
-        onSellItem={handleSellItem}
-        onKeepItem={handleKeepItem}
-      />
       <Footer />
     </div>
   );

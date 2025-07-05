@@ -84,7 +84,7 @@ const Profile = () => {
     <div className="min-h-screen bg-gray-900">
       <Header />
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white rounded-2xl shadow-2xl p-8 mt-8 animate-fade-in flex flex-col items-center">
+        <div className="max-w-2xl mx-auto bg-gray-800/90 text-white rounded-2xl shadow-2xl p-8 mt-8 animate-fade-in flex flex-col items-center border border-gray-700">
           {/* Аватар и имя */}
           {telegramUser.photo_url ? (
             <img
@@ -93,20 +93,37 @@ const Profile = () => {
               className="w-24 h-24 rounded-full border-4 border-purple-500 shadow-lg mb-4"
             />
           ) : (
-            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-red-500 to-purple-600 flex items-center justify-center border-4 border-purple-500 mb-4">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center border-4 border-purple-500 mb-4">
               <User className="w-12 h-12 text-white" />
             </div>
           )}
           <div className="text-2xl font-bold mb-1">{displayName}</div>
-          {displayUsername && <div className="text-gray-200 mb-2">{displayUsername}</div>}
-          <div className="flex items-center gap-4 mb-4">
-            <span className="bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold px-4 py-2 rounded-lg shadow text-lg">{balance}₽</span>
+          {displayUsername && <div className="text-gray-400 mb-2">{displayUsername}</div>}
+          <div className="flex items-center gap-4 mb-6">
+            <span className="flex items-center">
+              <span className="text-xs text-gray-300 mr-1">Баланс</span>
+              <span className="bg-gradient-to-r from-green-400 to-green-600 text-white font-bold px-4 py-2 rounded-lg shadow border border-green-500 text-lg">{balance}₽</span>
+            </span>
             <Button
               onClick={signOutTelegram}
-              className="bg-white text-gray-900 font-bold px-6 py-2 rounded-lg border border-gray-300 shadow hover:bg-gray-100 transition-all duration-200"
+              className="bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold px-6 py-2 rounded-lg border-none shadow hover:from-red-600 hover:to-purple-700 transition-all duration-200"
             >
               Выйти
             </Button>
+          </div>
+          <div className="w-full flex flex-col md:flex-row md:justify-between gap-4 mt-2">
+            <div className="flex-1 bg-gray-900/80 rounded-xl p-4 flex flex-col items-center border border-gray-700">
+              <span className="text-gray-400 text-sm mb-1">Потрачено за всё время</span>
+              <span className="text-lg font-bold text-green-400">{profile?.total_spent ?? 0}₽</span>
+            </div>
+            <div className="flex-1 bg-gray-900/80 rounded-xl p-4 flex flex-col items-center border border-gray-700">
+              <span className="text-gray-400 text-sm mb-1">Открыто кейсов</span>
+              <span className="text-lg font-bold text-blue-400">{profile?.cases_opened ?? 0}</span>
+            </div>
+            <div className="flex-1 bg-gray-900/80 rounded-xl p-4 flex flex-col items-center border border-gray-700">
+              <span className="text-gray-400 text-sm mb-1">Куплено товаров</span>
+              <span className="text-lg font-bold text-purple-400">{profile?.total_orders ?? 0}</span>
+            </div>
           </div>
         </div>
         {/* Инвентарь */}

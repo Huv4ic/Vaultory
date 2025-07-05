@@ -1,11 +1,7 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import CaseOpeningModal from '@/components/CaseOpeningModal';
-import CaseGrid from '@/components/CaseGrid';
-import BalanceDisplay from '@/components/BalanceDisplay';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
 
 interface CaseItem {
   name: string;
@@ -26,12 +22,7 @@ interface GameCase {
 }
 
 const Cases = () => {
-  const { user, profile, balance, setBalance, refreshProfile } = useAuth();
-  const [selectedCase, setSelectedCase] = useState<GameCase | null>(null);
-  const [openingCount, setOpeningCount] = useState(1);
-  const [totalSiteRevenue, setTotalSiteRevenue] = useState(50000);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const navigate = useNavigate();
   const cases: GameCase[] = [
     {
       id: 'vaultory-premium',
@@ -114,97 +105,30 @@ const Cases = () => {
     }
   ];
 
-  const openCase = async (caseData: GameCase) => {
-    if (!user) {
-      alert('Необходимо войти в систему!');
-      return;
-    }
-
-    if (balance < caseData.price * openingCount) {
-      alert('Недостаточно средств!');
-      return;
-    }
-    
-    try {
-      // Обновляем баланс в базе данных
-      const newBalance = balance - (caseData.price * openingCount);
-      const { error: balanceError } = await supabase
-        .from('profiles')
-        .update({ balance: newBalance })
-        .eq('id', user.id);
-
-      if (balanceError) throw balanceError;
-
-      // Обновляем счетчик открытых кейсов
-      const currentCasesOpened = profile?.cases_opened || 0;
-      const { error: casesError } = await supabase
-        .from('profiles')
-        .update({ cases_opened: currentCasesOpened + openingCount })
-        .eq('id', user.id);
-
-      if (casesError) throw casesError;
-
-      // Обновляем локальное состояние
-      setBalance(newBalance);
-      await refreshProfile();
-      
-      setSelectedCase(caseData);
-      setIsModalOpen(true);
-      setTotalSiteRevenue(totalSiteRevenue + (caseData.price * openingCount));
-    } catch (error) {
-      console.error('Ошибка при открытии кейса:', error);
-      alert('Произошла ошибка при открытии кейса');
-    }
-  };
-
-  const handleSellItem = (item: CaseItem, sellPrice: number) => {
-    setBalance(prev => prev + sellPrice);
-  };
-
-  const handleKeepItem = (item: CaseItem) => {
-    console.log('Предмет сохранен в профиль:', item);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedCase(null);
-  };
-
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Header />
-      
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-fade-in">
-            Игровые Кейсы
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto animate-slide-up">
-            Открывай кейсы и получай редкие предметы для своих любимых игр!
-          </p>
-          <div className="mt-4 flex items-center justify-center space-x-4">
-            <BalanceDisplay balance={balance} />
-          </div>
+        <h1 className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-fade-in text-center">
+          Игровые Кейсы
+        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+          {cases.map((caseData, idx) => (
+            <div key={caseData.id} className="bg-gray-800/70 rounded-2xl shadow-xl p-6 flex flex-col items-center text-center animate-fade-in" style={{ animationDelay: `${idx * 0.07}s` }}>
+              <img src={caseData.image} alt={caseData.name} className="w-full h-40 object-cover rounded-xl mb-4" />
+              <div className="text-xl font-bold mb-1 text-white drop-shadow-lg animate-fade-in">{caseData.name}</div>
+              <div className="text-base text-gray-100 mb-4 animate-fade-in">{caseData.game}</div>
+              <div className="text-2xl font-bold text-green-400 mb-4">{caseData.price}₽</div>
+              <Button
+                className="w-full bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-gray-900 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
+                onClick={() => navigate(`/case/${caseData.id}`)}
+              >
+                Открыть
+              </Button>
+            </div>
+          ))}
         </div>
-
-        <CaseGrid
-          cases={cases}
-          openingCount={openingCount}
-          balance={balance}
-          onOpeningCountChange={setOpeningCount}
-          onOpenCase={openCase}
-        />
       </div>
-
-      <CaseOpeningModal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        caseData={selectedCase}
-        openingCount={openingCount}
-        onSellItem={handleSellItem}
-        onKeepItem={handleKeepItem}
-      />
-      
       <Footer />
     </div>
   );
