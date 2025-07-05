@@ -27,6 +27,8 @@ interface CaseCardProps {
   balance: number;
   onOpeningCountChange: (count: number) => void;
   onOpenCase: (caseData: GameCase) => void;
+  onOpen: () => void;
+  isOpening: boolean;
 }
 
 const CaseCard = ({ 
@@ -34,7 +36,9 @@ const CaseCard = ({
   openingCount, 
   balance, 
   onOpeningCountChange, 
-  onOpenCase 
+  onOpenCase,
+  onOpen,
+  isOpening
 }: CaseCardProps) => {
   const getRarityColor = (rarity: string) => {
     switch (rarity) {

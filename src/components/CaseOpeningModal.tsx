@@ -205,108 +205,8 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   if (!caseData) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-5xl min-h-[60vh] bg-gray-900 border-gray-700 text-white p-8 md:p-12 rounded-2xl shadow-2xl">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center">
-            Открытие {caseData.name}
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-6">
-          {/* Рулетка */}
-          {isOpening && (
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6">
-              <h3 className="text-xl font-bold mb-4 text-center">🎰 Рулетка</h3>
-              
-              {/* Указатель */}
-              <div className="relative mb-4">
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-20">
-                  <div className="w-1 h-8 bg-red-500 shadow-lg shadow-red-500/50"></div>
-                  <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-red-500 mx-auto"></div>
-                </div>
-                
-                {/* Рулетка */}
-                <div className="overflow-hidden bg-gray-700/50 rounded-lg p-2">
-                  <div 
-                    className={`flex gap-2 transition-transform duration-[3000ms] ease-out ${
-                      isSpinning ? 'animate-none' : ''
-                    }`}
-                    style={{
-                      transform: isSpinning && winningIndex !== null 
-                        ? `translateX(-${(winningIndex * 112) - 300}px)` 
-                        : 'translateX(0px)',
-                    }}
-                  >
-                    {rouletteItems.map((item, index) => (
-                      <div 
-                        key={index}
-                        className={`min-w-[110px] h-24 bg-gradient-to-br ${getRarityGradient(item.rarity)} rounded-lg flex flex-col items-center justify-center text-xs text-white font-bold text-center p-2 border-2 ${
-                          winningIndex === index && isSpinning ? 'border-yellow-400 shadow-lg shadow-yellow-400/50' : 'border-white/20'
-                        } flex-shrink-0`}
-                      >
-                        <div className="truncate w-full mb-1">{item.name}</div>
-                        <div className="text-green-300">{item.price}₽</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="text-center text-gray-400">
-                <div className="animate-spin inline-block">🎯</div>
-                <p className="mt-2">Определяем победителя...</p>
-              </div>
-            </div>
-          )}
-
-          {/* Результаты */}
-          {showResults && results.length > 0 && (
-            <div className="animate-scale-in">
-              <h4 className="text-2xl font-bold mb-6 text-center">🎉 Поздравляем! Вы выиграли:</h4>
-              <div className="grid gap-4">
-                {results.map((result, index) => (
-                  <div key={index} className={`bg-gradient-to-br ${getRarityGradient(result.rarity)} p-6 rounded-xl border-2 border-white/20`}>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        <Badge className={`${getRarityColor(result.rarity)} text-white`}>
-                          {result.rarity}
-                        </Badge>
-                        <span className="text-white font-bold text-lg">{result.name}</span>
-                      </div>
-                      <div className="text-white font-bold text-xl">{result.price}₽</div>
-                    </div>
-                    <div className="flex space-x-3">
-                      <Button
-                        onClick={() => handleSellItem(result, index)}
-                        className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                      >
-                        <DollarSign className="w-4 h-4 mr-2" />
-                        Продать за {Math.floor(result.price * 0.8)}₽
-                      </Button>
-                      <Button
-                        onClick={() => handleKeepItem(result, index)}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        <Package className="w-4 h-4 mr-2" />
-                        В профиль
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              {results.length === 0 && (
-                <div className="text-center mt-6">
-                  <Button onClick={handleClose} className="bg-gray-600 hover:bg-gray-700">
-                    Закрыть
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-lg w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl p-8 animate-fade-in">
         <button
           className="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold focus:outline-none transition-colors duration-200"
           onClick={onClose}
@@ -314,23 +214,35 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
         >
           ×
         </button>
-
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 mt-8">
-          <button
-            className={`w-full md:w-48 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={handleAddToInventory}
-            disabled={soldOrAdded}
-          >
-            Добавить в инвентарь
-          </button>
-          <button
-            className={`w-full md:w-48 bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={handleSell}
-            disabled={soldOrAdded}
-          >
-            Продать
-          </button>
-        </div>
+        {winningIndex !== null && (
+          <div className="flex flex-col items-center">
+            <div className="text-6xl mb-4 animate-bounce">{caseData.icon}</div>
+            <div className="text-2xl font-bold text-white mb-2 animate-fade-in">Поздравляем!</div>
+            <div className="bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 text-black font-bold text-xl px-6 py-3 rounded-lg shadow-lg mb-4 animate-fade-in">
+              {caseData.items[winningIndex].name}
+            </div>
+            <div className="flex space-x-4 mb-6">
+              <span className="bg-gray-800 text-yellow-200 px-4 py-2 rounded-lg font-bold shadow">Шанс: {caseData.items[winningIndex].chance}%</span>
+              <span className="bg-gray-800 text-green-300 px-4 py-2 rounded-lg font-bold shadow">Цена: {caseData.items[winningIndex].price}₽</span>
+            </div>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 mt-8">
+              <button
+                className={`w-full md:w-48 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={handleAddToInventory}
+                disabled={soldOrAdded}
+              >
+                Добавить в инвентарь
+              </button>
+              <button
+                className={`w-full md:w-48 bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={handleSell}
+                disabled={soldOrAdded}
+              >
+                Продать
+              </button>
+            </div>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

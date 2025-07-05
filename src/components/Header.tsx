@@ -1,15 +1,49 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, Send } from 'lucide-react';
+import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+
+const TELEGRAM_BOT = 'vaultory_notify_bot';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { signOutTelegram } = useAuth();
+  const { telegramUser, balance, signOutTelegram, setTelegramUser } = useAuth();
+  const tgWidgetRef = useRef(null);
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Автоматическая обработка Telegram Login Widget
+  useEffect(() => {
+    function handleTgAuth(e) {
+      setTelegramUser(e.detail);
+    }
+    window.addEventListener('tg-auth', handleTgAuth);
+    return () => window.removeEventListener('tg-auth', handleTgAuth);
+  }, [setTelegramUser]);
+
+  // Вставка Telegram Login Widget
+  useEffect(() => {
+    if (telegramUser) return; // Не показывать виджет, если уже авторизован
+    if (tgWidgetRef.current) {
+      tgWidgetRef.current.innerHTML = '';
+      const script = document.createElement('script');
+      script.src = 'https://telegram.org/js/telegram-widget.js?7';
+      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
+      script.setAttribute('data-size', 'large');
+      script.setAttribute('data-userpic', 'true');
+      script.setAttribute('data-radius', '10');
+      script.setAttribute('data-request-access', 'write');
+      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+      script.async = true;
+      tgWidgetRef.current.appendChild(script);
+    }
+    // Глобальный обработчик для Telegram
+    (window as any).onTelegramAuth = function(user: any) {
+      window.dispatchEvent(new CustomEvent('tg-auth', { detail: user }));
+    };
+  }, [telegramUser]);
 
   return (
     <header className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-red-500/20">
@@ -81,19 +115,34 @@ const Header = () => {
               </span>
             </Link>
 
-            {/* Профиль */}
-            <Link to="/profile" className="p-2 text-gray-400 hover:text-red-400 transition-colors">
-              <User className="w-5 h-5" />
-            </Link>
-
-            {/* Кнопка входа */}
-            <Button
-              size="sm"
-              className="ml-4 px-4 py-2 rounded-lg bg-white text-gray-900 font-bold border border-gray-300 shadow hover:bg-gray-100 transition-all duration-200"
-              onClick={signOutTelegram}
-            >
-              Выйти
-            </Button>
+            {/* Telegram Login Widget или профиль */}
+            {!telegramUser ? (
+              <div ref={tgWidgetRef} />
+            ) : (
+              <>
+                {/* Профиль: аватар, ник, баланс, кнопка выйти */}
+                <Link to="/profile" className="flex items-center space-x-2 px-2 py-1 rounded-lg hover:bg-gray-800 transition-all">
+                  {telegramUser.photo_url ? (
+                    <img
+                      src={telegramUser.photo_url}
+                      alt={telegramUser.username || telegramUser.first_name}
+                      className="w-8 h-8 rounded-full border-2 border-purple-500"
+                    />
+                  ) : (
+                    <User className="w-7 h-7 text-gray-300" />
+                  )}
+                  <span className="text-white font-semibold text-sm">{telegramUser.username ? `@${telegramUser.username}` : telegramUser.first_name}</span>
+                  <span className="ml-2 bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold px-3 py-1 rounded-lg shadow">{balance}₽</span>
+                </Link>
+                <Button
+                  size="sm"
+                  className="ml-2 px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold border-none shadow hover:from-red-600 hover:to-purple-700 transition-all duration-200"
+                  onClick={signOutTelegram}
+                >
+                  Выйти
+                </Button>
+              </>
+            )}
 
             {/* Мобильное меню */}
             <button

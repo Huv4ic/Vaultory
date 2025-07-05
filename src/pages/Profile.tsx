@@ -21,31 +21,46 @@ import {
 } from 'lucide-react';
 
 const Profile = () => {
-  const { telegramUser, balance, signOutTelegram, setBalance, profile } = useAuth();
+  const { telegramUser, balance, signOutTelegram, setBalance, profile, setTelegramUser } = useAuth();
   const { items: inventoryItems, sellItem } = useInventory();
   const { toast } = useToast();
   const [sellingItem, setSellingItem] = useState<number | null>(null);
 
+  // Мок-функция для авторизации через Telegram (заменить на реальную интеграцию)
+  const handleTelegramLogin = () => {
+    setTelegramUser({
+      id: 1,
+      first_name: 'Имя',
+      last_name: 'Фамилия',
+      username: 'username',
+      photo_url: '',
+    });
+  };
+
   if (!telegramUser) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-gray-900 flex flex-col">
         <Header />
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center">
-            <div className="mx-auto w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6">
-              <User className="w-12 h-12 text-gray-400" />
-            </div>
-            <h1 className="text-3xl font-bold text-white mb-4">Войдите в аккаунт</h1>
-            <p className="text-gray-400 mb-8 max-w-md mx-auto">
-              Для просмотра профиля необходимо войти через Telegram
-            </p>
-            <Link to="/">
-              <Button className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Вернуться на главную
-              </Button>
-            </Link>
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="mx-auto w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6">
+            <User className="w-12 h-12 text-gray-400" />
           </div>
+          <h1 className="text-3xl font-bold text-white mb-4">Войдите в аккаунт</h1>
+          <p className="text-gray-400 mb-8 max-w-md text-center">
+            Для просмотра профиля необходимо войти через Telegram
+          </p>
+          <Button
+            className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none text-lg px-8 py-3 font-bold"
+            onClick={handleTelegramLogin}
+          >
+            Войти через Telegram
+          </Button>
+          <Link to="/" className="mt-8">
+            <Button variant="outline" className="border-gray-600 text-gray-300 hover:border-red-500 hover:text-red-400">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Вернуться на главную
+            </Button>
+          </Link>
         </div>
         <Footer />
       </div>
@@ -54,14 +69,10 @@ const Profile = () => {
 
   const handleSellItem = async (index: number) => {
     setSellingItem(index);
-    
-    // Имитация процесса продажи
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
     const soldAmount = sellItem(index);
     setBalance(balance + soldAmount);
     setSellingItem(null);
-    
     toast({
       title: "Предмет продан!",
       description: `Вы получили ${soldAmount}₽ за продажу предмета`,
@@ -89,7 +100,6 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gray-900">
       <Header />
-      
       <div className="container mx-auto px-4 py-8">
         {/* Заголовок */}
         <div className="flex items-center justify-between mb-8">
@@ -102,24 +112,44 @@ const Profile = () => {
             </Link>
             <h1 className="text-3xl font-bold text-white">Профиль</h1>
           </div>
-          
-          <Button
-            onClick={signOutTelegram}
-            className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-xl shadow-md transition-all duration-200 transform hover:scale-105 border-none text-base"
-          >
-            Выйти
-          </Button>
+          {/* Баланс и кнопка выйти */}
+          <div className="flex items-center space-x-4">
+            <span className="bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold px-4 py-2 rounded-lg shadow text-lg">{balance}₽</span>
+            <Button
+              onClick={signOutTelegram}
+              className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-xl shadow-md transition-all duration-200 transform hover:scale-105 border-none text-base"
+            >
+              Выйти
+            </Button>
+          </div>
         </div>
-
-        <div className="max-w-xl mx-auto bg-gradient-to-br from-red-500 via-purple-600 to-pink-500 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
+        <div className="max-w-xl mx-auto bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
           <div className="flex items-center justify-between mb-6">
-            <div className="text-3xl font-bold">Профиль</div>
-            <button
+            <div className="flex items-center space-x-4">
+              {telegramUser?.photo_url ? (
+                <img
+                  src={telegramUser.photo_url}
+                  alt={telegramUser.username || telegramUser.first_name}
+                  className="w-16 h-16 rounded-full border-4 border-purple-500 shadow-lg"
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-purple-600 flex items-center justify-center border-4 border-purple-500">
+                  <User className="w-10 h-10 text-white" />
+                </div>
+              )}
+              <div>
+                <div className="text-2xl font-bold">{telegramUser?.first_name} {telegramUser?.last_name || ''}</div>
+                {telegramUser?.username && (
+                  <div className="text-gray-200">@{telegramUser.username}</div>
+                )}
+              </div>
+            </div>
+            <Button
               onClick={signOutTelegram}
               className="px-6 py-2 rounded-lg bg-white text-gray-900 font-bold border border-gray-300 shadow hover:bg-gray-100 transition-all duration-200"
             >
               Выйти
-            </button>
+            </Button>
           </div>
           <div className="flex flex-col md:flex-row md:items-center md:space-x-8 mb-6">
             <div className="flex-1">
@@ -148,8 +178,7 @@ const Profile = () => {
             </a>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
           {/* Информация о пользователе */}
           <div className="lg:col-span-1">
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50">
@@ -171,7 +200,6 @@ const Profile = () => {
                     </div>
                   )}
                 </div>
-
                 {/* Имя пользователя */}
                 <div className="text-center">
                   <h2 className="text-2xl font-bold text-white mb-1">
@@ -181,7 +209,6 @@ const Profile = () => {
                     <p className="text-gray-400">@{telegramUser.username}</p>
                   )}
                 </div>
-
                 {/* Статистика */}
                 <div className="space-y-3">
                   <div className="flex justify-between text-gray-300">
@@ -192,7 +219,6 @@ const Profile = () => {
               </CardContent>
             </Card>
           </div>
-
           {/* Инвентарь */}
           <div className="lg:col-span-2">
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50">
@@ -240,13 +266,11 @@ const Profile = () => {
                             <span className="ml-1 capitalize">{item.rarity}</span>
                           </Badge>
                         </div>
-
                         {/* Информация о предмете */}
                         <div className="space-y-2">
                           <h3 className="text-white font-semibold text-sm line-clamp-2">
                             {item.name}
                           </h3>
-                          
                           <div className="flex items-center justify-between">
                             <span className="text-green-400 font-bold">
                               {Math.floor(item.price * 0.8)}₽
@@ -255,7 +279,6 @@ const Profile = () => {
                               {item.price}₽
                             </span>
                           </div>
-
                           {/* Кнопка продажи */}
                           <Button
                             size="sm"
@@ -285,7 +308,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

@@ -240,7 +240,7 @@ const Cart = () => {
 
           {/* Итоговая информация */}
           <div className="lg:col-span-1">
-            <div className="max-w-2xl mx-auto bg-gradient-to-br from-red-500 via-purple-600 to-pink-500 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
+            <div className="max-w-2xl mx-auto bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
               <div className="flex items-center justify-between mb-6">
                 <div className="text-3xl font-bold">Корзина</div>
                 <div className="flex items-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">

@@ -1,4 +1,3 @@
-
 import CaseCard from './CaseCard';
 
 interface CaseItem {
@@ -35,16 +34,19 @@ const CaseGrid = ({
   onOpenCase 
 }: CaseGridProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {cases.map((caseData) => (
-        <CaseCard
-          key={caseData.id}
-          caseData={caseData}
-          openingCount={openingCount}
-          balance={balance}
-          onOpeningCountChange={onOpeningCountChange}
-          onOpenCase={onOpenCase}
-        />
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+      {cases.map((caseData, idx) => (
+        <div key={caseData.id} className="animate-fade-in" style={{ animationDelay: `${idx * 0.07}s` }}>
+          <CaseCard
+            caseData={caseData}
+            openingCount={openingCount}
+            balance={balance}
+            onOpeningCountChange={onOpeningCountChange}
+            onOpenCase={onOpenCase}
+            onOpen={() => onOpenCase(caseData)}
+            isOpening={false}
+          />
+        </div>
       ))}
     </div>
   );

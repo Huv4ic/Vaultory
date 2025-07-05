@@ -34,63 +34,82 @@ const Cases = () => {
 
   const cases: GameCase[] = [
     {
-      id: 'brawl-stars',
-      name: 'Мега Бокс',
-      game: 'Brawl Stars',
-      price: 299,
-      image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
-      gradient: 'from-purple-600 via-pink-600 to-red-600',
-      icon: '🎮',
+      id: 'vaultory-premium',
+      name: 'Vaultory Premium',
+      game: 'Все игры',
+      price: 999,
+      image: '/public/placeholder.svg',
+      gradient: 'from-yellow-400 via-pink-500 to-purple-600',
+      icon: '💎',
       items: [
-        { name: 'Гемы x100', price: 150, rarity: 'common', chance: 30 },
-        { name: 'Гемы x500', price: 750, rarity: 'rare', chance: 20 },
-        { name: 'Гемы x1000', price: 1500, rarity: 'epic', chance: 15 },
-        { name: 'Легендарный Бойец', price: 5000, rarity: 'legendary', chance: 5 },
+        { name: 'Steam ключ AAA', price: 2500, rarity: 'legendary', chance: 2 },
+        { name: 'Скин CS:GO (редкий)', price: 1200, rarity: 'epic', chance: 8 },
+        { name: 'Подписка Spotify', price: 500, rarity: 'rare', chance: 15 },
+        { name: '1000 Robux', price: 800, rarity: 'rare', chance: 15 },
+        { name: 'Случайная игра Steam', price: 300, rarity: 'common', chance: 30 },
+        { name: '50 UC PUBG', price: 150, rarity: 'common', chance: 30 }
       ]
     },
     {
-      id: 'csgo',
-      name: 'Operation Case',
+      id: 'csgo-knife',
+      name: 'CS:GO Ножи',
       game: 'CS:GO',
+      price: 1499,
+      image: '/public/placeholder.svg',
+      gradient: 'from-blue-500 via-purple-500 to-pink-500',
+      icon: '🔪',
+      items: [
+        { name: 'Karambit | Doppler', price: 15000, rarity: 'legendary', chance: 1 },
+        { name: 'Butterfly Knife | Fade', price: 9000, rarity: 'epic', chance: 4 },
+        { name: 'M9 Bayonet | Marble Fade', price: 7000, rarity: 'epic', chance: 5 },
+        { name: 'Flip Knife | Tiger Tooth', price: 3500, rarity: 'rare', chance: 10 },
+        { name: 'Shadow Daggers | Slaughter', price: 2000, rarity: 'rare', chance: 15 },
+        { name: 'Наклейка CS:GO', price: 300, rarity: 'common', chance: 65 }
+      ]
+    },
+    {
+      id: 'brawl-stars-mega',
+      name: 'Brawl Stars Мега',
+      game: 'Brawl Stars',
       price: 499,
-      image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
-      gradient: 'from-blue-600 via-cyan-600 to-teal-600',
-      icon: '🔫',
+      image: '/public/placeholder.svg',
+      gradient: 'from-cyan-400 via-blue-500 to-purple-500',
+      icon: '⭐',
       items: [
-        { name: 'AK-47 Redline', price: 400, rarity: 'common', chance: 35 },
-        { name: 'AWP Dragon Lore', price: 2500, rarity: 'rare', chance: 25 },
-        { name: 'Knife Karambit', price: 8000, rarity: 'epic', chance: 10 },
-        { name: 'StatTrak™ AK-47', price: 15000, rarity: 'legendary', chance: 3 },
+        { name: 'Легендарный боец', price: 5000, rarity: 'legendary', chance: 2 },
+        { name: 'Гемы x1000', price: 1500, rarity: 'epic', chance: 8 },
+        { name: 'Гемы x500', price: 750, rarity: 'rare', chance: 15 },
+        { name: 'Гемы x100', price: 150, rarity: 'common', chance: 75 }
       ]
     },
     {
-      id: 'pubg',
-      name: 'Военный Кейс',
-      game: 'PUBG Mobile',
-      price: 199,
-      image: 'https://images.unsplash.com/photo-1614294148960-9aa740632a87?w=400&h=300&fit=crop',
-      gradient: 'from-orange-600 via-red-600 to-pink-600',
-      icon: '🪖',
-      items: [
-        { name: 'UC x100', price: 150, rarity: 'common', chance: 40 },
-        { name: 'UC x500', price: 750, rarity: 'rare', chance: 25 },
-        { name: 'UC x1000', price: 1500, rarity: 'epic', chance: 12 },
-        { name: 'Эксклюзивный Скин', price: 4000, rarity: 'legendary', chance: 7 },
-      ]
-    },
-    {
-      id: 'roblox',
-      name: 'Robux Сундук',
+      id: 'roblox-royale',
+      name: 'Roblox Royale',
       game: 'Roblox',
       price: 399,
-      image: 'https://images.unsplash.com/photo-1606041008023-472dfb5e530f?w=400&h=300&fit=crop',
-      gradient: 'from-green-600 via-emerald-600 to-teal-600',
+      image: '/public/placeholder.svg',
+      gradient: 'from-green-400 via-emerald-500 to-teal-500',
       icon: '🎲',
       items: [
-        { name: 'Robux x100', price: 200, rarity: 'common', chance: 30 },
-        { name: 'Robux x500', price: 1000, rarity: 'rare', chance: 20 },
-        { name: 'Robux x1000', price: 2000, rarity: 'epic', chance: 15 },
-        { name: 'Robux x5000', price: 10000, rarity: 'legendary', chance: 2 },
+        { name: 'Robux x5000', price: 10000, rarity: 'legendary', chance: 1 },
+        { name: 'Robux x1000', price: 2000, rarity: 'epic', chance: 4 },
+        { name: 'Robux x500', price: 1000, rarity: 'rare', chance: 10 },
+        { name: 'Robux x100', price: 200, rarity: 'common', chance: 85 }
+      ]
+    },
+    {
+      id: 'pubg-elite',
+      name: 'PUBG Elite',
+      game: 'PUBG Mobile',
+      price: 599,
+      image: '/public/placeholder.svg',
+      gradient: 'from-orange-400 via-red-500 to-pink-500',
+      icon: '🪖',
+      items: [
+        { name: 'Эксклюзивный скин', price: 4000, rarity: 'legendary', chance: 2 },
+        { name: 'UC x1000', price: 1500, rarity: 'epic', chance: 8 },
+        { name: 'UC x500', price: 750, rarity: 'rare', chance: 15 },
+        { name: 'UC x100', price: 150, rarity: 'common', chance: 75 }
       ]
     }
   ];

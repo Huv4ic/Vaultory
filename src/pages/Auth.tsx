@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff } from 'lucide-react';
+import { FaTelegramPlane } from 'react-icons/fa';
+import TelegramLoginButton from 'react-telegram-login';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -70,6 +71,22 @@ const Auth = () => {
     setLoading(false);
   };
 
+  const handleTelegramResponse = async (user) => {
+    // user: { id, first_name, last_name, username, photo_url, auth_date, hash }
+    // 1. Сохраняем Telegram-данные в useAuth
+    // 2. Создаём профиль в Supabase, если его нет
+    // 3. Перенаправляем пользователя на главную
+    try {
+      // Сохраняем Telegram-данные в useAuth (например, через setTelegramUser)
+      // await setTelegramUser(user);
+      // Проверяем/создаём профиль в Supabase
+      // ...
+      window.location.href = '/';
+    } catch (e) {
+      alert('Ошибка Telegram авторизации');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
@@ -81,6 +98,17 @@ const Auth = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="mb-6 flex flex-col items-center">
+              <TelegramLoginButton
+                dataOnauth={handleTelegramResponse}
+                botName="vaultory_notify_bot"
+                buttonSize="large"
+                cornerRadius={12}
+                requestAccess="write"
+                usePic={true}
+                className="mb-4"
+              />
+            </div>
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-gray-700">
                 <TabsTrigger value="signin" className="text-white">Вход</TabsTrigger>

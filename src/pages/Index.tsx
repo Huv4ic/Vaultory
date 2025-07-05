@@ -62,13 +62,13 @@ const Index = () => {
     <div className="min-h-screen bg-gray-900 text-white">
       <Header />
       
-      <section className="relative py-24 px-4 bg-gradient-to-br from-red-500 via-purple-600 to-pink-500 text-white overflow-hidden animate-fade-in">
+      <section className="relative py-24 px-4 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white overflow-hidden animate-fade-in">
         <div className="container mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-red-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
             Vaultory — магазин игровых кейсов и товаров
           </h1>
           <p className="text-2xl mb-8 max-w-2xl mx-auto animate-slide-up">
-            Открывай кейсы, покупай товары, пополняй баланс и выигрывай крутые призы!
+            Открывай уникальные кейсы, покупай топовые товары, пополняй баланс и выигрывай крутые призы!
           </p>
           <a
             href="/cases"

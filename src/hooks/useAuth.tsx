@@ -25,6 +25,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, username: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  setTelegramUser: (tgUser: TelegramUser) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -62,6 +63,40 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (user) {
       await fetchProfile(user.id);
     }
+  };
+
+  const setTelegramUser = async (tgUser: TelegramUser) => {
+    setTelegramUser(tgUser);
+    // Проверяем, есть ли профиль в Supabase
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('telegram_id', tgUser.id)
+      .single();
+    if (!data) {
+      // Создаём профиль
+      await supabase.from('profiles').insert({
+        telegram_id: tgUser.id,
+        username: tgUser.username,
+        first_name: tgUser.first_name,
+        last_name: tgUser.last_name,
+        photo_url: tgUser.photo_url,
+        balance: 1000,
+        cases_opened: 0
+      });
+    }
+    // Загружаем профиль
+    await fetchProfileByTelegramId(tgUser.id);
+  };
+
+  const fetchProfileByTelegramId = async (telegramId: number) => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('telegram_id', telegramId)
+      .single();
+    setProfile(data);
+    if (data?.balance) setBalance(data.balance);
   };
 
   useEffect(() => {
@@ -135,7 +170,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       signIn,
       signUp,
       signOut,
-      refreshProfile
+      refreshProfile,
+      setTelegramUser
     }}>
       {children}
     </AuthContext.Provider>
