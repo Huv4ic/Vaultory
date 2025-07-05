@@ -11,37 +11,20 @@ interface TelegramUser {
   photo_url?: string;
 }
 
-interface AuthContextType {
-  user: User | null;
-  session: Session | null;
-  profile: any;
-  isAdmin: boolean;
-  loading: boolean;
-  telegramUser: TelegramUser | null;
-  balance: number;
-  setBalance: (balance: number) => void;
-  signOutTelegram: () => void;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string, username: string) => Promise<{ error: any }>;
-  signOut: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
-  setTelegramUser: (tgUser: TelegramUser) => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<any>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState(null);
+  const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [telegramUser, setTelegramUser] = useState<TelegramUser | null>(null);
+  const [telegramUser, setTelegramUserState] = useState(null);
   const [balance, setBalance] = useState(1000);
 
   const isAdmin = profile?.role === 'admin';
 
   const signOutTelegram = () => {
-    setTelegramUser(null);
+    setTelegramUserState(null);
     setBalance(0);
     // Здесь можно добавить логику выхода из Telegram
   };
@@ -66,9 +49,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const setTelegramUser = async (tgUser: TelegramUser) => {
-    setTelegramUser(tgUser);
+    setTelegramUserState(tgUser);
     // Проверяем, есть ли профиль в Supabase
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('profiles')
       .select('*')
       .eq('telegram_id', tgUser.id)
@@ -83,7 +66,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         photo_url: tgUser.photo_url,
         balance: 1000,
         cases_opened: 0
-      });
+      } as any);
     }
     // Загружаем профиль
     await fetchProfileByTelegramId(tgUser.id);
