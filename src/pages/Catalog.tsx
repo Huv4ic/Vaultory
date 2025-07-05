@@ -1,14 +1,19 @@
-
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useCart } from '@/hooks/useCart';
+import { useAuth } from '@/hooks/useAuth';
 import { products, gameCategories } from '@/data/products';
 import { Search, Filter, SlidersHorizontal } from 'lucide-react';
 
 const Catalog = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { addItem, items } = useCart();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
@@ -50,6 +55,18 @@ const Catalog = () => {
   }
 
   const displayedProducts = filteredProducts.slice(0, visibleProducts);
+
+  const handleAddToCart = (product) => {
+    if (!user) {
+      alert('Необходимо войти в систему!');
+      return;
+    }
+    addItem(product);
+  };
+
+  const handleProductDetails = (product) => {
+    navigate(`/product/${product.id}`);
+  };
 
   const loadMore = () => {
     setVisibleProducts(prev => prev + 15);
@@ -142,7 +159,13 @@ const Catalog = () => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
               {displayedProducts.map((product) => (
-                <ProductCard key={product.id} {...product} />
+                <ProductCard
+                  key={product.id}
+                  {...product}
+                  isInCart={items.some((item) => item.id === product.id)}
+                  onAddToCart={() => handleAddToCart(product)}
+                  onDetails={() => handleProductDetails(product)}
+                />
               ))}
             </div>
 
@@ -151,7 +174,7 @@ const Catalog = () => {
                 <Button
                   onClick={loadMore}
                   size="lg"
-                  className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
+                  className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
                 >
                   Показать еще товары
                 </Button>

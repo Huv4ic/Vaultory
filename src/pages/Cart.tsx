@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -19,10 +19,12 @@ import {
   User,
   DollarSign
 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Cart = () => {
+  const navigate = useNavigate();
+  const { user, profile, balance, setBalance, refreshProfile } = useAuth();
   const { items, removeItem, updateQuantity, clear, total } = useCart();
-  const { balance, setBalance, telegramUser } = useAuth();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -51,10 +53,10 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
-    if (!telegramUser) {
+    if (!user) {
       toast({
         title: "Требуется авторизация",
-        description: "Войдите через Telegram для оформления заказа",
+        description: "Войдите в систему для оформления заказа",
       });
       return;
     }
@@ -68,19 +70,37 @@ const Cart = () => {
     }
 
     setIsProcessing(true);
-    
-    // Имитация процесса оплаты
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Списываем баланс
-    setBalance(balance - total);
-    clear();
-    setIsProcessing(false);
-    
-    toast({
-      title: "Заказ оформлен!",
-      description: `Спасибо за покупку! С вашего баланса списано ${total}₽`,
-    });
+    try {
+      // Списываем средства с баланса
+      const newBalance = balance - total;
+      const { error: balanceError } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('id', user.id);
+
+      if (balanceError) throw balanceError;
+
+      // Обновляем локальное состояние
+      setBalance(newBalance);
+      await refreshProfile();
+      
+      // Очищаем корзину
+      clear();
+      
+      toast({
+        title: "Заказ оформлен!",
+        description: `Спасибо за покупку! С вашего баланса списано ${total}₽`,
+      });
+      navigate('/catalog');
+    } catch (error) {
+      console.error('Ошибка при оформлении заказа:', error);
+      toast({
+        title: "Ошибка при оформлении заказа",
+        description: "Произошла ошибка при оформлении заказа",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (items.length === 0) {
@@ -220,79 +240,25 @@ const Cart = () => {
 
           {/* Итоговая информация */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 p-6 sticky top-8">
-              <h2 className="text-xl font-bold text-white mb-6">Итого</h2>
-              
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-gray-300">
-                  <span>Товары ({items.length})</span>
-                  <span>{total}₽</span>
+            <div className="max-w-2xl mx-auto bg-gradient-to-br from-red-500 via-purple-600 to-pink-500 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
+              <div className="flex items-center justify-between mb-6">
+                <div className="text-3xl font-bold">Корзина</div>
+                <div className="flex items-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+                  <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>
+                  Баланс: <span className="ml-2">{balance}₽</span>
                 </div>
-                <div className="flex justify-between text-gray-300">
-                  <span>Доставка</span>
-                  <span className="text-green-400">Бесплатно</span>
-                </div>
-                <div className="border-t border-gray-600 pt-4">
-                  <div className="flex justify-between text-white font-bold text-lg">
-                    <span>К оплате</span>
-                    <span>{total}₽</span>
-                  </div>
-                </div>
-                
-                {telegramUser && (
-                  <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-xl p-3 border border-green-500/30">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300 text-sm">Ваш баланс:</span>
-                      <span className={`font-bold ${balance >= total ? 'text-green-400' : 'text-red-400'}`}>
-                        {balance}₽
-                      </span>
-                    </div>
-                    {balance < total && (
-                      <div className="text-red-400 text-xs mt-1">
-                        Недостаточно средств. Нужно еще {total - balance}₽
-                      </div>
-                    )}
-                  </div>
-                )}
               </div>
-
-              <Button
+              <div className="mb-6 text-lg font-semibold">Сумма к оплате: <span className="text-white">{total}₽</span></div>
+              {balance < total && (
+                <div className="mb-4 text-red-200 font-bold">Недостаточно средств для оплаты заказа</div>
+              )}
+              <button
+                className={`w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-4 rounded-lg shadow-lg transition-all duration-200 ${balance < total ? 'opacity-50 cursor-not-allowed' : ''}`}
                 onClick={handleCheckout}
-                disabled={isProcessing || !telegramUser || balance < total}
-                className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none text-lg py-4 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                disabled={balance < total}
               >
-                {isProcessing ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Обработка...
-                  </div>
-                ) : !telegramUser ? (
-                  <>
-                    <User className="w-5 h-5 mr-2" />
-                    Войти для покупки
-                  </>
-                ) : balance < total ? (
-                  <>
-                    <DollarSign className="w-5 h-5 mr-2" />
-                    Недостаточно средств
-                  </>
-                ) : (
-                  <>
-                    <CreditCard className="w-5 h-5 mr-2" />
-                    Оформить заказ
-                  </>
-                )}
-              </Button>
-
-              <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                <div className="flex items-start space-x-2">
-                  <AlertCircle className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-blue-300">
-                    <p className="font-medium mb-1">Безопасная оплата</p>
-                    <p className="text-xs">Ваши данные защищены современными технологиями шифрования</p>
-                  </div>
-                </div>
-              </div>
+                Оформить заказ
+              </button>
             </div>
           </div>
         </div>

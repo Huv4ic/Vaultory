@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, DollarSign, Package } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CaseItem {
   name: string;
@@ -39,12 +41,14 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   onSellItem,
   onKeepItem,
 }) => {
+  const { user, balance, setBalance, refreshProfile } = useAuth();
   const [isOpening, setIsOpening] = useState(false);
   const [results, setResults] = useState<CaseItem[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [rouletteItems, setRouletteItems] = useState<CaseItem[]>([]);
   const [winningIndex, setWinningIndex] = useState<number | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [soldOrAdded, setSoldOrAdded] = useState(false);
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -150,6 +154,46 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     setWinningIndex(null);
     setIsSpinning(false);
     onClose();
+  };
+
+  const handleAddToInventory = async () => {
+    if (!user || soldOrAdded) return;
+    
+    try {
+      // Пока просто сохраняем в локальное состояние
+      setSoldOrAdded(true);
+      onKeepItem(caseData.items[winningIndex]);
+    } catch (error) {
+      console.error('Ошибка при добавлении в инвентарь:', error);
+      alert('Произошла ошибка при добавлении в инвентарь');
+    }
+  };
+
+  const handleSell = async () => {
+    if (!user || soldOrAdded) return;
+    
+    try {
+      const sellPrice = Math.floor(caseData.items[winningIndex].price * 0.7); // 70% от цены
+      const newBalance = balance + sellPrice;
+      
+      // Обновляем баланс в базе данных
+      const { error } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      // Обновляем локальное состояние
+      setBalance(newBalance);
+      await refreshProfile();
+      
+      setSoldOrAdded(true);
+      onSellItem(caseData.items[winningIndex], sellPrice);
+    } catch (error) {
+      console.error('Ошибка при продаже предмета:', error);
+      alert('Произошла ошибка при продаже предмета');
+    }
   };
 
   useEffect(() => {
@@ -261,6 +305,31 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
               )}
             </div>
           )}
+        </div>
+
+        <button
+          className="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold focus:outline-none transition-colors duration-200"
+          onClick={onClose}
+          aria-label="Закрыть"
+        >
+          ×
+        </button>
+
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 mt-8">
+          <button
+            className={`w-full md:w-48 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={handleAddToInventory}
+            disabled={soldOrAdded}
+          >
+            Добавить в инвентарь
+          </button>
+          <button
+            className={`w-full md:w-48 bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={handleSell}
+            disabled={soldOrAdded}
+          >
+            Продать
+          </button>
         </div>
       </DialogContent>
     </Dialog>

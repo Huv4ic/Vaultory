@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -13,6 +12,7 @@ import { Star, Users, CheckCircle, ChevronDown } from 'lucide-react';
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [visibleProducts, setVisibleProducts] = useState(15);
+  const [cart, setCart] = useState([]);
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -50,11 +50,44 @@ const Index = () => {
     }
   ];
 
+  const handleAddToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  const handleProductDetails = (product) => {
+    // Implementation of handleProductDetails function
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Header />
       
-      <HeroSection />
+      <section className="relative py-24 px-4 bg-gradient-to-br from-red-500 via-purple-600 to-pink-500 text-white overflow-hidden animate-fade-in">
+        <div className="container mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-red-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
+            Vaultory — магазин игровых кейсов и товаров
+          </h1>
+          <p className="text-2xl mb-8 max-w-2xl mx-auto animate-slide-up">
+            Открывай кейсы, покупай товары, пополняй баланс и выигрывай крутые призы!
+          </p>
+          <a
+            href="/cases"
+            className="inline-block bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-xl px-10 py-4 rounded-lg shadow-lg transition-all duration-200 mb-4"
+          >
+            Открыть кейсы
+          </a>
+          <div className="mt-6">
+            <a
+              href="https://t.me/Vaultory_manager"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-white text-gray-900 font-bold px-6 py-2 rounded-lg border border-gray-300 shadow hover:bg-gray-100 transition-all duration-200"
+            >
+              Telegram поддержка
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Категории игр с новым фоном и анимацией */}
       <section className="py-16 px-4 relative overflow-hidden bg-gradient-to-br from-purple-900/30 via-gray-900 to-blue-900/30">
@@ -99,10 +132,14 @@ const Index = () => {
 
           {/* Товары */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
-            {displayedProducts.map((product, index) => (
-              <div key={product.id} className="animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
-                <ProductCard {...product} />
-              </div>
+            {displayedProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                {...product}
+                isInCart={cart.some((item) => item.id === product.id)}
+                onAddToCart={() => handleAddToCart(product)}
+                onDetails={() => handleProductDetails(product)}
+              />
             ))}
           </div>
 

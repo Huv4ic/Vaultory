@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -91,10 +90,9 @@ const CaseCard = ({
         <Button 
           onClick={() => onOpenCase(caseData)}
           disabled={balance < caseData.price * openingCount}
-          className={`w-full bg-gradient-to-r ${caseData.gradient} hover:opacity-90 text-white border-none transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed`}
+          className={`w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
         >
-          <Gift className="w-4 h-4 mr-2" />
-          Открыть {openingCount} {openingCount === 1 ? 'кейс' : 'кейса'}
+          {balance < caseData.price * openingCount ? 'Открывается...' : 'Открыть'}
         </Button>
 
         {/* Возможные предметы */}

@@ -18,6 +18,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        primary: "bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white text-lg py-3 font-bold rounded-lg shadow-lg transition-all duration-200"
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -27,7 +28,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "primary",
       size: "default",
     },
   }
@@ -42,9 +43,15 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
+    let base = 'transition-all duration-200 font-bold rounded-lg shadow-lg';
+    if (variant === 'primary') {
+      base += ' bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white text-lg py-3';
+    } else if (variant === 'outline') {
+      base += ' border-2 border-cyan-600 text-cyan-600 bg-white hover:bg-cyan-50 hover:border-cyan-700 hover:text-cyan-700';
+    }
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(base, buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />

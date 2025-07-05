@@ -1,10 +1,11 @@
-
 import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CaseOpeningModal from '@/components/CaseOpeningModal';
 import CaseGrid from '@/components/CaseGrid';
 import BalanceDisplay from '@/components/BalanceDisplay';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CaseItem {
   name: string;
@@ -25,10 +26,10 @@ interface GameCase {
 }
 
 const Cases = () => {
+  const { user, profile, balance, setBalance, refreshProfile } = useAuth();
   const [selectedCase, setSelectedCase] = useState<GameCase | null>(null);
   const [openingCount, setOpeningCount] = useState(1);
   const [totalSiteRevenue, setTotalSiteRevenue] = useState(50000);
-  const [balance, setBalance] = useState(1250);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const cases: GameCase[] = [
@@ -94,16 +95,47 @@ const Cases = () => {
     }
   ];
 
-  const openCase = (caseData: GameCase) => {
+  const openCase = async (caseData: GameCase) => {
+    if (!user) {
+      alert('Необходимо войти в систему!');
+      return;
+    }
+
     if (balance < caseData.price * openingCount) {
       alert('Недостаточно средств!');
       return;
     }
     
-    setBalance(prev => prev - (caseData.price * openingCount));
-    setSelectedCase(caseData);
-    setIsModalOpen(true);
-    setTotalSiteRevenue(prev => prev + (caseData.price * openingCount));
+    try {
+      // Обновляем баланс в базе данных
+      const newBalance = balance - (caseData.price * openingCount);
+      const { error: balanceError } = await supabase
+        .from('profiles')
+        .update({ balance: newBalance })
+        .eq('id', user.id);
+
+      if (balanceError) throw balanceError;
+
+      // Обновляем счетчик открытых кейсов
+      const currentCasesOpened = profile?.cases_opened || 0;
+      const { error: casesError } = await supabase
+        .from('profiles')
+        .update({ cases_opened: currentCasesOpened + openingCount })
+        .eq('id', user.id);
+
+      if (casesError) throw casesError;
+
+      // Обновляем локальное состояние
+      setBalance(newBalance);
+      await refreshProfile();
+      
+      setSelectedCase(caseData);
+      setIsModalOpen(true);
+      setTotalSiteRevenue(totalSiteRevenue + (caseData.price * openingCount));
+    } catch (error) {
+      console.error('Ошибка при открытии кейса:', error);
+      alert('Произошла ошибка при открытии кейса');
+    }
   };
 
   const handleSellItem = (item: CaseItem, sellPrice: number) => {

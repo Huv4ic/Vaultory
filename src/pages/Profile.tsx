@@ -111,6 +111,44 @@ const Profile = () => {
           </Button>
         </div>
 
+        <div className="max-w-xl mx-auto bg-gradient-to-br from-red-500 via-purple-600 to-pink-500 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
+          <div className="flex items-center justify-between mb-6">
+            <div className="text-3xl font-bold">Профиль</div>
+            <button
+              onClick={signOutTelegram}
+              className="px-6 py-2 rounded-lg bg-white text-gray-900 font-bold border border-gray-300 shadow hover:bg-gray-100 transition-all duration-200"
+            >
+              Выйти
+            </button>
+          </div>
+          <div className="flex flex-col md:flex-row md:items-center md:space-x-8 mb-6">
+            <div className="flex-1">
+              <div className="text-xl font-semibold mb-2">Баланс</div>
+              <div className="flex items-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-2xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>
+                {balance}₽
+              </div>
+            </div>
+            <div className="flex-1 mt-6 md:mt-0">
+              <div className="text-xl font-semibold mb-2">Открыто кейсов</div>
+              <div className="flex items-center bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold text-2xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+                {profile?.cases_opened ?? 0}
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 text-center">
+            <a
+              href="https://t.me/Vaultory_manager"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-white text-gray-900 font-bold px-6 py-2 rounded-lg border border-gray-300 shadow hover:bg-gray-100 transition-all duration-200"
+            >
+              Telegram поддержка
+            </a>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Информация о пользователе */}
           <div className="lg:col-span-1">
@@ -144,26 +182,11 @@ const Profile = () => {
                   )}
                 </div>
 
-                {/* Баланс */}
-                <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-xl p-4 border border-green-500/30">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <DollarSign className="w-5 h-5 text-green-400" />
-                      <span className="text-white font-semibold">Баланс</span>
-                    </div>
-                    <span className="text-2xl font-bold text-green-400">{balance}₽</span>
-                  </div>
-                </div>
-
                 {/* Статистика */}
                 <div className="space-y-3">
                   <div className="flex justify-between text-gray-300">
                     <span>Предметов в инвентаре</span>
                     <span className="font-semibold text-white">{inventoryItems.length}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-300">
-                    <span>Всего открыто кейсов</span>
-                    <span className="font-semibold text-white">{profile?.cases_opened ?? 0}</span>
                   </div>
                 </div>
               </CardContent>

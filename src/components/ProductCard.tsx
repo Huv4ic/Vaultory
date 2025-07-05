@@ -11,9 +11,12 @@ interface ProductCardProps {
   category: string;
   rating: number;
   sales: number;
+  isInCart: boolean;
+  onAddToCart: () => void;
+  onDetails: () => void;
 }
 
-const ProductCard = ({ id, name, price, originalPrice, image, category, rating, sales }: ProductCardProps) => {
+const ProductCard = ({ id, name, price, originalPrice, image, category, rating, sales, isInCart, onAddToCart, onDetails }: ProductCardProps) => {
   const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
 
   return (
@@ -56,20 +59,19 @@ const ProductCard = ({ id, name, price, originalPrice, image, category, rating, 
         </div>
 
         <div className="flex space-x-2">
-          <Link to={`/product/${id}`} className="flex-1">
-            <Button
-              variant="outline"
-              className="w-full border-2 border-cyan-600 text-cyan-600 font-bold rounded-lg shadow transition-all duration-200 bg-white hover:bg-cyan-50 hover:border-cyan-700 hover:text-cyan-700 text-base py-3"
-            >
-              Подробнее
-            </Button>
-          </Link>
-          <Button
-            size="sm"
-            className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none"
+          <button
+            className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2"
+            onClick={onDetails}
           >
-            <ShoppingCart className="w-4 h-4" />
-          </Button>
+            Подробнее
+          </button>
+          <button
+            className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
+            onClick={onAddToCart}
+            disabled={isInCart}
+          >
+            {isInCart ? 'В корзине' : 'В корзину'}
+          </button>
         </div>
       </div>
     </div>

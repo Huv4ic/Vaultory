@@ -65,12 +65,12 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             {/* Телеграм */}
             <a
-              href="https://t.me/vaultory"
+              href="https://t.me/Vaultory_manager"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-gray-400 hover:text-blue-400 transition-colors"
+              className="ml-4 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold shadow-lg hover:from-cyan-500 hover:to-blue-600 transition-all duration-200"
             >
-              <Send className="w-5 h-5" />
+              Telegram
             </a>
 
             {/* Корзина */}
@@ -89,7 +89,7 @@ const Header = () => {
             {/* Кнопка входа */}
             <Button
               size="sm"
-              className="bg-white text-gray-900 font-bold px-6 py-2 rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition-all duration-200"
+              className="ml-4 px-4 py-2 rounded-lg bg-white text-gray-900 font-bold border border-gray-300 shadow hover:bg-gray-100 transition-all duration-200"
               onClick={signOutTelegram}
             >
               Выйти

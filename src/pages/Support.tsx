@@ -96,7 +96,7 @@ const Support = () => {
                     method.primary 
                       ? 'bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700' 
                       : 'bg-gray-700 hover:bg-gray-600'
-                  }`}
+                  } font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
                 >
                   {method.action}
                 </Button>
