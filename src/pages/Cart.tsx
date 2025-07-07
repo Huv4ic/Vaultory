@@ -147,7 +147,11 @@ const Cart = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
             <Link to="/catalog">
-              <Button variant="outline" size="sm" className="border-gray-600 text-gray-300 hover:border-red-500 hover:text-red-400">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-lg bg-gray-700/70 text-gray-200 hover:text-white hover:ring-2 hover:ring-purple-400/60 hover:bg-gradient-to-br hover:from-gray-700 hover:to-purple-900 transition-all duration-200 shadow-md px-4 py-2 flex items-center gap-2"
+              >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Назад
               </Button>
@@ -159,9 +163,9 @@ const Cart = () => {
           </div>
           
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={handleClearCart}
-            className="border-red-500/50 text-red-400 hover:bg-red-500/10 hover:border-red-500"
+            className="rounded-lg bg-gray-700/70 text-red-300 hover:text-white hover:ring-2 hover:ring-pink-400/60 hover:bg-gradient-to-br hover:from-gray-700 hover:to-pink-900 transition-all duration-200 shadow-md px-4 py-2 flex items-center gap-2"
           >
             <Trash2 className="w-4 h-4 mr-2" />
             Очистить корзину

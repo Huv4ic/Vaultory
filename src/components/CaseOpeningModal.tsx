@@ -159,13 +159,13 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     onClose();
   };
 
+  const winningItem = (winningIndex !== null && rouletteItems && rouletteItems[winningIndex]) ? rouletteItems[winningIndex] : null;
+
   const handleAddToInventory = async () => {
-    if (!telegramUser || soldOrAdded) return;
-    
+    if (!telegramUser || soldOrAdded || !winningItem) return;
     try {
-      // Пока просто сохраняем в локальное состояние
       setSoldOrAdded(true);
-      onKeepItem(caseData.items[winningIndex]);
+      onKeepItem(winningItem);
     } catch (error) {
       console.error('Ошибка при добавлении в инвентарь:', error);
       alert('Произошла ошибка при добавлении в инвентарь');
@@ -173,11 +173,10 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   };
 
   const handleAddToProfile = async () => {
-    if (!telegramUser || soldOrAdded) return;
-    
+    if (!telegramUser || soldOrAdded || !winningItem) return;
     try {
       setSoldOrAdded(true);
-      onAddToProfile(caseData.items[winningIndex]);
+      onAddToProfile(winningItem);
     } catch (error) {
       console.error('Ошибка при добавлении в профиль:', error);
       alert('Произошла ошибка при добавлении в профиль');
@@ -185,24 +184,18 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   };
 
   const handleSell = async () => {
-    if (!telegramUser || soldOrAdded) return;
-    
+    if (!telegramUser || soldOrAdded || !winningItem) return;
     try {
-      const sellPrice = Math.floor(caseData.items[winningIndex].price * 0.7); // 70% от цены
+      const sellPrice = Math.floor(winningItem.price * 0.7); // 70% от цены
       const newBalance = balance + sellPrice;
-      
-      // Обновляем локальное состояние
       setBalance(newBalance);
-      
       setSoldOrAdded(true);
-      onSellItem(caseData.items[winningIndex], sellPrice);
+      onSellItem(winningItem, sellPrice);
     } catch (error) {
       console.error('Ошибка при продаже предмета:', error);
       alert('Произошла ошибка при продаже предмета');
     }
   };
-
-  const winningItem = (winningIndex !== null && caseData && caseData.items && caseData.items[winningIndex]) ? caseData.items[winningIndex] : null;
 
   useEffect(() => {
     if (isOpen && caseData) {
