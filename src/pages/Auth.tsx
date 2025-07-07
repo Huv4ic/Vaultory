@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,7 @@ const Auth = () => {
   const { signIn, signUp, profile, isAdmin, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Перенаправляем админа в админку после успешной авторизации
   useEffect(() => {
@@ -28,6 +29,13 @@ const Auth = () => {
       navigate('/');
     }
   }, [user, profile, isAdmin, navigate]);
+
+  // Сохраняем путь возврата, если пришли не с главной
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const redirectTo = params.get('redirectTo') || (location.state && location.state.from) || '/';
+    localStorage.setItem('vaultory_redirect_to', redirectTo);
+  }, [location]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +93,13 @@ const Auth = () => {
     } catch (e) {
       alert('Ошибка Telegram авторизации');
     }
+  };
+
+  // После успешной авторизации:
+  const handleLoginSuccess = () => {
+    const redirectTo = localStorage.getItem('vaultory_redirect_to') || '/';
+    localStorage.removeItem('vaultory_redirect_to');
+    navigate(redirectTo, { replace: true });
   };
 
   return (
