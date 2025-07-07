@@ -203,9 +203,9 @@ const Cart = () => {
                           size="sm"
                           onClick={() => handleQuantityChange(item.id, -1)}
                           disabled={item.quantity <= 1}
-                          className="h-8 w-8 p-0 text-gray-300 hover:text-red-400 hover:bg-red-500/10"
+                          className="rounded-full bg-gray-700/70 text-purple-300 hover:text-white hover:ring-2 hover:ring-pink-400/60 hover:bg-gradient-to-br hover:from-gray-700 hover:to-purple-900 transition-all duration-200 shadow-md w-9 h-9 flex items-center justify-center p-0"
                         >
-                          <Minus className="w-3 h-3" />
+                          <Minus className="w-5 h-5" />
                         </Button>
                         <span className="w-8 text-center text-white font-semibold">
                           {item.quantity}
@@ -214,9 +214,9 @@ const Cart = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleQuantityChange(item.id, 1)}
-                          className="h-8 w-8 p-0 text-gray-300 hover:text-red-400 hover:bg-red-500/10"
+                          className="rounded-full bg-gray-700/70 text-purple-300 hover:text-white hover:ring-2 hover:ring-pink-400/60 hover:bg-gradient-to-br hover:from-gray-700 hover:to-purple-900 transition-all duration-200 shadow-md w-9 h-9 flex items-center justify-center p-0"
                         >
-                          <Plus className="w-3 h-3" />
+                          <Plus className="w-5 h-5" />
                         </Button>
                       </div>
                       

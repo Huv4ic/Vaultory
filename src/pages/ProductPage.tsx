@@ -102,18 +102,18 @@ const ProductPage = () => {
                       size="sm"
                       onClick={() => handleQuantityChange(-1)}
                       disabled={quantity <= 1}
-                      className="border-gray-600 text-gray-300 hover:border-red-500 hover:text-red-400"
+                      className="rounded-full bg-gray-700/70 text-purple-300 hover:text-white hover:ring-2 hover:ring-pink-400/60 hover:bg-gradient-to-br hover:from-gray-700 hover:to-purple-900 transition-all duration-200 shadow-md w-10 h-10 flex items-center justify-center p-0"
                     >
-                      <Minus className="w-4 h-4" />
+                      <Minus className="w-5 h-5" />
                     </Button>
                     <span className="w-12 text-center font-semibold">{quantity}</span>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleQuantityChange(1)}
-                      className="border-gray-600 text-gray-300 hover:border-red-500 hover:text-red-400"
+                      className="rounded-full bg-gray-700/70 text-purple-300 hover:text-white hover:ring-2 hover:ring-pink-400/60 hover:bg-gradient-to-br hover:from-gray-700 hover:to-purple-900 transition-all duration-200 shadow-md w-10 h-10 flex items-center justify-center p-0"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-5 h-5" />
                     </Button>
                   </div>
                 </div>

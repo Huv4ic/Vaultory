@@ -8,9 +8,10 @@ const Support = () => {
       icon: <Send className="w-6 h-6" />,
       title: 'Telegram',
       description: 'Быстрый ответ в течение 5 минут',
-      contact: '@VaultorySupport',
+      contact: '@Vaultory_manager',
       action: 'Написать в Telegram',
-      primary: true
+      primary: true,
+      link: 'https://t.me/Vaultory_manager'
     },
     {
       icon: <Mail className="w-6 h-6" />,
@@ -83,19 +84,40 @@ const Support = () => {
               </CardHeader>
               <CardContent className="text-center">
                 <div className="text-red-400 font-semibold mb-4">
-                  <a href="https://t.me/Vaultory_manager" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-pink-500 transition-colors duration-200">
+                  <a href={method.link ? method.link : (method.title === 'Email' ? `mailto:${method.contact}` : (method.title === 'Телефон' ? `tel:${method.contact.replace(/[^\d+]/g, '')}` : '#'))} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-pink-500 transition-colors duration-200">
                     {method.contact}
                   </a>
                 </div>
-                <Button 
-                  className={`w-full ${
-                    method.primary 
-                      ? 'bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700' 
-                      : 'bg-gray-700 hover:bg-gray-600'
-                  } font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
-                >
-                  {method.action}
-                </Button>
+                {method.link ? (
+                  <a href={method.link} target="_blank" rel="noopener noreferrer">
+                    <Button 
+                      className={`w-full ${
+                        method.primary 
+                          ? 'bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700' 
+                          : 'bg-gray-700 hover:bg-gray-600'
+                      } font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
+                    >
+                      {method.action}
+                    </Button>
+                  </a>
+                ) : (
+                  <Button 
+                    className={`w-full ${
+                      method.primary 
+                        ? 'bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700' 
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    } font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
+                    onClick={() => {
+                      if (method.title === 'Email') {
+                        window.location.href = `mailto:${method.contact}`;
+                      } else if (method.title === 'Телефон') {
+                        window.location.href = `tel:${method.contact.replace(/[^\\d+]/g, '')}`;
+                      }
+                    }}
+                  >
+                    {method.action}
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}
