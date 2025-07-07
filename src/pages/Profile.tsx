@@ -136,17 +136,17 @@ const Profile = () => {
             </Button>
           </div>
           <div className="flex justify-between mt-8 gap-4">
-            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center">
-              <div className="text-gray-400 mb-1">Потрачено за всё время</div>
-              <div className="text-green-400 text-xl font-bold">{spent}₽</div>
+            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[90px]">
+              <span className="text-gray-400 text-base mb-1">Потрачено за всё время</span>
+              <span className="text-2xl font-extrabold text-green-400">{spent}₽</span>
             </div>
-            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center">
-              <div className="text-gray-400 mb-1">Открыто кейсов</div>
-              <div className="text-blue-400 text-xl font-bold">{casesOpened}</div>
+            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[90px]">
+              <span className="text-gray-400 text-base mb-1">Открыто кейсов</span>
+              <span className="text-2xl font-extrabold text-blue-400">{casesOpened}</span>
             </div>
-            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center">
-              <div className="text-gray-400 mb-1">Куплено товаров</div>
-              <div className="text-pink-400 text-xl font-bold">{purchased}</div>
+            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[90px]">
+              <span className="text-gray-400 text-base mb-1">Куплено товаров</span>
+              <span className="text-2xl font-extrabold text-pink-400">{purchased}</span>
             </div>
           </div>
         </div>
@@ -206,32 +206,14 @@ const Profile = () => {
                         <h3 className="text-white font-semibold text-sm line-clamp-2">
                           {item.name}
                         </h3>
-                        <div className="flex items-center justify-between">
-                          <span className="text-green-400 font-bold">
-                            {Math.floor(item.price * 0.8)}₽
-                          </span>
-                          <span className="text-gray-400 text-xs line-through">
-                            {item.price}₽
-                          </span>
-                        </div>
+                        <div className="text-green-400 font-bold text-lg mb-2">{item.price}₽</div>
                         <div className="flex gap-2 mt-2">
                           <Button
-                            size="sm"
+                            variant="primary"
+                            className="w-1/2"
                             onClick={() => handleSellItem(index)}
-                            disabled={item.status === 'sold' || item.status === 'withdrawn' || sellingItem === index}
-                            className={`w-1/2 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 border-none flex items-center justify-center gap-1 ${item.status === 'sold' ? 'opacity-60 cursor-not-allowed' : ''}`}
                           >
-                            {item.status === 'sold' ? 'Продано' : sellingItem === index ? (
-                              <div className="flex items-center">
-                                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
-                                Продажа...
-                              </div>
-                            ) : (
-                              <>
-                                <DollarSign className="w-3 h-3" />
-                                Продать
-                              </>
-                            )}
+                            Продать за {item.price}₽
                           </Button>
                           <Button
                             size="sm"

@@ -28,7 +28,11 @@ const InventoryContext = createContext<InventoryContextType | undefined>(undefin
 export const InventoryProvider = ({ children }: { children: React.ReactNode }) => {
   const [items, setItems] = useState<InventoryItem[]>(() => {
     const saved = localStorage.getItem('vaultory_inventory');
-    return saved ? JSON.parse(saved) : [];
+    let arr = saved ? JSON.parse(saved) : [];
+    // Фильтруем старые/проданные/выведенные предметы и без статуса
+    arr = arr.filter((item: any) => item.status && item.status !== 'sold' && item.status !== 'withdrawn');
+    localStorage.setItem('vaultory_inventory', JSON.stringify(arr));
+    return arr;
   });
   const [casesOpened, setCasesOpened] = useState(() => {
     const saved = localStorage.getItem('vaultory_cases_opened');
@@ -70,8 +74,8 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
   const sellItem = (index: number) => {
     const item = items[index];
     if (!item || item.status === 'sold') return 0;
-    const sellPrice = Math.floor(item.price * 0.8);
-    setItems(prev => prev.filter((_, i) => i !== index)); // удаляем предмет
+    const sellPrice = item.price; // теперь 100% стоимости
+    setItems(prev => prev.filter((_, i) => i !== index));
     return sellPrice;
   };
 
