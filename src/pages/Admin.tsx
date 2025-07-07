@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Shield, Users, Package, BarChart3, Settings, ShoppingCart, FolderOpen, Gift, Gamepad2 } from 'lucide-react';
 import AdminCases from '@/components/admin/AdminCases';
 import AdminUsers from '@/components/admin/AdminUsers';
@@ -10,6 +10,7 @@ import AdminProducts from '@/components/admin/AdminProducts';
 import AdminOrders from '@/components/admin/AdminOrders';
 import AdminCategories from '@/components/admin/AdminCategories';
 import AdminGames from '@/components/admin/AdminGames';
+import { Button } from '@/components/ui/button';
 
 const sections = [
   { key: 'stats', label: 'Статистика', icon: BarChart3 },
@@ -23,8 +24,15 @@ const sections = [
 ];
 
 const Admin = () => {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading, telegramUser, profile } = useAuth();
   const [activeSection, setActiveSection] = useState('stats');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth?redirectTo=/admin', { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   if (loading) {
     return (
@@ -34,8 +42,16 @@ const Admin = () => {
     );
   }
 
-  if (!user || !isAdmin) {
-    return <Navigate to="/auth" replace />;
+  if (user && !isAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="bg-gray-800 rounded-xl p-8 shadow-xl text-center">
+          <h2 className="text-2xl font-bold text-red-400 mb-4">Недостаточно прав</h2>
+          <p className="text-gray-300 mb-4">У вас нет доступа к административной панели.</p>
+          <Button onClick={() => navigate('/')}>На главную</Button>
+        </div>
+      </div>
+    );
   }
 
   return (
