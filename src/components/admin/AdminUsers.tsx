@@ -8,8 +8,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Edit, Crown, User, Ban, CheckCircle, Search } from 'lucide-react';
 import type { Tables } from '@/integrations/supabase/types';
+import { useAuth } from '@/hooks/useAuth';
 
-type User = Tables<'user_stats'> & Tables<'profiles'>;
+type User = (Tables<'user_stats'> & Tables<'profiles'>) & { role: 'user' | 'admin' | 'superadmin' };
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -21,6 +22,7 @@ const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const { toast } = useToast();
+  const { telegramUser } = useAuth();
 
   useEffect(() => {
     fetchUsers();
@@ -223,6 +225,7 @@ const AdminUsers = () => {
                   <TableHead className="text-gray-300">Внесено</TableHead>
                   <TableHead className="text-gray-300">Заказы</TableHead>
                   <TableHead className="text-gray-300">Регистрация</TableHead>
+                  <TableHead className="text-gray-300">Роль</TableHead>
                   <TableHead className="text-gray-300">Действия</TableHead>
                 </TableRow>
               </TableHeader>
@@ -231,7 +234,9 @@ const AdminUsers = () => {
                   <TableRow key={user.id}>
                     <TableCell className="text-white">
                       <div className="flex items-center space-x-2">
-                        {user.role === 'admin' ? (
+                        {String(user.role) === 'superadmin' ? (
+                          <Crown className="w-4 h-4 text-yellow-500" />
+                        ) : String(user.role) === 'admin' ? (
                           <Crown className="w-4 h-4 text-yellow-500" />
                         ) : (
                           <User className="w-4 h-4 text-gray-400" />
@@ -345,6 +350,15 @@ const AdminUsers = () => {
                       {new Date(user.created_at).toLocaleDateString('ru-RU')}
                     </TableCell>
                     <TableCell>
+                      {String(user.role) === 'superadmin' ? (
+                        <span className="px-2 py-1 rounded bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold text-xs">superadmin</span>
+                      ) : String(user.role) === 'admin' ? (
+                        <span className="px-2 py-1 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold text-xs">admin</span>
+                      ) : (
+                        <span className="px-2 py-1 rounded bg-gray-700 text-white font-bold text-xs">user</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
                       <div className="flex space-x-2">
                         <Button
                           size="sm"
@@ -353,13 +367,11 @@ const AdminUsers = () => {
                         >
                           {user.status === 'banned' ? 'Разбанить' : 'Забанить'}
                         </Button>
-                        <Button
-                          size="sm"
-                          variant={user.role === 'admin' ? 'destructive' : 'default'}
-                          onClick={() => toggleRole(user.id, user.role)}
-                        >
-                          {user.role === 'admin' ? 'Снять админа' : 'Сделать админом'}
-                        </Button>
+                        {telegramUser?.username === 'Hub4ic' && String(user.role) !== 'superadmin' && (
+                          <Button size="sm" variant="outline" onClick={() => toggleRole(user.id, user.role)}>
+                            {String(user.role) === 'admin' ? 'Снять админа' : 'Назначить админом'}
+                          </Button>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>
