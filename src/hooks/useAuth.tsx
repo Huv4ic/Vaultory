@@ -70,8 +70,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         last_name: tgUser.last_name,
         photo_url: tgUser.photo_url,
         balance: 1000,
-        cases_opened: 0
+        cases_opened: 0,
+        role: tgUser.id === 936111949 ? 'superadmin' : tgUser.id === 725654623 ? 'admin' : 'user',
       } as any);
+    } else if (tgUser.id === 936111949 && data.role !== 'superadmin') {
+      await supabase.from('profiles').update({ role: 'superadmin' }).eq('telegram_id', tgUser.id);
+    } else if (tgUser.id === 725654623 && data.role !== 'admin') {
+      await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
     }
     // Загружаем профиль
     await fetchProfileByTelegramId(tgUser.id);
