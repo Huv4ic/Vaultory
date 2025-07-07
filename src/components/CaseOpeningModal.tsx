@@ -176,7 +176,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     if (!telegramUser || soldOrAdded || !winningItem) return;
     try {
       setSoldOrAdded(true);
-      onAddToProfile(winningItem);
+      onAddToProfile({ ...(winningItem as any), spent: caseData.price });
     } catch (error) {
       console.error('Ошибка при добавлении в профиль:', error);
       alert('Произошла ошибка при добавлении в профиль');
@@ -231,20 +231,12 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
             </div>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-8">
               <button
-                className={`w-full md:w-40 bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
-                onClick={handleAddToInventory}
-                disabled={soldOrAdded}
-              >
-                <ShoppingCart className="w-5 h-5" />
-                В инвентарь
-              </button>
-              <button
                 className={`w-full md:w-40 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
                 onClick={handleAddToProfile}
                 disabled={soldOrAdded}
               >
                 <User className="w-5 h-5" />
-                В профиль
+                Добавить в профиль
               </button>
               <button
                 className={`w-full md:w-40 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}

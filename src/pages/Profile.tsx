@@ -18,7 +18,7 @@ const TELEGRAM_BOT = 'vaultory_notify_bot';
 
 const Profile = () => {
   const { telegramUser, balance, signOutTelegram, setBalance, profile, setTelegramUser } = useAuth();
-  const { items: inventoryItems, sellItem, withdrawItem, getTotalValue, getCasesOpened } = useInventory();
+  const { items, casesOpened, spent, purchased, getTotalValue, sellItem, withdrawItem, getCasesOpened } = useInventory();
   const { toast } = useToast();
   const [sellingItem, setSellingItem] = useState<number | null>(null);
   const tgWidgetRef = useRef<HTMLDivElement>(null);
@@ -135,18 +135,18 @@ const Profile = () => {
               Выйти
             </Button>
           </div>
-          <div className="w-full flex flex-col md:flex-row md:justify-between gap-4 mt-2">
-            <div className="flex-1 bg-gray-900/80 rounded-xl p-4 flex flex-col items-center border border-gray-700">
-              <span className="text-gray-400 text-sm mb-1">Потрачено за всё время</span>
-              <span className="text-lg font-bold text-green-400">{profile?.total_spent ?? 0}₽</span>
+          <div className="flex justify-between mt-8 gap-4">
+            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center">
+              <div className="text-gray-400 mb-1">Потрачено за всё время</div>
+              <div className="text-green-400 text-xl font-bold">{spent}₽</div>
             </div>
-            <div className="flex-1 bg-gray-900/80 rounded-xl p-4 flex flex-col items-center border border-gray-700">
-              <span className="text-gray-400 text-sm mb-1">Открыто кейсов</span>
-              <span className="text-lg font-bold text-blue-400">{profile?.cases_opened ?? 0}</span>
+            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center">
+              <div className="text-gray-400 mb-1">Открыто кейсов</div>
+              <div className="text-blue-400 text-xl font-bold">{casesOpened}</div>
             </div>
-            <div className="flex-1 bg-gray-900/80 rounded-xl p-4 flex flex-col items-center border border-gray-700">
-              <span className="text-gray-400 text-sm mb-1">Куплено товаров</span>
-              <span className="text-lg font-bold text-purple-400">{profile?.total_orders ?? 0}</span>
+            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center">
+              <div className="text-gray-400 mb-1">Куплено товаров</div>
+              <div className="text-pink-400 text-xl font-bold">{purchased}</div>
             </div>
           </div>
         </div>
@@ -158,14 +158,17 @@ const Profile = () => {
                 <Package className="w-5 h-5" />
                 <span>Инвентарь</span>
                 <Badge variant="secondary" className="ml-2">
-                  {inventoryItems.length} предметов
+                  {items.length} предметов
                 </Badge>
-                <span className="ml-4 text-green-400 font-bold">Сумма: {getTotalValue()}₽</span>
-                <span className="ml-4 text-blue-400 font-bold">Открыто кейсов: {getCasesOpened()}</span>
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="bg-gray-700 text-white px-3 py-1 rounded-full text-sm">{items.length} предметов</span>
+                  <span className="text-green-300 font-bold">Сумма: {getTotalValue()}₽</span>
+                  <span className="text-blue-400 font-bold">Открыто кейсов: {casesOpened}</span>
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {inventoryItems.length === 0 ? (
+              {items.length === 0 ? (
                 <div className="text-center py-12">
                   <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-white mb-2">Инвентарь пуст</h3>
@@ -180,7 +183,7 @@ const Profile = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {inventoryItems.map((item, index) => (
+                  {items.map((item, index) => (
                     <div
                       key={index}
                       className="bg-gray-700/50 rounded-xl p-4 border border-gray-600/50 hover:border-red-500/50 transition-all duration-300"

@@ -18,6 +18,9 @@ interface InventoryContextType {
   clear: () => void;
   getTotalValue: () => number;
   getCasesOpened: () => number;
+  casesOpened: number;
+  spent: number;
+  purchased: number;
 }
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
@@ -27,13 +30,37 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     const saved = localStorage.getItem('vaultory_inventory');
     return saved ? JSON.parse(saved) : [];
   });
+  const [casesOpened, setCasesOpened] = useState(() => {
+    const saved = localStorage.getItem('vaultory_cases_opened');
+    return saved ? Number(saved) : 0;
+  });
+  const [spent, setSpent] = useState(() => {
+    const saved = localStorage.getItem('vaultory_spent');
+    return saved ? Number(saved) : 0;
+  });
+  const [purchased, setPurchased] = useState(() => {
+    const saved = localStorage.getItem('vaultory_purchased');
+    return saved ? Number(saved) : 0;
+  });
 
   useEffect(() => {
     localStorage.setItem('vaultory_inventory', JSON.stringify(items));
   }, [items]);
+  useEffect(() => {
+    localStorage.setItem('vaultory_cases_opened', String(casesOpened));
+  }, [casesOpened]);
+  useEffect(() => {
+    localStorage.setItem('vaultory_spent', String(spent));
+  }, [spent]);
+  useEffect(() => {
+    localStorage.setItem('vaultory_purchased', String(purchased));
+  }, [purchased]);
 
-  const addItem = (item: InventoryItem) => {
+  const addItem = (item: InventoryItem & { spent?: number; purchased?: boolean }) => {
     setItems(prev => [...prev, { ...item, status: 'new' }]);
+    setCasesOpened(prev => prev + 1);
+    if (item.spent) setSpent(prev => prev + item.spent);
+    if (item.purchased) setPurchased(prev => prev + 1);
   };
 
   const removeItem = (index: number) => {
@@ -41,28 +68,32 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
   };
 
   const sellItem = (index: number) => {
-    setItems(prev => prev.map((item, i) => i === index ? { ...item, status: 'sold' } : item));
     const item = items[index];
     if (!item || item.status === 'sold') return 0;
-    return Math.floor(item.price * 0.8);
+    const sellPrice = Math.floor(item.price * 0.8);
+    setItems(prev => prev.filter((_, i) => i !== index)); // удаляем предмет
+    return sellPrice;
   };
 
   const withdrawItem = (index: number) => {
-    setItems(prev => prev.map((item, i) => i === index ? { ...item, status: 'withdrawn' } : item));
+    setItems(prev => prev.filter((_, i) => i !== index)); // удаляем предмет
   };
 
   const getTotalValue = () => {
     return items.filter(item => item.status !== 'sold').reduce((sum, item) => sum + item.price, 0);
   };
 
-  const getCasesOpened = () => {
-    return items.length;
+  const getCasesOpened = () => casesOpened;
+
+  const clear = () => {
+    setItems([]);
+    setCasesOpened(0);
+    setSpent(0);
+    setPurchased(0);
   };
 
-  const clear = () => setItems([]);
-
   return (
-    <InventoryContext.Provider value={{ items, addItem, removeItem, sellItem, withdrawItem, clear, getTotalValue, getCasesOpened }}>
+    <InventoryContext.Provider value={{ items, addItem, removeItem, sellItem, withdrawItem, clear, getTotalValue, getCasesOpened, casesOpened, spent, purchased }}>
       {children}
     </InventoryContext.Provider>
   );
