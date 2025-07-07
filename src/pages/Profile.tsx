@@ -135,16 +135,16 @@ const Profile = () => {
               Выйти
             </Button>
           </div>
-          <div className="flex justify-between mt-8 gap-4">
-            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[90px]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+            <div className="bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[110px] min-w-[140px]">
               <span className="text-gray-400 text-base mb-1">Потрачено за всё время</span>
               <span className="text-2xl font-extrabold text-green-400">{spent}₽</span>
             </div>
-            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[90px]">
+            <div className="bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[110px] min-w-[140px]">
               <span className="text-gray-400 text-base mb-1">Открыто кейсов</span>
               <span className="text-2xl font-extrabold text-blue-400">{casesOpened}</span>
             </div>
-            <div className="flex-1 bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[90px]">
+            <div className="bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[110px] min-w-[140px]">
               <span className="text-gray-400 text-base mb-1">Куплено товаров</span>
               <span className="text-2xl font-extrabold text-pink-400">{purchased}</span>
             </div>
