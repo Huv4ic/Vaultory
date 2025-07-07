@@ -1,4 +1,3 @@
-
 -- Создаем таблицу категорий товаров
 CREATE TABLE public.categories (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
