@@ -23,16 +23,18 @@ const sections = [
   { key: 'settings', label: 'Настройки', icon: Settings },
 ];
 
+const OWNER_TELEGRAM_ID = 936111949;
+
 const Admin = () => {
-  const { user, isAdmin, loading, telegramUser, profile } = useAuth();
+  const { telegramUser, loading } = useAuth();
   const [activeSection, setActiveSection] = useState('stats');
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && !telegramUser) {
       navigate('/auth?redirectTo=/admin', { replace: true });
     }
-  }, [user, loading, navigate]);
+  }, [telegramUser, loading, navigate]);
 
   if (loading) {
     return (
@@ -42,7 +44,11 @@ const Admin = () => {
     );
   }
 
-  if (user && !isAdmin) {
+  if (!telegramUser) {
+    return null;
+  }
+
+  if (telegramUser.id !== OWNER_TELEGRAM_ID) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="bg-gray-800 rounded-xl p-8 shadow-xl text-center">
