@@ -157,15 +157,12 @@ const Profile = () => {
               <CardTitle className="text-white flex items-center space-x-2">
                 <Package className="w-5 h-5" />
                 <span>Инвентарь</span>
-                <Badge variant="secondary" className="ml-2">
-                  {items.length} предметов
-                </Badge>
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="bg-gray-700 text-white px-3 py-1 rounded-full text-sm">{items.length} предметов</span>
-                  <span className="text-green-300 font-bold">Сумма: {getTotalValue()}₽</span>
-                  <span className="text-blue-400 font-bold">Открыто кейсов: {casesOpened}</span>
-                </div>
               </CardTitle>
+              <div className="flex items-center gap-4 mt-4">
+                <span className="bg-gray-700 text-white px-3 py-1 rounded-full text-sm">{items.length} предметов</span>
+                <span className="text-green-300 font-bold">Сумма: {getTotalValue()}₽</span>
+                <span className="text-blue-400 font-bold">Открыто кейсов: {casesOpened}</span>
+              </div>
             </CardHeader>
             <CardContent>
               {items.length === 0 ? (
