@@ -1,4 +1,3 @@
-
 -- Проверим и создадим недостающие столбцы в таблице games если их нет
 DO $$ 
 BEGIN
@@ -68,3 +67,5 @@ CREATE POLICY "Anyone can view active games" ON public.games FOR SELECT USING (i
 -- Обновляем политику для кейсов чтобы показывать только активные
 DROP POLICY IF EXISTS "Anyone can view cases" ON public.cases;
 CREATE POLICY "Anyone can view active cases" ON public.cases FOR SELECT USING (is_active = true);
+
+ALTER TABLE profiles ADD COLUMN telegram_id bigint UNIQUE;
