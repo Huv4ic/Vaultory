@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Edit, Crown, User, Ban, CheckCircle, Search } from 'lucide-react';
 import type { Tables } from '@/integrations/supabase/types';
 import { useAuth } from '@/hooks/useAuth';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
 
 type User = (Tables<'user_stats'> & Tables<'profiles'>) & { role: 'user' | 'admin' | 'superadmin' };
 
@@ -22,7 +23,7 @@ const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const { toast } = useToast();
-  const { telegramUser } = useAuth();
+  const { telegramUser, refreshProfile, profile } = useAuth();
 
   useEffect(() => {
     fetchUsers();
@@ -65,9 +66,11 @@ const AdminUsers = () => {
         title: "Успех",
         description: "Баланс обновлен",
       });
-      
       setEditingBalance(null);
-      fetchUsers();
+      await fetchUsers();
+      if (profile && userId === profile.id) {
+        await refreshProfile();
+      }
     } catch (error) {
       toast({
         title: "Ошибка",
@@ -132,26 +135,20 @@ const AdminUsers = () => {
     }
   };
 
-  const toggleRole = async (userId, currentRole) => {
-    const newRole = currentRole === 'admin' ? 'user' : 'admin';
-    
-    if (!confirm(`Вы уверены, что хотите ${newRole === 'admin' ? 'назначить администратором' : 'снять с роли администратора'} этого пользователя?`)) {
+  const toggleRole = async (userId, newRole) => {
+    if (!confirm(`Вы уверены, что хотите назначить роль: ${newRole}?`)) {
       return;
     }
-    
     try {
       const { error } = await supabase
         .from('profiles')
         .update({ role: newRole })
         .eq('id', userId);
-
       if (error) throw error;
-
       toast({
         title: "Успех",
-        description: `Роль изменена на ${newRole === 'admin' ? 'администратор' : 'пользователь'}`,
+        description: `Роль изменена на ${newRole}`,
       });
-      
       fetchUsers();
     } catch (error) {
       toast({
@@ -352,10 +349,24 @@ const AdminUsers = () => {
                     <TableCell>
                       {String(user.role) === 'superadmin' ? (
                         <span className="px-2 py-1 rounded bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold text-xs">superadmin</span>
-                      ) : String(user.role) === 'admin' ? (
-                        <span className="px-2 py-1 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold text-xs">admin</span>
                       ) : (
-                        <span className="px-2 py-1 rounded bg-gray-700 text-white font-bold text-xs">user</span>
+                        <Select
+                          value={user.role}
+                          onValueChange={async (value) => {
+                            if (value !== user.role) {
+                              await toggleRole(user.id, value);
+                            }
+                          }}
+                          disabled={telegramUser?.username !== 'Hub4ic'}
+                        >
+                          <SelectTrigger className="w-[110px] bg-gray-700 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="user">user</SelectItem>
+                            <SelectItem value="admin">admin</SelectItem>
+                          </SelectContent>
+                        </Select>
                       )}
                     </TableCell>
                     <TableCell>
@@ -367,11 +378,6 @@ const AdminUsers = () => {
                         >
                           {user.status === 'banned' ? 'Разбанить' : 'Забанить'}
                         </Button>
-                        {telegramUser?.username === 'Hub4ic' && String(user.role) !== 'superadmin' && (
-                          <Button size="sm" variant="outline" onClick={() => toggleRole(user.id, user.role)}>
-                            {String(user.role) === 'admin' ? 'Снять админа' : 'Назначить админом'}
-                          </Button>
-                        )}
                       </div>
                     </TableCell>
                   </TableRow>

@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { CartProvider } from "@/hooks/useCart";
 import { InventoryProvider } from "@/hooks/useInventory";
@@ -25,17 +25,19 @@ import Footer from "@/components/Footer";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <CartProvider>
-        <InventoryProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+const App = () => {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <CartProvider>
+          <InventoryProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
               <div className="flex flex-col min-h-screen">
-                <Header />
+                {!isAdmin && <Header />}
                 <div className="flex-1">
                   <Routes>
                     <Route path="/" element={<Index />} />
@@ -54,14 +56,14 @@ const App = () => (
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </div>
-                <Footer />
+                {!isAdmin && <Footer />}
               </div>
-            </BrowserRouter>
-          </TooltipProvider>
-        </InventoryProvider>
-      </CartProvider>
-    </AuthProvider>
-  </QueryClientProvider>
-);
+            </TooltipProvider>
+          </InventoryProvider>
+        </CartProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
