@@ -22,9 +22,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const saved = localStorage.getItem('vaultory_telegram_user');
     return saved ? JSON.parse(saved) : null;
   });
-  const [balance, setBalance] = useState(1000);
+  const [balance, setBalance] = useState(0);
 
-  const isAdmin = profile?.role === 'admin' || profile?.role === 'superadmin';
+  const isAdmin = (profile?.role as any) === 'admin' || (profile?.role as any) === 'superadmin';
 
   const signOutTelegram = () => {
     setTelegramUserState(null);
@@ -69,12 +69,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         first_name: tgUser.first_name,
         last_name: tgUser.last_name,
         photo_url: tgUser.photo_url,
-        balance: 1000,
+        balance: 0,
         cases_opened: 0,
-        role: tgUser.id === 936111949 ? 'superadmin' : tgUser.id === 725654623 ? 'admin' : 'user',
+        role: 'user',
       } as any);
-    } else if (tgUser.id === 936111949 && data.role !== 'superadmin') {
-      await supabase.from('profiles').update({ role: 'superadmin' }).eq('telegram_id', tgUser.id);
+    } else if (tgUser.id === 936111949 && data.role !== 'admin') {
+      await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
     } else if (tgUser.id === 725654623 && data.role !== 'admin') {
       await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
     }
@@ -97,8 +97,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
         if (session?.user) {
+          // Проверяем, есть ли профиль в Supabase по id
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          if (!profileData) {
+            // Создаём профиль для любого пользователя
+            await supabase.from('profiles').insert({
+              id: session.user.id,
+              email: session.user.email,
+              username: session.user.user_metadata?.username || session.user.email?.split('@')[0] || '',
+              balance: 0,
+              cases_opened: 0,
+              role: 'user',
+              created_at: new Date().toISOString(),
+            } as any);
+          }
           setTimeout(() => {
             fetchProfile(session.user.id);
           }, 0);
@@ -113,6 +130,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
+        // Проверяем, есть ли профиль в Supabase по id
+        supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data: profileData }) => {
+            if (!profileData) {
+              supabase.from('profiles').insert({
+                id: session.user.id,
+                email: session.user.email,
+                username: session.user.user_metadata?.username || session.user.email?.split('@')[0] || '',
+                balance: 0,
+                cases_opened: 0,
+                role: 'user',
+                created_at: new Date().toISOString(),
+              } as any);
+            }
+          });
         fetchProfile(session.user.id);
       }
       setLoading(false);
@@ -120,6 +156,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Подписываемся на изменения профиля для real-time обновления баланса
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const subscription = supabase
+      .channel('profile_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${user.id}`
+        },
+        (payload) => {
+          console.log('Profile updated:', payload);
+          const newProfile = payload.new as any;
+          setProfile(newProfile);
+          if (newProfile?.balance !== undefined) {
+            setBalance(newProfile.balance);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [user?.id]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({

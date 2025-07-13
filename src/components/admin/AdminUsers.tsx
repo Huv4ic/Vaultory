@@ -27,12 +27,34 @@ const AdminUsers = () => {
 
   useEffect(() => {
     fetchUsers();
+    
+    // Подписываемся на изменения в таблице profiles для real-time обновления
+    const subscription = supabase
+      .channel('profiles_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'profiles'
+        },
+        (payload) => {
+          console.log('Profile change detected:', payload);
+          // Обновляем список пользователей при любых изменениях
+          fetchUsers();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const fetchUsers = async () => {
     try {
       const { data, error } = await supabase
-        .from('user_stats')
+        .from('profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -55,23 +77,48 @@ const AdminUsers = () => {
 
   const updateBalance = async (userId, balance) => {
     try {
+      const newBalance = parseInt(balance);
+      if (isNaN(newBalance) || newBalance < 0) {
+        toast({
+          title: "Ошибка",
+          description: "Баланс должен быть положительным числом",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from('profiles')
-        .update({ balance: parseInt(balance) })
+        .update({ 
+          balance: newBalance,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', userId);
 
       if (error) throw error;
 
       toast({
         title: "Успех",
-        description: "Баланс обновлен",
+        description: `Баланс обновлен на ${newBalance}₽`,
       });
       setEditingBalance(null);
-      await fetchUsers();
+      setNewBalance('');
+      
+      // Обновляем локальное состояние немедленно
+      setUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId 
+            ? { ...user, balance: newBalance }
+            : user
+        )
+      );
+      
+      // Если это текущий пользователь, обновляем его профиль
       if (profile && userId === profile.id) {
         await refreshProfile();
       }
     } catch (error) {
+      console.error('Ошибка при обновлении баланса:', error);
       toast({
         title: "Ошибка",
         description: "Не удалось обновить баланс",
