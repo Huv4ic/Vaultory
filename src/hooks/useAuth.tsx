@@ -34,16 +34,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const fetchProfile = async (userId: string) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
-    setProfile(data);
-    if (data?.balance) {
-      setBalance(data.balance);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      if (error) throw error;
+      setProfile(data);
+      if (data?.balance) {
+        setBalance(data.balance);
+      }
+      return data;
+    } catch (error) {
+      setProfile(null);
+      setBalance(0);
+      return null;
     }
-    return data;
   };
 
   const refreshProfile = async () => {
@@ -56,13 +63,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setTelegramUserState(tgUser);
     localStorage.setItem('vaultory_telegram_user', JSON.stringify(tgUser));
     // Проверяем, есть ли профиль в Supabase
+    // @ts-expect-error
     const { data } = await supabase
       .from('profiles')
       .select('*')
       .eq('telegram_id', tgUser.id)
       .single();
     if (!data) {
-      // Создаём профиль
       await supabase.from('profiles').insert({
         telegram_id: tgUser.id,
         username: tgUser.username,
@@ -72,24 +79,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         balance: 0,
         cases_opened: 0,
         role: 'user',
+        status: 'active',
       } as any);
-    } else if (tgUser.id === 936111949 && data.role !== 'admin') {
-      await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
-    } else if (tgUser.id === 725654623 && data.role !== 'admin') {
-      await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
+    } else {
+      if (data.status !== 'active') {
+        await supabase.from('profiles').update({ status: 'active' }).eq('telegram_id', tgUser.id);
+      }
+      if (tgUser.id === 936111949 && data.role !== 'admin') {
+        await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
+      } else if (tgUser.id === 725654623 && data.role !== 'admin') {
+        await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
+      }
     }
-    // Загружаем профиль
     await fetchProfileByTelegramId(tgUser.id);
   };
 
   const fetchProfileByTelegramId = async (telegramId: number) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('telegram_id', telegramId)
-      .single();
-    setProfile(data);
-    if (data?.balance) setBalance(data.balance);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('telegram_id', telegramId)
+        .single();
+      if (error) throw error;
+      setProfile(data);
+      if (data?.balance) setBalance(data.balance);
+    } catch (error) {
+      setProfile(null);
+      setBalance(0);
+    }
   };
 
   useEffect(() => {
