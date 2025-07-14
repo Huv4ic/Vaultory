@@ -1,3 +1,7 @@
+-- Добавляем столбцы, если их нет
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS total_spent INTEGER DEFAULT 0;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS cases_opened INTEGER DEFAULT 0;
+
 -- Исправляем баланс по умолчанию с 1000 на 0
 -- Обновляем функцию создания нового пользователя
 CREATE OR REPLACE FUNCTION public.handle_new_user()
