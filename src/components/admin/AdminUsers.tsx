@@ -227,37 +227,44 @@ const AdminUsers = () => {
           <Button
             onClick={async () => {
               try {
+                // 1. Сначала создаём пользователя через Supabase Auth
+                const email = `testuser_${Date.now()}@example.com`;
+                const password = crypto.randomUUID();
+                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
+                if (signUpError || !signUpData?.user) {
+                  toast({
+                    title: "Ошибка",
+                    description: `Не удалось создать пользователя в auth: ${signUpError?.message || 'Нет user'}`,
+                    variant: "destructive",
+                  });
+                  return;
+                }
+                // 2. Затем создаём профиль с тем же id
                 const testUser = {
-                  id: crypto.randomUUID(),
+                  id: signUpData.user.id,
                   username: `test-user-${Date.now()}`,
                   balance: 1000,
                   cases_opened: 0,
                   role: "user" as "user",
                   status: "active",
                 };
-                
-                const { data, error } = await supabase
+                const { error: profileError } = await supabase
                   .from('profiles')
-                  .insert([testUser])
-                  .select()
-                  .single();
-                
-                if (error) {
-                  console.error('Error creating test user:', error);
+                  .insert([testUser]);
+                if (profileError) {
                   toast({
                     title: "Ошибка",
-                    description: `Не удалось создать тестового пользователя: ${error.message}`,
+                    description: `Не удалось создать профиль: ${profileError.message}`,
                     variant: "destructive",
                   });
-                } else {
-                  toast({
-                    title: "Успех",
-                    description: "Тестовый пользователь создан",
-                  });
-                  fetchUsers();
+                  return;
                 }
+                toast({
+                  title: "Успех",
+                  description: "Тестовый пользователь создан",
+                });
+                fetchUsers();
               } catch (error) {
-                console.error('Unexpected error:', error);
                 toast({
                   title: "Ошибка",
                   description: "Неожиданная ошибка при создании пользователя",
