@@ -232,7 +232,7 @@ const AdminUsers = () => {
             onClick={async () => {
               try {
                 const testUser = {
-                  id: `test-${Date.now()}`,
+                  id: crypto.randomUUID(),
                   username: `test-user-${Date.now()}`,
                   balance: 1000,
                   cases_opened: 0,
