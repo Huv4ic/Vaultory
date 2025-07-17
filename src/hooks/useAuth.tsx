@@ -60,23 +60,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const setTelegramUser = async (tgUser: TelegramUser) => {
-    console.log('Setting Telegram user:', tgUser);
     setTelegramUserState(tgUser);
     localStorage.setItem('vaultory_telegram_user', JSON.stringify(tgUser));
     
     try {
       // Проверяем, есть ли профиль в Supabase
-      console.log('Checking if profile exists for telegram_id:', tgUser.id);
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('telegram_id', tgUser.id)
         .single();
       
-      console.log('Profile check result:', { data, error });
-      
       if (!data) {
-        console.log('Creating new profile for Telegram user');
         const { data: newProfile, error: insertError } = await supabase.from('profiles').insert({
           telegram_id: tgUser.id,
           username: tgUser.username,
@@ -87,13 +82,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           created_at: new Date().toISOString(),
         } as any).select().single();
         
-        console.log('Profile creation result:', { newProfile, insertError });
-        
         if (insertError) {
           console.error('Error creating profile:', insertError);
         }
       } else {
-        console.log('Profile already exists, updating status if needed');
         if (data.status !== 'active') {
           await supabase.from('profiles').update({ status: 'active' }).eq('telegram_id', tgUser.id);
         }

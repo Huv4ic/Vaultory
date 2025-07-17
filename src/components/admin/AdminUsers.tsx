@@ -53,17 +53,13 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      console.log('Fetching users...');
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
-      console.log('Supabase response:', { data, error });
-
       if (error) throw error;
       
-      console.log('Users found:', data?.length || 0);
       setUsers((data || []).map((user: any) => ({
         ...user,
         role: user.role ?? 'user',
@@ -240,8 +236,6 @@ const AdminUsers = () => {
                   status: "active",
                 };
                 
-                console.log('Creating test user with data:', testUser);
-                
                 const { data, error } = await supabase
                   .from('profiles')
                   .insert([testUser])
@@ -256,7 +250,6 @@ const AdminUsers = () => {
                     variant: "destructive",
                   });
                 } else {
-                  console.log('Test user created successfully:', data);
                   toast({
                     title: "Успех",
                     description: "Тестовый пользователь создан",

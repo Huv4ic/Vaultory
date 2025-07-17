@@ -533,6 +533,7 @@ export type Database = {
           id: string
           role: Database["public"]["Enums"]["user_role"] | null
           status: string | null
+          telegram_id: number | null
           total_deposited: number | null
           total_spent: number | null
           updated_at: string | null
@@ -545,6 +546,7 @@ export type Database = {
           id: string
           role?: Database["public"]["Enums"]["user_role"] | null
           status?: string | null
+          telegram_id?: number | null
           total_deposited?: number | null
           total_spent?: number | null
           updated_at?: string | null
@@ -557,6 +559,7 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["user_role"] | null
           status?: string | null
+          telegram_id?: number | null
           total_deposited?: number | null
           total_spent?: number | null
           updated_at?: string | null
