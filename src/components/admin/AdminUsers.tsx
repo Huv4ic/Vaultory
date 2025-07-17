@@ -238,22 +238,25 @@ const AdminUsers = () => {
                   cases_opened: 0,
                   role: "user" as "user",
                   status: "active",
-                  created_at: new Date().toISOString(),
                 };
+                
+                console.log('Creating test user with data:', testUser);
+                
                 const { data, error } = await supabase
                   .from('profiles')
                   .insert([testUser])
                   .select()
                   .single();
+                
                 if (error) {
                   console.error('Error creating test user:', error);
                   toast({
                     title: "Ошибка",
-                    description: "Не удалось создать тестового пользователя",
+                    description: `Не удалось создать тестового пользователя: ${error.message}`,
                     variant: "destructive",
                   });
                 } else {
-                  console.log('Test user created:', data);
+                  console.log('Test user created successfully:', data);
                   toast({
                     title: "Успех",
                     description: "Тестовый пользователь создан",
@@ -261,7 +264,12 @@ const AdminUsers = () => {
                   fetchUsers();
                 }
               } catch (error) {
-                console.error('Error:', error);
+                console.error('Unexpected error:', error);
+                toast({
+                  title: "Ошибка",
+                  description: "Неожиданная ошибка при создании пользователя",
+                  variant: "destructive",
+                });
               }
             }}
             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
