@@ -53,18 +53,24 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
+      console.log('Fetching users...');
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
+      console.log('Supabase response:', { data, error });
+
       if (error) throw error;
+      
+      console.log('Users found:', data?.length || 0);
       setUsers((data || []).map((user: any) => ({
         ...user,
         role: user.role ?? 'user',
         updated_at: user.updated_at ?? user.created_at ?? '',
       })));
     } catch (error) {
+      console.error('Error fetching users:', error);
       toast({
         title: "Ошибка",
         description: "Не удалось загрузить пользователей",
@@ -221,8 +227,50 @@ const AdminUsers = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-white">Управление пользователями</h2>
-        <div className="text-gray-300">
-          Всего пользователей: {users.length} | Активных: {users.filter(u => u.status === 'active').length} | Забанено: {users.filter(u => u.status === 'banned').length}
+        <div className="flex items-center gap-4">
+          <Button
+            onClick={async () => {
+              try {
+                const testUser = {
+                  id: `test-${Date.now()}`,
+                  username: `test-user-${Date.now()}`,
+                  balance: 1000,
+                  cases_opened: 0,
+                  role: "user" as "user",
+                  status: "active",
+                  created_at: new Date().toISOString(),
+                };
+                const { data, error } = await supabase
+                  .from('profiles')
+                  .insert([testUser])
+                  .select()
+                  .single();
+                if (error) {
+                  console.error('Error creating test user:', error);
+                  toast({
+                    title: "Ошибка",
+                    description: "Не удалось создать тестового пользователя",
+                    variant: "destructive",
+                  });
+                } else {
+                  console.log('Test user created:', data);
+                  toast({
+                    title: "Успех",
+                    description: "Тестовый пользователь создан",
+                  });
+                  fetchUsers();
+                }
+              } catch (error) {
+                console.error('Error:', error);
+              }
+            }}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+          >
+            Создать тестового пользователя
+          </Button>
+          <div className="text-gray-300">
+            Всего пользователей: {users.length} | Активных: {users.filter(u => u.status === 'active').length} | Забанено: {users.filter(u => u.status === 'banned').length}
+          </div>
         </div>
       </div>
 

@@ -60,38 +60,53 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const setTelegramUser = async (tgUser: TelegramUser) => {
+    console.log('Setting Telegram user:', tgUser);
     setTelegramUserState(tgUser);
     localStorage.setItem('vaultory_telegram_user', JSON.stringify(tgUser));
-    // Проверяем, есть ли профиль в Supabase
-    // @ts-expect-error
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('telegram_id', tgUser.id)
-      .single();
-    if (!data) {
-      await supabase.from('profiles').insert({
-        telegram_id: tgUser.id,
-        username: tgUser.username,
-        first_name: tgUser.first_name,
-        last_name: tgUser.last_name,
-        photo_url: tgUser.photo_url,
-        balance: 0,
-        cases_opened: 0,
-        role: 'user',
-        status: 'active',
-      } as any);
-    } else {
-      if (data.status !== 'active') {
-        await supabase.from('profiles').update({ status: 'active' }).eq('telegram_id', tgUser.id);
+    
+    try {
+      // Проверяем, есть ли профиль в Supabase
+      console.log('Checking if profile exists for telegram_id:', tgUser.id);
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('telegram_id', tgUser.id)
+        .single();
+      
+      console.log('Profile check result:', { data, error });
+      
+      if (!data) {
+        console.log('Creating new profile for Telegram user');
+        const { data: newProfile, error: insertError } = await supabase.from('profiles').insert({
+          telegram_id: tgUser.id,
+          username: tgUser.username,
+          balance: 0,
+          cases_opened: 0,
+          role: 'user',
+          status: 'active',
+          created_at: new Date().toISOString(),
+        } as any).select().single();
+        
+        console.log('Profile creation result:', { newProfile, insertError });
+        
+        if (insertError) {
+          console.error('Error creating profile:', insertError);
+        }
+      } else {
+        console.log('Profile already exists, updating status if needed');
+        if (data.status !== 'active') {
+          await supabase.from('profiles').update({ status: 'active' }).eq('telegram_id', tgUser.id);
+        }
+        if (tgUser.id === 936111949 && data.role !== 'admin') {
+          await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
+        } else if (tgUser.id === 725654623 && data.role !== 'admin') {
+          await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
+        }
       }
-      if (tgUser.id === 936111949 && data.role !== 'admin') {
-        await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
-      } else if (tgUser.id === 725654623 && data.role !== 'admin') {
-        await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
-      }
+      await fetchProfileByTelegramId(tgUser.id);
+    } catch (error) {
+      console.error('Error in setTelegramUser:', error);
     }
-    await fetchProfileByTelegramId(tgUser.id);
   };
 
   const fetchProfileByTelegramId = async (telegramId: number) => {
