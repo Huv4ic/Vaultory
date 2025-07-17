@@ -227,31 +227,61 @@ const AdminUsers = () => {
           <Button
             onClick={async () => {
               try {
-                // 1. Сначала создаём пользователя через Supabase Auth
-                const email = `testuser_${Date.now()}@example.com`;
-                const password = crypto.randomUUID();
-                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
-                if (signUpError || !signUpData?.user) {
+                // 1а создаём пользователя через Supabase Auth
+                const email = `test${Date.now()}@test.com`;
+                const password = 'testpassword123';
+                console.log('Creating user with email:', email);
+                
+                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ 
+                  email, 
+                  password,
+                  options: {
+                    data: {
+                      username: `test-user-${Date.now()}`
+                    }
+                  }
+                });
+                
+                if (signUpError) {
+                  console.error('SignUp error:', signUpError);
                   toast({
                     title: "Ошибка",
-                    description: `Не удалось создать пользователя в auth: ${signUpError?.message || 'Нет user'}`,
+                    description: `Не удалось создать пользователя в auth: ${signUpError.message}`,
                     variant: "destructive",
                   });
                   return;
                 }
+                
+                if (!signUpData?.user) {
+                  console.error('No user in signUpData:', signUpData);
+                  toast({
+                    title: "Ошибка",
+                    description: "Не удалось создать пользователя: нет user в ответе",
+                    variant: "destructive",
+                  });
+                  return;
+                }
+                
+                console.log('User created successfully:',signUpData.user.id);
+                
                 // 2. Затем создаём профиль с тем же id
                 const testUser = {
                   id: signUpData.user.id,
                   username: `test-user-${Date.now()}`,
-                  balance: 1000,
+                  balance: 10,
                   cases_opened: 0,
                   role: "user" as "user",
                   status: "active",
                 };
+                
+                console.log('Creating profile with data:', testUser);
+                
                 const { error: profileError } = await supabase
                   .from('profiles')
                   .insert([testUser]);
+                
                 if (profileError) {
+                  console.error('Profile creation error:', profileError);
                   toast({
                     title: "Ошибка",
                     description: `Не удалось создать профиль: ${profileError.message}`,
@@ -259,12 +289,16 @@ const AdminUsers = () => {
                   });
                   return;
                 }
+                
+                console.log('Profile created successfully');
+                
                 toast({
                   title: "Успех",
                   description: "Тестовый пользователь создан",
                 });
                 fetchUsers();
               } catch (error) {
+                console.error('Unexpected error:', error);
                 toast({
                   title: "Ошибка",
                   description: "Неожиданная ошибка при создании пользователя",
