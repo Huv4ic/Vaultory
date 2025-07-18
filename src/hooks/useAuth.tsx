@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (data.status !== 'active') {
           await supabase.from('profiles').update({ status: 'active' }).eq('telegram_id', tgUser.id);
         }
-        if (tgUser.id === 725654623 && data.role !== 'admin') {
+        if (tgUser.id === 936111949 && data.role !== 'admin') {
           await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
         }
       }
