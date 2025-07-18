@@ -74,12 +74,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!data) {
         const { data: newProfile, error: insertError } = await supabase.from('profiles').insert({
           telegram_id: tgUser.id,
-          username: tgUser.username,
+          username: tgUser.username || tgUser.first_name,
           balance: 0,
           cases_opened: 0,
+          total_deposited: 0,
+          total_spent: 0,
           role: 'user',
           status: 'active',
-          created_at: new Date().toISOString(),
         } as any).select().single();
         
         if (insertError) {
@@ -133,12 +134,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             // Создаём профиль для любого пользователя
             await supabase.from('profiles').insert({
               id: session.user.id,
-              email: session.user.email,
               username: session.user.user_metadata?.username || session.user.email?.split('@')[0] || '',
               balance: 0,
               cases_opened: 0,
+              total_deposited: 0,
+              total_spent: 0,
               role: 'user',
-              created_at: new Date().toISOString(),
+              status: 'active',
             } as any);
           }
           setTimeout(() => {
@@ -165,12 +167,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (!profileData) {
               supabase.from('profiles').insert({
                 id: session.user.id,
-                email: session.user.email,
                 username: session.user.user_metadata?.username || session.user.email?.split('@')[0] || '',
                 balance: 0,
                 cases_opened: 0,
+                total_deposited: 0,
+                total_spent: 0,
                 role: 'user',
-                created_at: new Date().toISOString(),
+                status: 'active',
               } as any);
             }
           });
