@@ -149,7 +149,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             // Создаём профиль для любого пользователя
             await supabase.from('profiles').insert({
               id: session.user.id,
-              username: session.user.user_metadata?.username || session.user.email?.split('@')[0] || '',
+              username: session.user?.user_metadata?.username || session.user?.email?.split('@')[0] || '',
               balance: 0,
               cases_opened: 0,
               total_deposited: 0,
@@ -182,7 +182,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (!profileData) {
               supabase.from('profiles').insert({
                 id: session.user.id,
-                username: session.user.user_metadata?.username || session.user.email?.split('@')[0] || '',
+                username: session.user?.user_metadata?.username || session.user?.email?.split('@')[0] || '',
                 balance: 0,
                 cases_opened: 0,
                 total_deposited: 0,

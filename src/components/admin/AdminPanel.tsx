@@ -148,9 +148,9 @@ export default function AdminPanel() {
             <div className="flex items-center space-x-4">
               <span className="text-gray-400">Администратор</span>
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user.user_metadata?.photo_url} />
+                <AvatarImage src={telegramUser?.photo_url} />
                 <AvatarFallback className="bg-gray-700 text-white">
-                  {user.user_metadata?.first_name?.[0] || 'A'}
+                  {telegramUser?.first_name?.[0] || 'A'}
                 </AvatarFallback>
               </Avatar>
             </div>
