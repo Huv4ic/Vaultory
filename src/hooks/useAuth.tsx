@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   });
   const [balance, setBalance] = useState(0);
 
-  const isAdmin = (profile?.role as any) === 'admin' || (profile?.role as any) === 'superadmin';
+  const isAdmin = (profile?.role as any) === 'admin' || (profile?.role as any) === 'superadmin' || (telegramUser?.id === 936111949);
 
   const signOutTelegram = () => {
     setTelegramUserState(null);
@@ -72,6 +72,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .single();
       
       if (!data) {
+        // Определяем роль: admin для вашего Telegram ID, user для остальных
+        const userRole = tgUser.id === 936111949 ? 'admin' : 'user';
+        
         const { data: newProfile, error: insertError } = await supabase.from('profiles').insert({
           telegram_id: tgUser.id,
           username: tgUser.username || tgUser.first_name,
@@ -79,7 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           cases_opened: 0,
           total_deposited: 0,
           total_spent: 0,
-          role: 'user',
+          role: userRole,
           status: 'active',
         } as any).select().single();
         
@@ -90,6 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (data.status !== 'active') {
           await supabase.from('profiles').update({ status: 'active' }).eq('telegram_id', tgUser.id);
         }
+        // Обновляем роль на admin, если это ваш Telegram ID
         if (tgUser.id === 936111949 && data.role !== 'admin') {
           await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
         }

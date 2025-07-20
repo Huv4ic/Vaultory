@@ -114,6 +114,12 @@ export default function AdminPanel() {
         <div className="text-white text-center">
           <h2 className="text-2xl font-bold mb-4">Доступ запрещен</h2>
           <p className="text-gray-400">Необходимы права администратора</p>
+          <div className="mt-4 text-sm text-gray-500">
+            <p>User: {user ? 'Да' : 'Нет'}</p>
+            <p>IsAdmin: {isAdmin ? 'Да' : 'Нет'}</p>
+            <p>Profile Role: {profile?.role || 'Нет'}</p>
+            <p>Telegram ID: {profile?.telegram_id || 'Нет'}</p>
+          </div>
         </div>
       </div>
     );
