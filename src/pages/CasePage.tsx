@@ -122,7 +122,7 @@ const CasePage = () => {
     if (balance < caseData.price * openingCount) {
       toast({
         title: "Недостаточно средств",
-        description: `Для открытия ${openingCount} кейса(ов) нужно ${caseData.price * openingCount}₽, у вас ${balance}₽`,
+        description: `Для открытия ${openingCount} кейса(ов) нужно ${caseData.price * openingCount}₴, у вас ${balance}₴`,
       });
       return;
     }
@@ -137,7 +137,7 @@ const CasePage = () => {
     setBalance(balance + price);
     toast({
       title: "Предмет продан!",
-      description: `Вы получили ${price}₽ за продажу предмета`,
+      description: `Вы получили ${price}₴ за продажу предмета`,
     });
   };
 
@@ -188,7 +188,7 @@ const CasePage = () => {
           <img src={caseData.image} alt={caseData.name} className="rounded-xl w-32 h-32 object-cover mx-auto mb-4 border-4 border-gray-700" />
           <h2 className="text-3xl font-bold mb-2">{caseData.name}</h2>
           <div className="text-gray-400 mb-2">{caseData.game}</div>
-          <div className="text-2xl font-bold text-green-400 mb-4">{caseData.price * openingCount}₽</div>
+          <div className="text-2xl font-bold text-green-400 mb-4">{caseData.price * openingCount}₴</div>
           <div className="mb-4 flex justify-center gap-2">
             {[1, 2, 3, 4, 5].map((count) => (
               <Button
@@ -221,7 +221,7 @@ const CasePage = () => {
               <div key={idx} className={`rounded-xl p-4 flex flex-col items-center ${rarityColors[item.rarity]} shadow-md`}>
                 <div className="font-bold text-lg mb-2">{item.name}</div>
                 <div className="text-sm text-gray-200 mb-1">Редкость: <span className="capitalize">{item.rarity}</span></div>
-                <div className="text-green-200 font-bold">{item.price}₽</div>
+                <div className="text-green-200 font-bold">{item.price}₴</div>
               </div>
             ))}
           </div>

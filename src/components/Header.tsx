@@ -133,7 +133,7 @@ const Header = () => {
                   )}
                   <span className="text-white font-semibold text-sm">{telegramUser.username ? `@${telegramUser.username}` : telegramUser.first_name}</span>
                   <span className="ml-2 bg-gradient-to-r from-green-400 to-green-600 text-white font-bold px-4 py-1 rounded-lg shadow border border-green-500 text-base flex items-center gap-1">
-                    Баланс&nbsp;{balance}₽
+                    Баланс&nbsp;{balance}₴
                   </span>
                 </Link>
                 <Button

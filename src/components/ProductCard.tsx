@@ -27,10 +27,10 @@ const ProductCard = ({ id, name, price, originalPrice, image, category, rating, 
       {originalPrice && (
         <div className="mb-2">
           <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-lg mr-2">-{discount}%</span>
-          <span className="line-through text-gray-400">{originalPrice}₽</span>
+          <span className="line-through text-gray-400">{originalPrice}₴</span>
         </div>
       )}
-      <div className="text-lg font-bold text-white mb-2 animate-fade-in">Цена: <span className="text-cyan-300">{price}₽</span></div>
+      <div className="text-lg font-bold text-white mb-2 animate-fade-in">Цена: <span className="text-cyan-300">{price}₴</span></div>
       <div className="flex items-center justify-center space-x-2 mb-4">
         <span className="text-yellow-400 font-bold">★ {rating}</span>
         <span className="text-gray-300 text-sm">({sales} продаж)</span>

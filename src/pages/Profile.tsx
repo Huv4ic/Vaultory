@@ -78,10 +78,10 @@ const Profile = () => {
     const soldAmount = sellItem(index);
     setBalance(balance + soldAmount);
     setSellingItem(null);
-    toast({
-      title: "Предмет продан!",
-      description: `Вы получили ${soldAmount}₽ за продажу предмета`,
-    });
+          toast({
+        title: "Предмет продан!",
+        description: `Вы получили ${soldAmount}₴ за продажу предмета`,
+      });
   };
 
   const handleWithdrawItem = (index: number) => {
@@ -203,14 +203,14 @@ const Profile = () => {
                         <h3 className="text-white font-semibold text-sm line-clamp-2">
                           {item.name}
                         </h3>
-                        <div className="text-green-400 font-bold text-lg mb-2">{item.price}₽</div>
+                        <div className="text-green-400 font-bold text-lg mb-2">{item.price}₴</div>
                         <div className="flex gap-2 mt-2">
                           <Button
                             variant="primary"
                             className="w-1/2"
                             onClick={() => handleSellItem(index)}
                           >
-                            Продать за {item.price}₽
+                            Продать за {item.price}₴
                           </Button>
                           <Button
                             size="sm"

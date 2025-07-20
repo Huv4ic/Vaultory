@@ -130,7 +130,7 @@ const Cases = () => {
               </div>
               <div className="text-2xl font-bold text-green-400 mb-4 flex items-center gap-2">
                 <Sparkles className="w-5 h-5" />
-                {caseData.price}₽
+                {caseData.price}₴
               </div>
               <Button
                 className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl"

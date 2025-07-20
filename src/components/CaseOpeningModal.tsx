@@ -227,7 +227,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
             </div>
             <div className="flex space-x-4 mb-6">
               <span className="bg-gray-800 text-yellow-200 px-4 py-2 rounded-lg font-bold shadow">Шанс: {winningItem.chance}%</span>
-              <span className="bg-gray-800 text-green-300 px-4 py-2 rounded-lg font-bold shadow">Цена: {winningItem.price}₽</span>
+              <span className="bg-gray-800 text-green-300 px-4 py-2 rounded-lg font-bold shadow">Цена: {winningItem.price}₴</span>
             </div>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-8">
               <button

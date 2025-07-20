@@ -239,7 +239,7 @@ export default function AdminPanel() {
                 <div>
                   <p className="text-gray-400 text-sm">Общий баланс</p>
                   <p className="text-3xl font-bold text-green-400">
-                    {users.reduce((sum, user) => sum + (user.balance || 0), 0).toFixed(2)}₽
+                    {users.reduce((sum, user) => sum + (user.balance || 0), 0).toFixed(2)}₴
                   </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-green-500" />
@@ -303,7 +303,7 @@ export default function AdminPanel() {
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex items-center space-x-2">
-                            <span className="font-medium text-green-400">{(user.balance || 0).toFixed(2)}₽</span>
+                            <span className="font-medium text-green-400">{(user.balance || 0).toFixed(2)}₴</span>
                             <Button
                               variant="outline"
                               size="sm"

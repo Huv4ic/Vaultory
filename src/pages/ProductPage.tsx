@@ -90,9 +90,9 @@ const ProductPage = () => {
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <div className="text-3xl font-bold text-white">{product.price}₽</div>
+                  <div className="text-3xl font-bold text-white">{product.price}₴</div>
                   {product.originalPrice && (
-                    <div className="text-gray-400 line-through">{product.originalPrice}₽</div>
+                    <div className="text-gray-400 line-through">{product.originalPrice}₴</div>
                   )}
                 </div>
                 <div className="flex items-center space-x-4">
@@ -121,7 +121,7 @@ const ProductPage = () => {
               
               {quantity > 1 && (
                 <div className="text-right text-sm text-gray-400 mb-4">
-                  Общая стоимость: <span className="text-white font-semibold">{totalPrice}₽</span>
+                  Общая стоимость: <span className="text-white font-semibold">{totalPrice}₴</span>
                 </div>
               )}
 

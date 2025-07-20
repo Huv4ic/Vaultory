@@ -196,7 +196,7 @@ const Cart = () => {
                       {item.name}
                     </h3>
                     <p className="text-gray-400 text-sm mb-2">
-                      Цена за единицу: {item.price}₽
+                      Цена за единицу: {item.price}₴
                     </p>
                     
                     {/* Управление количеством */}
@@ -238,11 +238,11 @@ const Cart = () => {
                   {/* Сумма по товару */}
                   <div className="flex-shrink-0 text-right">
                     <div className="text-white font-bold text-lg">
-                      {item.price * item.quantity}₽
+                      {item.price * item.quantity}₴
                     </div>
                     {item.quantity > 1 && (
                       <div className="text-gray-400 text-sm">
-                        {item.quantity} × {item.price}₽
+                        {item.quantity} × {item.price}₴
                       </div>
                     )}
                   </div>
