@@ -108,7 +108,10 @@ export default function AdminPanel() {
     });
   };
 
-  if (!user || !isAdmin) {
+  // Проверяем авторизацию через Telegram
+  const telegramUser = JSON.parse(localStorage.getItem('vaultory_telegram_user') || 'null');
+  
+  if (!telegramUser || !isAdmin) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-white text-center">
@@ -119,6 +122,8 @@ export default function AdminPanel() {
             <p>IsAdmin: {isAdmin ? 'Да' : 'Нет'}</p>
             <p>Profile Role: {profile?.role || 'Нет'}</p>
             <p>Telegram ID: {profile?.telegram_id || 'Нет'}</p>
+            <p>Telegram User: {telegramUser ? 'Да' : 'Нет'}</p>
+            <p>Telegram User ID: {telegramUser?.id || 'Нет'}</p>
           </div>
         </div>
       </div>

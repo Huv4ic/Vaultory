@@ -25,6 +25,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [balance, setBalance] = useState(0);
 
   const isAdmin = (profile?.role as any) === 'admin' || (profile?.role as any) === 'superadmin' || (telegramUser?.id === 936111949);
+  
+  // Отладочная информация
+  console.log('Auth Debug:', {
+    telegramUser,
+    telegramUserId: telegramUser?.id,
+    profile,
+    profileRole: profile?.role,
+    isAdmin,
+    user
+  });
 
   const signOutTelegram = () => {
     setTelegramUserState(null);
