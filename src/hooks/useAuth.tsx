@@ -24,7 +24,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   });
   const [balance, setBalance] = useState(0);
 
-  const isAdmin = (profile?.role as any) === 'admin' || (profile?.role as any) === 'superadmin' || (telegramUser?.id === 936111949);
+  // Проверяем администратора: либо по роли в профиле, либо по Telegram ID
+  const isAdmin = (profile?.role as any) === 'admin' || 
+                  (profile?.role as any) === 'superadmin' || 
+                  (telegramUser?.id === 936111949);
   
   // Отладочная информация
   console.log('Auth Debug:', {
@@ -196,6 +199,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Загружаем профиль для Telegram пользователей
+  useEffect(() => {
+    if (telegramUser && !profile) {
+      console.log('Loading profile for Telegram user:', telegramUser.id);
+      fetchProfileByTelegramId(telegramUser.id);
+    }
+  }, [telegramUser, profile]);
 
   // Подписываемся на изменения профиля для real-time обновления баланса
   useEffect(() => {

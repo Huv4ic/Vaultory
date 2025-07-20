@@ -109,7 +109,12 @@ export default function AdminPanel() {
   };
 
   // Проверяем авторизацию через Telegram
-  const telegramUser = JSON.parse(localStorage.getItem('vaultory_telegram_user') || 'null');
+  let telegramUser = null;
+  try {
+    telegramUser = JSON.parse(localStorage.getItem('vaultory_telegram_user') || 'null');
+  } catch (error) {
+    console.error('Error parsing Telegram user:', error);
+  }
   
   if (!telegramUser || !isAdmin) {
     return (
