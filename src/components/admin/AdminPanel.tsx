@@ -29,14 +29,36 @@ export default function AdminPanel() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) {
-      fetchUsers();
-    }
-  }, [user]);
+    // Загружаем пользователей при монтировании компонента
+    fetchUsers();
+    
+    // Подписываемся на изменения в реальном времени
+    const subscription = supabase
+      .channel('profiles_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'profiles'
+        },
+        () => {
+          // Обновляем список пользователей при любых изменениях
+          fetchUsers();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -46,10 +68,11 @@ export default function AdminPanel() {
         throw error;
       }
 
+      console.log('Loaded users:', data);
       setUsers(data || []);
     } catch (err) {
       console.error('Error fetching users:', err);
-      setError('Ошибка при загрузке пользователей');
+      setError('Ошибка при загрузке пользователей: ' + (err as any).message);
     } finally {
       setLoading(false);
     }
@@ -57,6 +80,8 @@ export default function AdminPanel() {
 
   const updateUserBalance = async (userId: string, newBalance: number) => {
     try {
+      setError(null);
+      
       const { error } = await supabase
         .from('profiles')
         .update({ balance: newBalance })
@@ -66,18 +91,22 @@ export default function AdminPanel() {
         throw error;
       }
 
+      console.log(`Balance updated for user ${userId}: ${newBalance}`);
+      
       // Обновляем локальное состояние
       setUsers(prev => prev.map(user => 
         user.id === userId ? { ...user, balance: newBalance } : user
       ));
     } catch (err) {
       console.error('Error updating balance:', err);
-      setError('Ошибка при обновлении баланса');
+      setError('Ошибка при обновлении баланса: ' + (err as any).message);
     }
   };
 
   const toggleUserStatus = async (userId: string, currentStatus: string) => {
     try {
+      setError(null);
+      
       const newStatus = currentStatus === 'active' ? 'banned' : 'active';
       const { error } = await supabase
         .from('profiles')
@@ -88,13 +117,15 @@ export default function AdminPanel() {
         throw error;
       }
 
+      console.log(`Status updated for user ${userId}: ${newStatus}`);
+      
       // Обновляем локальное состояние
       setUsers(prev => prev.map(user => 
         user.id === userId ? { ...user, status: newStatus as 'active' | 'banned' } : user
       ));
     } catch (err) {
       console.error('Error updating status:', err);
-      setError('Ошибка при обновлении статуса');
+      setError('Ошибка при обновлении статуса: ' + (err as any).message);
     }
   };
 
@@ -161,13 +192,13 @@ export default function AdminPanel() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm">Всего пользователей</p>
-                  <p className="text-3xl font-bold">{users.length}</p>
+                  <p className="text-3xl font-bold text-blue-400">{users.length}</p>
                 </div>
                 <Users className="h-8 w-8 text-blue-500" />
               </div>
@@ -179,7 +210,7 @@ export default function AdminPanel() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-gray-400 text-sm">Активные пользователи</p>
-                  <p className="text-3xl font-bold">
+                  <p className="text-3xl font-bold text-green-400">
                     {users.filter(u => u.status === 'active').length}
                   </p>
                 </div>
@@ -192,9 +223,23 @@ export default function AdminPanel() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
+                  <p className="text-gray-400 text-sm">Заблокированные</p>
+                  <p className="text-3xl font-bold text-red-400">
+                    {users.filter(u => u.status === 'banned').length}
+                  </p>
+                </div>
+                <Badge className="bg-red-600">Заблокированы</Badge>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gray-800 border-gray-700">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
                   <p className="text-gray-400 text-sm">Общий баланс</p>
-                  <p className="text-3xl font-bold">
-                                         {users.reduce((sum, user) => sum + (user.balance || 0), 0).toFixed(2)}₽
+                  <p className="text-3xl font-bold text-green-400">
+                    {users.reduce((sum, user) => sum + (user.balance || 0), 0).toFixed(2)}₽
                   </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-green-500" />
@@ -258,31 +303,40 @@ export default function AdminPanel() {
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex items-center space-x-2">
-                                                         <span className="font-medium">{(user.balance || 0).toFixed(2)}₽</span>
+                            <span className="font-medium text-green-400">{(user.balance || 0).toFixed(2)}₽</span>
                             <Button
                               variant="outline"
                               size="sm"
-                              className="h-6 px-2 text-xs border-gray-600 text-gray-300 hover:bg-gray-700"
-                                                             onClick={() => {
-                                 const newBalance = prompt('Введите новый баланс:', (user.balance || 0).toString());
-                                 if (newBalance !== null) {
-                                   const balance = parseFloat(newBalance);
-                                   if (!isNaN(balance)) {
-                                     updateUserBalance(user.id, balance);
-                                   }
-                                 }
-                               }}
+                              className="h-6 px-2 text-xs border-green-600 text-green-400 hover:bg-green-900/20"
+                              onClick={() => {
+                                const newBalance = prompt(`Введите новый баланс для ${user.username || 'пользователя'}:`, (user.balance || 0).toString());
+                                if (newBalance !== null) {
+                                  const balance = parseFloat(newBalance);
+                                  if (!isNaN(balance) && balance >= 0) {
+                                    updateUserBalance(user.id, balance);
+                                  } else {
+                                    alert('Введите корректную сумму (больше или равно 0)');
+                                  }
+                                }
+                              }}
                             >
-                              Изменить
+                              💰 Изменить
                             </Button>
                           </div>
                         </td>
                         <td className="py-4 px-4">
-                          <Badge 
-                            className={user.status === 'active' ? 'bg-green-600' : 'bg-red-600'}
-                          >
-                            {user.status === 'active' ? 'Активен' : 'Заблокирован'}
-                          </Badge>
+                          <div className="flex flex-col space-y-1">
+                            <Badge 
+                              className={user.status === 'active' ? 'bg-green-600' : 'bg-red-600'}
+                            >
+                              {user.status === 'active' ? 'Активен' : 'Заблокирован'}
+                            </Badge>
+                            {user.role && user.role !== 'user' && (
+                              <Badge className="bg-purple-600 text-xs">
+                                {user.role === 'admin' ? '👑 Админ' : user.role}
+                              </Badge>
+                            )}
+                          </div>
                         </td>
                         <td className="py-4 px-4 text-gray-300">
                           <div className="flex items-center space-x-1">
@@ -294,14 +348,19 @@ export default function AdminPanel() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className={`h-6 px-2 text-xs border-gray-600 ${
+                            className={`h-6 px-2 text-xs ${
                               user.status === 'active' 
-                                ? 'text-red-400 hover:bg-red-900/20' 
-                                : 'text-green-400 hover:bg-green-900/20'
+                                ? 'border-red-600 text-red-400 hover:bg-red-900/20' 
+                                : 'border-green-600 text-green-400 hover:bg-green-900/20'
                             }`}
-                            onClick={() => toggleUserStatus(user.id, user.status)}
+                            onClick={() => {
+                              const action = user.status === 'active' ? 'заблокировать' : 'разблокировать';
+                              if (confirm(`Вы уверены, что хотите ${action} пользователя ${user.username || 'ID: ' + user.id.slice(0, 8)}?`)) {
+                                toggleUserStatus(user.id, user.status);
+                              }
+                            }}
                           >
-                            {user.status === 'active' ? 'Заблокировать' : 'Разблокировать'}
+                            {user.status === 'active' ? '🚫 Заблокировать' : '✅ Разблокировать'}
                           </Button>
                         </td>
                       </tr>
