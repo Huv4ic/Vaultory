@@ -5,12 +5,14 @@ import { products } from '@/data/products';
 import { Star, ShoppingCart, Shield, Clock, ArrowLeft, Plus, Minus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const ProductPage = () => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const { telegramUser } = useAuth();
   const { addItem, items } = useCart();
+  const { t } = useLanguage();
   
   const product = products.find(p => p.id === id);
   
@@ -18,10 +20,10 @@ const ProductPage = () => {
     return (
       <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Товар не найден</h1>
+          <h1 className="text-4xl font-bold mb-4">{t('Товар не найден')}</h1>
           <Link to="/catalog">
             <Button className="bg-gradient-to-r from-red-500 to-purple-600">
-              Вернуться в каталог
+              {t('Вернуться в каталог')}
             </Button>
           </Link>
         </div>
@@ -38,7 +40,7 @@ const ProductPage = () => {
 
   const handleAddToCart = () => {
     if (!telegramUser) {
-      alert('Войдите через Telegram, чтобы добавить в корзину!');
+      alert(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
     addItem(product, quantity);
@@ -51,7 +53,7 @@ const ProductPage = () => {
       <div className="container mx-auto px-4 py-8">
         <Link to="/catalog" className="inline-flex items-center text-gray-400 hover:text-red-400 transition-colors mb-8">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Назад к каталогу
+          {t('Назад к каталогу')}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -82,7 +84,7 @@ const ProductPage = () => {
                   <Star className="w-5 h-5 text-yellow-400 fill-current" />
                   <span className="text-yellow-400 font-medium">{product.rating}</span>
                 </div>
-                <span className="text-gray-400">({product.sales} продаж)</span>
+                <span className="text-gray-400">({product.sales} {t('продаж')})</span>
               </div>
             </div>
 
@@ -121,7 +123,7 @@ const ProductPage = () => {
               
               {quantity > 1 && (
                 <div className="text-right text-sm text-gray-400 mb-4">
-                  Общая стоимость: <span className="text-white font-semibold">{totalPrice}₴</span>
+                  {t('Общая стоимость:')} <span className="text-white font-semibold">{totalPrice}₴</span>
                 </div>
               )}
 
@@ -132,7 +134,7 @@ const ProductPage = () => {
                 disabled={isInCart}
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                {isInCart ? 'В корзине' : 'Добавить в корзину'}
+                {isInCart ? t('В корзине') : t('Добавить в корзину')}
               </Button>
             </div>
 
@@ -140,22 +142,22 @@ const ProductPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
                 <Shield className="w-8 h-8 text-red-500 mb-2" />
-                <h3 className="font-semibold mb-1">Гарантия качества</h3>
-                <p className="text-sm text-gray-400">100% безопасная покупка</p>
+                <h3 className="font-semibold mb-1">{t('Гарантия качества')}</h3>
+                <p className="text-sm text-gray-400">{t('100% безопасная покупка')}</p>
               </div>
               <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
                 <Clock className="w-8 h-8 text-red-500 mb-2" />
-                <h3 className="font-semibold mb-1">Быстрая доставка</h3>
-                <p className="text-sm text-gray-400">Мгновенная доставка</p>
+                <h3 className="font-semibold mb-1">{t('Быстрая доставка')}</h3>
+                <p className="text-sm text-gray-400">{t('Мгновенная доставка')}</p>
               </div>
             </div>
 
             {/* Описание */}
             <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50">
-              <h3 className="text-lg font-semibold mb-3">Описание товара</h3>
+              <h3 className="text-lg font-semibold mb-3">{t('Описание товара')}</h3>
               <p className="text-gray-300 leading-relaxed">
-                Премиум товар для {product.game}. Высочайшее качество и мгновенная доставка гарантированы. 
-                Этот товар пользуется популярностью среди игроков благодаря своей эффективности и надежности.
+                {t('Премиум товар для')} {product.game}. {t('Высочайшее качество и мгновенная доставка гарантированы.')} 
+                {t('Этот товар пользуется популярностью среди игроков благодаря своей эффективности и надежности.')}
               </p>
             </div>
           </div>

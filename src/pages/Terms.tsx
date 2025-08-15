@@ -1,16 +1,19 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { useLanguage } from '@/hooks/useLanguage';
 import { FileText, AlertTriangle, CreditCard, Users } from 'lucide-react';
 
 const Terms = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Пользовательское соглашение
+              {t('Пользовательское соглашение')}
             </h1>
-            <p className="text-gray-400">Последнее обновление: 01 января 2025</p>
+            <p className="text-gray-400">{t('Последнее обновление')}: 01 января 2025</p>
           </div>
 
           <div className="space-y-8">
@@ -18,14 +21,14 @@ const Terms = () => {
               <CardContent className="p-8">
                 <div className="flex items-center mb-6">
                   <FileText className="w-8 h-8 text-red-500 mr-3" />
-                  <h2 className="text-2xl font-bold">Общие условия</h2>
+                  <h2 className="text-2xl font-bold">{t('Общие условия')}</h2>
                 </div>
                 <div className="space-y-4 text-gray-300">
                   <p className="leading-relaxed">
-                    Настоящее Пользовательское соглашение определяет условия использования сервиса Vaultory. Регистрируясь и используя наш сервис, вы соглашаетесь с данными условиями.
+                    {t('Настоящее Пользовательское соглашение определяет условия использования сервиса Vaultory. Регистрируясь и используя наш сервис, вы соглашаетесь с данными условиями.')}
                   </p>
                   <p className="leading-relaxed">
-                    Vaultory - это платформа для приобретения цифровых товаров для различных игр и сервисов. Мы предоставляем удобный и безопасный способ покупки игровой валюты, предметов и других цифровых товаров.
+                    {t('Vaultory - это платформа для приобретения цифровых товаров для различных игр и сервисов. Мы предоставляем удобный и безопасный способ покупки игровой валюты, предметов и других цифровых товаров.')}
                   </p>
                 </div>
               </CardContent>
@@ -35,25 +38,25 @@ const Terms = () => {
               <CardContent className="p-8">
                 <div className="flex items-center mb-6">
                   <Users className="w-8 h-8 text-red-500 mr-3" />
-                  <h2 className="text-2xl font-bold">Права и обязанности пользователей</h2>
+                  <h2 className="text-2xl font-bold">{t('Права и обязанности пользователей')}</h2>
                 </div>
                 <div className="space-y-4 text-gray-300">
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Пользователь имеет право:</h3>
+                    <h3 className="text-lg font-semibold text-white mb-2">{t('Пользователь имеет право:')}</h3>
                     <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Использовать сервис в соответствии с его назначением</li>
-                      <li>Получать качественные товары и услуги</li>
-                      <li>Обращаться в службу поддержки</li>
-                      <li>Удалить свой аккаунт в любое время</li>
+                      <li>{t('Использовать сервис в соответствии с его назначением')}</li>
+                      <li>{t('Получать качественные товары и услуги')}</li>
+                      <li>{t('Обращаться в службу поддержки')}</li>
+                      <li>{t('Удалить свой аккаунт в любое время')}</li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Пользователь обязан:</h3>
+                    <h3 className="text-lg font-semibold text-white mb-2">{t('Пользователь обязан:')}</h3>
                     <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Предоставлять достоверную информацию</li>
-                      <li>Не нарушать права других пользователей</li>
-                      <li>Не использовать сервис в мошеннических целях</li>
-                      <li>Соблюдать правила пользования сервисом</li>
+                      <li>{t('Предоставлять достоверную информацию')}</li>
+                      <li>{t('Не нарушать права других пользователей')}</li>
+                      <li>{t('Не использовать сервис в мошеннических целях')}</li>
+                      <li>{t('Соблюдать правила пользования сервисом')}</li>
                     </ul>
                   </div>
                 </div>
@@ -64,25 +67,25 @@ const Terms = () => {
               <CardContent className="p-8">
                 <div className="flex items-center mb-6">
                   <CreditCard className="w-8 h-8 text-red-500 mr-3" />
-                  <h2 className="text-2xl font-bold">Условия покупки и оплаты</h2>
+                  <h2 className="text-2xl font-bold">{t('Условия покупки и оплаты')}</h2>
                 </div>
                 <div className="space-y-4 text-gray-300">
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Порядок покупки:</h3>
+                    <h3 className="text-lg font-semibold text-white mb-2">{t('Порядок покупки:')}</h3>
                     <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Выбор товара и добавление в корзину</li>
-                      <li>Оформление заказа с указанием необходимых данных</li>
-                      <li>Оплата через доступные способы</li>
-                      <li>Получение товара в течение указанного времени</li>
+                      <li>{t('Выбор товара и добавление в корзину')}</li>
+                      <li>{t('Оформление заказа с указанием необходимых данных')}</li>
+                      <li>{t('Оплата через доступные способы')}</li>
+                      <li>{t('Получение товара в течение указанного времени')}</li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Способы оплаты:</h3>
+                    <h3 className="text-lg font-semibold text-white mb-2">{t('Способы оплаты:')}</h3>
                     <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Банковские карты (Visa, MasterCard, МИР)</li>
-                      <li>Электронные кошельки</li>
-                      <li>Криптовалюты</li>
-                      <li>Банковские переводы</li>
+                      <li>{t('Банковские карты (Visa, MasterCard, МИР)')}</li>
+                      <li>{t('Электронные кошельки')}</li>
+                      <li>{t('Криптовалюты')}</li>
+                      <li>{t('Банковские переводы')}</li>
                     </ul>
                   </div>
                 </div>
@@ -93,21 +96,12 @@ const Terms = () => {
               <CardContent className="p-8">
                 <div className="flex items-center mb-6">
                   <AlertTriangle className="w-8 h-8 text-red-500 mr-3" />
-                  <h2 className="text-2xl font-bold">Возврат и возмещение</h2>
+                  <h2 className="text-2xl font-bold">{t('Возврат и возмещение')}</h2>
                 </div>
                 <div className="space-y-4 text-gray-300">
                   <p className="leading-relaxed">
-                    Цифровые товары не подлежат возврату согласно действующему законодательству. Однако мы гарантируем качество предоставляемых услуг.
+                    {t('Цифровые товары не подлежат возврату согласно действующему законодательству. Однако мы гарантируем качество предоставляемых услуг.')}
                   </p>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">Возмещение возможно в случаях:</h3>
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Технических проблем с доставкой товара</li>
-                      <li>Получения товара, не соответствующего описанию</li>
-                      <li>Сбоев в работе платежной системы</li>
-                      <li>Других обоснованных претензий</li>
-                    </ul>
-                  </div>
                 </div>
               </CardContent>
             </Card>

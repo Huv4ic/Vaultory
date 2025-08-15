@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/hooks/useLanguage';
 import { products, gameCategories } from '@/data/products';
 import { Search, Filter, SlidersHorizontal } from 'lucide-react';
 
@@ -12,6 +13,7 @@ const Catalog = () => {
   const navigate = useNavigate();
   const { telegramUser } = useAuth();
   const { addItem, items } = useCart();
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
@@ -56,7 +58,7 @@ const Catalog = () => {
 
   const handleAddToCart = (product) => {
     if (!telegramUser) {
-      alert('Войдите через Telegram, чтобы добавить в корзину!');
+      alert(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
     addItem(product, 1);
@@ -75,10 +77,10 @@ const Catalog = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            Каталог товаров
+            {t('Каталог товаров')}
           </h1>
           <p className="text-gray-400">
-            Найдите все необходимые товары для ваших любимых игр
+            {t('Найдите все необходимые товары для ваших любимых игр')}
           </p>
         </div>
 
@@ -89,7 +91,7 @@ const Catalog = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
-                placeholder="Поиск товаров..."
+                placeholder={t('Поиск товаров...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-gray-700 border-gray-600 text-white placeholder-gray-400"
@@ -98,39 +100,38 @@ const Catalog = () => {
 
             {/* Сортировка */}
             <div className="flex items-center space-x-2">
-              <SlidersHorizontal className="w-5 h-5 text-gray-400" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                className="bg-gray-700 border border-gray-600 text-white px-3 py-2 rounded-lg"
               >
-                <option value="popular">По популярности</option>
-                <option value="price-low">Сначала дешевые</option>
-                <option value="price-high">Сначала дорогие</option>
-                <option value="rating">По рейтингу</option>
+                <option value="popular">{t('Популярные')}</option>
+                <option value="price-low">{t('По цене (дешевле)')}</option>
+                <option value="price-high">{t('По цене (дороже)')}</option>
+                <option value="rating">{t('По рейтингу')}</option>
               </select>
             </div>
           </div>
         </div>
 
-        {/* Категории */}
+        {/* Категории игр */}
         <div className="mb-8">
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedCategory('all')}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                 selectedCategory === 'all'
                   ? 'bg-gradient-to-r from-red-500 to-purple-600 text-white'
                   : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               }`}
             >
-              Все категории
+              {t('Все игры')}
             </button>
             {gameCategories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center space-x-2 ${
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                   selectedCategory === category.id
                     ? 'bg-gradient-to-r from-red-500 to-purple-600 text-white'
                     : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
@@ -143,45 +144,28 @@ const Catalog = () => {
           </div>
         </div>
 
-        {/* Результаты */}
-        <div className="mb-6">
-          <p className="text-gray-400">
-            Найдено товаров: {filteredProducts.length}
-          </p>
+        {/* Товары */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+          {displayedProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              {...product}
+              isInCart={items.some(item => item.id === product.id)}
+              onAddToCart={() => handleAddToCart(product)}
+              onDetails={() => handleProductDetails(product)}
+            />
+          ))}
         </div>
 
-        {/* Товары */}
-        {displayedProducts.length > 0 ? (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12 items-stretch">
-              {displayedProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  {...product}
-                  isInCart={items.some((item) => item.id === product.id)}
-                  onAddToCart={() => handleAddToCart(product)}
-                  onDetails={() => handleProductDetails(product)}
-                />
-              ))}
-            </div>
-
-            {visibleProducts < filteredProducts.length && (
-              <div className="text-center">
-                <Button
-                  onClick={loadMore}
-                  size="lg"
-                  className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
-                >
-                  Показать еще товары
-                </Button>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">😔</div>
-            <h3 className="text-xl font-semibold mb-2">Товары не найдены</h3>
-            <p className="text-gray-400">Попробуйте изменить параметры поиска</p>
+        {/* Кнопка "Показать еще" */}
+        {visibleProducts < filteredProducts.length && (
+          <div className="text-center">
+            <Button
+              onClick={loadMore}
+              className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none px-8 py-6 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25"
+            >
+              {t('Показать еще')}
+            </Button>
           </div>
         )}
       </div>

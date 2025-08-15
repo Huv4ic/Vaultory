@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ProductCardProps {
   id: string;
@@ -17,6 +18,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ id, name, price, originalPrice, image, category, rating, sales, isInCart, onAddToCart, onDetails }: ProductCardProps) => {
+  const { t } = useLanguage();
   const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
 
   return (
@@ -30,24 +32,24 @@ const ProductCard = ({ id, name, price, originalPrice, image, category, rating, 
           <span className="line-through text-gray-400">{originalPrice}₴</span>
         </div>
       )}
-      <div className="text-lg font-bold text-white mb-2 animate-fade-in">Цена: <span className="text-cyan-300">{price}₴</span></div>
+      <div className="text-lg font-bold text-white mb-2 animate-fade-in">{t('Цена')}: <span className="text-cyan-300">{price}₴</span></div>
       <div className="flex items-center justify-center space-x-2 mb-4">
         <span className="text-yellow-400 font-bold">★ {rating}</span>
-        <span className="text-gray-300 text-sm">({sales} продаж)</span>
+        <span className="text-gray-300 text-sm">({sales} {t('продаж')})</span>
       </div>
       <div className="mt-auto w-full flex flex-col gap-2">
         <button
           className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
           onClick={onDetails}
         >
-          Подробнее
+          {t('Подробнее')}
         </button>
         <button
           className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
           onClick={onAddToCart}
           disabled={isInCart}
         >
-          {isInCart ? 'В корзине' : 'В корзину'}
+          {isInCart ? t('В корзине') : t('В корзину')}
         </button>
       </div>
     </div>

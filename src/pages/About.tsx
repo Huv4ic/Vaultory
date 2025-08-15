@@ -1,43 +1,46 @@
 import { Shield, Zap, Users, Trophy, Clock, CheckCircle } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const About = () => {
+  const { t } = useLanguage();
+  
   const features = [
     {
       icon: Shield,
-      title: 'Безопасность',
-      description: 'Все транзакции защищены, гарантия возврата средств'
+      title: t('Безопасность'),
+      description: t('Все транзакции защищены, гарантия возврата средств')
     },
     {
       icon: Zap,
-      title: 'Скорость',
-      description: 'Мгновенная доставка большинства товаров'
+      title: t('Скорость'),
+      description: t('Мгновенная доставка большинства товаров')
     },
     {
       icon: Users,
-      title: 'Поддержка',
-      description: '24/7 техническая поддержка в Telegram'
+      title: t('Поддержка'),
+      description: t('24/7 техническая поддержка в Telegram')
     },
     {
       icon: Trophy,
-      title: 'Качество',
-      description: 'Только официальные и проверенные товары'
+      title: t('Качество'),
+      description: t('Только официальные и проверенные товары')
     }
   ];
 
   const stats = [
-    { number: '50,000+', label: 'Довольных клиентов' },
-    { number: '1,000,000+', label: 'Проданных товаров' },
-    { number: '99.8%', label: 'Положительных отзывов' },
-    { number: '2', label: 'Года на рынке' }
+    { number: '50,000+', label: t('Довольных клиентов') },
+    { number: '1,000,000+', label: t('Проданных товаров') },
+    { number: '99.8%', label: t('Положительных отзывов') },
+    { number: '2', label: t('Года на рынке') }
   ];
 
   const advantages = [
-    'Лучшие цены на рынке',
-    'Мгновенная доставка',
-    'Поддержка всех популярных игр',
-    'Безопасные платежи',
-    'Круглосуточная поддержка',
-    'Гарантия качества товаров'
+    t('Лучшие цены на рынке'),
+    t('Мгновенная доставка'),
+    t('Поддержка всех популярных игр'),
+    t('Безопасные платежи'),
+    t('Круглосуточная поддержка'),
+    t('Гарантия качества товаров')
   ];
 
   return (
@@ -52,10 +55,10 @@ const About = () => {
         <div className="container mx-auto relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-red-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
-              О компании Vaultory
+              {t('О компании Vaultory')}
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed animate-slide-up">
-              Мы — ведущая платформа для покупки игровых товаров в СНГ. Наша миссия — сделать гейминг доступнее и интереснее для каждого игрока.
+              {t('Мы — ведущая платформа для покупки игровых товаров в СНГ. Наша миссия — сделать гейминг доступнее и интереснее для каждого игрока.')}
             </p>
           </div>
         </div>
@@ -81,7 +84,7 @@ const About = () => {
       <section className="py-16 px-4">
         <div className="container mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            Почему выбирают нас
+            {t('Почему выбирают нас')}
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">

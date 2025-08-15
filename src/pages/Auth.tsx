@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 import { Eye, EyeOff } from 'lucide-react';
 import { FaTelegramPlane } from 'react-icons/fa';
 import TelegramLoginButton from 'react-telegram-login';
@@ -18,6 +19,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const { signIn, signUp, profile, isAdmin, user } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -45,14 +47,14 @@ const Auth = () => {
     
     if (error) {
       toast({
-        title: "Ошибка входа",
+        title: t("Ошибка входа"),
         description: error.message,
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Успешный вход",
-        description: "Добро пожаловать!",
+        title: t("Успешный вход"),
+        description: t("Добро пожаловать!"),
       });
     }
     setLoading(false);
@@ -66,14 +68,14 @@ const Auth = () => {
     
     if (error) {
       toast({
-        title: "Ошибка регистрации",
+        title: t("Ошибка регистрации"),
         description: error.message,
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Регистрация успешна",
-        description: "Проверьте почту для подтверждения аккаунта",
+        title: t("Регистрация успешна"),
+        description: t("Проверьте почту для подтверждения аккаунта"),
       });
     }
     setLoading(false);
@@ -91,7 +93,7 @@ const Auth = () => {
       // ...
       window.location.href = '/';
     } catch (e) {
-      alert('Ошибка Telegram авторизации');
+      alert(t('Ошибка Telegram авторизации'));
     }
   };
 
@@ -99,134 +101,149 @@ const Auth = () => {
   const handleLoginSuccess = () => {
     const redirectTo = localStorage.getItem('vaultory_redirect_to') || '/';
     localStorage.removeItem('vaultory_redirect_to');
-    navigate(redirectTo, { replace: true });
+    navigate(redirectTo);
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        <Card className="bg-gray-800 border-gray-700">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-white">Vaultory</CardTitle>
-            <CardDescription className="text-gray-400">
-              Войдите или создайте аккаунт
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-6 flex flex-col items-center">
-              <TelegramLoginButton
-                dataOnauth={handleTelegramResponse}
-                botName="vaultory_notify_bot"
-                buttonSize="large"
-                cornerRadius={12}
-                requestAccess="write"
-                usePic={true}
-                className="mb-4"
-              />
-            </div>
-            <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-gray-700">
-                <TabsTrigger value="signin" className="text-white">Вход</TabsTrigger>
-                <TabsTrigger value="signup" className="text-white">Регистрация</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="signin">
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div>
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white"
-                    />
-                  </div>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Пароль"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white pr-10"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700"
-                    disabled={loading}
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-gray-800 border-gray-700 text-white">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
+            {t('Вход в аккаунт')}
+          </CardTitle>
+          <CardDescription className="text-gray-400">
+            {t('Войдите в свой аккаунт')}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="login" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 bg-gray-700">
+              <TabsTrigger value="login" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-purple-600">
+                {t('Войти')}
+              </TabsTrigger>
+              <TabsTrigger value="register" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-purple-600">
+                {t('Регистрация')}
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Вход */}
+            <TabsContent value="login" className="space-y-4">
+              <form onSubmit={handleSignIn} className="space-y-4">
+                <div>
+                  <Input
+                    type="email"
+                    placeholder={t('Email')}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  />
+                </div>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder={t('Пароль')}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                   >
-                    {loading ? 'Входим...' : 'Войти'}
-                  </Button>
-                </form>
-              </TabsContent>
-              
-              <TabsContent value="signup">
-                <form onSubmit={handleSignUp} className="space-y-4">
-                  <div>
-                    <Input
-                      type="text"
-                      placeholder="Имя пользователя"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white"
-                    />
-                  </div>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Пароль"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white pr-10"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700"
-                    disabled={loading}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700"
+                >
+                  {loading ? '...' : t('Войти')}
+                </Button>
+              </form>
+
+              <div className="text-center">
+                <p className="text-gray-400 mb-4">{t('Или войдите через')}</p>
+                <Button
+                  type="button"
+                  onClick={() => handleTelegramResponse({})}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <FaTelegramPlane className="w-4 h-4 mr-2" />
+                  {t('Войти через Telegram')}
+                </Button>
+              </div>
+
+              <div className="text-center text-sm">
+                <span className="text-gray-400">{t('Нет аккаунта?')} </span>
+                <Link to="/auth?tab=register" className="text-red-400 hover:text-red-300">
+                  {t('Создать аккаунт')}
+                </Link>
+              </div>
+            </TabsContent>
+
+            {/* Регистрация */}
+            <TabsContent value="register" className="space-y-4">
+              <form onSubmit={handleSignUp} className="space-y-4">
+                <div>
+                  <Input
+                    type="text"
+                    placeholder={t('Имя пользователя')}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  />
+                </div>
+                <div>
+                  <Input
+                    type="email"
+                    placeholder={t('Email')}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  />
+                </div>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder={t('Пароль')}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                   >
-                    {loading ? 'Регистрируемся...' : 'Зарегистрироваться'}
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
-            
-            <div className="mt-4 text-center">
-              <Link to="/" className="text-sm text-gray-400 hover:text-white">
-                ← Вернуться на главную
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700"
+                >
+                  {loading ? '...' : t('Зарегистрироваться')}
+                </Button>
+              </form>
+
+              <div className="text-center text-sm">
+                <span className="text-gray-400">{t('Уже есть аккаунт?')} </span>
+                <Link to="/auth?tab=login" className="text-red-400 hover:text-red-300">
+                  {t('Войти в аккаунт')}
+                </Link>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 };

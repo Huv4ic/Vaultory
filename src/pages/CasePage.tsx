@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useInventory } from '@/hooks/useInventory';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 import CaseOpeningModal from '@/components/CaseOpeningModal';
 
 // Пример данных кейсов (лучше вынести в отдельный файл или получать из API)
@@ -102,6 +103,7 @@ const CasePage = () => {
   const { balance, setBalance, telegramUser } = useAuth();
   const { addItem } = useInventory();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [openingCount, setOpeningCount] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCase, setCurrentCase] = useState(null);
@@ -114,15 +116,15 @@ const CasePage = () => {
     if (!caseData) return;
     if (!telegramUser) {
       toast({
-        title: "Требуется авторизация",
-        description: "Войдите через Telegram для открытия кейсов",
+        title: t("Требуется авторизация"),
+        description: t("Войдите через Telegram для открытия кейсов"),
       });
       return;
     }
     if (balance < caseData.price * openingCount) {
       toast({
-        title: "Недостаточно средств",
-        description: `Для открытия ${openingCount} кейса(ов) нужно ${caseData.price * openingCount}₴, у вас ${balance}₴`,
+        title: t("Недостаточно средств"),
+        description: `${t("Для открытия")} ${openingCount} ${t("кейса(ов) нужно")} ${caseData.price * openingCount}₴, ${t("у вас")} ${balance}₴`,
       });
       return;
     }
@@ -136,8 +138,8 @@ const CasePage = () => {
   const handleSellItem = (item, price) => {
     setBalance(balance + price);
     toast({
-      title: "Предмет продан!",
-      description: `Вы получили ${price}₴ за продажу предмета`,
+      title: t("Предмет продан!"),
+      description: `${t("Вы получили")} ${price}₴ ${t("за продажу предмета")}`,
     });
   };
 
@@ -148,8 +150,8 @@ const CasePage = () => {
       status: 'new'
     });
     toast({
-      title: "Предмет добавлен в инвентарь!",
-      description: `Предмет "${item.name}" добавлен в ваш инвентарь`,
+      title: t("Предмет добавлен в инвентарь!"),
+      description: `${t("Предмет")} "${item.name}" ${t("добавлен в ваш инвентарь")}`,
     });
   };
 
@@ -160,8 +162,8 @@ const CasePage = () => {
       status: 'withdrawn'
     });
     toast({
-      title: "Заявка на вывод отправлена!",
-      description: `Предмет "${item.name}" будет обработан и выдан в ближайшее время`,
+      title: t("Заявка на вывод отправлена!"),
+      description: `${t("Предмет")} "${item.name}" ${t("будет обработан и выдан в ближайшее время")}`,
     });
   };
 
@@ -174,8 +176,8 @@ const CasePage = () => {
     return (
       <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">Кейс не найден</h1>
-          <Button onClick={() => navigate(-1)}>Назад</Button>
+          <h1 className="text-3xl font-bold mb-4">{t('Кейс не найден')}</h1>
+          <Button onClick={() => navigate(-1)}>{t('Назад')}</Button>
         </div>
       </div>
     );
@@ -211,16 +213,16 @@ const CasePage = () => {
             className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
             onClick={openCase}
           >
-            Открыть {openingCount === 1 ? 'кейс' : `${openingCount} кейса`}
+            {t('Открыть')} {openingCount === 1 ? t('кейс') : `${openingCount} ${t('кейса')}`}
           </Button>
         </div>
         <div className="bg-gray-800/80 rounded-2xl shadow-xl p-8 max-w-2xl w-full text-center border border-gray-700">
-          <h3 className="text-2xl font-bold mb-6 text-white">Содержимое кейса</h3>
+          <h3 className="text-2xl font-bold mb-6 text-white">{t('Содержимое кейса')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {caseData.items.map((item, idx) => (
               <div key={idx} className={`rounded-xl p-4 flex flex-col items-center ${rarityColors[item.rarity]} shadow-md`}>
                 <div className="font-bold text-lg mb-2">{item.name}</div>
-                <div className="text-sm text-gray-200 mb-1">Редкость: <span className="capitalize">{item.rarity}</span></div>
+                <div className="text-sm text-gray-200 mb-1">{t('Редкость:')} <span className="capitalize">{t(item.rarity)}</span></div>
                 <div className="text-green-200 font-bold">{item.price}₴</div>
               </div>
             ))}
