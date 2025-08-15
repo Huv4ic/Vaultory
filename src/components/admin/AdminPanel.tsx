@@ -31,6 +31,7 @@ export default function AdminPanel() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases'>('users');
 
+
   useEffect(() => {
     // Загружаем пользователей при монтировании компонента
     fetchUsers();
@@ -71,7 +72,6 @@ export default function AdminPanel() {
         throw error;
       }
 
-      console.log('Loaded users:', data);
       setUsers(data || []);
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -94,7 +94,7 @@ export default function AdminPanel() {
         throw error;
       }
 
-      console.log(`Balance updated for user ${userId}: ${newBalance}`);
+
       
       // Обновляем локальное состояние
       setUsers(prev => prev.map(user => 
@@ -120,7 +120,7 @@ export default function AdminPanel() {
         throw error;
       }
 
-      console.log(`Status updated for user ${userId}: ${newStatus}`);
+
       
       // Обновляем локальное состояние
       setUsers(prev => prev.map(user => 
@@ -225,6 +225,9 @@ export default function AdminPanel() {
           </CardContent>
         </Card>
       </div>
+      
+
+      
       {/* Users Table */}
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader>

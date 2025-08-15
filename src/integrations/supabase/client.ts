@@ -5,6 +5,19 @@ import type { Database } from './types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://qwnqkgykltjxrahrgejf.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3bnFrZ3lrbHRqeHJhaHJnZWpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI0NTYwNzgsImV4cCI6MjA2ODAzMjA3OH0.ZasOto8PCGVMeFLRTFLKHlse1v0HJh0xGIXY-XCSstM";
 
+// Проверяем, что ключи загружены
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  console.error('Supabase configuration error:', {
+    url: SUPABASE_URL,
+    key: SUPABASE_PUBLISHABLE_KEY ? 'Present' : 'Missing'
+  });
+}
+
+console.log('Initializing Supabase client with:', {
+  url: SUPABASE_URL,
+  keyPresent: !!SUPABASE_PUBLISHABLE_KEY
+});
+
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
@@ -13,5 +26,37 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
+  },
+  db: {
+    schema: 'public'
+  },
+  global: {
+    headers: {
+      'X-Client-Info': 'vaultory-admin-panel'
+    }
   }
 });
+
+// Тестовая функция для проверки подключения
+export const testSupabaseConnection = async () => {
+  try {
+    console.log('Testing Supabase connection...');
+    
+    // Простой тест подключения
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('count')
+      .limit(1);
+    
+    if (error) {
+      console.error('Supabase connection test failed:', error);
+      return { success: false, error: error.message };
+    }
+    
+    console.log('Supabase connection test successful');
+    return { success: true, data };
+  } catch (err) {
+    console.error('Supabase connection test error:', err);
+    return { success: false, error: err instanceof Error ? err.message : 'Unknown error' };
+  }
+};

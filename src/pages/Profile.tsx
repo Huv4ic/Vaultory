@@ -123,7 +123,7 @@ const Profile = () => {
                 <span className="ml-0">
                   {/* Баланс в стиле шапки */}
                   <div className="bg-gradient-to-r from-green-400 to-green-600 text-white font-bold px-4 py-1 rounded-lg shadow border border-green-500 text-base flex items-center gap-1">
-                    Баланс&nbsp;{balance}₽
+                    Баланс&nbsp;{balance}₴
                   </div>
                 </span>
               </div>
@@ -138,7 +138,7 @@ const Profile = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
             <div className="bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[110px] min-w-[140px]">
               <span className="text-gray-400 text-base mb-1">Потрачено за всё время</span>
-              <span className="text-2xl font-extrabold text-green-400">{spent}₽</span>
+              <span className="text-2xl font-extrabold text-green-400">{spent}₴</span>
             </div>
             <div className="bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[110px] min-w-[140px]">
               <span className="text-gray-400 text-base mb-1">Открыто кейсов</span>
@@ -160,7 +160,7 @@ const Profile = () => {
               </CardTitle>
               <div className="flex items-center gap-4 mt-4">
                 <span className="bg-gray-700 text-white px-3 py-1 rounded-full text-sm">{items.length} предметов</span>
-                <span className="text-green-300 font-bold">Сумма: {getTotalValue()}₽</span>
+                <span className="text-green-300 font-bold">Сумма: {getTotalValue()}₴</span>
                 <span className="text-blue-400 font-bold">Открыто кейсов: {casesOpened}</span>
               </div>
             </CardHeader>

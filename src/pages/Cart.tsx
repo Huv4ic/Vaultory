@@ -62,7 +62,7 @@ const Cart = () => {
     if (balance < total) {
       toast({
         title: "Недостаточно средств",
-        description: `Для покупки нужно ${total}₽, у вас ${balance}₽`,
+        description: `Для покупки нужно ${total}₴, у вас ${balance}₴`,
       });
       return;
     }
@@ -87,7 +87,7 @@ const Cart = () => {
       
       toast({
         title: "Заказ оформлен!",
-        description: `Спасибо за покупку! С вашего баланса списано ${total}₽`,
+        description: `Спасибо за покупку! С вашего баланса списано ${total}₴`,
       });
       navigate('/catalog');
     } catch (error) {
@@ -258,10 +258,10 @@ const Cart = () => {
                 <div className="text-3xl font-bold">Корзина</div>
                 <div className="flex items-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">
                   <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>
-                  Баланс: <span className="ml-2">{balance}₽</span>
+                  Баланс: <span className="ml-2">{balance}₴</span>
                 </div>
               </div>
-              <div className="mb-6 text-lg font-semibold">Сумма к оплате: <span className="text-white">{total}₽</span></div>
+              <div className="mb-6 text-lg font-semibold">Сумма к оплате: <span className="text-white">{total}₴</span></div>
               {balance < total && (
                 <div className="mb-4 text-red-200 font-bold">Недостаточно средств для оплаты заказа</div>
               )}
