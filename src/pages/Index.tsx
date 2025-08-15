@@ -7,12 +7,14 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { products, gameCategories } from '@/data/products';
 import { Star, Users, CheckCircle, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [visibleProducts, setVisibleProducts] = useState(15);
   const [cart, setCart] = useState([]);
   const { telegramUser } = useAuth();
+  const { t } = useLanguage();
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -25,34 +27,34 @@ const Index = () => {
   };
 
   const testimonials = [
-    { name: 'Максим', game: 'Brawl Stars', text: 'Купил мега боксы, получил легендарного бойца! Супер быстро и дешево!', rating: 5 },
-    { name: 'Анна', game: 'Roblox', text: 'Robux пришли мгновенно, теперь мой аватар самый крутой в школе!', rating: 5 },
-    { name: 'Дмитрий', game: 'Steam', text: 'Пополнил кошелек, купил CS2. Всё честно, рекомендую!', rating: 5 },
-    { name: 'София', game: 'PUBG Mobile', text: 'UC зачислились сразу, купила королевский пропуск. Спасибо!', rating: 5 }
+    { name: t('Максим'), game: 'Brawl Stars', text: t('Купил мега боксы, получил легендарного бойца! Супер быстро и дешево!'), rating: 5 },
+    { name: t('Анна'), game: 'Roblox', text: t('Robux пришли мгновенно, теперь мой аватар самый крутой в школе!'), rating: 5 },
+    { name: t('Дмитрий'), game: 'Steam', text: t('Пополнил кошелек, купил CS2. Всё честно, рекомендую!'), rating: 5 },
+    { name: t('София'), game: 'PUBG Mobile', text: t('UC зачислились сразу, купила королевский пропуск. Спасибо!'), rating: 5 }
   ];
 
   const faqItems = [
     { 
-      question: 'Как быстро приходят товары?', 
-      answer: 'Большинство товаров доставляется мгновенно после оплаты. Максимальное время ожидания - 15 минут.' 
+      question: t('Как быстро приходят товары?'), 
+      answer: t('Большинство товаров доставляется мгновенно после оплаты. Максимальное время ожидания - 15 минут.') 
     },
     { 
-      question: 'Безопасно ли покупать здесь?', 
-      answer: 'Да, мы гарантируем 100% безопасность покупок. Все товары официальные, есть возврат средств.' 
+      question: t('Безопасно ли покупать здесь?'), 
+      answer: t('Да, мы гарантируем 100% безопасность покупок. Все товары официальные, есть возврат средств.') 
     },
     { 
-      question: 'Какие способы оплаты?', 
-      answer: 'Принимаем карты, электронные кошельки, криптовалюты и переводы через банк.' 
+      question: t('Какие способы оплаты?'), 
+      answer: t('Принимаем карты, электронные кошельки, криптовалюты и переводы через банк.') 
     },
     { 
-      question: 'Что делать если товар не пришел?', 
-      answer: 'Обратитесь в поддержку в Telegram. Мы решим проблему в течение часа или вернем деньги.' 
+      question: t('Что делать если товар не пришел?'), 
+      answer: t('Обратитесь в поддержку в Telegram. Мы решим проблему в течение часа или вернем деньги.') 
     }
   ];
 
   const handleAddToCart = (product) => {
     if (!telegramUser) {
-      alert('Войдите через Telegram, чтобы добавить в корзину!');
+      alert(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
     setCart([...cart, product]);
@@ -67,16 +69,16 @@ const Index = () => {
       <section className="relative py-24 px-4 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white overflow-hidden animate-fade-in">
         <div className="container mx-auto text-center">
           <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
-            Vaultory — магазин игровых кейсов и товаров
+            {t('Vaultory — магазин игровых кейсов и товаров')}
           </h1>
           <p className="text-2xl mb-8 max-w-2xl mx-auto animate-slide-up">
-            Открывай уникальные кейсы, покупай топовые товары, пополняй баланс и выигрывай крутые призы!
+            {t('Открывай уникальные кейсы, покупай топовые товары, пополняй баланс и выигрывай крутые призы!')}
           </p>
           <a
             href="/cases"
             className="inline-block bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-xl px-10 py-4 rounded-lg shadow-lg transition-all duration-200 mb-4"
           >
-            Открыть кейсы
+            {t('Открыть кейсы')}
           </a>
           <div className="mt-6">
             <a
@@ -85,7 +87,7 @@ const Index = () => {
               rel="noopener noreferrer"
               className="inline-block bg-white text-gray-900 font-bold px-6 py-2 rounded-lg border border-gray-300 shadow hover:bg-gray-100 transition-all duration-200"
             >
-              Telegram поддержка
+              {t('Telegram поддержка')}
             </a>
           </div>
         </div>
@@ -102,7 +104,7 @@ const Index = () => {
         
         <div className="container mx-auto relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-red-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
-            Популярные игры
+            {t('Популярные игры')}
           </h2>
           
           <div className="flex flex-wrap justify-center gap-4 mb-12">
@@ -114,7 +116,7 @@ const Index = () => {
                   : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-700/50'
               }`}
             >
-              Все игры
+              {t('Все игры')}
             </button>
             {gameCategories.map((category) => (
               <button
@@ -152,7 +154,7 @@ const Index = () => {
                 size="lg"
                 className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none px-8 py-6 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25"
               >
-                Показать еще товары
+                {t('Показать еще товары')}
               </Button>
             </div>
           )}
@@ -166,15 +168,15 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="p-8 transform hover:scale-105 transition-all duration-300">
               <div className="text-4xl font-bold text-red-500 mb-2 animate-fade-in">50,000+</div>
-              <div className="text-gray-300">Довольных клиентов</div>
+              <div className="text-gray-300">{t('Довольных клиентов')}</div>
             </div>
             <div className="p-8 transform hover:scale-105 transition-all duration-300">
               <div className="text-4xl font-bold text-red-500 mb-2 animate-fade-in">1,000,000+</div>
-              <div className="text-gray-300">Проданных товаров</div>
+              <div className="text-gray-300">{t('Проданных товаров')}</div>
             </div>
             <div className="p-8 transform hover:scale-105 transition-all duration-300">
               <div className="text-4xl font-bold text-red-500 mb-2 animate-fade-in">99.8%</div>
-              <div className="text-gray-300">Положительных отзывов</div>
+              <div className="text-gray-300">{t('Положительных отзывов')}</div>
             </div>
           </div>
         </div>
@@ -184,7 +186,7 @@ const Index = () => {
       <section className="py-16 px-4 bg-gradient-to-br from-purple-900/20 via-gray-900 to-blue-900/20">
         <div className="container mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-red-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
-            Отзывы клиентов
+            {t('Отзывы клиентов')}
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -216,7 +218,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/10 via-transparent to-red-900/10"></div>
         <div className="container mx-auto max-w-4xl relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-red-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
-            Частые вопросы
+            {t('Частые вопросы')}
           </h2>
           
           <Accordion type="single" collapsible className="space-y-4">
