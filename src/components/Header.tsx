@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/hooks/useLanguage';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const TELEGRAM_BOT = 'vaultory_notify_bot';
 
@@ -10,17 +12,18 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { telegramUser, balance, signOutTelegram, setTelegramUser } = useAuth();
-  const tgWidgetRef = useRef(null);
+  const { currentLanguage, changeLanguage, t } = useLanguage();
+  const tgWidgetRef = useRef<HTMLDivElement>(null);
 
   const isActive = (path: string) => location.pathname === path;
 
   // Автоматическая обработка Telegram Login Widget
   useEffect(() => {
-    function handleTgAuth(e) {
+    function handleTgAuth(e: CustomEvent) {
       setTelegramUser(e.detail);
     }
-    window.addEventListener('tg-auth', handleTgAuth);
-    return () => window.removeEventListener('tg-auth', handleTgAuth);
+    window.addEventListener('tg-auth', handleTgAuth as EventListener);
+    return () => window.removeEventListener('tg-auth', handleTgAuth as EventListener);
   }, [setTelegramUser]);
 
   // Вставка Telegram Login Widget
@@ -67,7 +70,7 @@ const Header = () => {
                 isActive('/catalog') ? 'text-red-500' : 'text-gray-300'
               }`}
             >
-              Каталог
+              {t("Каталог")}
             </Link>
             <Link
               to="/cases"
@@ -75,7 +78,7 @@ const Header = () => {
                 isActive('/cases') ? 'text-red-500' : 'text-gray-300'
               }`}
             >
-              Кейсы
+              {t("Кейсы")}
             </Link>
             <Link
               to="/support"
@@ -83,7 +86,7 @@ const Header = () => {
                 isActive('/support') ? 'text-red-500' : 'text-gray-300'
               }`}
             >
-              Поддержка
+              {t("Поддержка")}
             </Link>
             <Link
               to="/about"
@@ -91,12 +94,18 @@ const Header = () => {
                 isActive('/about') ? 'text-red-500' : 'text-gray-300'
               }`}
             >
-              О нас
+              {t("О нас")}
             </Link>
           </nav>
 
           {/* Действия */}
           <div className="flex items-center space-x-4">
+            {/* Переключатель языков */}
+            <LanguageSwitcher 
+              currentLanguage={currentLanguage}
+              onLanguageChange={changeLanguage}
+            />
+            
             {/* Телеграм */}
             <a
               href="https://t.me/Vaultory_manager"
@@ -133,7 +142,7 @@ const Header = () => {
                   )}
                   <span className="text-white font-semibold text-sm">{telegramUser.username ? `@${telegramUser.username}` : telegramUser.first_name}</span>
                   <span className="ml-2 bg-gradient-to-r from-green-400 to-green-600 text-white font-bold px-4 py-1 rounded-lg shadow border border-green-500 text-base flex items-center gap-1">
-                    Баланс&nbsp;{balance}₴
+                    {t("Баланс")}&nbsp;{balance}₴
                   </span>
                 </Link>
                 <Button
@@ -141,7 +150,7 @@ const Header = () => {
                   className="ml-2 px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold border-none shadow hover:from-red-600 hover:to-purple-700 transition-all duration-200"
                   onClick={signOutTelegram}
                 >
-                  Выйти
+                  {t("Выйти")}
                 </Button>
               </>
             )}
@@ -159,34 +168,42 @@ const Header = () => {
         {/* Мобильная навигация */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-800">
+            {/* Переключатель языков для мобильных */}
+            <div className="mb-4 px-4">
+              <LanguageSwitcher 
+                currentLanguage={currentLanguage}
+                onLanguageChange={changeLanguage}
+              />
+            </div>
+            
             <nav className="flex flex-col space-y-4">
               <Link
                 to="/catalog"
                 className="text-gray-300 hover:text-red-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Каталог
+                {t("Каталог")}
               </Link>
               <Link
                 to="/cases"
                 className="text-gray-300 hover:text-red-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Кейсы
+                {t("Кейсы")}
               </Link>
               <Link
                 to="/support"
                 className="text-gray-300 hover:text-red-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Поддержка
+                {t("Поддержка")}
               </Link>
               <Link
                 to="/about"
                 className="text-gray-300 hover:text-red-400 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                О нас
+                {t("О нас")}
               </Link>
             </nav>
           </div>

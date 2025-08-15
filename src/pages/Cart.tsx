@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 import { 
   ShoppingCart, 
   Trash2, 
@@ -24,6 +25,7 @@ const Cart = () => {
   const { telegramUser, profile, balance, setBalance, refreshProfile } = useAuth();
   const { items, removeItem, updateQuantity, clear, total } = useCart();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleQuantityChange = (id: string, change: number) => {
@@ -60,10 +62,10 @@ const Cart = () => {
     }
 
     if (balance < total) {
-      toast({
-        title: "Недостаточно средств",
-        description: `Для покупки нужно ${total}₴, у вас ${balance}₴`,
-      });
+              toast({
+          title: t("Недостаточно средств"),
+          description: `${t("Для покупки нужно")} ${total}₴, ${t("у вас")} ${balance}₴`,
+        });
       return;
     }
 
@@ -85,17 +87,17 @@ const Cart = () => {
       // Очищаем корзину
       clear();
       
-      toast({
-        title: "Заказ оформлен!",
-        description: `Спасибо за покупку! С вашего баланса списано ${total}₴`,
-      });
+              toast({
+          title: t("Заказ оформлен!"),
+          description: `${t("Спасибо за покупку! С вашего баланса списано")} ${total}₴`,
+        });
       navigate('/catalog');
     } catch (error) {
       console.error('Ошибка при оформлении заказа:', error);
-      toast({
-        title: "Ошибка при оформлении заказа",
-        description: "Произошла ошибка при оформлении заказа",
-      });
+              toast({
+          title: t("Ошибка при оформлении заказа"),
+          description: t("Произошла ошибка при оформлении заказа"),
+        });
     } finally {
       setIsProcessing(false);
     }
@@ -107,9 +109,9 @@ const Cart = () => {
         <div className="mx-auto w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6">
           <User className="w-12 h-12 text-gray-400" />
         </div>
-        <h1 className="text-3xl font-bold text-white mb-4">Войдите через Telegram</h1>
+        <h1 className="text-3xl font-bold text-white mb-4">{t("Войдите через Telegram")}</h1>
         <p className="text-gray-400 mb-8 max-w-md text-center">
-          Для доступа к корзине и покупкам необходимо авторизоваться через Telegram
+          {t("Для доступа к корзине и покупкам необходимо авторизоваться через Telegram")}
         </p>
         {/* Можно вставить Telegram Login Widget или ссылку на профиль */}
       </div>
@@ -124,14 +126,14 @@ const Cart = () => {
             <div className="mx-auto w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-6">
               <ShoppingCart className="w-12 h-12 text-gray-400" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-4">Корзина пуста</h1>
+            <h1 className="text-3xl font-bold text-white mb-4">{t("Корзина пуста")}</h1>
             <p className="text-gray-400 mb-8 max-w-md mx-auto">
-              Добавьте товары из каталога, чтобы начать покупки
+              {t("Добавьте товары из каталога, чтобы начать покупки")}
             </p>
             <Link to="/catalog">
               <Button className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none">
                 <Package className="w-4 h-4 mr-2" />
-                Перейти в каталог
+                {t("Перейти в каталог")}
               </Button>
             </Link>
           </div>
@@ -157,8 +159,8 @@ const Cart = () => {
               </Button>
             </Link>
             <div>
-              <h1 className="text-3xl font-bold text-white">Корзина</h1>
-              <p className="text-gray-400">{items.length} товар(ов)</p>
+                             <h1 className="text-3xl font-bold text-white">{t("Корзина")}</h1>
+               <p className="text-gray-400">{items.length} товар(ов)</p>
             </div>
           </div>
           
@@ -168,7 +170,7 @@ const Cart = () => {
             className="rounded-lg bg-gray-700/70 text-red-300 hover:text-white hover:ring-2 hover:ring-pink-400/60 hover:bg-gradient-to-br hover:from-gray-700 hover:to-pink-900 transition-all duration-200 shadow-md px-4 py-2 flex items-center gap-2"
           >
             <Trash2 className="w-4 h-4 mr-2" />
-            Очистить корзину
+            {t("Очистить корзину")}
           </Button>
         </div>
 
@@ -196,7 +198,7 @@ const Cart = () => {
                       {item.name}
                     </h3>
                     <p className="text-gray-400 text-sm mb-2">
-                      Цена за единицу: {item.price}₴
+                      {t("Цена за единицу")}: {item.price}₴
                     </p>
                     
                     {/* Управление количеством */}
@@ -255,22 +257,22 @@ const Cart = () => {
           <div className="lg:col-span-1">
             <div className="max-w-2xl mx-auto bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
               <div className="flex items-center justify-between mb-6">
-                <div className="text-3xl font-bold">Корзина</div>
+                <div className="text-3xl font-bold">{t("Корзина")}</div>
                 <div className="flex items-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">
                   <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>
-                  Баланс: <span className="ml-2">{balance}₴</span>
+                  {t("Баланс")}: <span className="ml-2">{balance}₴</span>
                 </div>
               </div>
-              <div className="mb-6 text-lg font-semibold">Сумма к оплате: <span className="text-white">{total}₴</span></div>
+              <div className="mb-6 text-lg font-semibold">{t("Сумма к оплате")}: <span className="text-white">{total}₴</span></div>
               {balance < total && (
-                <div className="mb-4 text-red-200 font-bold">Недостаточно средств для оплаты заказа</div>
+                <div className="mb-4 text-red-200 font-bold">{t("Недостаточно средств для оплаты заказа")}</div>
               )}
               <button
                 className={`w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-4 rounded-lg shadow-lg transition-all duration-200 ${balance < total ? 'opacity-50 cursor-not-allowed' : ''}`}
                 onClick={handleCheckout}
                 disabled={balance < total}
               >
-                Оформить заказ
+                                 {t("Оформить заказ")}
               </button>
             </div>
           </div>
