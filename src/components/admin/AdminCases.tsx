@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../../integrations/supabase/client';
 import { AdminCase, CaseFormData } from '../../types/admin';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -34,83 +35,19 @@ const AdminCases = () => {
   const fetchCases = async () => {
     try {
       setLoading(true);
-      // Временно используем моковые данные
-      const mockCases: AdminCase[] = [
-        {
-          id: '1',
-          name: 'CS2 Кейс',
-          game: 'CS2',
-          price: 99.99,
-          image_url: '/images/cases/cs2-case.jpg',
-          description: 'Кейс с эксклюзивными скинами CS2',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          items: [
-            {
-              id: '1',
-              case_id: '1',
-              name: 'Karambit | Doppler',
-              rarity: 'legendary',
-              drop_chance: 0.0001,
-              image_url: '/images/items/karambit-doppler.jpg',
-              created_at: new Date().toISOString(),
-            },
-            {
-              id: '2',
-              case_id: '1',
-              name: 'M4A4 | Howl',
-              rarity: 'epic',
-              drop_chance: 0.001,
-              image_url: '/images/items/m4a4-howl.jpg',
-              created_at: new Date().toISOString(),
-            },
-          ],
-        },
-        {
-          id: '2',
-          name: 'Roblox Кейс',
-          game: 'Roblox',
-          price: 79.99,
-          image_url: '/images/cases/roblox-case.jpg',
-          description: 'Кейс с редкими предметами Roblox',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          items: [
-            {
-              id: '3',
-              case_id: '2',
-              name: 'Легендарный аватар',
-              rarity: 'legendary',
-              drop_chance: 0.0001,
-              image_url: '/images/items/legendary-avatar.jpg',
-              created_at: new Date().toISOString(),
-            },
-          ],
-        },
-        {
-          id: '3',
-          name: 'PUBG Кейс',
-          game: 'PUBG',
-          price: 129.99,
-          image_url: '/images/cases/pubg-case.jpg',
-          description: 'Кейс с эксклюзивными скинами PUBG',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          items: [
-            {
-              id: '4',
-              case_id: '3',
-              name: 'Королевский скин',
-              rarity: 'legendary',
-              drop_chance: 0.0001,
-              image_url: '/images/items/royal-skin.jpg',
-              created_at: new Date().toISOString(),
-            },
-          ],
-        },
-      ];
       
-      setCases(mockCases);
+      const { data, error } = await supabase
+        .from('admin_cases')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching cases:', error);
+        toast('Ошибка при загрузке кейсов', 'error');
+        return;
+      }
+
+      setCases(data || []);
     } catch (err) {
       console.error('Error fetching cases:', err);
       toast('Ошибка при загрузке кейсов', 'error');

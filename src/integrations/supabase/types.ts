@@ -109,6 +109,128 @@ export type Database = {
           },
         ]
       }
+      admin_products: {
+        Row: {
+          id: string
+          name: string
+          price: number
+          original_price: number | null
+          image_url: string
+          category: string
+          game: string
+          rating: number
+          sales: number
+          description: string | null
+          features: string[]
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          price: number
+          original_price?: number | null
+          image_url: string
+          category: string
+          game: string
+          rating: number
+          sales: number
+          description?: string | null
+          features?: string[]
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          price?: number
+          original_price?: number | null
+          image_url?: string
+          category?: string
+          game?: string
+          rating?: number
+          sales?: number
+          description?: string | null
+          features?: string[]
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      admin_cases: {
+        Row: {
+          id: string
+          name: string
+          price: number
+          image_url: string
+          game: string
+          description: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          price: number
+          image_url: string
+          game: string
+          description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          price?: number
+          image_url?: string
+          game?: string
+          description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      admin_case_items: {
+        Row: {
+          id: string
+          case_id: string
+          name: string
+          image_url: string
+          rarity: string
+          drop_chance: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          case_id: string
+          name: string
+          image_url: string
+          rarity: string
+          drop_chance: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          case_id?: string
+          name?: string
+          image_url?: string
+          rarity?: string
+          drop_chance?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_case_items_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "admin_cases"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       case_items: {
         Row: {
           case_id: string | null

@@ -40,55 +40,19 @@ const AdminProducts = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Временно используем существующие данные из файла
-      // Позже заменим на запрос к базе данных
-      const mockProducts: AdminProduct[] = [
-        {
-          id: '1',
-          name: 'Steam ключ CS2',
-          price: 299.99,
-          original_price: 399.99,
-          image_url: '/images/products/cs2-key.jpg',
-          category: 'Ключи',
-          game: 'CS2',
-          rating: 4.8,
-          sales: 1250,
-          description: 'Официальный ключ для игры Counter-Strike 2',
-          features: ['Мгновенная доставка', 'Официальный ключ', 'Поддержка Steam'],
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: '2',
-          name: '1000 Robux',
-          price: 89.99,
-          image_url: '/images/products/robux-1000.jpg',
-          category: 'Валюта',
-          game: 'Roblox',
-          rating: 4.9,
-          sales: 3200,
-          description: '1000 Robux для Roblox',
-          features: ['Мгновенное зачисление', 'Безопасная покупка', 'Поддержка 24/7'],
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        {
-          id: '3',
-          name: '50 UC PUBG',
-          price: 149.99,
-          image_url: '/images/products/uc-50.jpg',
-          category: 'Валюта',
-          game: 'PUBG',
-          rating: 4.7,
-          sales: 2100,
-          description: '50 UC для PUBG Mobile',
-          features: ['Быстрая доставка', 'Официальная валюта', 'Гарантия качества'],
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        }
-      ];
       
-      setProducts(mockProducts);
+      const { data, error } = await supabase
+        .from('admin_products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching products:', error);
+        toast('Ошибка при загрузке товаров', 'error');
+        return;
+      }
+
+      setProducts(data || []);
     } catch (err) {
       console.error('Error fetching products:', err);
       toast('Ошибка при загрузке товаров', 'error');
@@ -141,9 +105,22 @@ const AdminProducts = () => {
         return;
       }
 
-      // Временно используем локальное состояние
       if (editMode === 'edit' && editingId) {
         // Обновление существующего товара
+        const { error } = await supabase
+          .from('admin_products')
+          .update({
+            ...currentProduct,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', editingId);
+
+        if (error) {
+          console.error('Error updating product:', error);
+          setError('Ошибка при обновлении товара: ' + error.message);
+          return;
+        }
+
         setProducts(prev => prev.map(p => 
           p.id === editingId ? {
             ...p,
@@ -162,13 +139,23 @@ const AdminProducts = () => {
         toast('Товар успешно обновлен!', 'success');
       } else {
         // Создание нового товара
-        const newProduct: AdminProduct = {
-          id: Date.now().toString(),
-          ...currentProduct,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
-        setProducts(prev => [newProduct, ...prev]);
+        const { data, error } = await supabase
+          .from('admin_products')
+          .insert([{
+            ...currentProduct,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          }])
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error adding product:', error);
+          setError('Ошибка при добавлении товара: ' + error.message);
+          return;
+        }
+
+        setProducts(prev => [data, ...prev]);
         toast('Товар успешно добавлен!', 'success');
       }
 
@@ -183,7 +170,17 @@ const AdminProducts = () => {
     if (!window.confirm('Вы уверены, что хотите удалить этот товар?')) return;
 
     try {
-      // Временно используем локальное состояние
+      const { error } = await supabase
+        .from('admin_products')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.error('Error deleting product:', error);
+        toast('Ошибка при удалении товара: ' + error.message, 'error');
+        return;
+      }
+
       setProducts(prev => prev.filter(p => p.id !== id));
       toast('Товар успешно удален!', 'success');
     } catch (err) {
