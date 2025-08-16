@@ -1,5 +1,5 @@
 import React from 'react';
-import Toast from './Toast';
+import Toast from './toast';
 import { useToast } from '../../hooks/useToast';
 
 const ToastContainer: React.FC = () => {
