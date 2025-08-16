@@ -36,22 +36,40 @@ const AdminCases = () => {
     try {
       setLoading(true);
       
-      const { data, error } = await supabase
-        .from('admin_cases')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching cases:', error);
+      // Временно загружаем из существующего файла
+      // Позже заменим на загрузку из admin_cases
+      import('../../data/cases').then(({ cases: existingCases }) => {
+        const adminCases: AdminCase[] = existingCases.map(gameCase => ({
+          id: gameCase.id,
+          name: gameCase.name,
+          price: gameCase.price,
+          image_url: gameCase.image,
+          game: gameCase.game,
+          description: `Кейс ${gameCase.name} для игры ${gameCase.game}`,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          items: gameCase.items.map(item => ({
+            id: `${gameCase.id}-${item.name}`,
+            case_id: gameCase.id,
+            name: item.name,
+            image_url: '/images/placeholder.jpg',
+            rarity: item.rarity,
+            drop_chance: item.chance,
+            created_at: new Date().toISOString(),
+          })),
+        }));
+        
+        setCases(adminCases);
+        setLoading(false);
+      }).catch(err => {
+        console.error('Error importing cases:', err);
         toast('Ошибка при загрузке кейсов', 'error');
-        return;
-      }
-
-      setCases(data || []);
+        setLoading(false);
+      });
+      
     } catch (err) {
       console.error('Error fetching cases:', err);
       toast('Ошибка при загрузке кейсов', 'error');
-    } finally {
       setLoading(false);
     }
   };

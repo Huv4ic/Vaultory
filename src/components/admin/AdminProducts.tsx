@@ -41,22 +41,36 @@ const AdminProducts = () => {
     try {
       setLoading(true);
       
-      const { data, error } = await supabase
-        .from('admin_products')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching products:', error);
+      // Временно загружаем из существующего файла
+      // Позже заменим на загрузку из admin_products
+      import('../../data/products').then(({ products: existingProducts }) => {
+        const adminProducts: AdminProduct[] = existingProducts.map(product => ({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          original_price: product.originalPrice,
+          image_url: product.image,
+          category: product.category,
+          game: product.game,
+          rating: product.rating,
+          sales: product.sales,
+          description: product.description,
+          features: product.features,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }));
+        
+        setProducts(adminProducts);
+        setLoading(false);
+      }).catch(err => {
+        console.error('Error importing products:', err);
         toast('Ошибка при загрузке товаров', 'error');
-        return;
-      }
-
-      setProducts(data || []);
+        setLoading(false);
+      });
+      
     } catch (err) {
       console.error('Error fetching products:', err);
       toast('Ошибка при загрузке товаров', 'error');
-    } finally {
       setLoading(false);
     }
   };
