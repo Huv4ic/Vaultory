@@ -36,36 +36,16 @@ const AdminCases = () => {
     try {
       setLoading(true);
       
-      // Временно загружаем из существующего файла
-      // Позже заменим на загрузку из admin_cases
-      import('../../data/cases').then(({ cases: existingCases }) => {
-        const adminCases: AdminCase[] = existingCases.map(gameCase => ({
-          id: gameCase.id,
-          name: gameCase.name,
-          price: gameCase.price,
-          image_url: gameCase.image,
-          game: gameCase.game,
-          description: `Кейс ${gameCase.name} для игры ${gameCase.game}`,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          items: gameCase.items.map(item => ({
-            id: `${gameCase.id}-${item.name}`,
-            case_id: gameCase.id,
-            name: item.name,
-            image_url: '/images/placeholder.jpg',
-            rarity: item.rarity,
-            drop_chance: item.chance,
-            created_at: new Date().toISOString(),
-          })),
-        }));
-        
-        setCases(adminCases);
-        setLoading(false);
-      }).catch(err => {
-        console.error('Error importing cases:', err);
-        toast('Ошибка при загрузке кейсов', 'error');
-        setLoading(false);
-      });
+      // Загружаем из базы данных admin_cases
+      const { data, error } = await supabase
+        .from('admin_cases')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      setCases(data || []);
+      setLoading(false);
       
     } catch (err) {
       console.error('Error fetching cases:', err);
@@ -113,30 +93,53 @@ const AdminCases = () => {
         return;
       }
 
-      // Временно используем локальное состояние
       if (editMode === 'edit' && editingId) {
         // Обновление существующего кейса
-        setCases(prev => prev.map(c => 
-          c.id === editingId ? {
-            ...c,
+        const { data, error } = await supabase
+          .from('admin_cases')
+          .update({
             name: currentCase.name,
             game: currentCase.game,
             price: currentCase.price,
             image_url: currentCase.image_url,
             description: currentCase.description,
-          } : c
-        ));
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', editingId)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error updating case:', error);
+          setError('Ошибка при обновлении кейса: ' + error.message);
+          return;
+        }
+
+        setCases(prev => prev.map(c => c.id === editingId ? data : c));
         toast('Кейс успешно обновлен!', 'success');
       } else {
         // Создание нового кейса
-        const newCase: AdminCase = {
-          id: Date.now().toString(),
-          ...currentCase,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          items: [],
-        };
-        setCases(prev => [newCase, ...prev]);
+        const { data, error } = await supabase
+          .from('admin_cases')
+          .insert([{
+            name: currentCase.name,
+            game: currentCase.game,
+            price: currentCase.price,
+            image_url: currentCase.image_url,
+            description: currentCase.description,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          }])
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error adding case:', error);
+          setError('Ошибка при добавлении кейса: ' + error.message);
+          return;
+        }
+
+        setCases(prev => [data, ...prev]);
         toast('Кейс успешно добавлен!', 'success');
       }
 
@@ -151,7 +154,17 @@ const AdminCases = () => {
     if (!window.confirm('Вы уверены, что хотите удалить этот кейс?')) return;
 
     try {
-      // Временно используем локальное состояние
+      const { error } = await supabase
+        .from('admin_cases')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.error('Error deleting case:', error);
+        toast('Ошибка при удалении кейса: ' + error.message, 'error');
+        return;
+      }
+
       setCases(prev => prev.filter(c => c.id !== id));
       toast('Кейс успешно удален!', 'success');
     } catch (err) {

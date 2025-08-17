@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { products } from '@/data/products';
 import { Star, ShoppingCart, Shield, Clock, ArrowLeft, Plus, Minus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useProducts } from '@/hooks/useProducts';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -13,8 +13,34 @@ const ProductPage = () => {
   const { telegramUser } = useAuth();
   const { addItem, items } = useCart();
   const { t } = useLanguage();
+  const { products, categories, loading, error } = useProducts();
   
   const product = products.find(p => p.id === id);
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-500 mx-auto"></div>
+          <p className="mt-4 text-xl">{t('Загрузка товара...')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4 text-red-500">{t('Ошибка загрузки')}</h1>
+          <p className="text-xl mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()} className="bg-gradient-to-r from-red-500 to-purple-600">
+            {t('Попробовать снова')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
   
   if (!product) {
     return (
@@ -36,7 +62,7 @@ const ProductPage = () => {
   };
 
   const totalPrice = product.price * quantity;
-  const discount = product.originalPrice ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0;
+  const discount = product.original_price ? Math.round(((product.original_price - product.price) / product.original_price) * 100) : 0;
 
   const handleAddToCart = () => {
     if (!telegramUser) {
@@ -61,7 +87,7 @@ const ProductPage = () => {
           <div className="relative">
             <div className="aspect-square bg-gray-800 rounded-xl overflow-hidden">
               <img
-                src={product.image}
+                src={product.image_url}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -76,7 +102,7 @@ const ProductPage = () => {
           {/* Информация о товаре */}
           <div className="space-y-6">
             <div>
-              <div className="text-sm text-red-400 mb-2">{product.category}</div>
+              <div className="text-sm text-red-400 mb-2">{categories.find(cat => cat.id === product.category_id)?.name || product.game}</div>
               <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
               
               <div className="flex items-center space-x-4 mb-6">
@@ -93,8 +119,8 @@ const ProductPage = () => {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <div className="text-3xl font-bold text-white">{product.price}₴</div>
-                  {product.originalPrice && (
-                    <div className="text-gray-400 line-through">{product.originalPrice}₴</div>
+                  {product.original_price && (
+                    <div className="text-gray-400 line-through">{product.original_price}₴</div>
                   )}
                 </div>
                 <div className="flex items-center space-x-4">

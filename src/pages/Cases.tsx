@@ -2,109 +2,37 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Package, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-
-interface CaseItem {
-  name: string;
-  price: number;
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
-  chance: number;
-}
-
-interface GameCase {
-  id: string;
-  name: string;
-  game: string;
-  price: number;
-  image: string;
-  items: CaseItem[];
-  gradient: string;
-  icon: string;
-}
+import { useCases } from '@/hooks/useCases';
 
 const Cases = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const cases: GameCase[] = [
-    {
-      id: 'vaultory-premium',
-      name: 'Vaultory Premium',
-      game: t('Все игры'),
-      price: 999,
-      image: '/public/placeholder.svg',
-      gradient: 'from-yellow-400 via-pink-500 to-purple-600',
-      icon: '💎',
-      items: [
-        { name: t('Steam ключ AAA'), price: 2500, rarity: 'legendary', chance: 2 },
-        { name: t('Скин CS:GO (редкий)'), price: 1200, rarity: 'epic', chance: 8 },
-        { name: t('Подписка Spotify'), price: 500, rarity: 'rare', chance: 15 },
-        { name: t('1000 Robux'), price: 800, rarity: 'rare', chance: 15 },
-        { name: t('Случайная игра Steam'), price: 300, rarity: 'common', chance: 30 },
-        { name: t('50 UC PUBG'), price: 150, rarity: 'common', chance: 30 }
-      ]
-    },
-    {
-      id: 'csgo-knife',
-      name: t('CS:GO Ножи'),
-      game: 'CS:GO',
-      price: 1499,
-      image: '/public/placeholder.svg',
-      gradient: 'from-blue-500 via-purple-500 to-pink-500',
-      icon: '🔪',
-      items: [
-        { name: t('Karambit | Doppler'), price: 15000, rarity: 'legendary', chance: 1 },
-        { name: t('Butterfly Knife | Fade'), price: 9000, rarity: 'epic', chance: 4 },
-        { name: t('M9 Bayonet | Marble Fade'), price: 7000, rarity: 'epic', chance: 5 },
-        { name: t('Flip Knife | Tiger Tooth'), price: 3500, rarity: 'rare', chance: 10 },
-        { name: t('Shadow Daggers | Slaughter'), price: 2000, rarity: 'rare', chance: 15 },
-        { name: t('Наклейка CS:GO'), price: 300, rarity: 'common', chance: 65 }
-      ]
-    },
-    {
-      id: 'brawl-stars-mega',
-      name: t('Brawl Stars Мега'),
-      game: 'Brawl Stars',
-      price: 499,
-      image: '/public/placeholder.svg',
-      gradient: 'from-cyan-400 via-blue-500 to-purple-500',
-      icon: '⭐',
-      items: [
-        { name: t('Легендарный боец'), price: 5000, rarity: 'legendary', chance: 2 },
-        { name: t('Гемы x1000'), price: 1500, rarity: 'epic', chance: 8 },
-        { name: t('Гемы x500'), price: 750, rarity: 'rare', chance: 15 },
-        { name: t('Гемы x100'), price: 150, rarity: 'common', chance: 75 }
-      ]
-    },
-    {
-      id: 'roblox-royale',
-      name: t('Roblox Royale'),
-      game: 'Roblox',
-      price: 399,
-      image: '/public/placeholder.svg',
-      gradient: 'from-green-400 via-emerald-500 to-teal-500',
-      icon: '🎲',
-      items: [
-        { name: t('Robux x5000'), price: 10000, rarity: 'legendary', chance: 1 },
-        { name: t('Robux x1000'), price: 2000, rarity: 'epic', chance: 4 },
-        { name: t('Robux x500'), price: 1000, rarity: 'rare', chance: 10 },
-        { name: t('Robux x100'), price: 200, rarity: 'common', chance: 85 }
-      ]
-    },
-    {
-      id: 'pubg-elite',
-      name: t('PUBG Elite'),
-      game: 'PUBG Mobile',
-      price: 599,
-      image: '/public/placeholder.svg',
-      gradient: 'from-orange-400 via-red-500 to-pink-500',
-      icon: '🪖',
-      items: [
-        { name: t('Эксклюзивный скин'), price: 4000, rarity: 'legendary', chance: 2 },
-        { name: t('UC x1000'), price: 1500, rarity: 'epic', chance: 8 },
-        { name: t('UC x500'), price: 750, rarity: 'rare', chance: 15 },
-        { name: t('UC x100'), price: 150, rarity: 'common', chance: 75 }
-      ]
-    }
-  ];
+  const { cases, caseItems, loading, error } = useCases();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-500 mx-auto"></div>
+          <p className="mt-4 text-xl">{t('Загрузка кейсов...')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4 text-red-500">{t('Ошибка загрузки')}</h1>
+          <p className="text-xl mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()} className="bg-gradient-to-r from-red-500 to-purple-600">
+            {t('Попробовать снова')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
@@ -120,9 +48,9 @@ const Cases = () => {
               style={{ animationDelay: `${idx * 0.07}s` }}
             >
               <div className="relative w-full h-40 mb-4">
-                <div className={`absolute inset-0 bg-gradient-to-br ${caseData.gradient} rounded-xl opacity-20`}></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl opacity-20"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-6xl drop-shadow-lg">{caseData.icon}</span>
+                  <span className="text-6xl drop-shadow-lg">🎁</span>
                 </div>
               </div>
               <div className="text-xl font-bold mb-1 text-white drop-shadow-lg animate-fade-in">{caseData.name}</div>

@@ -126,7 +126,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          id: string
+          id?: string
           name: string
           price: number
           original_price?: number | null
@@ -169,7 +169,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          id: string
+          id?: string
           name: string
           price: number
           image_url: string
@@ -202,7 +202,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          id: string
+          id?: string
           case_id: string
           name: string
           image_url: string

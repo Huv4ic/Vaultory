@@ -4,10 +4,10 @@ import HeroSection from '@/components/HeroSection';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { products, gameCategories } from '@/data/products';
 import { Star, Users, CheckCircle, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useProducts } from '@/hooks/useProducts';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -15,6 +15,14 @@ const Index = () => {
   const [cart, setCart] = useState([]);
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
+  const { products, categories, loading, error } = useProducts();
+
+  // Создаем gameCategories из данных БД
+  const gameCategories = categories.map(cat => ({
+    id: cat.id,
+    name: cat.name,
+    icon: cat.icon
+  }));
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -57,12 +65,37 @@ const Index = () => {
       alert(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
-    setCart([...cart, product]);
+    // Здесь будет логика добавления в корзину
   };
 
-  const handleProductDetails = (product) => {
-    // Implementation of handleProductDetails function
+  const handleProductDetails = (productId) => {
+    // Здесь будет навигация на страницу товара
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-500 mx-auto"></div>
+          <p className="mt-4 text-xl">{t('Загрузка товаров...')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4 text-red-500">{t('Ошибка загрузки')}</h1>
+          <p className="text-xl mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()} className="bg-gradient-to-r from-red-500 to-purple-600">
+            {t('Попробовать снова')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -139,10 +172,17 @@ const Index = () => {
             {displayedProducts.map((product) => (
               <ProductCard
                 key={product.id}
-                {...product}
+                id={product.id}
+                name={product.name}
+                price={product.price}
+                originalPrice={product.original_price}
+                image={product.image_url}
+                category={categories.find(cat => cat.id === product.category_id)?.name || product.game}
+                rating={product.rating}
+                sales={product.sales}
                 isInCart={cart.some((item) => item.id === product.id)}
                 onAddToCart={() => handleAddToCart(product)}
-                onDetails={() => handleProductDetails(product)}
+                onDetails={() => handleProductDetails(product.id)}
               />
             ))}
           </div>

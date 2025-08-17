@@ -41,32 +41,16 @@ const AdminProducts = () => {
     try {
       setLoading(true);
       
-      // Временно загружаем из существующего файла
-      // Позже заменим на загрузку из admin_products
-      import('../../data/products').then(({ products: existingProducts }) => {
-        const adminProducts: AdminProduct[] = existingProducts.map(product => ({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          original_price: product.originalPrice,
-          image_url: product.image,
-          category: product.category,
-          game: product.game,
-          rating: product.rating,
-          sales: product.sales,
-          description: product.description,
-          features: product.features,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        }));
-        
-        setProducts(adminProducts);
-        setLoading(false);
-      }).catch(err => {
-        console.error('Error importing products:', err);
-        toast('Ошибка при загрузке товаров', 'error');
-        setLoading(false);
-      });
+      // Загружаем из базы данных admin_products
+      const { data, error } = await supabase
+        .from('admin_products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      setProducts(data || []);
+      setLoading(false);
       
     } catch (err) {
       console.error('Error fetching products:', err);
@@ -118,26 +102,12 @@ const AdminProducts = () => {
         setError('Заполните все обязательные поля!');
         return;
       }
-
+  
       if (editMode === 'edit' && editingId) {
         // Обновление существующего товара
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('admin_products')
           .update({
-            ...currentProduct,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', editingId);
-
-        if (error) {
-          console.error('Error updating product:', error);
-          setError('Ошибка при обновлении товара: ' + error.message);
-          return;
-        }
-
-        setProducts(prev => prev.map(p => 
-          p.id === editingId ? {
-            ...p,
             name: currentProduct.name,
             price: currentProduct.price,
             original_price: currentProduct.original_price,
@@ -148,15 +118,35 @@ const AdminProducts = () => {
             sales: currentProduct.sales,
             description: currentProduct.description,
             features: currentProduct.features,
-          } : p
-        ));
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', editingId)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error updating product:', error);
+          setError('Ошибка при обновлении товара: ' + error.message);
+          return;
+        }
+
+        setProducts(prev => prev.map(p => p.id === editingId ? data : p));
         toast('Товар успешно обновлен!', 'success');
       } else {
         // Создание нового товара
         const { data, error } = await supabase
           .from('admin_products')
           .insert([{
-            ...currentProduct,
+            name: currentProduct.name,
+            price: currentProduct.price,
+            original_price: currentProduct.original_price,
+            image_url: currentProduct.image_url,
+            category: currentProduct.category,
+            game: currentProduct.game,
+            rating: currentProduct.rating,
+            sales: currentProduct.sales,
+            description: currentProduct.description,
+            features: currentProduct.features,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           }])

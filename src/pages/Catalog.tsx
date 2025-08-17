@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
-import { products, gameCategories } from '@/data/products';
+import { useProducts } from '@/hooks/useProducts';
 import { Search, Filter, SlidersHorizontal } from 'lucide-react';
 
 const Catalog = () => {
@@ -14,10 +14,18 @@ const Catalog = () => {
   const { telegramUser } = useAuth();
   const { addItem, items } = useCart();
   const { t } = useLanguage();
+  const { products, categories, loading, error } = useProducts();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
   const [visibleProducts, setVisibleProducts] = useState(15);
+
+  // Создаем gameCategories из данных БД
+  const gameCategories = categories.map(cat => ({
+    id: cat.id,
+    name: cat.name,
+    icon: cat.icon
+  }));
 
   let filteredProducts = products;
 
@@ -33,7 +41,7 @@ const Catalog = () => {
     filteredProducts = filteredProducts.filter(product =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.game.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchQuery.toLowerCase())
+      (categories.find(cat => cat.id === product.category_id)?.name || '').toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
 
@@ -149,10 +157,17 @@ const Catalog = () => {
           {displayedProducts.map((product) => (
             <ProductCard
               key={product.id}
-              {...product}
-              isInCart={items.some(item => item.id === product.id)}
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              originalPrice={product.original_price}
+              image={product.image_url}
+              category={categories.find(cat => cat.id === product.category_id)?.name || product.game}
+              rating={product.rating}
+              sales={product.sales}
+              isInCart={items.some((item) => item.id === product.id)}
               onAddToCart={() => handleAddToCart(product)}
-              onDetails={() => handleProductDetails(product)}
+              onDetails={() => navigate(`/product/${product.id}`)}
             />
           ))}
         </div>
