@@ -119,9 +119,11 @@ const AdminCases = () => {
         toast('Кейс успешно обновлен!', 'success');
       } else {
         // Создание нового кейса
+        const newId = `case_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const { data, error } = await supabase
           .from('admin_cases')
           .insert([{
+            id: newId,
             name: currentCase.name,
             game: currentCase.game,
             price: currentCase.price,

@@ -126,7 +126,9 @@ const AdminProducts = () => {
 
         if (error) {
           console.error('Error updating product:', error);
-          setError('Ошибка при обновлении товара: ' + error.message);
+          // Показать детальную ошибку
+          const errorMessage = error.message || error.details || error.hint || JSON.stringify(error);
+          setError('Ошибка при обновлении товара: ' + errorMessage);
           return;
         }
 
@@ -134,9 +136,11 @@ const AdminProducts = () => {
         toast('Товар успешно обновлен!', 'success');
       } else {
         // Создание нового товара
+        const newId = `product_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const { data, error } = await supabase
           .from('admin_products')
           .insert([{
+            id: newId,
             name: currentProduct.name,
             price: currentProduct.price,
             original_price: currentProduct.original_price,
@@ -155,7 +159,9 @@ const AdminProducts = () => {
 
         if (error) {
           console.error('Error adding product:', error);
-          setError('Ошибка при добавлении товара: ' + error.message);
+          // Показать детальную ошибку
+          const errorMessage = error.message || error.details || error.hint || JSON.stringify(error);
+          setError('Ошибка при добавлении товара: ' + errorMessage);
           return;
         }
 
