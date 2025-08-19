@@ -17,6 +17,19 @@ const Index = () => {
   const { t } = useLanguage();
   const { products, categories, loading, error } = useProducts();
 
+  // Функция для получения эмодзи иконки по названию
+  const getCategoryIcon = (iconName: string) => {
+    const iconMap: { [key: string]: string } = {
+      'user': '👤',
+      'dollar': '💰',
+      'key': '🔑',
+      'calendar': '📅',
+      'star': '⭐',
+      'default': '📦'
+    };
+    return iconMap[iconName] || iconMap['default'];
+  };
+
   // Создаем gameCategories из данных БД
   const gameCategories = categories.map(cat => ({
     id: cat.id,
@@ -161,7 +174,7 @@ const Index = () => {
                     : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-700/50'
                 }`}
               >
-                <span>{category.icon}</span>
+                <span>{getCategoryIcon(category.icon)}</span>
                 <span>{category.name}</span>
               </button>
             ))}

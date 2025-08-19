@@ -20,6 +20,19 @@ const Catalog = () => {
   const [sortBy, setSortBy] = useState('popular');
   const [visibleProducts, setVisibleProducts] = useState(15);
 
+  // Функция для получения эмодзи иконки по названию
+  const getCategoryIcon = (iconName: string) => {
+    const iconMap: { [key: string]: string } = {
+      'user': '👤',
+      'dollar': '💰',
+      'key': '🔑',
+      'calendar': '📅',
+      'star': '⭐',
+      'default': '📦'
+    };
+    return iconMap[iconName] || iconMap['default'];
+  };
+
   // Создаем gameCategories из данных БД
   const gameCategories = categories.map(cat => ({
     id: cat.id,
@@ -145,7 +158,7 @@ const Catalog = () => {
                     : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                 }`}
               >
-                <span>{category.icon}</span>
+                <span>{getCategoryIcon(category.icon)}</span>
                 <span>{category.name}</span>
               </button>
             ))}
