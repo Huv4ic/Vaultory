@@ -39,7 +39,10 @@ const Index = () => {
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
-    : products.filter(product => product.game.toLowerCase().includes(selectedCategory));
+    : products.filter(product => {
+        const productCategory = categories.find(cat => cat.id === product.category_id);
+        return productCategory && productCategory.id === selectedCategory;
+      });
 
   const displayedProducts = filteredProducts.slice(0, visibleProducts);
 

@@ -69,7 +69,13 @@ const ProductPage = () => {
       alert(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
-    addItem(product, quantity);
+    // Передаем товар с правильными полями для корзины
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url
+    }, quantity);
   };
 
   const isInCart = items.some((item) => item.id === product.id);
@@ -179,13 +185,29 @@ const ProductPage = () => {
             </div>
 
             {/* Описание */}
-            <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50">
-              <h3 className="text-lg font-semibold mb-3">{t('Описание товара')}</h3>
-              <p className="text-gray-300 leading-relaxed">
-                {t('Премиум товар для')} {product.game}. {t('Высочайшее качество и мгновенная доставка гарантированы.')} 
-                {t('Этот товар пользуется популярностью среди игроков благодаря своей эффективности и надежности.')}
-              </p>
-            </div>
+            {product.description && (
+              <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50">
+                <h3 className="text-lg font-semibold mb-3">{t('Описание товара')}</h3>
+                <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                  {product.description}
+                </p>
+              </div>
+            )}
+
+            {/* Особенности */}
+            {product.features && product.features.length > 0 && (
+              <div className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50">
+                <h3 className="text-lg font-semibold mb-3">{t('Особенности')}</h3>
+                <ul className="space-y-2">
+                  {product.features.map((feature, index) => (
+                    <li key={index} className="flex items-center text-gray-300">
+                      <span className="w-2 h-2 bg-green-400 rounded-full mr-3"></span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

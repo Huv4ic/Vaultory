@@ -186,9 +186,12 @@ const Cart = () => {
                   {/* Изображение */}
                   <div className="flex-shrink-0">
                     <img
-                      src={item.image || '/placeholder.svg'}
+                      src={item.image_url || item.image || '/placeholder.svg'}
                       alt={item.name}
-                      className="w-20 h-20 object-cover rounded-lg"
+                      className="w-20 h-20 object-cover rounded-lg bg-gray-700"
+                      onError={(e) => {
+                        e.currentTarget.src = '/placeholder.svg';
+                      }}
                     />
                   </div>
 

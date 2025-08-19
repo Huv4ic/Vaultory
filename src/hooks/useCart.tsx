@@ -5,6 +5,7 @@ export interface CartItem {
   name: string;
   price: number;
   image?: string;
+  image_url?: string; // Добавляем поддержку image_url
   quantity: number;
 }
 

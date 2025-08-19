@@ -44,16 +44,16 @@ const Catalog = () => {
 
   // Фильтр по категории
   if (selectedCategory !== 'all') {
-    filteredProducts = filteredProducts.filter(product => 
-      product.game.toLowerCase().includes(selectedCategory)
-    );
+    filteredProducts = filteredProducts.filter(product => {
+      const productCategory = categories.find(cat => cat.id === product.category_id);
+      return productCategory && productCategory.id === selectedCategory;
+    });
   }
 
   // Поиск
   if (searchQuery) {
     filteredProducts = filteredProducts.filter(product =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.game.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (categories.find(cat => cat.id === product.category_id)?.name || '').toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
@@ -82,7 +82,13 @@ const Catalog = () => {
       alert(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
-    addItem(product, 1);
+    // Передаем товар с правильными полями для корзины
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url
+    }, 1);
   };
 
   const handleProductDetails = (product) => {
