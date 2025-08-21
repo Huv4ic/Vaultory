@@ -37,7 +37,18 @@ export const useCases = () => {
         .order('name');
 
       if (casesError) throw casesError;
-      setCases(casesData || []);
+      
+      // Приводим данные к правильному формату
+      const formattedCases = (casesData || []).map((caseData: any) => ({
+        id: caseData.id,
+        name: caseData.name,
+        game: caseData.game,
+        price: caseData.price,
+        image_url: caseData.image_url,
+        description: caseData.description || ''
+      }));
+      
+      setCases(formattedCases);
 
       // Загружаем предметы в кейсах
       const { data: itemsData, error: itemsError } = await supabase
@@ -46,7 +57,18 @@ export const useCases = () => {
         .order('name');
 
       if (itemsError) throw itemsError;
-      setCaseItems(itemsData || []);
+      
+      // Приводим данные к правильному формату
+      const formattedItems = (itemsData || []).map((itemData: any) => ({
+        id: itemData.id,
+        case_id: itemData.case_id,
+        name: itemData.name,
+        rarity: itemData.rarity,
+        drop_chance: itemData.drop_chance,
+        image_url: itemData.image_url || ''
+      }));
+      
+      setCaseItems(formattedItems);
 
     } catch (err) {
       console.error('Error fetching cases:', err);
@@ -60,8 +82,21 @@ export const useCases = () => {
     fetchCases();
   };
 
+  // Функция для принудительного обновления данных
+  const forceRefresh = () => {
+    setLoading(true);
+    fetchCases();
+  };
+
   useEffect(() => {
     fetchCases();
+    
+    // Автоматическое обновление каждые 5 секунд для синхронизации с админкой
+    const interval = setInterval(() => {
+      fetchCases();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return {
@@ -69,6 +104,7 @@ export const useCases = () => {
     caseItems,
     loading,
     error,
-    refreshCases
+    refreshCases,
+    forceRefresh
   };
 };
