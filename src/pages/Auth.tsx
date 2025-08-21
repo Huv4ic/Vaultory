@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { supabase } from '@/integrations/supabase/client';
+import { RefreshCw, Home } from 'lucide-react';
 
 const TELEGRAM_BOT = 'vaultory_notify_bot';
 
@@ -254,7 +255,7 @@ const Auth = () => {
                       
                       <Button
                         onClick={retryAuth}
-                        className="w-full py-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-red-500/30"
+                        className="w-full py-4 bg-gradient-to-r from-red-500/80 to-red-600/80 hover:from-red-600 hover:to-red-700 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-red-500/30 border border-red-500/40"
                       >
                         <span className="mr-2">🔄</span>
                         Попробовать снова
@@ -295,14 +296,24 @@ const Auth = () => {
                       </p>
                     </div>
                     
-                    <Button
-                      onClick={() => navigate('/')}
-                      variant="outline"
-                      className="w-full py-3 border-amber-500/40 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 hover:scale-105"
-                    >
-                      <span className="mr-2">🏠</span>
-                      Вернуться на главную
-                    </Button>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <Button
+                        onClick={() => window.location.reload()}
+                        className="flex-1 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+                      >
+                        <RefreshCw className="w-5 h-5 mr-2" />
+                        Обновить страницу
+                      </Button>
+                      
+                      <Button
+                        variant="outline"
+                        onClick={() => navigate('/')}
+                        className="px-6 py-4 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+                      >
+                        <Home className="w-5 h-5 mr-2" />
+                        На главную
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )}
