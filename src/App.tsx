@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { CartProvider } from "@/hooks/useCart";
 import { InventoryProvider } from "@/hooks/useInventory";
+import { FavoritesProvider } from "@/providers/FavoritesProvider";
 import Index from "./pages/Index";
 import Catalog from "./pages/Catalog";
 import About from "./pages/About";
