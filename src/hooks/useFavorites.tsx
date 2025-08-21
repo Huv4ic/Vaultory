@@ -5,15 +5,18 @@ import { useAuth } from './useAuth';
 export const useFavorites = () => {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
+  const { user, telegramUser } = useAuth();
+
+  // Используем telegramUser.id если доступен, иначе user.id
+  const currentUserId = telegramUser?.id || user?.id;
 
   // Загружаем избранные товары пользователя
   const fetchFavorites = async () => {
-    if (!user) return;
+    if (!currentUserId) return;
     
     try {
       setLoading(true);
-      console.log('Fetching favorites for user:', user.id);
+      console.log('Fetching favorites for user:', currentUserId);
       
       // Проверяем существование таблицы
       const { data: tableCheck, error: tableError } = await (supabase as any)
@@ -30,7 +33,7 @@ export const useFavorites = () => {
       const { data, error } = await (supabase as any)
         .from('user_favorites')
         .select('product_id')
-        .eq('user_id', user.id);
+        .eq('telegram_id', currentUserId);
 
       if (error) {
         console.error('Error fetching favorites:', error);
@@ -49,19 +52,19 @@ export const useFavorites = () => {
 
   // Добавляем товар в избранное
   const addToFavorites = async (productId: string) => {
-    if (!user) {
+    if (!currentUserId) {
       console.log('No user found, cannot add to favorites');
       return false;
     }
     
     try {
       setLoading(true);
-      console.log('Adding to favorites:', { userId: user.id, productId });
+      console.log('Adding to favorites:', { userId: currentUserId, productId });
       
       const { error } = await (supabase as any)
         .from('user_favorites')
         .insert({
-          user_id: user.id,
+          telegram_id: currentUserId,
           product_id: productId
         });
 
@@ -83,19 +86,19 @@ export const useFavorites = () => {
 
   // Удаляем товар из избранного
   const removeFromFavorites = async (productId: string) => {
-    if (!user) {
+    if (!currentUserId) {
       console.log('No user found, cannot remove from favorites');
       return false;
     }
     
     try {
       setLoading(true);
-      console.log('Removing from favorites:', { userId: user.id, productId });
+      console.log('Removing from favorites:', { userId: currentUserId, productId });
       
       const { error } = await (supabase as any)
         .from('user_favorites')
         .delete()
-        .eq('user_id', user.id)
+        .eq('telegram_id', currentUserId)
         .eq('product_id', productId);
 
       if (error) {
@@ -135,12 +138,12 @@ export const useFavorites = () => {
 
   // Загружаем избранные при изменении пользователя
   useEffect(() => {
-    if (user) {
+    if (currentUserId) {
       fetchFavorites();
     } else {
       setFavorites([]);
     }
-  }, [user]);
+  }, [currentUserId]);
 
   return {
     favorites,
