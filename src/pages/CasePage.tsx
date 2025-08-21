@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
@@ -100,13 +100,20 @@ const rarityColors = {
 const CasePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { balance, setBalance, telegramUser } = useAuth();
+  const { balance, setBalance, telegramUser, refreshTelegramProfile } = useAuth();
   const { addItem } = useInventory();
   const { toast } = useToast();
   const { t } = useLanguage();
   const [openingCount, setOpeningCount] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCase, setCurrentCase] = useState(null);
+
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
 
   const caseData = cases.find(c => c.id === id);
 

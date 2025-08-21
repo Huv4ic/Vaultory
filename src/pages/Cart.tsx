@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,11 +22,18 @@ import { supabase } from '@/integrations/supabase/client';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { telegramUser, profile, balance, setBalance, refreshProfile } = useAuth();
+  const { telegramUser, profile, balance, setBalance, refreshProfile, refreshTelegramProfile } = useAuth();
   const { items, removeItem, updateQuantity, clear, total } = useCart();
   const { toast } = useToast();
   const { t } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
 
   const handleQuantityChange = (id: string, change: number) => {
     const item = items.find(i => i.id === id);

@@ -1,13 +1,23 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Package, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useCases } from '@/hooks/useCases';
+import { useAuth } from '@/hooks/useAuth';
 
 const Cases = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { cases, caseItems, loading, error } = useCases();
+  const { telegramUser, refreshTelegramProfile } = useAuth();
+
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
 
   if (loading) {
     return (

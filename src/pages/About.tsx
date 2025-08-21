@@ -1,8 +1,18 @@
+import { useEffect } from 'react';
 import { Shield, Zap, Users, Trophy, Clock, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useAuth } from '@/hooks/useAuth';
 
 const About = () => {
   const { t } = useLanguage();
+  const { telegramUser, refreshTelegramProfile } = useAuth();
+  
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
   
   const features = [
     {

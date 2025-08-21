@@ -12,12 +12,19 @@ const TELEGRAM_BOT = 'vaultory_notify_bot';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { telegramUser, balance, signOutTelegram, setTelegramUser } = useAuth();
+  const { telegramUser, balance, signOutTelegram, setTelegramUser, refreshTelegramProfile } = useAuth();
   const { items } = useCart();
   const { currentLanguage, changeLanguage, t } = useLanguage();
   const tgWidgetRef = useRef<HTMLDivElement>(null);
 
   const isActive = (path: string) => location.pathname === path;
+
+  // Автоматически обновляем профиль при каждом переходе между страницами
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [location.pathname, telegramUser, refreshTelegramProfile]);
 
   // Автоматическая обработка Telegram Login Widget
   useEffect(() => {

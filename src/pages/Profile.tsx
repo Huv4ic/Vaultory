@@ -18,12 +18,19 @@ import {
 const TELEGRAM_BOT = 'vaultory_notify_bot';
 
 const Profile = () => {
-  const { telegramUser, balance, signOutTelegram, setBalance, profile, setTelegramUser } = useAuth();
+  const { telegramUser, balance, signOutTelegram, setBalance, profile, setTelegramUser, refreshTelegramProfile } = useAuth();
   const { items, casesOpened, spent, purchased, getTotalValue, sellItem, withdrawItem, getCasesOpened } = useInventory();
   const { toast } = useToast();
   const { t } = useLanguage();
   const [sellingItem, setSellingItem] = useState<number | null>(null);
   const tgWidgetRef = useRef<HTMLDivElement>(null);
+
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
 
   // Вставка Telegram Login Widget (как в Header)
   useEffect(() => {

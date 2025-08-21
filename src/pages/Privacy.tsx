@@ -1,9 +1,109 @@
-import { Card, CardContent } from '@/components/ui/card';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, Shield, Lock, Eye, Database, UserCheck, AlertTriangle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { Shield, Lock, Eye, Database } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Privacy = () => {
   const { t } = useLanguage();
+  const { telegramUser, refreshTelegramProfile } = useAuth();
+  
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
+  
+  const privacySections = [
+    {
+      title: t('Общие положения'),
+      icon: Shield,
+      content: [
+        t('Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей сервиса Vaultory. Мы серьезно относимся к защите ваших данных и соблюдаем все требования законодательства о персональных данных.'),
+        t('Используя наш сервис, вы соглашаетесь с условиями данной политики и даете согласие на обработку своих персональных данных в соответствии с описанными принципами.'),
+      ],
+    },
+    {
+      title: t('Сбор и использование данных'),
+      icon: Database,
+      content: [
+        {
+          subTitle: t('Какие данные мы собираем:'),
+          list: [
+            t('Данные Telegram аккаунта (username, user ID)'),
+            t('Информация о покупках и транзакциях'),
+            t('Данные об использовании сервиса'),
+            t('IP-адрес и информация о браузере'),
+          ],
+        },
+        {
+          subTitle: t('Как мы используем данные:'),
+          list: [
+            t('Обеспечение работы сервиса'),
+            t('Обработка платежей и заказов'),
+            t('Предоставление поддержки пользователям'),
+            t('Улучшение качества сервиса'),
+          ],
+        },
+      ],
+    },
+    {
+      title: t('Защита данных'),
+      icon: Lock,
+      content: [
+        t('Мы применяем современные технические и организационные меры для защиты ваших персональных данных от несанкционированного доступа, изменения, раскрытия или уничтожения.'),
+        {
+          subTitle: t('Меры безопасности:'),
+          list: [
+            t('Шифрование данных при передаче (SSL/TLS)'),
+            t('Безопасное хранение данных'),
+            t('Ограниченный доступ к данным'),
+            t('Регулярные проверки безопасности'),
+          ],
+        },
+      ],
+    },
+    {
+      title: t('Ваши права'),
+      icon: Eye,
+      content: [
+        t('В соответствии с законодательством о защите персональных данных, вы имеете следующие права:'),
+        {
+          subTitle: t('Право на доступ к своим персональным данным'),
+          list: [
+            t('Право на доступ к своим персональным данным'),
+            t('Право на исправление неточных данных'),
+            t('Право на удаление данных'),
+            t('Право на ограничение обработки'),
+            t('Право на отзыв согласия'),
+          ],
+        },
+      ],
+    },
+    {
+      title: t('Контактная информация'),
+      icon: UserCheck,
+      content: [
+        t('По вопросам обработки персональных данных вы можете обратиться к нам:'),
+        {
+          subTitle: t('Email:'),
+          list: ['privacy@vaultory.com'],
+        },
+        {
+          subTitle: t('Telegram:'),
+          list: ['@VaultorySupport'],
+        },
+        {
+          subTitle: t('Адрес:'),
+          list: ['Россия, г. Москва'],
+        },
+        t('Мы рассматриваем все обращения в течение 30 дней с момента получения.'),
+      ],
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import HeroSection from '@/components/HeroSection';
 import ProductCard from '@/components/ProductCard';
@@ -13,9 +13,16 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [visibleProducts, setVisibleProducts] = useState(15);
   const [cart, setCart] = useState([]);
-  const { telegramUser } = useAuth();
+  const { telegramUser, refreshTelegramProfile } = useAuth();
   const { t } = useLanguage();
   const { products, categories, loading, error } = useProducts();
+
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
 
   // Функция для получения эмодзи иконки по названию
   const getCategoryIcon = (iconName: string) => {

@@ -1,10 +1,20 @@
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, Mail, Phone, Clock, MessageCircle, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useAuth } from '@/hooks/useAuth';
 
 const Support = () => {
   const { t } = useLanguage();
+  const { telegramUser, refreshTelegramProfile } = useAuth();
+  
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
   
   const supportMethods = [
     {

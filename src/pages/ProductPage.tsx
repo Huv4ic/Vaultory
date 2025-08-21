@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Star, ShoppingCart, Shield, Clock, ArrowLeft, Plus, Minus } from 'lucide-react';
@@ -10,10 +10,17 @@ import { useProducts } from '@/hooks/useProducts';
 const ProductPage = () => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
-  const { telegramUser } = useAuth();
+  const { telegramUser, refreshTelegramProfile } = useAuth();
   const { addItem, items } = useCart();
   const { t } = useLanguage();
   const { products, categories, loading, error } = useProducts();
+  
+  // Автоматически обновляем профиль при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshTelegramProfile();
+    }
+  }, [telegramUser, refreshTelegramProfile]);
   
   const product = products.find(p => p.id === id);
   
