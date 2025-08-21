@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Star, ShoppingCart, Eye, Heart } from 'lucide-react';
+import { Eye, ShoppingCart, Star } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ProductCardProps {
   id: string;
@@ -30,9 +31,10 @@ const ProductCard = ({
   onDetails
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useLanguage();
 
   return (
-    <div 
+    <div
       className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-amber-500/20 hover:border-amber-500/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 group overflow-hidden h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -46,7 +48,7 @@ const ProductCard = ({
         />
         {/* Оверлей с градиентом */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        
+
         {/* Категория */}
         {category && (
           <div className="absolute top-3 left-3">
@@ -84,11 +86,11 @@ const ProductCard = ({
               </span>
             )}
           </div>
-          
+
           {/* Продажи */}
           {sales && (
             <span className="text-gray-400 text-xs">
-              {sales} продаж
+              {sales} {t('продаж')}
             </span>
           )}
         </div>
@@ -104,20 +106,19 @@ const ProductCard = ({
             className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 hover:scale-105 h-10 text-sm font-medium"
           >
             <Eye className="w-4 h-4 mr-2" />
-            Подробнее
+            {t('Подробнее')}
           </Button>
-          
+
           <Button
             onClick={onAddToCart}
             size="sm"
             className="w-full bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105 h-10 text-sm font-medium"
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
-            {isInCart ? 'В корзине' : 'В корзину'}
+            {isInCart ? t('В корзине') : t('В корзину')}
           </Button>
         </div>
       </div>
-
       {/* Анимированное свечение при наведении */}
       <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-emerald-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
     </div>

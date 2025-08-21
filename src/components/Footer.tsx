@@ -38,7 +38,7 @@ const Footer = () => {
                 {/* Анимированное свечение вокруг */}
                 <div className="absolute -inset-2 bg-gradient-to-r from-amber-500 via-emerald-500 to-purple-600 rounded-xl opacity-0 group-hover:opacity-20 blur-xl transition-all duration-700 animate-pulse"></div>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-amber-400 via-emerald-400 to-purple-500 bg-clip-text text-transparent group-hover:from-amber-300 group-hover:via-emerald-300 group-hover:to-purple-400 transition-all duration-500">
+              <span className="text-2xl font-bold text-amber-400 group-hover:text-amber-300 transition-all duration-500">
                 Vaultory
               </span>
             </div>
