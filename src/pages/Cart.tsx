@@ -15,8 +15,7 @@ import {
   CreditCard,
   Package,
   AlertCircle,
-  User,
-  DollarSign
+  User
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -268,25 +267,9 @@ const Cart = () => {
             <div className="max-w-2xl mx-auto bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
               <div className="flex items-center justify-between mb-6">
                 <div className="text-3xl font-bold">{t("Корзина")}</div>
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">
-                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>
-                    {t("Баланс")}: <span className="ml-2">{balance}₴</span>
-                  </div>
-                  
-                  {/* Кнопка пополнения баланса */}
-                  <Button
-                    onClick={() => {
-                      // Здесь будет логика пополнения баланса
-                      toast({
-                        title: t("Пополнение баланса"),
-                        description: t("Функция пополнения баланса будет доступна в ближайшее время!"),
-                      });
-                    }}
-                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold w-12 h-12 p-0 rounded-lg border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105 flex items-center justify-center"
-                  >
-                    <DollarSign className="w-5 h-5" />
-                  </Button>
+                <div className="flex items-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">
+                  <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>
+                  {t("Баланс")}: <span className="ml-2">{balance}₴</span>
                 </div>
               </div>
               <div className="mb-6 text-lg font-semibold">{t("Сумма к оплате")}: <span className="text-white">{total}₴</span></div>

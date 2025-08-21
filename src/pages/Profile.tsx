@@ -9,7 +9,6 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
 import { 
   User, 
-  DollarSign, 
   Package, 
   ArrowLeft,
   Download
@@ -147,10 +146,12 @@ const Profile = () => {
                   description: t("Функция пополнения баланса будет доступна в ближайшее время!"),
                 });
               }}
-              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold px-4 py-2 rounded-lg border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105"
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold px-6 py-3 rounded-lg border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105 flex items-center gap-2"
             >
-              <DollarSign className="w-4 h-4 mr-2" />
-              {t("Пополнить")}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+              </svg>
+              {t("пополнить")}
             </Button>
             
             <Button
