@@ -33,12 +33,12 @@ const ProductCard = ({
 
   return (
     <div 
-      className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-amber-500/20 hover:border-amber-500/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 group overflow-hidden"
+      className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-amber-500/20 hover:border-amber-500/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 group overflow-hidden h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Изображение */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden flex-shrink-0">
         <img
           src={image || '/placeholder.svg'}
           alt={name}
@@ -66,14 +66,14 @@ const ProductCard = ({
       </div>
 
       {/* Контент */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         {/* Название */}
-        <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-amber-300 transition-colors duration-300">
+        <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-amber-300 transition-colors duration-300 flex-shrink-0">
           {name}
         </h3>
 
         {/* Цена */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center space-x-2">
             <span className="text-2xl font-bold text-amber-400">
               {price}₴
@@ -93,30 +93,32 @@ const ProductCard = ({
           )}
         </div>
 
-        {/* Кнопки */}
-        <div className="flex space-x-2">
-          <Button
-            onClick={onDetails}
-            variant="outline"
-            size="sm"
-            className="flex-1 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 hover:scale-105"
-          >
-            <Eye className="w-4 h-4 mr-1" />
-            Подробнее
-          </Button>
-          
-          <Button
-            onClick={onAddToCart}
-            size="sm"
-            className={`flex-1 transition-all duration-300 hover:scale-105 ${
-              isInCart
-                ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                : 'bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40'
-            }`}
-          >
-            <ShoppingCart className="w-4 h-4 mr-1" />
-            {isInCart ? 'В корзине' : 'В корзину'}
-          </Button>
+        {/* Кнопки - прижимаем к низу */}
+        <div className="mt-auto pt-4">
+          <div className="flex space-x-2 w-full">
+            <Button
+              onClick={onDetails}
+              variant="outline"
+              size="sm"
+              className="flex-1 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 hover:scale-105 h-10"
+            >
+              <Eye className="w-4 h-4 mr-1" />
+              Подробнее
+            </Button>
+            
+            <Button
+              onClick={onAddToCart}
+              size="sm"
+              className={`flex-1 transition-all duration-300 hover:scale-105 h-10 ${
+                isInCart
+                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                  : 'bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40'
+              }`}
+            >
+              <ShoppingCart className="w-4 h-4 mr-1" />
+              {isInCart ? 'В корзине' : 'В корзину'}
+            </Button>
+          </div>
         </div>
       </div>
 
