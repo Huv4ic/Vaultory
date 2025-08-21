@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../integrations/supabase/client';
 import { useAuth } from './useAuth';
 
 export const useFavorites = () => {
@@ -13,14 +13,14 @@ export const useFavorites = () => {
     
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('user_favorites')
         .select('product_id')
         .eq('user_id', user.id);
 
       if (error) throw error;
       
-      const favoriteIds = data?.map(fav => fav.product_id) || [];
+      const favoriteIds = data?.map((fav: any) => fav.product_id) || [];
       setFavorites(favoriteIds);
     } catch (error) {
       console.error('Error fetching favorites:', error);
@@ -35,7 +35,7 @@ export const useFavorites = () => {
     
     try {
       setLoading(true);
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('user_favorites')
         .insert({
           user_id: user.id,
@@ -60,7 +60,7 @@ export const useFavorites = () => {
     
     try {
       setLoading(true);
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('user_favorites')
         .delete()
         .eq('user_id', user.id)
