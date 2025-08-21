@@ -45,7 +45,7 @@ const Support = () => {
     },
     {
       question: t('Какие способы оплаты доступны?'),
-      answer: t('Моно банк, Приват банк, Пумб банк.')
+      answer: 'Доступны оплаты через Monobank, PrivatBank, PUMB, а также криптовалютой (USDT TRC20/ERC20, Litecoin)'
     },
     {
       question: t('Можно ли вернуть товар?'),

@@ -63,8 +63,24 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Логотип */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">V</span>
+            <div className="w-8 h-8 relative">
+              {/* Новая 3D буква V с неоновым свечением */}
+              <div className="absolute inset-0 bg-black rounded-lg flex items-center justify-center">
+                <div className="relative">
+                  {/* Основная буква V */}
+                  <div className="text-white font-bold text-lg tracking-wider transform rotate-12 drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]">
+                    V
+                  </div>
+                  {/* Неоновое свечение - синий верх */}
+                  <div className="absolute inset-0 text-blue-400 font-bold text-lg tracking-wider transform rotate-12 blur-[1px] opacity-70">
+                    V
+                  </div>
+                  {/* Неоновое свечение - фиолетовый низ */}
+                  <div className="absolute inset-0 text-purple-500 font-bold text-lg tracking-wider transform rotate-12 blur-[2px] opacity-50 -bottom-0.5">
+                    V
+                  </div>
+                </div>
+              </div>
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">
               Vaultory

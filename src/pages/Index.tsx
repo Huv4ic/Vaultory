@@ -1,21 +1,23 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import HeroSection from '@/components/HeroSection';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Star, Users, CheckCircle, ChevronDown } from 'lucide-react';
+import { CheckCircle, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useProducts } from '@/hooks/useProducts';
+import { useCart } from '@/hooks/useCart';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [visibleProducts, setVisibleProducts] = useState(15);
-  const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
   const { products, categories, loading, error } = useProducts();
+  const { items, addItem } = useCart();
 
   // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре страницы
   // useEffect(() => {
@@ -57,42 +59,35 @@ const Index = () => {
     setVisibleProducts(prev => prev + 15);
   };
 
-  const testimonials = [
-    { name: t('Максим'), game: 'Brawl Stars', text: t('Купил мега боксы, получил легендарного бойца! Супер быстро и дешево!'), rating: 5 },
-    { name: t('Анна'), game: 'Roblox', text: t('Robux пришли мгновенно, теперь мой аватар самый крутой в школе!'), rating: 5 },
-    { name: t('Дмитрий'), game: 'Steam', text: t('Пополнил кошелек, купил CS2. Всё честно, рекомендую!'), rating: 5 },
-    { name: t('София'), game: 'PUBG Mobile', text: t('UC зачислились сразу, купила королевский пропуск. Спасибо!'), rating: 5 }
-  ];
-
   const faqItems = [
     { 
       question: t('Как быстро приходят товары?'), 
-      answer: t('Большинство товаров доставляется мгновенно после оплаты. Максимальное время ожидания - 15 минут.') 
+      answer: 'Товары после оплаты выдаются вручную, поэтому время на выдачу товара может варьироваться от 5 минут до пары часов.' 
     },
     { 
-      question: t('Безопасно ли покупать здесь?'), 
-      answer: t('Да, мы гарантируем 100% безопасность покупок. Все товары официальные, есть возврат средств.') 
+      question: t('Какие способы оплаты доступны?'), 
+      answer: 'Доступны оплаты через Monobank, PrivatBank, PUMB, а также криптовалютой (USDT TRC20/ERC20, Litecoin)' 
     },
     { 
-      question: t('Какие способы оплаты?'), 
-      answer: t('Принимаем карты, электронные кошельки, криптовалюты и переводы через банк.') 
+      question: t('Безопасно ли покупать у вас?'), 
+      answer: 'Да, мы работаем с 2025 года и имеем уже большое количество реальных отзывов. Все платежи проходят через защищенные каналы.' 
     },
     { 
       question: t('Что делать если товар не пришел?'), 
-      answer: t('Обратитесь в поддержку в Telegram. Мы решим проблему в течение часа или вернем деньги.') 
+      answer: t('Обратитесь в нашу поддержку через Telegram или Email с номером заказа. Мы решим проблему в течение часа или вернем деньги.') 
     }
   ];
+
+  const handleProductDetails = (productId) => {
+    navigate(`/product/${productId}`);
+  };
 
   const handleAddToCart = (product) => {
     if (!telegramUser) {
       alert(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
-    // Здесь будет логика добавления в корзину
-  };
-
-  const handleProductDetails = (productId) => {
-    // Здесь будет навигация на страницу товара
+    addItem(product);
   };
 
   if (loading) {
@@ -203,7 +198,7 @@ const Index = () => {
                 category={categories.find(cat => cat.id === product.category_id)?.name || product.game}
                 rating={product.rating}
                 sales={product.sales}
-                isInCart={cart.some((item) => item.id === product.id)}
+                isInCart={items.some((item) => item.id === product.id)}
                 onAddToCart={() => handleAddToCart(product)}
                 onDetails={() => handleProductDetails(product.id)}
               />
@@ -221,58 +216,6 @@ const Index = () => {
               </Button>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Статистика */}
-      <section className="py-16 px-4 bg-gradient-to-r from-gray-800/50 to-gray-900/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-red-900/10 via-transparent to-purple-900/10"></div>
-        <div className="container mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="p-8 transform hover:scale-105 transition-all duration-300">
-              <div className="text-4xl font-bold text-red-500 mb-2 animate-fade-in">50,000+</div>
-              <div className="text-gray-300">{t('Довольных клиентов')}</div>
-            </div>
-            <div className="p-8 transform hover:scale-105 transition-all duration-300">
-              <div className="text-4xl font-bold text-red-500 mb-2 animate-fade-in">1,000,000+</div>
-              <div className="text-gray-300">{t('Проданных товаров')}</div>
-            </div>
-            <div className="p-8 transform hover:scale-105 transition-all duration-300">
-              <div className="text-4xl font-bold text-red-500 mb-2 animate-fade-in">99.8%</div>
-              <div className="text-gray-300">{t('Положительных отзывов')}</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Отзывы */}
-      <section className="py-16 px-4 bg-gradient-to-br from-purple-900/20 via-gray-900 to-blue-900/20">
-        <div className="container mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-red-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
-            {t('Отзывы клиентов')}
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl border border-gray-700/50 transform hover:scale-105 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/10 animate-fade-in" style={{animationDelay: `${index * 0.2}s`}}>
-                <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                    {testimonial.name[0]}
-                  </div>
-                  <div className="ml-3">
-                    <div className="font-semibold text-white">{testimonial.name}</div>
-                    <div className="text-sm text-gray-400">{testimonial.game}</div>
-                  </div>
-                </div>
-                <div className="flex mb-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-300 text-sm">{testimonial.text}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
