@@ -137,12 +137,28 @@ const Profile = () => {
                 </span>
               </div>
             </span>
-                         <Button
-               onClick={signOutTelegram}
-               className="bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold px-6 py-2 rounded-lg border-none shadow hover:from-red-600 hover:to-purple-700 transition-all duration-200"
-             >
-               {t("Выйти")}
-             </Button>
+            
+            {/* Кнопка пополнения баланса */}
+            <Button
+              onClick={() => {
+                // Здесь будет логика пополнения баланса
+                toast({
+                  title: t("Пополнение баланса"),
+                  description: t("Функция пополнения баланса будет доступна в ближайшее время!"),
+                });
+              }}
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold px-6 py-2 rounded-lg border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105"
+            >
+              <DollarSign className="w-4 h-4 mr-2" />
+              {t("Пополнить баланс")}
+            </Button>
+            
+            <Button
+              onClick={signOutTelegram}
+              className="bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold px-6 py-2 rounded-lg border-none shadow hover:from-red-600 hover:to-purple-700 transition-all duration-200"
+            >
+              {t("Выйти")}
+            </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
                          <div className="bg-gray-800 rounded-xl p-6 flex flex-col items-center min-h-[110px] min-w-[140px]">
