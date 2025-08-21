@@ -7,7 +7,8 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useProducts } from '@/hooks/useProducts';
-import { Search, Filter, SlidersHorizontal } from 'lucide-react';
+import { Search, Filter, SlidersHorizontal, ArrowLeft, Package, Star, TrendingUp } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Catalog = () => {
   const navigate = useNavigate();
@@ -19,13 +20,6 @@ const Catalog = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
   const [visibleProducts, setVisibleProducts] = useState(15);
-
-  // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре каталога
-  // useEffect(() => {
-  //   if (telegramUser) {
-  //     refreshTelegramProfile();
-  //   }
-  // }, [telegramUser, refreshTelegramProfile]);
 
   // Функция для получения эмодзи иконки по названию
   const getCategoryIcon = (iconName: string) => {
@@ -92,10 +86,18 @@ const Catalog = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-xl">{t('Загрузка товаров...')}</p>
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-400/30 mx-auto mb-4"></div>
+            <div className="absolute inset-0 animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-amber-400 mx-auto"></div>
+          </div>
+          <p className="text-gray-300 text-xl">{t('Загрузка товаров...')}</p>
+          <div className="flex justify-center space-x-1 mt-4">
+            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-100"></div>
+            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-200"></div>
+          </div>
         </div>
       </div>
     );
@@ -103,10 +105,17 @@ const Catalog = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4 text-red-500">{t('Ошибка загрузки')}</h1>
-          <Button onClick={() => window.location.reload()}>
+          <div className="mx-auto w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mb-6 border border-red-500/30">
+            <span className="text-red-400 text-3xl">⚠️</span>
+          </div>
+          <h1 className="text-4xl font-bold mb-4 text-red-400">{t('Ошибка загрузки')}</h1>
+          <p className="text-xl mb-6 text-gray-300">{error}</p>
+          <Button 
+            onClick={() => window.location.reload()} 
+            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-red-500/30"
+          >
             {t('Попробовать снова')}
           </Button>
         </div>
@@ -115,163 +124,208 @@ const Catalog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
         <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 via-emerald-400 to-purple-500 bg-clip-text text-transparent animate-pulse">
-            {t('Каталог товаров')}
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
+            🛍️ {t('Каталог товаров')}
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-            {t('Найдите все необходимые товары для ваших любимых игр')}
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Откройте для себя огромный выбор качественных игровых товаров. 
+            От редких скинов до эксклюзивных предметов - у нас есть все для настоящих геймеров.
           </p>
+          
+          {/* Статистика каталога */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
+            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
+              <div className="text-2xl mb-2">📦</div>
+              <p className="text-gray-300 text-sm">Всего товаров</p>
+              <p className="text-amber-400 font-bold text-lg">{products.length}</p>
+            </div>
+            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
+              <div className="text-2xl mb-2">🏷️</div>
+              <p className="text-gray-300 text-sm">Категорий</p>
+              <p className="text-amber-400 font-bold text-lg">{categories.length}</p>
+            </div>
+            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
+              <div className="text-2xl mb-2">⭐</div>
+              <p className="text-gray-300 text-sm">Средний рейтинг</p>
+              <p className="text-amber-400 font-bold text-lg">4.8</p>
+            </div>
+          </div>
         </div>
         
         {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/20 rounded-full animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-emerald-400/20 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-purple-400/20 rounded-full animate-spin"></div>
+        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
       </div>
 
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-20">
         {/* Поиск и фильтры */}
-        <div className="bg-black/20 backdrop-blur-xl rounded-2xl p-6 mb-12 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Поиск */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400 w-5 h-5" />
-              <Input
-                type="text"
-                placeholder={t('Поиск товаров...')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-black/30 border-amber-500/30 text-white placeholder:text-amber-300/70 focus:border-amber-500 focus:ring-amber-500/20"
-              />
-            </div>
-
-            {/* Сортировка */}
-            <div>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full bg-black/30 border-amber-500/30 text-white rounded-md px-3 py-2 focus:border-amber-500 focus:ring-amber-500/20"
-              >
-                <option value="popular">{t('Популярные')}</option>
-                <option value="price-low">{t('По цене (дешевле)')}</option>
-                <option value="price-high">{t('По цене (дороже)')}</option>
-                <option value="rating">{t('По рейтингу')}</option>
-              </select>
-            </div>
-
-            {/* Фильтр по категории */}
-            <div>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full bg-black/30 border-amber-500/30 text-white rounded-md px-3 py-2 focus:border-amber-500 focus:ring-amber-500/20"
-              >
-                <option value="all">{t('Все игры')}</option>
-                {gameCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Категории */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-amber-400 via-emerald-400 to-purple-500 bg-clip-text text-transparent">
-            {t('Популярные игры')}
-          </h2>
-          
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            <button
-              onClick={() => setSelectedCategory('all')}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-500 transform hover:scale-105 ${
-                selectedCategory === 'all'
-                  ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                  : 'bg-black/30 backdrop-blur-sm text-amber-300 hover:bg-amber-500/20 hover:text-white border border-amber-500/30 hover:border-amber-500'
-              }`}
-            >
-              {t('Все игры')}
-            </button>
-            {gameCategories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-3 rounded-xl font-medium transition-all duration-500 transform hover:scale-105 flex items-center space-x-2 ${
-                  selectedCategory === category.id
-                    ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                    : 'bg-black/30 backdrop-blur-sm text-amber-300 hover:bg-amber-500/20 hover:text-white border border-amber-500/30 hover:border-amber-500'
-                }`}
-              >
-                <span>{getCategoryIcon(category.icon)}</span>
-                <span>{category.name}</span>
-              </button>
-            ))}
-          </div>
+          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Поиск */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-400" />
+                  <Input
+                    type="text"
+                    placeholder={t('Поиск товаров...')}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 bg-black/50 backdrop-blur-sm border-amber-500/30 text-white placeholder-gray-400 focus:border-amber-400 focus:ring-amber-400/20"
+                  />
+                </div>
+
+                {/* Фильтр по категории */}
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-400" />
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 bg-black/50 backdrop-blur-sm border border-amber-500/30 rounded-md text-white focus:border-amber-400 focus:ring-amber-400/20"
+                  >
+                    <option value="all">Все категории</option>
+                    {gameCategories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {getCategoryIcon(category.icon)} {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Сортировка */}
+                <div className="relative">
+                  <SlidersHorizontal className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-400" />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 bg-black/50 backdrop-blur-sm border border-amber-500/30 rounded-md text-white focus:border-amber-400 focus:ring-amber-400/20"
+                  >
+                    <option value="popular">По популярности</option>
+                    <option value="price-low">По цене (возрастание)</option>
+                    <option value="price-high">По цене (убывание)</option>
+                    <option value="rating">По рейтингу</option>
+                  </select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Товары */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 mb-12">
-          {filteredProducts.slice(0, visibleProducts).map((product, index) => (
-            <div
-              key={product.id}
-              className="animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <ProductCard
-                id={product.id}
-                name={product.name}
-                price={product.price}
-                originalPrice={product.original_price}
-                image={product.image_url}
-                category={categories.find(cat => cat.id === product.category_id)?.name}
-                rating={product.rating}
-                sales={product.sales}
-                isInCart={items.some(item => item.id === product.id)}
-                onAddToCart={() => handleAddToCart(product)}
-                onDetails={() => navigate(`/product/${product.id}`)}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Кнопка "Показать еще" */}
-        {visibleProducts < filteredProducts.length && (
-          <div className="text-center">
-            <Button
-              onClick={() => setVisibleProducts(prev => prev + 15)}
-              className="px-8 py-4 bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50"
-            >
-              {t('Показать еще')}
-            </Button>
-          </div>
-        )}
-
-        {/* Сообщение если товаров нет */}
-        {filteredProducts.length === 0 && (
+        {/* Результаты поиска */}
+        {filteredProducts.length === 0 ? (
           <div className="text-center py-20">
-            <div className="text-6xl mb-4">😔</div>
-            <h3 className="text-2xl font-bold text-white mb-2">Товары не найдены</h3>
-            <p className="text-white/70 mb-6">Попробуйте изменить параметры поиска или фильтры</p>
+            <div className="mx-auto w-24 h-24 bg-amber-500/20 rounded-full flex items-center justify-center mb-6 border border-amber-500/30">
+              <Package className="w-12 h-12 text-amber-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-4">Товары не найдены</h3>
+            <p className="text-gray-300 mb-6 max-w-md mx-auto">
+              Попробуйте изменить параметры поиска или выбрать другую категорию
+            </p>
             <Button
               onClick={() => {
                 setSearchQuery('');
                 setSelectedCategory('all');
                 setSortBy('popular');
               }}
-              className="px-6 py-3 bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105"
+              variant="outline"
+              className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
             >
               Сбросить фильтры
             </Button>
           </div>
+        ) : (
+          <>
+            {/* Счетчик результатов */}
+            <div className="mb-8 text-center">
+              <p className="text-gray-300">
+                Найдено товаров: <span className="text-amber-400 font-bold">{filteredProducts.length}</span>
+              </p>
+            </div>
+
+            {/* Сетка товаров */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              {filteredProducts.slice(0, visibleProducts).map((product, index) => (
+                <div key={product.id} style={{ animationDelay: `${index * 0.05}s` }}>
+                  <ProductCard
+                    id={product.id}
+                    name={product.name}
+                    price={product.price}
+                    originalPrice={product.original_price}
+                    image={product.image_url}
+                    category={categories.find(cat => cat.id === product.category_id)?.name}
+                    rating={product.rating}
+                    sales={product.sales}
+                    isInCart={items.some(item => item.id === product.id)}
+                    onAddToCart={() => handleAddToCart(product)}
+                    onDetails={() => navigate(`/product/${product.id}`)}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Кнопка "Показать еще" */}
+            {visibleProducts < filteredProducts.length && (
+              <div className="text-center mt-12">
+                <Button
+                  onClick={() => setVisibleProducts(prev => prev + 15)}
+                  className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+                >
+                  Показать еще
+                </Button>
+              </div>
+            )}
+          </>
         )}
+
+        {/* Информация о каталоге */}
+        <div className="mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8">
+              <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+                <Star className="w-6 h-6 mr-3 text-amber-400" />
+                Качество товаров
+              </h3>
+              <div className="space-y-3 text-gray-300">
+                <p>• Все товары официальные и лицензированные</p>
+                <p>• Гарантия качества на каждый предмет</p>
+                <p>• Мгновенная доставка после оплаты</p>
+                <p>• Поддержка 24/7 по всем вопросам</p>
+              </div>
+            </div>
+            
+            <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8">
+              <h3 className="text-2xl font-bold text-white mb-4 flex items-center">
+                <TrendingUp className="w-6 h-6 mr-3 text-amber-400" />
+                Популярные категории
+              </h3>
+              <div className="space-y-3 text-gray-300">
+                <p>• Скины для популярных игр</p>
+                <p>• Эксклюзивные предметы</p>
+                <p>• Коллекционные вещи</p>
+                <p>• Новинки и редкие находки</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Кнопка назад */}
+        <div className="text-center mt-16">
+          <Button
+            onClick={() => navigate('/')}
+            variant="outline"
+            className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Вернуться на главную
+          </Button>
+        </div>
       </div>
     </div>
   );

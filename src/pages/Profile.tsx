@@ -15,7 +15,11 @@ import {
   Star,
   TrendingUp,
   Shield,
-  Zap
+  Zap,
+  CreditCard,
+  History,
+  Award,
+  Target
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -33,13 +37,6 @@ const Profile = () => {
     casesOpened: 0,
     itemsSold: 0
   });
-
-  // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре профиля
-  // useEffect(() => {
-  //   if (telegramUser) {
-  //     refreshTelegramProfile();
-  //   }
-  // }, [telegramUser, refreshTelegramProfile]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -85,16 +82,16 @@ const Profile = () => {
 
   if (!telegramUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700 flex items-center justify-center">
-        <div className="text-center bg-black/20 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+        <div className="text-center bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
           <div className="text-6xl mb-6">🔒</div>
           <h1 className="text-3xl font-bold text-white mb-4">{t('Войдите в аккаунт')}</h1>
-          <p className="text-white/80 mb-6 max-w-md">
+          <p className="text-gray-300 mb-6 max-w-md">
             {t('Для просмотра профиля необходимо войти через Telegram')}
           </p>
           <Button
             onClick={() => navigate('/auth')}
-            className="px-8 py-4 bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+            className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
           >
             {t('Войти в аккаунт')}
           </Button>
@@ -105,255 +102,279 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-xl">Загрузка профиля...</p>
+          <div className="relative">
+            <div className="animate-spin rounded-full h-32 w-32 border-4 border-amber-400/30 mx-auto mb-4"></div>
+            <div className="absolute inset-0 animate-spin rounded-full h-32 w-32 border-4 border-transparent border-t-amber-400 mx-auto"></div>
+          </div>
+          <p className="text-gray-300 text-xl">{t('Загрузка профиля...')}</p>
+          <div className="flex justify-center space-x-1 mt-4">
+            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-100"></div>
+            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-200"></div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
         <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 via-emerald-400 to-purple-500 bg-clip-text text-transparent animate-pulse">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
             👤 {t('Профиль')}
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Управляйте своим аккаунтом и отслеживайте активность
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Добро пожаловать в ваш личный кабинет! Здесь вы можете управлять аккаунтом, 
+            просматривать статистику и совершать покупки.
           </p>
         </div>
         
         {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/20 rounded-full animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-emerald-400/20 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-purple-400/20 rounded-full animate-spin"></div>
+        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
       </div>
 
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Основная информация профиля */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Карточка профиля */}
-            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader className="text-center">
-                <div className="mx-auto w-24 h-24 bg-gradient-to-br from-amber-400 to-emerald-600 rounded-full flex items-center justify-center mb-4">
-                  <User className="w-12 h-12 text-white" />
-                </div>
-                <CardTitle className="text-2xl text-white">
-                  {telegramUser.first_name} {telegramUser.last_name}
-                </CardTitle>
-                <CardDescription className="text-amber-300">
-                  @{telegramUser.username || 'user'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-amber-500/20">
-                    <div className="text-2xl font-bold text-amber-400">{profile?.balance || 0}₴</div>
-                    <div className="text-white/70 text-sm">Баланс</div>
+        {/* Основная информация профиля */}
+        <div className="mb-12">
+          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Аватар и основная информация */}
+                <div className="text-center lg:text-left">
+                  <div className="mx-auto lg:mx-0 w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-6 shadow-2xl shadow-amber-500/30">
+                    <User className="w-12 h-12 text-white" />
                   </div>
-                  <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-amber-500/20">
-                    <div className="text-2xl font-bold text-emerald-400">{stats.totalPurchases}</div>
-                    <div className="text-white/70 text-sm">Покупок</div>
+                  <h2 className="text-2xl font-bold text-white mb-2">
+                    {profile?.username || telegramUser.first_name}
+                  </h2>
+                  <p className="text-gray-300 mb-4">@{telegramUser.username || 'user'}</p>
+                  
+                  {/* Роль пользователя */}
+                  {profile?.role === 'admin' && (
+                    <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 mb-4">
+                      <Crown className="w-4 h-4 mr-2" />
+                      Администратор
+                    </Badge>
+                  )}
+                  
+                  {/* Статус */}
+                  <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Активен
+                  </Badge>
+                </div>
+
+                {/* Баланс */}
+                <div className="text-center lg:text-left">
+                  <h3 className="text-xl font-bold text-white mb-4 flex items-center justify-center lg:justify-start">
+                    <Wallet className="w-6 h-6 mr-2 text-amber-400" />
+                    Баланс
+                  </h3>
+                  <div className="text-3xl font-bold text-amber-400 mb-4">
+                    {profile?.balance || 0}₴
+                  </div>
+                  <Button
+                    onClick={handleTopUp}
+                    className="w-full lg:w-auto px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-blue-500/30"
+                  >
+                    <CreditCard className="w-5 h-5 mr-2" />
+                    пополнить
+                  </Button>
+                </div>
+
+                {/* Быстрые действия */}
+                <div className="text-center lg:text-left">
+                  <h3 className="text-xl font-bold text-white mb-4">Быстрые действия</h3>
+                  <div className="space-y-3">
+                    <Button
+                      onClick={() => navigate('/catalog')}
+                      variant="outline"
+                      className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                    >
+                      <ShoppingBag className="w-4 h-4 mr-2" />
+                      Каталог
+                    </Button>
+                    <Button
+                      onClick={() => navigate('/cases')}
+                      variant="outline"
+                      className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                    >
+                      <Gift className="w-4 h-4 mr-2" />
+                      Кейсы
+                    </Button>
                   </div>
                 </div>
-                
-                <Button
-                  onClick={handleTopUp}
-                  className="w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/30"
-                >
-                  <Wallet className="w-4 h-4 mr-2" />
-                  пополнить
-                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Статистика */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-white text-center mb-8">
+            Ваша статистика
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
+                  <ShoppingBag className="w-8 h-8 text-amber-400" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Покупки</h3>
+                <p className="text-2xl font-bold text-amber-400">{stats.totalPurchases}</p>
               </CardContent>
             </Card>
 
-            {/* Статистика */}
-            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <TrendingUp className="w-5 h-5 mr-2 text-amber-400" />
-                  Статистика активности
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
-                    <ShoppingBag className="w-8 h-8 mx-auto mb-2 text-amber-400" />
-                    <div className="text-xl font-bold text-white">{stats.totalPurchases}</div>
-                    <div className="text-white/70 text-sm">Покупок</div>
-                  </div>
-                  <div className="text-center p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
-                    <div className="text-2xl font-bold text-white mb-2">{stats.totalSpent}₴</div>
-                    <div className="text-white/70 text-sm">Потрачено</div>
-                  </div>
-                  <div className="text-center p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
-                    <Gift className="w-8 h-8 mx-auto mb-2 text-emerald-400" />
-                    <div className="text-xl font-bold text-white">{stats.casesOpened}</div>
-                    <div className="text-white/70 text-sm">Кейсов</div>
-                  </div>
-                  <div className="text-center p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
-                    <Star className="w-8 h-8 mx-auto mb-2 text-purple-400" />
-                    <div className="text-xl font-bold text-white">{stats.itemsSold}</div>
-                    <div className="text-white/70 text-sm">Продано</div>
-                  </div>
+            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
+                  <TrendingUp className="w-8 h-8 text-amber-400" />
                 </div>
+                <h3 className="text-white font-semibold mb-2">Потрачено</h3>
+                <p className="text-2xl font-bold text-amber-400">{stats.totalSpent}₴</p>
               </CardContent>
             </Card>
 
-            {/* Достижения */}
-            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
+                  <Gift className="w-8 h-8 text-amber-400" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Кейсы открыто</h3>
+                <p className="text-2xl font-bold text-amber-400">{stats.casesOpened}</p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
+                  <Star className="w-8 h-8 text-amber-400" />
+                </div>
+                <h3 className="text-white font-semibold mb-2">Предметы продано</h3>
+                <p className="text-2xl font-bold text-amber-400">{stats.itemsSold}</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Достижения и настройки */}
+        <div className="mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
               <CardHeader>
                 <CardTitle className="text-white flex items-center">
-                  <Crown className="w-5 h-5 mr-2 text-amber-400" />
+                  <Award className="w-6 h-6 mr-3 text-amber-400" />
                   Достижения
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
-                    <div className="w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center mr-4">
-                      <ShoppingBag className="w-6 h-6 text-amber-400" />
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
+                        <Target className="w-4 h-4 text-amber-400" />
+                      </div>
+                      <span className="text-gray-300">Первая покупка</span>
                     </div>
-                    <div>
-                      <div className="text-white font-semibold">Первая покупка</div>
-                      <div className="text-white/70 text-sm">Совершите первую покупку</div>
-                    </div>
-                    <Badge className="ml-auto bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
+                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
                       Получено
                     </Badge>
                   </div>
                   
-                  <div className="flex items-center p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
-                    <div className="w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center mr-4">
-                      <Gift className="w-6 h-6 text-amber-400" />
+                  <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
+                        <Gift className="w-4 h-4 text-amber-400" />
+                      </div>
+                      <span className="text-gray-300">Открыть 10 кейсов</span>
                     </div>
-                    <div>
-                      <div className="text-white font-semibold">Открыватель кейсов</div>
-                      <div className="text-white/70 text-sm">Откройте 10 кейсов</div>
+                    <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                      В процессе
+                    </Badge>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
+                        <TrendingUp className="w-4 h-4 text-amber-400" />
+                      </div>
+                      <span className="text-gray-300">Потратить 1000₴</span>
                     </div>
-                    <Badge className="ml-auto bg-amber-500/20 text-amber-400 border-amber-500/30">
-                      {stats.casesOpened}/10
+                    <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">
+                      Заблокировано
                     </Badge>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Боковая панель */}
-          <div className="space-y-6">
-            {/* Быстрые действия */}
-            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader>
-                <CardTitle className="text-white">Быстрые действия</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  onClick={() => navigate('/catalog')}
-                  variant="outline"
-                  className="w-full justify-start border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
-                >
-                  <ShoppingBag className="w-4 h-4 mr-2" />
-                  Перейти в каталог
-                </Button>
-                
-                <Button
-                  onClick={() => navigate('/cart')}
-                  variant="outline"
-                  className="w-full justify-start border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
-                >
-                  <ShoppingBag className="w-4 h-4 mr-2" />
-                  Корзина
-                </Button>
-                
-                <Button
-                  onClick={handleTopUp}
-                  variant="outline"
-                  className="w-full justify-start border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
-                >
-                  <Wallet className="w-4 h-4 mr-2" />
-                  Пополнить баланс
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Настройки */}
-            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader>
-                <CardTitle className="text-white">Настройки</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
-                >
-                  <Settings className="w-4 h-4 mr-2" />
-                  Настройки аккаунта
-                </Button>
-                
-                <Button
-                  onClick={handleLogout}
-                  variant="outline"
-                  className="w-full justify-start border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Выйти
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Безопасность */}
-            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
               <CardHeader>
                 <CardTitle className="text-white flex items-center">
-                  <Shield className="w-5 h-5 mr-2 text-emerald-400" />
-                  Безопасность
+                  <Settings className="w-6 h-6 mr-3 text-amber-400" />
+                  Настройки
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-emerald-500/20">
-                    <div className="flex items-center">
-                      <Shield className="w-4 h-4 mr-2 text-emerald-400" />
-                      <span className="text-white text-sm">Telegram авторизация</span>
-                    </div>
-                    <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
-                      Активна
-                    </Badge>
-                  </div>
+                <div className="space-y-4">
+                  <Button
+                    variant="outline"
+                    className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                  >
+                    <History className="w-4 h-4 mr-2" />
+                    История транзакций
+                  </Button>
                   
-                  <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
-                    <div className="flex items-center">
-                      <Zap className="w-4 h-4 mr-2 text-amber-400" />
-                      <span className="text-white text-sm">Двухфакторная аутентификация</span>
-                    </div>
-                    <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
-                      Рекомендуется
-                    </Badge>
-                  </div>
+                  <Button
+                    variant="outline"
+                    className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                  >
+                    <Shield className="w-4 h-4 mr-2" />
+                    Безопасность
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Редактировать профиль
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* Кнопка назад */}
-        <div className="text-center mt-12">
-          <Button
-            onClick={() => navigate('/')}
-            variant="outline"
-            className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Вернуться на главную
-          </Button>
+        {/* Кнопки действий */}
+        <div className="text-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="px-8 py-3 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-all duration-300"
+            >
+              <LogOut className="w-5 h-5 mr-2" />
+              Выйти из аккаунта
+            </Button>
+            
+            <Button
+              onClick={() => navigate('/')}
+              variant="outline"
+              className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Вернуться на главную
+            </Button>
+          </div>
         </div>
       </div>
     </div>

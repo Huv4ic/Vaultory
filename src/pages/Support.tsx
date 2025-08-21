@@ -1,186 +1,319 @@
-import { useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Send, Mail, Clock, MessageCircle, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
+import { 
+  ArrowLeft, 
+  MessageCircle, 
+  Mail, 
+  HelpCircle, 
+  Phone, 
+  Clock, 
+  Shield, 
+  Zap,
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  Star,
+  Users,
+  Globe
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Support = () => {
   const { t } = useLanguage();
-  const { telegramUser } = useAuth();
-  
-  // Убираем автоматическое обновление профиля при загрузке - это может вызывать конфликты
-  // useEffect(() => {
-  //   if (telegramUser) {
-  //     refreshTelegramProfile();
-  //   }
-  // }, [telegramUser, refreshTelegramProfile]);
-  
-  const supportMethods = [
+  const navigate = useNavigate();
+
+  const contactMethods = [
     {
-      icon: <Send className="w-6 h-6" />,
-      title: 'Telegram',
-      description: t('Быстрый ответ в течение 5 минут'),
-      contact: '@Vaultory_manager',
-      action: t('Написать в Telegram'),
-      link: 'https://t.me/Vaultory_manager'
+      icon: <MessageCircle className="w-8 h-8 text-amber-400" />,
+      title: "Telegram",
+      description: "Быстрая поддержка через Telegram",
+      action: "Написать в Telegram",
+      link: "https://t.me/vaultory_support",
+      color: "from-blue-500 to-blue-600"
     },
     {
-      icon: <Mail className="w-6 h-6" />,
-      title: 'Email',
-      description: t('Ответ в течение 1 часа'),
-      contact: 'support@vaultory.com',
-      action: t('Отправить Email')
+      icon: <Mail className="w-8 h-8 text-amber-400" />,
+      title: "Email поддержка",
+      description: "Подробные вопросы и документация",
+      action: "Отправить Email",
+      link: "mailto:support@vaultory.com",
+      color: "from-amber-500 to-amber-600"
     }
   ];
 
   const faqItems = [
     {
-      question: t('Как быстро приходят товары?'),
-      answer: t('Товары после оплаты выдаются вручную, поэтому время на выдачу товара может варьироваться от 5 минут до пары часов.')
+      question: "Как быстро приходят товары после оплаты?",
+      answer: "Товары после оплаты выдаются вручную, поэтому время на выдачу товара может варьироваться от 5 минут до пары часов. Мы стараемся обрабатывать заказы максимально быстро."
     },
     {
-      question: t('Что делать, если товар не пришел?'),
-      answer: t('Обратитесь в нашу поддержку через Telegram или Email с номером заказа. Мы решим проблему в течение часа или вернем деньги.')
+      question: "Какие способы оплаты доступны?",
+      answer: "Доступны оплаты через Monobank, PrivatBank, PUMB, а также криптовалютой (USDT TRC20/ERC20, Litecoin). Все платежи проходят через защищенные каналы."
     },
     {
-      question: t('Какие способы оплаты доступны?'),
-      answer: 'Доступны оплаты через Monobank, PrivatBank, PUMB, а также криптовалютой (USDT TRC20/ERC20, Litecoin)'
+      question: "Безопасно ли у вас покупать?",
+      answer: "Да, мы работаем с 2025 года и имеем уже большое количество реальных отзывов. Все платежи проходят через защищенные каналы, а ваши данные надежно защищены."
     },
     {
-      question: t('Можно ли вернуть товар?'),
-      answer: t('Цифровые товары возврату не подлежат согласно закону о защите прав потребителей. Однако в случае технических проблем мы всегда идем навстречу клиентам.')
+      question: "Что делать, если товар не пришел?",
+      answer: "Если товар не пришел в течение 2 часов, свяжитесь с нами через Telegram или Email. Мы проверим статус заказа и решим проблему в кратчайшие сроки."
     },
     {
-      question: t('Безопасно ли покупать у вас?'),
-      answer: t('Да, мы работаем с 2025 года и имеем уже большое количество реальных отзывов. Все платежи проходят через защищенные каналы.')
+      question: "Можно ли вернуть товар из кейса?",
+      answer: "К сожалению, товары из кейсов возврату не подлежат, так как они выдаются случайным образом. Перед покупкой кейса убедитесь, что готовы к такому результату."
+    },
+    {
+      question: "Как пополнить баланс?",
+      answer: "Пополнить баланс можно через профиль пользователя. Мы принимаем все основные способы оплаты, включая банковские карты и криптовалюты."
+    },
+    {
+      question: "Есть ли гарантия на товары?",
+      answer: "Да, все товары имеют гарантию качества. Если возникли проблемы с полученным товаром, свяжитесь с поддержкой для решения вопроса."
+    },
+    {
+      question: "Как работает система кейсов?",
+      answer: "Кейсы содержат случайные предметы из игр. Каждый кейс имеет свой список возможных наград с указанными шансами выпадения."
+    }
+  ];
+
+  const supportFeatures = [
+    {
+      icon: <Clock className="w-6 h-6 text-amber-400" />,
+      title: "24/7 Поддержка",
+      description: "Мы работаем круглосуточно для решения ваших вопросов"
+    },
+    {
+      icon: <Zap className="w-6 h-6 text-amber-400" />,
+      title: "Быстрый ответ",
+      description: "Среднее время ответа: 5-30 минут"
+    },
+    {
+      icon: <Shield className="w-6 h-6 text-amber-400" />,
+      title: "Безопасность",
+      description: "Все обращения конфиденциальны и защищены"
+    },
+    {
+      icon: <Users className="w-6 h-6 text-amber-400" />,
+      title: "Опытная команда",
+      description: "Наши специалисты решают любые вопросы"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            {t('Поддержка')}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
+        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
+            🆘 {t('Поддержка')}
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            {t('Мы всегда готовы помочь! Выберите удобный способ связи')}
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Мы всегда готовы помочь! Свяжитесь с нашей службой поддержки любым удобным способом 
+            и получите быстрый ответ на все ваши вопросы.
           </p>
         </div>
+        
+        {/* Анимированные элементы фона */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
+      </div>
 
+      {/* Основной контент */}
+      <div className="relative z-20 container mx-auto px-4 pb-20">
         {/* Способы связи */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 max-w-4xl mx-auto">
-          {supportMethods.map((method, index) => (
-            <Card 
-              key={index}
-              className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50 hover:border-red-500/50 transition-all duration-300 transform hover:scale-105"
-            >
-              <CardHeader className="text-center">
-                <div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center bg-gradient-to-r from-red-500 to-purple-600">
-                  {method.icon}
-                </div>
-                <CardTitle className="text-white">{method.title}</CardTitle>
-                <p className="text-gray-400 text-sm">{method.description}</p>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="text-red-400 font-semibold mb-4">
-                  <a href={method.link ? method.link : (method.title === 'Email' ? `mailto:${method.contact}` : '#')} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-pink-500 transition-colors duration-200">
-                    {method.contact}
-                  </a>
-                </div>
-                {method.link ? (
-                  <a href={method.link} target="_blank" rel="noopener noreferrer">
-                    <Button 
-                      className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
-                    >
-                      {method.action}
-                    </Button>
-                  </a>
-                ) : (
-                  <Button 
-                    className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
-                    onClick={() => {
-                      if (method.title === 'Email') {
-                        window.location.href = `mailto:${method.contact}`;
-                      }
-                    }}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Свяжитесь с нами
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {contactMethods.map((method, index) => (
+              <Card 
+                key={index}
+                className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105"
+              >
+                <CardHeader className="text-center">
+                  <div className="mx-auto w-20 h-20 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 border border-amber-500/20">
+                    {method.icon}
+                  </div>
+                  <CardTitle className="text-white text-xl">{method.title}</CardTitle>
+                  <CardDescription className="text-amber-300">
+                    {method.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <Button
+                    onClick={() => window.open(method.link, '_blank')}
+                    className={`w-full py-3 bg-gradient-to-r ${method.color} hover:from-amber-500 hover:to-amber-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30`}
                   >
                     {method.action}
                   </Button>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Рабочие часы */}
-        <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50 mb-16">
-          <CardContent className="p-8">
-            <div className="flex items-center justify-center mb-6">
-              <Clock className="w-8 h-8 text-red-500 mr-3" />
-              <h2 className="text-2xl font-bold">{t('Время работы поддержки')}</h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-              <div>
-                <h3 className="text-lg font-semibold mb-2 text-red-400">{t('Telegram поддержка')}</h3>
-                <p className="text-gray-300">24/7 - {t('Круглосуточно')}</p>
-                <p className="text-sm text-gray-400">{t('Автоответчик + живая поддержка')}</p>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2 text-red-400">{t('Email поддержка')}</h3>
-                <p className="text-gray-300">Пн-Вс: 9:00 - 23:00 (МСК)</p>
-                <p className="text-sm text-gray-400">{t('Время ответа: до 1 часа')}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* FAQ */}
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              {t('Частые вопросы')}
-            </h2>
-            <p className="text-gray-400">{t('Возможно, ответ на ваш вопрос уже есть здесь')}</p>
-          </div>
-
-          <div className="space-y-6">
-            {faqItems.map((item, index) => (
-              <Card key={index} className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50">
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      <HelpCircle className="w-4 h-4 text-red-400" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white mb-2">{item.question}</h3>
-                      <p className="text-gray-300 leading-relaxed">{item.answer}</p>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
 
-        {/* Экстренная помощь */}
-        <Card className="bg-white/90 dark:bg-gray-900/90 border-2 border-pink-300/60 shadow-xl rounded-2xl mt-16">
-          <CardContent className="p-10 text-center">
-            <MessageCircle className="w-12 h-12 text-pink-500 mx-auto mb-4 drop-shadow-lg" />
-            <h3 className="text-3xl font-extrabold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
-              {t('Нужна срочная помощь?')}
-            </h3>
-            <p className="mb-6 max-w-2xl mx-auto text-lg text-gray-100 dark:text-gray-200 leading-relaxed drop-shadow-md" style={{textShadow: '0 2px 8px rgba(80,0,80,0.18)'}}>
-              {t('Если у вас проблемы с заказом или аккаунтом,')} <span className="font-semibold text-pink-400">{t('напишите нам в Telegram')}</span> {t('для получения мгновенной помощи')}
-            </p>
-            <a href="https://t.me/Vaultory_manager" target="_blank" rel="noopener noreferrer">
-              <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-lg py-3 rounded-lg mt-6 shadow-lg hover:from-pink-600 hover:to-purple-600 transition-all duration-200">
-                {t('Написать в Telegram')}
-              </Button>
-            </a>
-          </CardContent>
-        </Card>
+        {/* Особенности поддержки */}
+        <div className="mb-16">
+          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardHeader>
+              <CardTitle className="text-white text-center">Почему выбирают нашу поддержку</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {supportFeatures.map((feature, index) => (
+                  <div key={index} className="text-center p-4 bg-black/50 backdrop-blur-sm rounded-xl border border-amber-500/20">
+                    <div className="mx-auto w-16 h-16 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 border border-amber-500/20">
+                      {feature.icon}
+                    </div>
+                    <h4 className="text-white font-semibold mb-2">{feature.title}</h4>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Часто задаваемые вопросы */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Часто задаваемые вопросы
+          </h2>
+          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardContent className="p-6">
+              <Accordion type="single" collapsible className="w-full">
+                {faqItems.map((item, index) => (
+                  <AccordionItem key={index} value={`item-${index}`} className="border-amber-500/20">
+                    <AccordionTrigger className="text-white hover:text-amber-400 transition-colors">
+                      <div className="flex items-center space-x-3">
+                        <HelpCircle className="w-5 h-5 text-amber-400" />
+                        <span className="text-left">{item.question}</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-300 leading-relaxed pt-4">
+                      {item.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Дополнительная информация */}
+        <div className="mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <Info className="w-6 h-6 mr-3 text-amber-400" />
+                  Время работы
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Поддержка:</span>
+                    <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                      24/7
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Ответ в Telegram:</span>
+                    <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                      5-15 мин
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Ответ на Email:</span>
+                    <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                      До 24 ч
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <Star className="w-6 h-6 mr-3 text-amber-400" />
+                  Наши преимущества
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-amber-400" />
+                    <span className="text-gray-300 text-sm">Бесплатная консультация</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-amber-400" />
+                    <span className="text-gray-300 text-sm">Опытные специалисты</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-amber-400" />
+                    <span className="text-gray-300 text-sm">Конфиденциальность</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-amber-400" />
+                    <span className="text-gray-300 text-sm">Быстрое решение</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Призыв к действию */}
+        <div className="text-center">
+          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardContent className="pt-8">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Нужна дополнительная помощь?
+              </h3>
+              <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+                Если вы не нашли ответ на свой вопрос в FAQ или нужна более детальная консультация, 
+                не стесняйтесь обращаться к нам. Мы всегда готовы помочь!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  onClick={() => window.open('https://t.me/vaultory_support', '_blank')}
+                  className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-blue-500/30"
+                >
+                  Написать в Telegram
+                </Button>
+                <Button
+                  onClick={() => window.open('mailto:support@vaultory.com', '_blank')}
+                  variant="outline"
+                  className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+                >
+                  Отправить Email
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Кнопка назад */}
+        <div className="text-center mt-12">
+          <Button
+            onClick={() => navigate('/')}
+            variant="outline"
+            className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Вернуться на главную
+          </Button>
+        </div>
       </div>
     </div>
   );
