@@ -1,24 +1,33 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../integrations/supabase/client';
+import { useFavorites } from './useFavorites';
 
 export interface Product {
   id: string;
   name: string;
   price: number;
-  original_price?: number;
-  image_url: string;
+  discount_price?: number;
+  images: string[];
   category_id: string;
-  game: string;
-  rating: number;
-  sales: number;
+  game_id: string;
   description: string;
-  features: string[];
+  is_available: boolean;
+  is_featured: boolean;
+  created_at: string;
+  updated_at: string;
+  is_favorite?: boolean;
 }
 
 export interface Category {
   id: string;
   name: string;
-  icon: string;
+  description: string;
+  image: string;
+  is_active: boolean;
+  parent_id: string;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export const useProducts = () => {
@@ -26,6 +35,7 @@ export const useProducts = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { favorites, isFavorite } = useFavorites();
 
   const fetchProducts = async () => {
     try {
@@ -48,7 +58,21 @@ export const useProducts = () => {
         .order('name');
 
       if (productsError) throw productsError;
-      setProducts(productsData || []);
+      
+      // Добавляем информацию об избранности и сортируем
+      const productsWithFavorites = (productsData || []).map(product => ({
+        ...product,
+        is_favorite: isFavorite(product.id)
+      }));
+
+      // Сортируем: избранные товары сначала, затем по названию
+      const sortedProducts = productsWithFavorites.sort((a, b) => {
+        if (a.is_favorite && !b.is_favorite) return -1;
+        if (!a.is_favorite && b.is_favorite) return 1;
+        return a.name.localeCompare(b.name);
+      });
+
+      setProducts(sortedProducts);
 
     } catch (err) {
       console.error('Error fetching products:', err);
@@ -61,6 +85,13 @@ export const useProducts = () => {
   const refreshProducts = () => {
     fetchProducts();
   };
+
+  // Обновляем продукты при изменении избранных
+  useEffect(() => {
+    if (favorites.length > 0) {
+      fetchProducts();
+    }
+  }, [favorites]);
 
   useEffect(() => {
     fetchProducts();

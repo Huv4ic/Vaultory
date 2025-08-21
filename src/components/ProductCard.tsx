@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Eye, ShoppingCart, Star } from 'lucide-react';
+import { Eye, ShoppingCart, Star, Heart } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useFavorites } from '@/hooks/useFavorites';
 
 interface ProductCardProps {
   id: string;
   name: string;
   price: number;
-  originalPrice?: number;
-  image?: string;
-  category?: string;
-  rating?: number;
-  sales?: number;
+  discount_price?: number;
+  images: string[];
+  category_id: string;
+  game_id: string;
+  description: string;
   isInCart: boolean;
   onAddToCart: () => void;
   onDetails: () => void;
@@ -21,17 +22,25 @@ const ProductCard = ({
   id,
   name,
   price,
-  originalPrice,
-  image,
-  category,
-  rating,
-  sales,
+  discount_price,
+  images,
+  category_id,
+  game_id,
+  description,
   isInCart,
   onAddToCart,
   onDetails
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { t } = useLanguage();
+  const { isFavorite, toggleFavorite, loading } = useFavorites();
+
+  const handleFavoriteClick = async () => {
+    await toggleFavorite(id);
+  };
+
+  // Используем первое изображение из массива
+  const image = images && images.length > 0 ? images[0] : '/placeholder.svg';
 
   return (
     <div
@@ -42,7 +51,7 @@ const ProductCard = ({
       {/* Изображение */}
       <div className="relative h-48 overflow-hidden flex-shrink-0">
         <img
-          src={image || '/placeholder.svg'}
+          src={image}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -50,21 +59,30 @@ const ProductCard = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
         {/* Категория */}
-        {category && (
+        {category_id && (
           <div className="absolute top-3 left-3">
             <span className="px-2 py-1 bg-gradient-to-r from-amber-500 to-emerald-600 text-white text-xs font-medium rounded-lg shadow-lg">
-              {category}
+              {category_id}
             </span>
           </div>
         )}
 
-        {/* Рейтинг */}
-        {rating && (
-          <div className="absolute top-3 right-3 flex items-center space-x-1 bg-black/50 backdrop-blur-sm px-2 py-1 rounded-lg">
-            <Star className="w-3 h-3 text-amber-400 fill-current" />
-            <span className="text-white text-xs font-medium">{rating}</span>
-          </div>
-        )}
+        {/* Кнопка избранного */}
+        <Button
+          onClick={handleFavoriteClick}
+          disabled={loading}
+          size="sm"
+          variant="ghost"
+          className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-all duration-300 p-1 h-8 w-8 rounded-lg"
+        >
+          <Heart 
+            className={`w-4 h-4 transition-all duration-300 ${
+              isFavorite(id) 
+                ? 'text-red-500 fill-current' 
+                : 'text-white hover:text-red-400'
+            }`} 
+          />
+        </Button>
       </div>
 
       {/* Контент */}
@@ -80,19 +98,12 @@ const ProductCard = ({
             <span className="text-xl font-bold text-amber-400">
               {price}₴
             </span>
-            {originalPrice && originalPrice > price && (
+            {discount_price && discount_price > price && (
               <span className="text-gray-400 line-through text-xs">
-                {originalPrice}₴
+                {discount_price}₴
               </span>
             )}
           </div>
-
-          {/* Продажи */}
-          {sales && (
-            <span className="text-gray-400 text-xs">
-              {sales} {t('продаж')}
-            </span>
-          )}
         </div>
       </div>
 

@@ -23,6 +23,7 @@ import {
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useFavorites } from '@/hooks/useFavorites';
 
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,6 +31,7 @@ const ProductPage = () => {
   const { products, loading, error } = useProducts();
   const { addItem, items } = useCart();
   const { t } = useLanguage();
+  const { isFavorite, toggleFavorite, loading: favoritesLoading } = useFavorites();
   
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
@@ -37,8 +39,8 @@ const ProductPage = () => {
   const product = products.find(p => p.id === id);
 
   useEffect(() => {
-    if (product && product.image_url) {
-      setSelectedImage(product.image_url);
+    if (product && product.images && product.images.length > 0) {
+      setSelectedImage(product.images[0]);
     }
   }, [product]);
 
@@ -48,7 +50,7 @@ const ProductPage = () => {
         id: product.id,
         name: product.name,
         price: product.price,
-        image_url: product.image_url
+        image_url: product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'
       });
     }
   };
@@ -124,7 +126,7 @@ const ProductPage = () => {
             <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6">
               <div className="relative h-96 mb-4">
                 <img
-                  src={selectedImage || product.image_url || '/placeholder.svg'}
+                  src={selectedImage || '/placeholder.svg'}
                   alt={product.name}
                   className="w-full h-full object-cover rounded-xl"
                   onError={(e) => {
@@ -141,12 +143,7 @@ const ProductPage = () => {
                   </Badge>
                 </div>
                 
-                {product.rating && (
-                  <div className="absolute top-4 right-4 flex items-center space-x-1 bg-black/50 backdrop-blur-sm px-3 py-2 rounded-lg">
-                    <Star className="w-4 h-4 text-amber-400 fill-current" />
-                    <span className="text-white font-medium">{product.rating}</span>
-                  </div>
-                )}
+
               </div>
               
               {/* Убираем миниатюры - оставляем только основную фотографию */}
@@ -162,15 +159,10 @@ const ProductPage = () => {
               {/* Цена */}
               <div className="flex items-center space-x-4 mb-6">
                 <span className="text-3xl font-bold text-amber-400">{product.price}₴</span>
-                {product.original_price && product.original_price > product.price && (
+                {product.discount_price && product.discount_price > product.price && (
                   <span className="text-gray-400 line-through text-xl">
-                    {product.original_price}₴
+                    {product.discount_price}₴
                   </span>
-                )}
-                {product.sales && (
-                  <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
-                    {product.sales} продаж
-                  </Badge>
                 )}
               </div>
               
@@ -193,11 +185,17 @@ const ProductPage = () => {
                 </Button>
                 
                 <Button
+                  onClick={async () => await toggleFavorite(product.id)}
+                  disabled={favoritesLoading}
                   variant="outline"
-                  className="px-6 py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
+                  className={`px-6 py-4 backdrop-blur-sm border transition-all duration-300 shadow-lg rounded-xl ${
+                    isFavorite(product.id)
+                      ? 'bg-red-500/20 border-red-500/40 text-red-300 hover:bg-red-500/30 hover:border-red-400'
+                      : 'bg-black/60 border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200'
+                  }`}
                 >
-                  <Heart className="w-5 h-5 mr-2" />
-                  В избранное
+                  <Heart className={`w-5 h-5 mr-2 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
+                  {isFavorite(product.id) ? 'В избранном' : 'В избранное'}
                 </Button>
                 
                 <Button
@@ -223,24 +221,16 @@ const ProductPage = () => {
                   <span className="text-white font-medium">{product.category_id}</span>
                 </div>
                 
-                {product.features && (
-                  <div className="flex justify-between items-center py-2 border-b border-amber-500/20">
-                    <span className="text-gray-300">Особенности:</span>
-                    <span className="text-white font-medium">{product.features}</span>
-                  </div>
-                )}
-                
                 <div className="flex justify-between items-center py-2 border-b border-amber-500/20">
-                  <span className="text-gray-300">Рейтинг:</span>
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-amber-400 fill-current" />
-                    <span className="text-white font-medium">{product.rating || 'Нет оценок'}</span>
-                  </div>
+                  <span className="text-gray-300">Игра:</span>
+                  <span className="text-white font-medium">{product.game_id}</span>
                 </div>
                 
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-300">Продажи:</span>
-                  <span className="text-white font-medium">{product.sales || 0}</span>
+                  <span className="text-gray-300">Статус:</span>
+                  <span className="text-white font-medium">
+                    {product.is_available ? 'Доступен' : 'Недоступен'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -291,7 +281,7 @@ const ProductPage = () => {
                 >
                   <div className="w-full h-32 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-xl mb-3 flex items-center justify-center">
                     <img
-                      src={similarProduct.image_url || '/placeholder.svg'}
+                      src={similarProduct.images && similarProduct.images.length > 0 ? similarProduct.images[0] : '/placeholder.svg'}
                       alt={similarProduct.name}
                       className="w-24 h-24 object-cover rounded-lg"
                       onError={(e) => {
@@ -317,7 +307,7 @@ const ProductPage = () => {
                           id: similarProduct.id,
                           name: similarProduct.name,
                           price: similarProduct.price,
-                          image_url: similarProduct.image_url
+                          image_url: similarProduct.images && similarProduct.images.length > 0 ? similarProduct.images[0] : '/placeholder.svg'
                         });
                       }}
                     >

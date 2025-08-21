@@ -78,7 +78,9 @@ const App = () => {
       <AuthProvider>
         <CartProvider>
           <InventoryProvider>
-            <AppContent />
+            <FavoritesProvider>
+              <AppContent />
+            </FavoritesProvider>
           </InventoryProvider>
         </CartProvider>
       </AuthProvider>

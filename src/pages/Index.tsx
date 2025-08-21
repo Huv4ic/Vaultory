@@ -27,23 +27,23 @@ const Index = () => {
   // }, [telegramUser, refreshTelegramProfile]);
 
   // Функция для получения эмодзи иконки по названию
-  const getCategoryIcon = (iconName: string) => {
+  const getCategoryIcon = (categoryName: string) => {
     const iconMap: { [key: string]: string } = {
-      'user': '👤',
-      'dollar': '💰',
-      'key': '🔑',
-      'calendar': '📅',
-      'star': '⭐',
+      'currency': '💰',
+      'skins': '🎨',
+      'weapons': '🔫',
+      'characters': '👤',
+      'vehicles': '🚗',
       'default': '📦'
     };
-    return iconMap[iconName] || iconMap['default'];
+    return iconMap[categoryName.toLowerCase()] || iconMap['default'];
   };
 
   // Создаем gameCategories из данных БД
   const gameCategories = categories.map(cat => ({
     id: cat.id,
     name: cat.name,
-    icon: cat.icon
+    image: cat.image
   }));
 
   const filteredProducts = selectedCategory === 'all' 
@@ -186,7 +186,7 @@ const Index = () => {
                     : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-amber-500/20 hover:text-amber-300 border border-gray-700/50 hover:border-amber-500/30'
                 }`}
               >
-                <span>{getCategoryIcon(category.icon)}</span>
+                <span>{getCategoryIcon(category.name)}</span>
                 <span>{category.name}</span>
               </button>
             ))}
@@ -204,11 +204,11 @@ const Index = () => {
                   id={product.id}
                   name={product.name}
                   price={product.price}
-                  originalPrice={product.original_price}
-                  image={product.image_url}
-                  category={categories.find(cat => cat.id === product.category_id)?.name || product.game}
-                  rating={product.rating}
-                  sales={product.sales}
+                  discount_price={product.discount_price}
+                  images={product.images}
+                  category_id={product.category_id}
+                  game_id={product.game_id}
+                  description={product.description}
                   isInCart={items.some((item) => item.id === product.id)}
                   onAddToCart={() => handleAddToCart(product)}
                   onDetails={() => handleProductDetails(product.id)}

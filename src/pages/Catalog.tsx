@@ -22,23 +22,23 @@ const Catalog = () => {
   const [visibleProducts, setVisibleProducts] = useState(15);
 
   // Функция для получения эмодзи иконки по названию
-  const getCategoryIcon = (iconName: string) => {
+  const getCategoryIcon = (categoryName: string) => {
     const iconMap: { [key: string]: string } = {
-      'user': '👤',
-      'dollar': '💰',
-      'key': '🔑',
-      'calendar': '📅',
-      'star': '⭐',
+      'currency': '💰',
+      'skins': '🎨',
+      'weapons': '🔫',
+      'characters': '👤',
+      'vehicles': '🚗',
       'default': '📦'
     };
-    return iconMap[iconName] || iconMap['default'];
+    return iconMap[categoryName.toLowerCase()] || iconMap['default'];
   };
 
   // Создаем gameCategories из данных БД
   const gameCategories = categories.map(cat => ({
     id: cat.id,
     name: cat.name,
-    icon: cat.icon
+    image: cat.image
   }));
 
   let filteredProducts = products;
@@ -63,12 +63,9 @@ const Catalog = () => {
     case 'price-high':
       filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price);
       break;
-    case 'rating':
-      filteredProducts = [...filteredProducts].sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      break;
     default:
-      // По умолчанию сортируем по популярности (количеству продаж)
-      filteredProducts = [...filteredProducts].sort((a, b) => (b.sales || 0) - (a.sales || 0));
+      // По умолчанию сортируем по названию
+      filteredProducts = [...filteredProducts].sort((a, b) => a.name.localeCompare(b.name));
   }
 
   const handleAddToCart = (product: any) => {
@@ -193,7 +190,7 @@ const Catalog = () => {
                     <option value="all" className="bg-black text-amber-200">Все категории</option>
                     {gameCategories.map((category) => (
                       <option key={category.id} value={category.id} className="bg-black text-amber-200">
-                        {getCategoryIcon(category.icon)} {category.name}
+                        {getCategoryIcon(category.name)} {category.name}
                       </option>
                     ))}
                   </select>
@@ -257,11 +254,11 @@ const Catalog = () => {
                     id={product.id}
                     name={product.name}
                     price={product.price}
-                    originalPrice={product.original_price}
-                    image={product.image_url}
-                    category={categories.find(cat => cat.id === product.category_id)?.name}
-                    rating={product.rating}
-                    sales={product.sales}
+                    discount_price={product.discount_price}
+                    images={product.images}
+                    category_id={product.category_id}
+                    game_id={product.game_id}
+                    description={product.description}
                     isInCart={items.some(item => item.id === product.id)}
                     onAddToCart={() => handleAddToCart(product)}
                     onDetails={() => navigate(`/product/${product.id}`)}
