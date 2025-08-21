@@ -150,18 +150,14 @@ const ProductPage = () => {
               </div>
               
               {/* Миниатюры */}
-              <div className="grid grid-cols-4 gap-2">
-                {[product.image_url, '/placeholder.svg'].map((img, index) => (
+              <div className="grid grid-cols-1 gap-2">
+                {product.image_url && (
                   <div
-                    key={index}
-                    className={`cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                      selectedImage === img ? 'border-amber-400' : 'border-amber-500/30'
-                    }`}
-                    onClick={() => setSelectedImage(img)}
+                    className="cursor-pointer rounded-lg overflow-hidden border-2 border-amber-400"
                   >
                     <img
-                      src={img}
-                      alt={`${product.name} ${index + 1}`}
+                      src={product.image_url}
+                      alt={`${product.name} миниатюра`}
                       className="w-full h-20 object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -169,7 +165,7 @@ const ProductPage = () => {
                       }}
                     />
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>

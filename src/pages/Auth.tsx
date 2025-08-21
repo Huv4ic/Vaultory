@@ -255,7 +255,7 @@ const Auth = () => {
                       
                       <Button
                         onClick={retryAuth}
-                        className="w-full py-4 bg-gradient-to-r from-red-500/80 to-red-600/80 hover:from-red-600 hover:to-red-700 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-red-500/30 border border-red-500/40"
+                        className="w-full py-4 bg-black/70 backdrop-blur-sm border border-red-500/50 text-red-200 hover:bg-red-500/30 hover:border-red-400 hover:text-red-100 transition-all duration-300 hover:scale-105 shadow-lg shadow-red-500/20 rounded-2xl"
                       >
                         <span className="mr-2">🔄</span>
                         Попробовать снова
@@ -286,11 +286,17 @@ const Auth = () => {
                     <div className="p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
                       <p className="text-gray-300 text-sm leading-relaxed">
                         Нажимая кнопку выше, вы соглашаетесь с нашими{' '}
-                        <span className="text-amber-400 hover:text-amber-300 cursor-pointer underline">
+                        <span 
+                          className="text-amber-400 hover:text-amber-300 cursor-pointer underline transition-colors duration-200"
+                          onClick={() => navigate('/terms')}
+                        >
                           условиями использования
                         </span>{' '}
                         и{' '}
-                        <span className="text-amber-400 hover:text-amber-300 cursor-pointer underline">
+                        <span 
+                          className="text-amber-400 hover:text-amber-300 cursor-pointer underline transition-colors duration-200"
+                          onClick={() => navigate('/privacy')}
+                        >
                           политикой конфиденциальности
                         </span>
                       </p>
@@ -308,7 +314,7 @@ const Auth = () => {
                       <Button
                         variant="outline"
                         onClick={() => navigate('/')}
-                        className="px-6 py-4 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+                        className="px-6 py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                       >
                         <Home className="w-5 h-5 mr-2" />
                         На главную

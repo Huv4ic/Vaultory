@@ -178,7 +178,7 @@ const Catalog = () => {
                     placeholder={t('Поиск товаров...')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 bg-black/50 backdrop-blur-sm border-amber-500/30 text-white placeholder-gray-400 focus:border-amber-400 focus:ring-amber-400/20"
+                    className="pl-10 py-3 bg-black/70 backdrop-blur-sm border border-amber-500/40 text-amber-200 placeholder-amber-400/60 focus:border-amber-400 focus:ring-amber-400/20 focus:bg-black/80 transition-all duration-300 hover:border-amber-400 hover:bg-black/60 rounded-xl"
                   />
                 </div>
 
@@ -188,11 +188,11 @@ const Catalog = () => {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-black/50 backdrop-blur-sm border border-amber-500/30 rounded-md text-white focus:border-amber-400 focus:ring-amber-400/20"
+                    className="w-full pl-10 pr-4 py-3 bg-black/70 backdrop-blur-sm border border-amber-500/40 rounded-xl text-amber-200 focus:border-amber-400 focus:ring-amber-400/20 focus:bg-black/80 transition-all duration-300 hover:border-amber-400 hover:bg-black/60"
                   >
-                    <option value="all">Все категории</option>
+                    <option value="all" className="bg-black text-amber-200">Все категории</option>
                     {gameCategories.map((category) => (
-                      <option key={category.id} value={category.id}>
+                      <option key={category.id} value={category.id} className="bg-black text-amber-200">
                         {getCategoryIcon(category.icon)} {category.name}
                       </option>
                     ))}
@@ -205,12 +205,12 @@ const Catalog = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-black/50 backdrop-blur-sm border border-amber-500/30 rounded-md text-white focus:border-amber-400 focus:ring-amber-400/20"
+                    className="w-full pl-10 pr-4 py-3 bg-black/70 backdrop-blur-sm border border-amber-500/40 rounded-xl text-amber-200 focus:border-amber-400 focus:ring-amber-400/20 focus:bg-black/80 transition-all duration-300 hover:border-amber-400 hover:bg-black/60"
                   >
-                    <option value="popular">По популярности</option>
-                    <option value="price-low">По цене (возрастание)</option>
-                    <option value="price-high">По цене (убывание)</option>
-                    <option value="rating">По рейтингу</option>
+                    <option value="popular" className="bg-black text-amber-200">По популярности</option>
+                    <option value="price-low" className="bg-black text-amber-200">По цене (возрастание)</option>
+                    <option value="price-high" className="bg-black text-amber-200">По цене (убывание)</option>
+                    <option value="rating" className="bg-black text-amber-200">По рейтингу</option>
                   </select>
                 </div>
               </div>
@@ -235,7 +235,7 @@ const Catalog = () => {
                 setSortBy('popular');
               }}
               variant="outline"
-              className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+              className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
             >
               Сбросить фильтры
             </Button>
@@ -320,7 +320,7 @@ const Catalog = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+            className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную

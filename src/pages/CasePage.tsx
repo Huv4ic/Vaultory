@@ -181,23 +181,28 @@ const CasePage = () => {
 
   if (!caseData) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">{t('Кейс не найден')}</h1>
-          <Button onClick={() => navigate(-1)}>{t('Назад')}</Button>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex items-center justify-center">
+        <div className="text-center bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
+          <h1 className="text-3xl font-bold mb-4 text-white">{t('Кейс не найден')}</h1>
+          <Button 
+            onClick={() => navigate(-1)}
+            className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
+          >
+            {t('Назад')}
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
       <div className="container mx-auto px-4 py-12 flex flex-col items-center">
-        <div className="bg-gray-800/80 rounded-2xl shadow-xl p-8 max-w-md w-full text-center mb-8 border border-gray-700">
-          <img src={caseData.image} alt={caseData.name} className="rounded-xl w-32 h-32 object-cover mx-auto mb-4 border-4 border-gray-700" />
-          <h2 className="text-3xl font-bold mb-2">{caseData.name}</h2>
-          <div className="text-gray-400 mb-2">{caseData.game}</div>
-          <div className="text-2xl font-bold text-green-400 mb-4">{caseData.price * openingCount}₴</div>
+        <div className="bg-black/40 backdrop-blur-xl rounded-2xl shadow-2xl shadow-amber-500/20 p-8 max-w-md w-full text-center mb-8 border border-amber-500/30">
+          <img src={caseData.image} alt={caseData.name} className="rounded-xl w-32 h-32 object-cover mx-auto mb-4 border-4 border-amber-500/30" />
+          <h2 className="text-3xl font-bold mb-2 text-white">{caseData.name}</h2>
+          <div className="text-gray-300 mb-2">{caseData.game}</div>
+          <div className="text-2xl font-bold text-amber-400 mb-4">{caseData.price * openingCount}₴</div>
           <div className="mb-4 flex justify-center gap-2">
             {[1, 2, 3, 4, 5].map((count) => (
               <Button
@@ -207,9 +212,9 @@ const CasePage = () => {
                 onClick={() => setOpeningCount(count)}
                 className={
                   (openingCount === count
-                    ? "bg-gray-700 text-white border-gray-500"
-                    : "bg-gray-900 text-gray-300 border-gray-700 hover:bg-gray-800") +
-                  " rounded-md px-4 py-2 text-base font-semibold transition-all duration-200"
+                    ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-500 shadow-lg shadow-amber-500/30"
+                    : "bg-black/60 backdrop-blur-sm text-amber-300 border-amber-500/40 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200") +
+                  " rounded-xl px-4 py-2 text-base font-semibold transition-all duration-300"
                 }
               >
                 {count}
@@ -217,13 +222,13 @@ const CasePage = () => {
             ))}
           </div>
           <Button
-            className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
+            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-lg py-3 rounded-xl shadow-2xl shadow-amber-500/30 transition-all duration-300 hover:scale-105"
             onClick={openCase}
           >
             {t('Открыть')} {openingCount === 1 ? t('кейс') : `${openingCount} ${t('кейса')}`}
           </Button>
         </div>
-        <div className="bg-gray-800/80 rounded-2xl shadow-xl p-8 max-w-2xl w-full text-center border border-gray-700">
+        <div className="bg-black/40 backdrop-blur-xl rounded-2xl shadow-2xl shadow-amber-500/20 p-8 max-w-2xl w-full text-center border border-amber-500/30">
           <h3 className="text-2xl font-bold mb-6 text-white">{t('Содержимое кейса')}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {caseData.items.map((item, idx) => (

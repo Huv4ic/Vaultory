@@ -27,7 +27,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { telegramUser, signOutTelegram } = useAuth();
+  const { telegramUser, signOutTelegram, balance } = useAuth();
   const { t } = useLanguage();
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -70,6 +70,32 @@ const Profile = () => {
     fetchProfile();
   }, [telegramUser]);
 
+  // Синхронизация баланса в реальном времени
+  useEffect(() => {
+    if (telegramUser) {
+      const interval = setInterval(async () => {
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('balance')
+            .eq('telegram_id', telegramUser.id)
+            .single();
+          
+          if (!error && data?.balance !== undefined) {
+            // Обновляем профиль только если баланс изменился
+            if (profile?.balance !== data.balance) {
+              setProfile(prev => prev ? { ...prev, balance: data.balance } : null);
+            }
+          }
+        } catch (error) {
+          console.error('Ошибка обновления баланса:', error);
+        }
+      }, 5000); // Проверяем каждые 5 секунд
+
+      return () => clearInterval(interval);
+    }
+  }, [telegramUser, profile?.balance]);
+
   const handleLogout = () => {
     signOutTelegram();
     navigate('/');
@@ -79,6 +105,31 @@ const Profile = () => {
     // Здесь должна быть логика пополнения баланса
     alert('Функция пополнения баланса будет доступна в ближайшее время!');
   };
+
+  const refreshBalance = async () => {
+    if (!telegramUser) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('telegram_id', telegramUser.id)
+        .single();
+      
+      if (!error && data?.balance !== undefined) {
+        setProfile(prev => prev ? { ...prev, balance: data.balance } : null);
+      }
+    } catch (error) {
+      console.error('Ошибка обновления баланса:', error);
+    }
+  };
+
+  // Обновляем баланс при загрузке страницы
+  useEffect(() => {
+    if (telegramUser) {
+      refreshBalance();
+    }
+  }, [telegramUser]);
 
   if (!telegramUser) {
     return (
@@ -179,11 +230,11 @@ const Profile = () => {
                     Баланс
                   </h3>
                   <div className="text-3xl font-bold text-amber-400 mb-4">
-                    {profile?.balance || 0}₴
+                    {balance || 0}₴
                   </div>
                   <Button
                     onClick={handleTopUp}
-                    className="w-full lg:w-auto px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-blue-500/30"
+                    className="w-full lg:w-auto px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
                   >
                     <CreditCard className="w-5 h-5 mr-2" />
                     пополнить
@@ -197,7 +248,7 @@ const Profile = () => {
                     <Button
                       onClick={() => navigate('/catalog')}
                       variant="outline"
-                      className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                      className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                     >
                       <ShoppingBag className="w-4 h-4 mr-2" />
                       Каталог
@@ -205,7 +256,7 @@ const Profile = () => {
                     <Button
                       onClick={() => navigate('/cases')}
                       variant="outline"
-                      className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                      className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                     >
                       <Gift className="w-4 h-4 mr-2" />
                       Кейсы
@@ -327,7 +378,7 @@ const Profile = () => {
                 <div className="space-y-4">
                   <Button
                     variant="outline"
-                    className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                    className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                   >
                     <History className="w-4 h-4 mr-2" />
                     История транзакций
@@ -335,7 +386,7 @@ const Profile = () => {
                   
                   <Button
                     variant="outline"
-                    className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                    className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                   >
                     <Shield className="w-4 h-4 mr-2" />
                     Безопасность
@@ -343,7 +394,7 @@ const Profile = () => {
                   
                   <Button
                     variant="outline"
-                    className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                    className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                   >
                     <User className="w-4 h-4 mr-2" />
                     Редактировать профиль
@@ -360,7 +411,7 @@ const Profile = () => {
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="px-8 py-3 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-all duration-300"
+              className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-red-500/40 text-red-300 hover:bg-red-500/20 hover:border-red-400 hover:text-red-200 transition-all duration-300 shadow-lg shadow-red-500/20 rounded-xl"
             >
               <LogOut className="w-5 h-5 mr-2" />
               Выйти из аккаунта
@@ -369,7 +420,7 @@ const Profile = () => {
             <Button
               onClick={() => navigate('/')}
               variant="outline"
-              className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+              className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Вернуться на главную
