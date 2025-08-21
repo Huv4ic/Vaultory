@@ -33,7 +33,7 @@ const ProductCard = ({
 
   return (
     <div 
-      className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-amber-500/20 hover:border-amber-500/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 group overflow-hidden h-full flex flex-col justify-between"
+      className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-amber-500/20 hover:border-amber-500/40 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 group overflow-hidden h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -66,20 +66,20 @@ const ProductCard = ({
       </div>
 
       {/* Контент */}
-      <div className="p-4 flex flex-col flex-1">
+      <div className="p-4 flex flex-col flex-1 min-h-0">
         {/* Название */}
-        <h3 className="text-white font-semibold mb-2 line-clamp-2 group-hover:text-amber-300 transition-colors duration-300">
+        <h3 className="text-white font-semibold mb-3 line-clamp-2 group-hover:text-amber-300 transition-colors duration-300 text-sm leading-tight">
           {name}
         </h3>
 
         {/* Цена */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-amber-400">
+            <span className="text-xl font-bold text-amber-400">
               {price}₴
             </span>
             {originalPrice && originalPrice > price && (
-              <span className="text-gray-400 line-through text-sm">
+              <span className="text-gray-400 line-through text-xs">
                 {originalPrice}₴
               </span>
             )}
@@ -87,32 +87,32 @@ const ProductCard = ({
           
           {/* Продажи */}
           {sales && (
-            <span className="text-gray-400 text-sm">
+            <span className="text-gray-400 text-xs">
               {sales} продаж
             </span>
           )}
         </div>
       </div>
 
-      {/* Кнопки - прижимаем к низу */}
-      <div className="p-4 pt-0">
-        <div className="grid grid-cols-2 gap-2 w-full">
+      {/* Кнопки - размещаем вертикально */}
+      <div className="p-4 pt-0 mt-auto">
+        <div className="flex flex-col space-y-2 w-full">
           <Button
             onClick={onDetails}
             variant="outline"
             size="sm"
-            className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 hover:scale-105 h-10"
+            className="w-full border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 hover:scale-105 h-10 text-sm font-medium"
           >
-            <Eye className="w-4 h-4 mr-1" />
+            <Eye className="w-4 h-4 mr-2" />
             Подробнее
           </Button>
           
           <Button
             onClick={onAddToCart}
             size="sm"
-            className="w-full bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105 h-10"
+            className="w-full bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105 h-10 text-sm font-medium"
           >
-            <ShoppingCart className="w-4 h-4 mr-1" />
+            <ShoppingCart className="w-4 h-4 mr-2" />
             {isInCart ? 'В корзине' : 'В корзину'}
           </Button>
         </div>
