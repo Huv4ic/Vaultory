@@ -117,9 +117,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <section className="relative py-24 px-4 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white overflow-hidden animate-fade-in">
+      <section className="relative py-24 px-4 bg-gradient-to-br from-blue-600 via-cyan-500 to-blue-800 text-white overflow-hidden animate-fade-in">
         <div className="container mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent animate-fade-in">
             {t('Vaultory — магазин игровых кейсов и товаров')}
           </h1>
           <p className="text-2xl mb-8 max-w-2xl mx-auto animate-slide-up">
@@ -127,7 +127,7 @@ const Index = () => {
           </p>
           <a
             href="/cases"
-            className="inline-block bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-xl px-10 py-4 rounded-lg shadow-lg transition-all duration-200 mb-4"
+            className="inline-block bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold text-xl px-10 py-4 rounded-lg shadow-lg transition-all duration-200 mb-4"
           >
             {t('Открыть кейсы')}
           </a>
@@ -145,16 +145,16 @@ const Index = () => {
       </section>
 
       {/* Категории игр с новым фоном и анимацией */}
-      <section className="py-16 px-4 relative overflow-hidden bg-gradient-to-br from-purple-900/30 via-gray-900 to-blue-900/30">
+      <section className="py-16 px-4 relative overflow-hidden bg-gradient-to-br from-blue-900/40 via-gray-900 to-cyan-900/40">
         {/* Анимированный фон */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-64 h-64 bg-red-500/5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-red-500/5 rounded-full animate-spin" style={{animationDuration: '30s'}}></div>
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-blue-500/10 rounded-full animate-spin" style={{animationDuration: '30s'}}></div>
         </div>
         
         <div className="container mx-auto relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-red-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent animate-fade-in">
             {t('Популярные игры')}
           </h2>
           
@@ -163,7 +163,7 @@ const Index = () => {
               onClick={() => setSelectedCategory('all')}
               className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
                 selectedCategory === 'all'
-                  ? 'bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-lg shadow-red-500/25'
+                  ? 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg shadow-blue-500/25'
                   : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-700/50'
               }`}
             >
@@ -175,7 +175,7 @@ const Index = () => {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 ${
                   selectedCategory === category.id
-                    ? 'bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-lg shadow-red-500/25'
+                    ? 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg shadow-blue-500/25'
                     : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-700/50'
                 }`}
               >
@@ -210,7 +210,7 @@ const Index = () => {
               <Button
                 onClick={loadMore}
                 size="lg"
-                className="bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 border-none px-8 py-6 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-red-500/25"
+                className="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 border-none px-8 py-6 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-500/25"
               >
                 {t('Показать еще товары')}
               </Button>
@@ -221,9 +221,9 @@ const Index = () => {
 
       {/* FAQ с новым дизайном */}
       <section className="py-16 px-4 bg-gradient-to-r from-gray-800/50 to-gray-900/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/10 via-transparent to-red-900/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-cyan-900/20"></div>
         <div className="container mx-auto max-w-4xl relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-red-200 to-purple-200 bg-clip-text text-transparent animate-fade-in">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent animate-fade-in">
             {t('Частые вопросы')}
           </h2>
           
@@ -235,9 +235,9 @@ const Index = () => {
                 className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 px-6 animate-fade-in"
                 style={{animationDelay: `${index * 0.1}s`}}
               >
-                <AccordionTrigger className="text-lg font-semibold text-white hover:text-red-400 transition-colors py-6 hover:no-underline">
+                <AccordionTrigger className="text-lg font-semibold text-white hover:text-blue-400 transition-colors py-6 hover:no-underline">
                   <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-red-500 mr-3" />
+                    <CheckCircle className="w-5 h-5 text-blue-500 mr-3" />
                     {item.question}
                   </div>
                 </AccordionTrigger>
