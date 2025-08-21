@@ -20,21 +20,21 @@ const BlockedUserModal: React.FC<BlockedUserModalProps> = ({ isVisible, reason }
       <div className="absolute inset-0 bg-gradient-to-br from-red-900/20 via-black/50 to-red-900/20 animate-pulse"></div>
       
       {/* Основное окно */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto">
-        <div className="bg-black/90 backdrop-blur-xl border-2 border-red-500/50 rounded-3xl shadow-2xl shadow-red-500/30 p-8 text-center">
+      <div className="relative z-10 w-full max-w-lg mx-auto">
+        <div className="bg-black/90 backdrop-blur-xl border-2 border-red-500/50 rounded-2xl shadow-2xl shadow-red-500/30 p-6 text-center">
           
           {/* Иконка блокировки */}
-          <div className="mx-auto w-24 h-24 bg-red-500/20 rounded-full flex items-center justify-center mb-6 border-2 border-red-500/50">
-            <Shield className="w-12 h-12 text-red-400" />
+          <div className="mx-auto w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mb-4 border-2 border-red-500/50">
+            <Shield className="w-10 h-10 text-red-400" />
           </div>
           
           {/* Заголовок */}
-          <h1 className="text-4xl md:text-5xl font-bold text-red-400 mb-4 animate-pulse">
+          <h1 className="text-3xl font-bold text-red-400 mb-3 animate-pulse">
             🚫 АККАУНТ ЗАБЛОКИРОВАН
           </h1>
           
           {/* Описание */}
-          <p className="text-xl text-gray-300 mb-6 leading-relaxed">
+          <p className="text-lg text-gray-300 mb-4 leading-relaxed">
             Ваш аккаунт был заблокирован администрацией сайта.
             {reason && (
               <span className="block mt-2 text-red-300 font-medium">
@@ -44,12 +44,12 @@ const BlockedUserModal: React.FC<BlockedUserModalProps> = ({ isVisible, reason }
           </p>
           
           {/* Дополнительная информация */}
-          <div className="bg-red-900/20 rounded-2xl p-6 mb-8 border border-red-500/30">
-            <div className="flex items-center justify-center space-x-3 mb-4">
-              <AlertTriangle className="w-6 h-6 text-red-400" />
-              <span className="text-red-300 font-semibold">Что это означает?</span>
+          <div className="bg-red-900/20 rounded-xl p-4 mb-6 border border-red-500/30">
+            <div className="flex items-center justify-center space-x-2 mb-3">
+              <AlertTriangle className="w-5 h-5 text-red-400" />
+              <span className="text-red-300 font-semibold text-sm">Что это означает?</span>
             </div>
-            <ul className="text-gray-300 text-left space-y-2 max-w-md mx-auto">
+            <ul className="text-gray-300 text-left space-y-1 text-sm max-w-sm mx-auto">
               <li className="flex items-start space-x-2">
                 <span className="text-red-400">•</span>
                 <span>Вы не можете использовать функции сайта</span>
@@ -66,22 +66,22 @@ const BlockedUserModal: React.FC<BlockedUserModalProps> = ({ isVisible, reason }
           </div>
           
           {/* Кнопка связи с поддержкой */}
-          <div className="space-y-4">
-            <p className="text-lg text-gray-300">
+          <div className="space-y-3">
+            <p className="text-base text-gray-300">
               Для разблокировки аккаунта свяжитесь с поддержкой:
             </p>
             <Button
               onClick={handleTelegramClick}
-              className="w-full max-w-md mx-auto py-4 px-8 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-blue-500/30 border-2 border-blue-400/50"
+              className="w-full py-3 px-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-base rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 border border-blue-400/50"
             >
-              <MessageCircle className="w-6 h-6 mr-3" />
+              <MessageCircle className="w-5 h-5 mr-2" />
               Написать в Telegram
             </Button>
           </div>
           
           {/* Предупреждение */}
-          <div className="mt-8 p-4 bg-red-900/30 rounded-xl border border-red-500/30">
-            <p className="text-red-300 text-sm">
+          <div className="mt-6 p-3 bg-red-900/30 rounded-lg border border-red-500/30">
+            <p className="text-red-300 text-xs">
               ⚠️ Это окно нельзя закрыть до разблокировки аккаунта администрацией
             </p>
           </div>
@@ -89,9 +89,9 @@ const BlockedUserModal: React.FC<BlockedUserModalProps> = ({ isVisible, reason }
       </div>
       
       {/* Дополнительные анимированные элементы */}
-      <div className="absolute top-10 left-10 w-16 h-16 bg-red-500/20 rounded-full animate-bounce"></div>
-      <div className="absolute bottom-20 right-16 w-12 h-12 bg-red-400/20 rounded-full animate-pulse"></div>
-      <div className="absolute top-1/2 left-20 w-8 h-8 bg-red-500/30 rounded-full animate-spin"></div>
+      <div className="absolute top-10 left-10 w-12 h-12 bg-red-500/20 rounded-full animate-bounce"></div>
+      <div className="absolute bottom-20 right-16 w-8 h-8 bg-red-400/20 rounded-full animate-pulse"></div>
+      <div className="absolute top-1/2 left-20 w-6 h-6 bg-red-500/30 rounded-full animate-spin"></div>
     </div>
   );
 };
