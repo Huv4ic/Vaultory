@@ -49,7 +49,10 @@ export const useFavorites = () => {
 
   // Добавляем товар в избранное
   const addToFavorites = async (productId: string) => {
-    if (!user) return false;
+    if (!user) {
+      console.log('No user found, cannot add to favorites');
+      return false;
+    }
     
     try {
       setLoading(true);
@@ -80,22 +83,31 @@ export const useFavorites = () => {
 
   // Удаляем товар из избранного
   const removeFromFavorites = async (productId: string) => {
-    if (!user) return false;
+    if (!user) {
+      console.log('No user found, cannot remove from favorites');
+      return false;
+    }
     
     try {
       setLoading(true);
+      console.log('Removing from favorites:', { userId: user.id, productId });
+      
       const { error } = await (supabase as any)
         .from('user_favorites')
         .delete()
         .eq('user_id', user.id)
         .eq('product_id', productId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error removing from favorites:', error);
+        throw error;
+      }
       
+      console.log('Successfully removed from favorites');
       setFavorites(prev => prev.filter(id => id !== productId));
       return true;
     } catch (error) {
-      console.error('Error removing from favorites:', error);
+      console.error('Error in removeFromFavorites:', error);
       return false;
     } finally {
       setLoading(false);
@@ -104,16 +116,21 @@ export const useFavorites = () => {
 
   // Переключаем состояние избранного
   const toggleFavorite = async (productId: string) => {
+    console.log('toggleFavorite called with productId:', productId, 'Current favorites:', favorites);
     if (favorites.includes(productId)) {
+      console.log('Removing from favorites...');
       return await removeFromFavorites(productId);
     } else {
+      console.log('Adding to favorites...');
       return await addToFavorites(productId);
     }
   };
 
   // Проверяем, находится ли товар в избранном
   const isFavorite = (productId: string) => {
-    return favorites.includes(productId);
+    const result = favorites.includes(productId);
+    console.log('isFavorite check:', { productId, result, favorites });
+    return result;
   };
 
   // Загружаем избранные при изменении пользователя

@@ -100,11 +100,12 @@ const ProductCard = ({
             <span className="text-xl font-bold text-amber-400">
               {price}₴
             </span>
-            {discount_price && discount_price > price && (
-              <span className="text-gray-400 line-through text-xs">
-                {discount_price}₴
-              </span>
-            )}
+            <span className="text-gray-400 line-through text-xs">
+              800₴
+            </span>
+            <span className="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-lg border border-amber-500/30">
+              150 продаж
+            </span>
           </div>
         </div>
       </div>
