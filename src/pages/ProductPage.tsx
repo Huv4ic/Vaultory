@@ -149,24 +149,7 @@ const ProductPage = () => {
                 )}
               </div>
               
-              {/* Миниатюры */}
-              <div className="grid grid-cols-1 gap-2">
-                {product.image_url && (
-                  <div
-                    className="cursor-pointer rounded-lg overflow-hidden border-2 border-amber-400"
-                  >
-                    <img
-                      src={product.image_url}
-                      alt={`${product.name} миниатюра`}
-                      className="w-full h-20 object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = '/placeholder.svg';
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
+              {/* Убираем миниатюры - оставляем только основную фотографию */}
             </div>
           </div>
 
@@ -211,7 +194,7 @@ const ProductPage = () => {
                 
                 <Button
                   variant="outline"
-                  className="px-6 py-4 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+                  className="px-6 py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                 >
                   <Heart className="w-5 h-5 mr-2" />
                   В избранное
@@ -219,7 +202,7 @@ const ProductPage = () => {
                 
                 <Button
                   variant="outline"
-                  className="px-6 py-4 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+                  className="px-6 py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                 >
                   <Share2 className="w-5 h-5 mr-2" />
                   Поделиться
@@ -327,7 +310,7 @@ const ProductPage = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500"
+                      className="bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg"
                       onClick={(e) => {
                         e.stopPropagation();
                         addItem({

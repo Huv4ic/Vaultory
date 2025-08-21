@@ -179,7 +179,7 @@ const Cart = () => {
                         size="sm"
                         variant="outline"
                         onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                        className="w-8 h-8 p-0 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                        className="w-8 h-8 p-0 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 rounded-lg"
                       >
                         -
                       </Button>
@@ -190,7 +190,7 @@ const Cart = () => {
                         size="sm"
                         variant="outline"
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-8 h-8 p-0 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                        className="w-8 h-8 p-0 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 rounded-lg"
                       >
                         +
                       </Button>
@@ -200,7 +200,7 @@ const Cart = () => {
                       size="sm"
                       variant="outline"
                       onClick={() => handleRemoveItem(item.id)}
-                      className="border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500"
+                      className="bg-black/60 backdrop-blur-sm border border-red-500/40 text-red-300 hover:bg-red-500/20 hover:border-red-400 hover:text-red-200 transition-all duration-300 rounded-lg"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -214,7 +214,7 @@ const Cart = () => {
               <Button
                 onClick={handleClearCart}
                 variant="outline"
-                className="border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500 transition-all duration-300"
+                className="px-6 py-3 bg-black/60 backdrop-blur-sm border border-red-500/40 text-red-300 hover:bg-red-500/20 hover:border-red-400 hover:text-red-200 transition-all duration-300 shadow-lg shadow-red-500/20 rounded-xl"
               >
                 <Trash2 className="w-5 h-5 mr-2" />
                 Очистить корзину
@@ -223,7 +223,7 @@ const Cart = () => {
               <Button
                 onClick={() => navigate('/catalog')}
                 variant="outline"
-                className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+                className="px-6 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
               >
                 <ShoppingBag className="w-5 h-5 mr-2" />
                 Продолжить покупки
@@ -340,7 +340,7 @@ const Cart = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+            className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную
