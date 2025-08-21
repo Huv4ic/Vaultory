@@ -175,80 +175,80 @@ const Profile = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
+        <div className="relative z-10 container mx-auto px-4 py-12 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
             👤 {t('Профиль')}
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
             Добро пожаловать в ваш личный кабинет! Здесь вы можете управлять аккаунтом, 
             просматривать статистику и совершать покупки.
           </p>
         </div>
         
         {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
+        <div className="absolute top-20 left-10 w-16 h-16 bg-amber-400/10 rounded-full animate-bounce"></div>
+        <div className="absolute top-32 right-20 w-12 h-12 bg-amber-500/10 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-8 h-8 bg-amber-400/10 rounded-full animate-spin"></div>
       </div>
 
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-20">
         {/* Основная информация профиля */}
-        <div className="mb-12">
+        <div className="mb-8">
           <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <CardContent className="p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Аватар и основная информация */}
                 <div className="text-center lg:text-left">
-                  <div className="mx-auto lg:mx-0 w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-6 shadow-2xl shadow-amber-500/30">
-                    <User className="w-12 h-12 text-white" />
+                  <div className="mx-auto lg:mx-0 w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-4 shadow-2xl shadow-amber-500/30">
+                    <User className="w-10 h-10 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-white mb-2">
+                  <h2 className="text-xl font-bold text-white mb-2">
                     {profile?.username || telegramUser.first_name}
                   </h2>
-                  <p className="text-gray-300 mb-4">@{telegramUser.username || 'user'}</p>
+                  <p className="text-gray-300 mb-3 text-sm">@{telegramUser.username || 'user'}</p>
                   
                   {/* Роль пользователя */}
                   {profile?.role === 'admin' && (
-                    <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 mb-4">
-                      <Crown className="w-4 h-4 mr-2" />
+                    <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 mb-3 text-xs">
+                      <Crown className="w-3 h-3 mr-1" />
                       Администратор
                     </Badge>
                   )}
                   
                   {/* Статус */}
-                  <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30">
-                    <Shield className="w-4 h-4 mr-2" />
+                  <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
+                    <Shield className="w-3 h-3 mr-1" />
                     Активен
                   </Badge>
                 </div>
 
                 {/* Баланс */}
                 <div className="text-center lg:text-left">
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center justify-center lg:justify-start">
-                    <Wallet className="w-6 h-6 mr-2 text-amber-400" />
+                  <h3 className="text-lg font-bold text-white mb-3 flex items-center justify-center lg:justify-start">
+                    <Wallet className="w-5 h-5 mr-2 text-amber-400" />
                     Баланс
                   </h3>
-                  <div className="text-3xl font-bold text-amber-400 mb-4">
+                  <div className="text-2xl font-bold text-amber-400 mb-3">
                     {balance || 0}₴
                   </div>
                   <Button
                     onClick={handleTopUp}
-                    className="w-full lg:w-auto px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+                    className="w-full lg:w-auto px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm"
                   >
-                    <CreditCard className="w-5 h-5 mr-2" />
+                    <CreditCard className="w-4 h-4 mr-2" />
                     пополнить
                   </Button>
                 </div>
 
                 {/* Быстрые действия */}
                 <div className="text-center lg:text-left">
-                  <h3 className="text-xl font-bold text-white mb-4">Быстрые действия</h3>
-                  <div className="space-y-3">
+                  <h3 className="text-lg font-bold text-white mb-3">Быстрые действия</h3>
+                  <div className="space-y-2">
                     <Button
                       onClick={() => navigate('/catalog')}
                       variant="outline"
-                      className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
+                      className="w-full py-2 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg text-sm"
                     >
                       <ShoppingBag className="w-4 h-4 mr-2" />
                       Каталог
@@ -256,7 +256,7 @@ const Profile = () => {
                     <Button
                       onClick={() => navigate('/cases')}
                       variant="outline"
-                      className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
+                      className="w-full py-2 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg text-sm"
                     >
                       <Gift className="w-4 h-4 mr-2" />
                       Кейсы
@@ -269,48 +269,48 @@ const Profile = () => {
         </div>
 
         {/* Статистика */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-white text-center mb-8">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white text-center mb-6">
             Ваша статистика
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-6 text-center">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-                  <ShoppingBag className="w-8 h-8 text-amber-400" />
+              <CardContent className="p-4 text-center">
+                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 border border-amber-500/30">
+                  <ShoppingBag className="w-6 h-6 text-amber-400" />
                 </div>
-                <h3 className="text-white font-semibold mb-2">Покупки</h3>
-                <p className="text-2xl font-bold text-amber-400">{stats.totalPurchases}</p>
+                <h3 className="text-white font-semibold mb-1 text-sm">Покупки</h3>
+                <p className="text-xl font-bold text-amber-400">{stats.totalPurchases}</p>
               </CardContent>
             </Card>
 
             <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-6 text-center">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-                  <TrendingUp className="w-8 h-8 text-amber-400" />
+              <CardContent className="p-4 text-center">
+                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 border border-amber-500/30">
+                  <TrendingUp className="w-6 h-6 text-amber-400" />
                 </div>
-                <h3 className="text-white font-semibold mb-2">Потрачено</h3>
-                <p className="text-2xl font-bold text-amber-400">{stats.totalSpent}₴</p>
+                <h3 className="text-white font-semibold mb-1 text-sm">Потрачено</h3>
+                <p className="text-xl font-bold text-amber-400">{stats.totalSpent}₴</p>
               </CardContent>
             </Card>
 
             <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-6 text-center">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-                  <Gift className="w-8 h-8 text-amber-400" />
+              <CardContent className="p-4 text-center">
+                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 border border-amber-500/30">
+                  <Gift className="w-6 h-6 text-amber-400" />
                 </div>
-                <h3 className="text-white font-semibold mb-2">Кейсы открыто</h3>
-                <p className="text-2xl font-bold text-amber-400">{stats.casesOpened}</p>
+                <h3 className="text-white font-semibold mb-1 text-sm">Кейсы открыто</h3>
+                <p className="text-xl font-bold text-amber-400">{stats.casesOpened}</p>
               </CardContent>
             </Card>
 
             <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-6 text-center">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-                  <Star className="w-8 h-8 text-amber-400" />
+              <CardContent className="p-4 text-center">
+                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 border border-amber-500/30">
+                  <Star className="w-6 h-6 text-amber-400" />
                 </div>
-                <h3 className="text-white font-semibold mb-2">Предметы продано</h3>
-                <p className="text-2xl font-bold text-amber-400">{stats.itemsSold}</p>
+                <h3 className="text-white font-semibold mb-1 text-sm">Предметы продано</h3>
+                <p className="text-xl font-bold text-amber-400">{stats.itemsSold}</p>
               </CardContent>
             </Card>
           </div>
