@@ -1,145 +1,347 @@
-import { Shield, Zap, Users, Trophy, Clock, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { 
+  ArrowLeft, 
+  Users, 
+  Target, 
+  Award, 
+  Shield, 
+  Zap, 
+  Globe, 
+  Heart,
+  Star,
+  TrendingUp,
+  CheckCircle,
+  Lightbulb
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const About = () => {
   const { t } = useLanguage();
-  const { telegramUser } = useAuth();
-  
-  // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре страницы "О нас"
-  // useEffect(() => {
-  //   if (telegramUser) {
-  //     refreshTelegramProfile();
-  //   }
-  // }, [telegramUser, refreshTelegramProfile]);
-  
+  const navigate = useNavigate();
+
   const features = [
     {
-      icon: Shield,
-      title: t('Безопасность'),
-      description: t('Все транзакции защищены, гарантия возврата средств')
+      icon: <Shield className="w-8 h-8 text-emerald-400" />,
+      title: "Безопасность",
+      description: "Все транзакции защищены современными технологиями шифрования"
     },
     {
-      icon: Zap,
-      title: t('Скорость'),
-      description: t('Мгновенная доставка большинства товаров')
+      icon: <Zap className="w-8 h-8 text-amber-400" />,
+      title: "Скорость",
+      description: "Мгновенная обработка заказов и быстрая доставка"
     },
     {
-      icon: Users,
-      title: t('Поддержка'),
-      description: t('24/7 техническая поддержка в Telegram')
+      icon: <Users className="w-8 h-8 text-purple-400" />,
+      title: "Поддержка",
+      description: "24/7 поддержка клиентов через Telegram и Email"
     },
     {
-      icon: Trophy,
-      title: t('Качество'),
-      description: t('Только официальные и проверенные товары')
+      icon: <Award className="w-8 h-8 text-cyan-400" />,
+      title: "Качество",
+      description: "Только проверенные товары от надежных поставщиков"
     }
   ];
 
   const stats = [
-    { number: '50,000+', label: t('Довольных клиентов') },
-    { number: '1,000,000+', label: t('Проданных товаров') },
-    { number: '99.8%', label: t('Положительных отзывов') },
-    { number: '2', label: t('Года на рынке') }
+    { number: "1000+", label: "Довольных клиентов", icon: <Heart className="w-6 h-6 text-red-400" /> },
+    { number: "50+", label: "Успешных сделок", icon: <CheckCircle className="w-6 h-6 text-green-400" /> },
+    { number: "24/7", label: "Поддержка", icon: <Star className="w-6 h-6 text-yellow-400" /> },
+    { number: "99%", label: "Положительных отзывов", icon: <TrendingUp className="w-6 h-6 text-blue-400" /> }
   ];
 
-  const advantages = [
-    t('Лучшие цены на рынке'),
-    t('Мгновенная доставка'),
-    t('Поддержка всех популярных игр'),
-    t('Безопасные платежи'),
-    t('Круглосуточная поддержка'),
-    t('Гарантия качества товаров')
+  const team = [
+    {
+      name: "Команда разработчиков",
+      role: "Техническая поддержка",
+      description: "Обеспечивает стабильную работу платформы"
+    },
+    {
+      name: "Служба поддержки",
+      role: "Клиентский сервис",
+      description: "Помогает решать любые вопросы клиентов"
+    },
+    {
+      name: "Отдел безопасности",
+      role: "Защита данных",
+      description: "Гарантирует безопасность всех операций"
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Hero секция */}
-      <section className="relative py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+    <div className="min-h-screen bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
+        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 via-emerald-400 to-purple-500 bg-clip-text text-transparent animate-pulse">
+            🏢 {t('О нас')}
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Vaultory - ваш надежный партнер в мире игровых товаров и кейсов. 
+            Мы создаем безопасную и удобную платформу для всех игроков.
+          </p>
         </div>
         
-        <div className="container mx-auto relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-red-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
-              {t('О компании Vaultory')}
-            </h1>
-            <p className="text-xl text-gray-300 mb-8 leading-relaxed animate-slide-up">
-              {t('Мы — ведущая платформа для покупки игровых товаров в СНГ. Наша миссия — сделать гейминг доступнее и интереснее для каждого игрока.')}
-            </p>
-          </div>
-        </div>
-      </section>
+        {/* Анимированные элементы фона */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/20 rounded-full animate-bounce"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-emerald-400/20 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-purple-400/20 rounded-full animate-spin"></div>
+      </div>
 
-      {/* Статистика */}
-      <section className="py-16 px-4 bg-gradient-to-r from-gray-800/50 to-gray-900/50">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-red-500 mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-gray-300">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Основной контент */}
+      <div className="relative z-20 container mx-auto px-4 pb-20">
+        {/* Миссия и видение */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+          <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Target className="w-6 h-6 mr-3 text-amber-400" />
+                Наша миссия
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-white/90 leading-relaxed">
+                Создать самую надежную и удобную платформу для покупки игровых товаров. 
+                Мы стремимся сделать процесс покупки максимально простым и безопасным 
+                для каждого клиента.
+              </p>
+            </CardContent>
+          </Card>
 
-      {/* Наши преимущества */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            {t('Почему выбирают нас')}
+          <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Lightbulb className="w-6 h-6 mr-3 text-emerald-400" />
+                Наше видение
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-white/90 leading-relaxed">
+                Стать лидером в сфере игровых товаров, предлагая инновационные решения 
+                и исключительный уровень обслуживания. Мы постоянно развиваемся, 
+                чтобы соответствовать растущим потребностям игрового сообщества.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Особенности */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Почему выбирают нас
           </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <div key={index} className="text-center p-6 bg-gray-800/30 backdrop-blur-sm rounded-xl border border-gray-700/50">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-red-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <feature.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3 text-white">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
-              </div>
+              <Card 
+                key={index}
+                className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105"
+              >
+                <CardHeader className="text-center">
+                  <div className="mx-auto w-16 h-16 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 border border-amber-500/20">
+                    {feature.icon}
+                  </div>
+                  <CardTitle className="text-white text-lg">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80 text-center text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-2xl font-bold mb-6 text-white">Наши преимущества</h3>
-              <div className="space-y-4">
-                {advantages.map((advantage, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-                    <span className="text-gray-300">{advantage}</span>
+        {/* Статистика */}
+        <div className="mb-16">
+          <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardHeader className="text-center">
+              <CardTitle className="text-white text-2xl">Наши достижения</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {stats.map((stat, index) => (
+                  <div key={index} className="text-center">
+                    <div className="flex items-center justify-center mb-3">
+                      {stat.icon}
+                    </div>
+                    <div className="text-3xl font-bold text-amber-400 mb-2">{stat.number}</div>
+                    <div className="text-white/80 text-sm">{stat.label}</div>
                   </div>
                 ))}
               </div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-8 rounded-xl border border-gray-700/50">
-              <h3 className="text-2xl font-bold mb-4 text-white">Наша история</h3>
-              <p className="text-gray-300 mb-4">
-                Vaultory была основана в 2023 году командой энтузиастов гейминга. 
-                Мы заметили, что игроки тратят слишком много времени на поиск надежных 
-                продавцов игровых товаров.
-              </p>
-              <p className="text-gray-300 mb-4">
-                Наша цель — создать единую платформу, где каждый геймер может быстро 
-                и безопасно приобрести все необходимое для своих любимых игр.
-              </p>
-              <p className="text-gray-300">
-                Сегодня нам доверяют тысячи игроков по всей стране, и мы продолжаем 
-                развиваться, добавляя новые игры и улучшая сервис.
-              </p>
-            </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Команда */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Наша команда
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {team.map((member, index) => (
+              <Card 
+                key={index}
+                className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300"
+              >
+                <CardHeader className="text-center">
+                  <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-400 to-emerald-600 rounded-full flex items-center justify-center mb-4">
+                    <Users className="w-10 h-10 text-white" />
+                  </div>
+                  <CardTitle className="text-white">{member.name}</CardTitle>
+                  <CardDescription className="text-amber-300">{member.role}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80 text-center leading-relaxed">
+                    {member.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
-      </section>
+
+        {/* История */}
+        <div className="mb-16">
+          <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Globe className="w-6 h-6 mr-3 text-amber-400" />
+                История развития
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-2">2025 - Основание</h4>
+                    <p className="text-white/80">
+                      Создание платформы Vaultory с базовым функционалом для покупки игровых товаров
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-emerald-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-2">2025 - Развитие</h4>
+                    <p className="text-white/80">
+                      Добавление системы кейсов, расширение ассортимента и улучшение безопасности
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-purple-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="text-white font-semibold mb-2">2025 - Инновации</h4>
+                    <p className="text-white/80">
+                      Внедрение новых технологий, улучшение пользовательского опыта и расширение команды
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Ценности */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Наши ценности
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <Shield className="w-5 h-5 mr-2 text-emerald-400" />
+                  Надежность
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80">
+                  Мы гарантируем безопасность каждой транзакции и защиту данных наших клиентов
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <Heart className="w-5 h-5 mr-2 text-red-400" />
+                  Клиентоориентированность
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80">
+                  Потребности клиентов всегда на первом месте. Мы стремимся превзойти ожидания
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <Zap className="w-5 h-5 mr-2 text-amber-400" />
+                  Инновации
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80">
+                  Постоянно внедряем новые технологии для улучшения пользовательского опыта
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Призыв к действию */}
+        <div className="text-center">
+          <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardContent className="pt-8">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Готовы присоединиться к нам?
+              </h3>
+              <p className="text-white/80 mb-6 max-w-2xl mx-auto">
+                Начните свой путь с Vaultory уже сегодня. Откройте для себя мир качественных 
+                игровых товаров и незабываемых впечатлений.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  onClick={() => navigate('/catalog')}
+                  className="px-8 py-3 bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+                >
+                  Перейти в каталог
+                </Button>
+                <Button
+                  onClick={() => navigate('/support')}
+                  variant="outline"
+                  className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+                >
+                  Связаться с нами
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Кнопка назад */}
+        <div className="text-center mt-12">
+          <Button
+            onClick={() => navigate('/')}
+            variant="outline"
+            className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Вернуться на главную
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

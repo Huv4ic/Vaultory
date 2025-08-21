@@ -1,229 +1,387 @@
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Shield, Lock, Eye, Database, UserCheck, AlertTriangle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useAuth } from '@/hooks/useAuth';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { 
+  ArrowLeft, 
+  Shield, 
+  Lock, 
+  Eye, 
+  Database, 
+  UserCheck, 
+  AlertTriangle, 
+  CheckCircle, 
+  XCircle,
+  Info,
+  Clock,
+  Mail,
+  Phone,
+  Globe,
+  Key,
+  FileText
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Privacy = () => {
   const { t } = useLanguage();
-  const { telegramUser, refreshTelegramProfile } = useAuth();
-  
-  // Автоматически обновляем профиль при загрузке страницы
-  useEffect(() => {
-    if (telegramUser) {
-      refreshTelegramProfile();
-    }
-  }, [telegramUser, refreshTelegramProfile]);
-  
+  const navigate = useNavigate();
+
   const privacySections = [
     {
-      title: t('Общие положения'),
-      icon: Shield,
+      title: "Сбор информации",
+      icon: <Database className="w-6 h-6 text-amber-400" />,
       content: [
-        t('Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей сервиса Vaultory. Мы серьезно относимся к защите ваших данных и соблюдаем все требования законодательства о персональных данных.'),
-        t('Используя наш сервис, вы соглашаетесь с условиями данной политики и даете согласие на обработку своих персональных данных в соответствии с описанными принципами.'),
-      ],
+        "Мы собираем только необходимую информацию для предоставления услуг.",
+        "Основные данные: имя пользователя, Telegram ID, история покупок.",
+        "Дополнительная информация запрашивается только при необходимости."
+      ]
     },
     {
-      title: t('Сбор и использование данных'),
-      icon: Database,
+      title: "Использование данных",
+      icon: <UserCheck className="w-6 h-6 text-emerald-400" />,
       content: [
-        {
-          subTitle: t('Какие данные мы собираем:'),
-          list: [
-            t('Данные Telegram аккаунта (username, user ID)'),
-            t('Информация о покупках и транзакциях'),
-            t('Данные об использовании сервиса'),
-            t('IP-адрес и информация о браузере'),
-          ],
-        },
-        {
-          subTitle: t('Как мы используем данные:'),
-          list: [
-            t('Обеспечение работы сервиса'),
-            t('Обработка платежей и заказов'),
-            t('Предоставление поддержки пользователям'),
-            t('Улучшение качества сервиса'),
-          ],
-        },
-      ],
+        "Данные используются исключительно для предоставления услуг.",
+        "Мы не передаем информацию третьим лицам без согласия.",
+        "Аналитика используется только для улучшения сервиса."
+      ]
     },
     {
-      title: t('Защита данных'),
-      icon: Lock,
+      title: "Защита данных",
+      icon: <Lock className="w-6 h-6 text-purple-400" />,
       content: [
-        t('Мы применяем современные технические и организационные меры для защиты ваших персональных данных от несанкционированного доступа, изменения, раскрытия или уничтожения.'),
-        {
-          subTitle: t('Меры безопасности:'),
-          list: [
-            t('Шифрование данных при передаче (SSL/TLS)'),
-            t('Безопасное хранение данных'),
-            t('Ограниченный доступ к данным'),
-            t('Регулярные проверки безопасности'),
-          ],
-        },
-      ],
+        "Все данные защищены современными технологиями шифрования.",
+        "Доступ к серверам ограничен и контролируется.",
+        "Регулярные проверки безопасности и обновления защиты."
+      ]
     },
     {
-      title: t('Ваши права'),
-      icon: Eye,
+      title: "Хранение данных",
+      icon: <Database className="w-6 h-6 text-cyan-400" />,
       content: [
-        t('В соответствии с законодательством о защите персональных данных, вы имеете следующие права:'),
-        {
-          subTitle: t('Право на доступ к своим персональным данным'),
-          list: [
-            t('Право на доступ к своим персональным данным'),
-            t('Право на исправление неточных данных'),
-            t('Право на удаление данных'),
-            t('Право на ограничение обработки'),
-            t('Право на отзыв согласия'),
-          ],
-        },
-      ],
+        "Данные хранятся на защищенных серверах в ЕС.",
+        "Срок хранения: до удаления аккаунта пользователем.",
+        "Резервные копии создаются регулярно для безопасности."
+      ]
     },
     {
-      title: t('Контактная информация'),
-      icon: UserCheck,
+      title: "Права пользователей",
+      icon: <Key className="w-6 h-6 text-green-400" />,
       content: [
-        t('По вопросам обработки персональных данных вы можете обратиться к нам:'),
-        {
-          subTitle: t('Email:'),
-          list: ['privacy@vaultory.com'],
-        },
-        {
-          subTitle: t('Telegram:'),
-          list: ['@VaultorySupport'],
-        },
-        {
-          subTitle: t('Адрес:'),
-          list: ['Россия, г. Москва'],
-        },
-        t('Мы рассматриваем все обращения в течение 30 дней с момента получения.'),
-      ],
+        "Право на доступ к своим данным в любое время.",
+        "Возможность исправления неточной информации.",
+        "Право на удаление аккаунта и всех связанных данных."
+      ]
     },
+    {
+      title: "Cookies и трекинг",
+      icon: <Eye className="w-6 h-6 text-blue-400" />,
+      content: [
+        "Используем только необходимые cookies для работы сайта.",
+        "Не отслеживаем пользователей между сессиями.",
+        "Аналитические данные собираются анонимно."
+      ]
+    },
+    {
+      title: "Безопасность платежей",
+      icon: <Shield className="w-6 h-6 text-red-400" />,
+      content: [
+        "Платежные данные не хранятся на наших серверах.",
+        "Все транзакции проходят через защищенные шлюзы.",
+        "Соответствие стандартам PCI DSS для безопасности."
+      ]
+    },
+    {
+      title: "Обновления политики",
+      icon: <Clock className="w-6 h-6 text-orange-400" />,
+      content: [
+        "Политика может обновляться с уведомлением пользователей.",
+        "Значительные изменения требуют явного согласия.",
+        "История изменений доступна на сайте."
+      ]
+    }
+  ];
+
+  const dataTypes = [
+    {
+      type: "personal",
+      icon: <UserCheck className="w-5 h-5 text-green-400" />,
+      title: "Персональные данные",
+      examples: ["Имя пользователя", "Telegram ID", "Email (опционально)"]
+    },
+    {
+      type: "usage",
+      icon: <Database className="w-5 h-5 text-blue-400" />,
+      title: "Данные использования",
+      examples: ["История покупок", "Предпочтения", "Время на сайте"]
+    },
+    {
+      type: "technical",
+      icon: <Globe className="w-5 h-5 text-purple-400" />,
+      title: "Технические данные",
+      examples: ["IP адрес", "Браузер", "Устройство"]
+    }
+  ];
+
+  const securityMeasures = [
+    {
+      icon: <Lock className="w-6 h-6 text-emerald-400" />,
+      title: "Шифрование",
+      description: "Все данные передаются по защищенным SSL соединениям"
+    },
+    {
+      icon: <Shield className="w-6 h-6 text-amber-400" />,
+      title: "Контроль доступа",
+      description: "Строгий контроль доступа к серверам и базе данных"
+    },
+    {
+      icon: <Database className="w-6 h-6 text-purple-400" />,
+      title: "Резервное копирование",
+      description: "Регулярное создание резервных копий данных"
+    },
+    {
+      icon: <Eye className="w-6 h-6 text-cyan-400" />,
+      title: "Мониторинг",
+      description: "Постоянный мониторинг безопасности и подозрительной активности"
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-red-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              {t('Политика конфиденциальности')}
-            </h1>
-            <p className="text-gray-400">{t('Последнее обновление')}: 01 января 2025</p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
+        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 via-emerald-400 to-purple-500 bg-clip-text text-transparent animate-pulse">
+            🔒 {t('Политика конфиденциальности')}
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Мы серьезно относимся к защите ваших персональных данных. 
+            Узнайте, как мы собираем, используем и защищаем вашу информацию.
+          </p>
+        </div>
+        
+        {/* Анимированные элементы фона */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/20 rounded-full animate-bounce"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-emerald-400/20 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-purple-400/20 rounded-full animate-spin"></div>
+      </div>
 
-          <div className="space-y-8">
-            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50">
-              <CardContent className="p-8">
-                <div className="flex items-center mb-6">
-                  <Shield className="w-8 h-8 text-red-500 mr-3" />
-                  <h2 className="text-2xl font-bold">{t('Общие положения')}</h2>
+      {/* Основной контент */}
+      <div className="relative z-20 container mx-auto px-4 pb-20">
+        {/* Краткая информация */}
+        <div className="mb-12">
+          <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardContent className="pt-8">
+              <div className="text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Shield className="w-10 h-10 text-white" />
                 </div>
-                <p className="text-gray-300 leading-relaxed mb-4">
-                  {t('Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей сервиса Vaultory. Мы серьезно относимся к защите ваших данных и соблюдаем все требования законодательства о персональных данных.')}
+                <h2 className="text-2xl font-bold text-white mb-4">
+                  Ваша конфиденциальность - наш приоритет
+                </h2>
+                <p className="text-white/80 max-w-3xl mx-auto leading-relaxed">
+                  Мы соблюдаем все требования GDPR и украинского законодательства о защите персональных данных. 
+                  Ваша информация в безопасности с нами.
                 </p>
-                <p className="text-gray-300 leading-relaxed">
-                  {t('Используя наш сервис, вы соглашаетесь с условиями данной политики и даете согласие на обработку своих персональных данных в соответствии с описанными принципами.')}
-                </p>
-              </CardContent>
-            </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50">
-              <CardContent className="p-8">
-                <div className="flex items-center mb-6">
-                  <Database className="w-8 h-8 text-red-500 mr-3" />
-                  <h2 className="text-2xl font-bold">{t('Сбор и использование данных')}</h2>
-                </div>
-                <div className="space-y-4 text-gray-300">
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">{t('Какие данные мы собираем:')}</h3>
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>{t('Данные Telegram аккаунта (username, user ID)')}</li>
-                      <li>{t('Информация о покупках и транзакциях')}</li>
-                      <li>{t('Данные об использовании сервиса')}</li>
-                      <li>{t('IP-адрес и информация о браузере')}</li>
-                    </ul>
+        {/* Типы собираемых данных */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Какие данные мы собираем
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {dataTypes.map((dataType, index) => (
+              <Card 
+                key={index}
+                className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300"
+              >
+                <CardHeader className="text-center">
+                  <div className="mx-auto w-16 h-16 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 border border-amber-500/20">
+                    {dataType.icon}
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">{t('Как мы используем данные:')}</h3>
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>{t('Обеспечение работы сервиса')}</li>
-                      <li>{t('Обработка платежей и заказов')}</li>
-                      <li>{t('Предоставление поддержки пользователям')}</li>
-                      <li>{t('Улучшение качества сервиса')}</li>
-                    </ul>
+                  <CardTitle className="text-white text-lg">{dataType.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {dataType.examples.map((example, exampleIndex) => (
+                      <div key={exampleIndex} className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                        <span className="text-white/80 text-sm">{example}</span>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50">
-              <CardContent className="p-8">
-                <div className="flex items-center mb-6">
-                  <Lock className="w-8 h-8 text-red-500 mr-3" />
-                  <h2 className="text-2xl font-bold">{t('Защита данных')}</h2>
-                </div>
-                <div className="space-y-4 text-gray-300">
-                  <p className="leading-relaxed">
-                    {t('Мы применяем современные технические и организационные меры для защиты ваших персональных данных от несанкционированного доступа, изменения, раскрытия или уничтожения.')}
-                  </p>
-                  <div>
-                    <h3 className="text-lg font-semibold text-white mb-2">{t('Меры безопасности:')}</h3>
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>{t('Шифрование данных при передаче (SSL/TLS)')}</li>
-                      <li>{t('Безопасное хранение данных')}</li>
-                      <li>{t('Ограниченный доступ к данным')}</li>
-                      <li>{t('Регулярные проверки безопасности')}</li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50">
-              <CardContent className="p-8">
-                <div className="flex items-center mb-6">
-                  <Eye className="w-8 h-8 text-red-500 mr-3" />
-                  <h2 className="text-2xl font-bold">{t('Ваши права')}</h2>
-                </div>
-                <div className="space-y-4 text-gray-300">
-                  <p className="leading-relaxed">
-                    {t('В соответствии с законодательством о защите персональных данных, вы имеете следующие права:')}
-                  </p>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>{t('Право на доступ к своим персональным данным')}</li>
-                    <li>{t('Право на исправление неточных данных')}</li>
-                    <li>{t('Право на удаление данных')}</li>
-                    <li>{t('Право на ограничение обработки')}</li>
-                    <li>{t('Право на отзыв согласия')}</li>
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50">
-              <CardContent className="p-8">
-                <h2 className="text-2xl font-bold mb-6">{t('Контактная информация')}</h2>
-                <div className="space-y-4 text-gray-300">
-                  <p className="leading-relaxed">
-                    {t('По вопросам обработки персональных данных вы можете обратиться к нам:')}
-                  </p>
-                  <ul className="space-y-2">
-                    <li><strong>{t('Email:')}</strong> privacy@vaultory.com</li>
-                    <li><strong>{t('Telegram:')}</strong> @VaultorySupport</li>
-                    <li><strong>{t('Адрес:')}</strong> Россия, г. Москва</li>
-                  </ul>
-                  <p className="leading-relaxed mt-4">
-                    {t('Мы рассматриваем все обращения в течение 30 дней с момента получения.')}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ))}
           </div>
+        </div>
+
+        {/* Меры безопасности */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">
+            Меры безопасности
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {securityMeasures.map((measure, index) => (
+              <Card 
+                key={index}
+                className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105"
+              >
+                <CardHeader className="text-center">
+                  <div className="mx-auto w-16 h-16 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 border border-amber-500/20">
+                    {measure.icon}
+                  </div>
+                  <CardTitle className="text-white text-lg">{measure.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/80 text-center text-sm leading-relaxed">
+                    {measure.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Основные разделы */}
+        <div className="space-y-8">
+          {privacySections.map((section, index) => (
+            <Card 
+              key={index}
+              className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300"
+            >
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  {section.icon}
+                  <span className="ml-3">{section.title}</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {section.content.map((item, itemIndex) => (
+                    <div key={itemIndex} className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-white/90 leading-relaxed">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Права пользователей */}
+        <div className="mt-16">
+          <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardHeader>
+              <CardTitle className="text-white text-center">Ваши права</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <h4 className="text-white font-semibold text-lg">Что вы можете делать:</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-white/80 text-sm">Запрашивать копию ваших данных</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-white/80 text-sm">Исправлять неточную информацию</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-white/80 text-sm">Удалять свой аккаунт</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-white/80 text-sm">Отзывать согласие на обработку</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="text-white font-semibold text-lg">Что мы гарантируем:</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-white/80 text-sm">Безопасность ваших данных</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-white/80 text-sm">Неразглашение третьим лицам</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-white/80 text-sm">Прозрачность обработки</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <span className="text-white/80 text-sm">Быстрое реагирование на запросы</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Контактная информация */}
+        <div className="mt-16">
+          <Card className="bg-black/20 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardContent className="pt-8">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  Вопросы по конфиденциальности?
+                </h3>
+                <p className="text-white/80 mb-6 max-w-2xl mx-auto">
+                  Если у вас есть вопросы о том, как мы обрабатываем ваши данные, 
+                  или вы хотите воспользоваться своими правами, свяжитесь с нами.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-6">
+                  <div className="flex items-center space-x-3 p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
+                    <Mail className="w-5 h-5 text-amber-400" />
+                    <span className="text-white/90 text-sm">privacy@vaultory.com</span>
+                  </div>
+                  <div className="flex items-center space-x-3 p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
+                    <Phone className="w-5 h-5 text-emerald-400" />
+                    <span className="text-white/90 text-sm">Telegram: @VaultorySupport</span>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    onClick={() => navigate('/support')}
+                    className="px-8 py-3 bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+                  >
+                    Связаться с нами
+                  </Button>
+                  <Button
+                    onClick={() => navigate('/')}
+                    variant="outline"
+                    className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+                  >
+                    Вернуться на главную
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Кнопка назад */}
+        <div className="text-center mt-12">
+          <Button
+            onClick={() => navigate('/')}
+            variant="outline"
+            className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Вернуться на главную
+          </Button>
         </div>
       </div>
     </div>

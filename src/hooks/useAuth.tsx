@@ -73,10 +73,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const setTelegramUser = async (tgUser: TelegramUser) => {
-    setTelegramUserState(tgUser);
-    localStorage.setItem('vaultory_telegram_user', JSON.stringify(tgUser));
-    
     try {
+      console.log('Setting Telegram user:', tgUser);
+      
+      setTelegramUserState(tgUser);
+      localStorage.setItem('vaultory_telegram_user', JSON.stringify(tgUser));
+      
       // Проверяем, есть ли профиль в Supabase
       const { data, error } = await supabase
         .from('profiles')
@@ -84,9 +86,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .eq('telegram_id', tgUser.id)
         .single();
       
+      console.log('Existing profile check:', { data, error });
+      
       if (!data) {
         // Определяем роль: admin для вашего Telegram ID, user для остальных
         const userRole = tgUser.id === 936111949 ? 'admin' : 'user';
+        
+        console.log('Creating new profile with role:', userRole);
         
         const { data: newProfile, error: insertError } = await supabase.from('profiles').insert({
           telegram_id: tgUser.id,
@@ -101,19 +107,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         
         if (insertError) {
           console.error('Error creating profile:', insertError);
+          throw new Error(`Ошибка создания профиля: ${insertError.message}`);
         }
+        
+        console.log('New profile created:', newProfile);
+        setProfile(newProfile);
+        setBalance(0);
       } else {
+        console.log('Profile already exists:', data);
+        
         if (data.status !== 'active') {
           await supabase.from('profiles').update({ status: 'active' }).eq('telegram_id', tgUser.id);
         }
+        
         // Обновляем роль на admin, если это ваш Telegram ID
         if (tgUser.id === 936111949 && data.role !== 'admin') {
           await supabase.from('profiles').update({ role: 'admin' }).eq('telegram_id', tgUser.id);
         }
+        
+        setProfile(data);
+        if (data?.balance) setBalance(data.balance);
       }
-      await fetchProfileByTelegramId(tgUser.id);
+      
+      console.log('Telegram user set successfully');
     } catch (error) {
       console.error('Error in setTelegramUser:', error);
+      // Убираем пользователя из состояния при ошибке
+      setTelegramUserState(null);
+      localStorage.removeItem('vaultory_telegram_user');
+      throw error; // Пробрасываем ошибку дальше
     }
   };
 
