@@ -15,6 +15,18 @@ export const useFavorites = () => {
       setLoading(true);
       console.log('Fetching favorites for user:', user.id);
       
+      // Проверяем существование таблицы
+      const { data: tableCheck, error: tableError } = await (supabase as any)
+        .from('user_favorites')
+        .select('count')
+        .limit(1);
+      
+      if (tableError) {
+        console.error('Table user_favorites does not exist or access denied:', tableError);
+        console.log('Please run the SQL file add-favorites-system.sql in DBeaver');
+        return;
+      }
+      
       const { data, error } = await (supabase as any)
         .from('user_favorites')
         .select('product_id')

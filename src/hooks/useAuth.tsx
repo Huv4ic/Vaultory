@@ -63,12 +63,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Здесь можно добавить логику выхода из Telegram
   };
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = async (telegramId: number) => {
     try {
+      // Используем telegram_id вместо id
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', userId)
+        .eq('telegram_id', telegramId)
         .single();
       if (error) throw error;
       setProfile(data);
@@ -79,6 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       checkUserBlock();
       return data;
     } catch (error) {
+      console.error('Error fetching profile:', error);
       setProfile(null);
       setBalance(0);
       return null;
@@ -86,8 +88,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const refreshProfile = async () => {
-    if (user) {
-      await fetchProfile(user.id);
+    if (telegramUser) {
+      await fetchProfile(telegramUser.id);
     }
   };
 
@@ -204,7 +206,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             } as any);
           }
           setTimeout(() => {
-            fetchProfile(session.user.id);
+            // Убираем вызов fetchProfile для session.user.id
+            // fetchProfileByTelegramId(session.user.id);
           }, 0);
         } else {
           setProfile(null);
@@ -237,7 +240,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               } as any);
             }
           });
-        fetchProfile(session.user.id);
+        // Убираем вызов fetchProfile для session.user.id
+        // fetchProfileByTelegramId(session.user.id);
       }
       setLoading(false);
     });

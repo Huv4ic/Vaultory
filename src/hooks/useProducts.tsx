@@ -7,7 +7,8 @@ export interface Product {
   name: string;
   price: number;
   discount_price?: number;
-  images: string[];
+  images?: string[];
+  image_url?: string;
   category_id: string;
   game_id: string;
   description: string;
@@ -59,11 +60,16 @@ export const useProducts = () => {
 
       if (productsError) throw productsError;
       
+      console.log('Raw products data:', productsData);
+      
       // Добавляем информацию об избранности и сортируем
-      const productsWithFavorites = (productsData || []).map(product => ({
-        ...product,
-        is_favorite: isFavorite(product.id)
-      }));
+      const productsWithFavorites = (productsData || []).map(product => {
+        console.log('Product:', product.name, 'Images:', product.images);
+        return {
+          ...product,
+          is_favorite: isFavorite(product.id)
+        };
+      });
 
       // Сортируем: избранные товары сначала, затем по названию
       const sortedProducts = productsWithFavorites.sort((a, b) => {

@@ -159,11 +159,12 @@ const ProductPage = () => {
               {/* Цена */}
               <div className="flex items-center space-x-4 mb-6">
                 <span className="text-3xl font-bold text-amber-400">{product.price}₴</span>
-                {product.discount_price && product.discount_price > product.price && (
-                  <span className="text-gray-400 line-through text-xl">
-                    {product.discount_price}₴
-                  </span>
-                )}
+                <span className="text-gray-400 line-through text-xl">
+                  800₴
+                </span>
+                <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                  150 продаж
+                </Badge>
               </div>
               
               {/* Описание */}
@@ -226,11 +227,17 @@ const ProductPage = () => {
                   <span className="text-white font-medium">{product.game_id}</span>
                 </div>
                 
+                <div className="flex justify-between items-center py-2 border-b border-amber-500/20">
+                  <span className="text-gray-300">Рейтинг:</span>
+                  <div className="flex items-center space-x-1">
+                    <Star className="w-4 h-4 text-amber-400 fill-current" />
+                    <span className="text-white font-medium">★4</span>
+                  </div>
+                </div>
+                
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-300">Статус:</span>
-                  <span className="text-white font-medium">
-                    {product.is_available ? 'Доступен' : 'Недоступен'}
-                  </span>
+                  <span className="text-gray-300">Продажи:</span>
+                  <span className="text-white font-medium">150</span>
                 </div>
               </div>
             </div>

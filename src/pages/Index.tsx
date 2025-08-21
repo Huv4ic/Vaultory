@@ -206,6 +206,7 @@ const Index = () => {
                   price={product.price}
                   discount_price={product.discount_price}
                   images={product.images}
+                  image_url={product.image_url}
                   category_id={product.category_id}
                   game_id={product.game_id}
                   description={product.description}
