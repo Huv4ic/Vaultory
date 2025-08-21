@@ -13,17 +13,23 @@ export const useFavorites = () => {
     
     try {
       setLoading(true);
+      console.log('Fetching favorites for user:', user.id);
+      
       const { data, error } = await (supabase as any)
         .from('user_favorites')
         .select('product_id')
         .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching favorites:', error);
+        throw error;
+      }
       
+      console.log('Favorites data:', data);
       const favoriteIds = data?.map((fav: any) => fav.product_id) || [];
       setFavorites(favoriteIds);
     } catch (error) {
-      console.error('Error fetching favorites:', error);
+      console.error('Error in fetchFavorites:', error);
     } finally {
       setLoading(false);
     }
@@ -35,6 +41,8 @@ export const useFavorites = () => {
     
     try {
       setLoading(true);
+      console.log('Adding to favorites:', { userId: user.id, productId });
+      
       const { error } = await (supabase as any)
         .from('user_favorites')
         .insert({
@@ -42,12 +50,16 @@ export const useFavorites = () => {
           product_id: productId
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error adding to favorites:', error);
+        throw error;
+      }
       
+      console.log('Successfully added to favorites');
       setFavorites(prev => [...prev, productId]);
       return true;
     } catch (error) {
-      console.error('Error adding to favorites:', error);
+      console.error('Error in addToFavorites:', error);
       return false;
     } finally {
       setLoading(false);

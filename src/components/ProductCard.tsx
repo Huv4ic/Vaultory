@@ -9,7 +9,8 @@ interface ProductCardProps {
   name: string;
   price: number;
   discount_price?: number;
-  images: string[];
+  images?: string[];
+  image_url?: string;
   category_id: string;
   game_id: string;
   description: string;
@@ -24,6 +25,7 @@ const ProductCard = ({
   price,
   discount_price,
   images,
+  image_url,
   category_id,
   game_id,
   description,
@@ -39,8 +41,8 @@ const ProductCard = ({
     await toggleFavorite(id);
   };
 
-  // Используем первое изображение из массива
-  const image = images && images.length > 0 ? images[0] : '/placeholder.svg';
+  // Используем изображение из массива или из image_url
+  const image = (images && images.length > 0) ? images[0] : (image_url || '/placeholder.svg');
 
   return (
     <div
