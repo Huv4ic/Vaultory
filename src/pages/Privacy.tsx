@@ -290,7 +290,7 @@ const Privacy = () => {
                     </div>
                     <div className="flex items-center space-x-3">
                       <Shield className="w-5 h-5 text-amber-400" />
-                      <span className="text-gray-300 text-sm">Telegram: @vaultory_support</span>
+                      <span className="text-gray-300 text-sm">Telegram: @Vaultory_manager</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Info className="w-5 h-5 text-amber-400" />

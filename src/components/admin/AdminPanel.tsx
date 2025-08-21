@@ -20,6 +20,9 @@ interface User {
   total_spent: number | null;
   role: 'user' | 'admin' | null;
   status: string | null;
+  block_reason?: string | null;
+  blocked_at?: string | null;
+  blocked_by?: string | null;
   created_at: string | null;
   updated_at: string | null;
 }
@@ -110,22 +113,49 @@ export default function AdminPanel() {
     try {
       setError(null);
       
-      const newStatus = currentStatus === 'active' ? 'banned' : 'active';
+      let newStatus: string;
+      let blockReason: string | null = null;
+      
+      if (currentStatus === 'active') {
+        newStatus = 'blocked';
+        blockReason = prompt('Укажите причину блокировки:') || 'Нарушение правил сайта';
+        if (blockReason === null) return; // Пользователь отменил
+      } else {
+        newStatus = 'active';
+        blockReason = null;
+      }
+      
       const { error } = await supabase
         .from('profiles')
-        .update({ status: newStatus })
+        .update({ 
+          status: newStatus,
+          block_reason: blockReason,
+          blocked_at: newStatus === 'blocked' ? new Date().toISOString() : null,
+          blocked_by: newStatus === 'blocked' ? profile?.telegram_id?.toString() : null
+        })
         .eq('id', userId);
 
       if (error) {
         throw error;
       }
 
-
-      
       // Обновляем локальное состояние
       setUsers(prev => prev.map(user => 
-        user.id === userId ? { ...user, status: newStatus as 'active' | 'banned' } : user
+        user.id === userId ? { 
+          ...user, 
+          status: newStatus,
+          block_reason: blockReason,
+          blocked_at: newStatus === 'blocked' ? new Date().toISOString() : null,
+          blocked_by: newStatus === 'blocked' ? profile?.telegram_id?.toString() : null
+        } : user 
       ));
+      
+      // Показываем уведомление
+      if (newStatus === 'blocked') {
+        alert(`Пользователь заблокирован. Причина: ${blockReason}`);
+      } else {
+        alert('Пользователь разблокирован');
+      }
     } catch (err) {
       console.error('Error updating status:', err);
       setError('Ошибка при обновлении статуса: ' + (err as any).message);
@@ -204,7 +234,7 @@ export default function AdminPanel() {
               <div>
                 <p className="text-gray-400 text-sm">Заблокированные</p>
                 <p className="text-3xl font-bold text-red-400">
-                  {users.filter(u => u.status === 'banned').length}
+                  {users.filter(u => u.status === 'blocked').length}
                 </p>
               </div>
               <Badge className="bg-red-600">Заблокированы</Badge>
@@ -310,6 +340,11 @@ export default function AdminPanel() {
                           >
                             {user.status === 'active' ? 'Активен' : 'Заблокирован'}
                           </Badge>
+                          {user.status === 'blocked' && user.block_reason && (
+                            <Badge className="bg-red-800 text-xs max-w-xs truncate" title={user.block_reason}>
+                              🚫 {user.block_reason}
+                            </Badge>
+                          )}
                           {user.role && user.role !== 'user' && (
                             <Badge className="bg-purple-600 text-xs">
                               {user.role === 'admin' ? '👑 Админ' : user.role}

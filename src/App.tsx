@@ -1,7 +1,7 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AuthProvider } from "@/hooks/useAuth";
+import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { CartProvider } from "@/hooks/useCart";
 import { InventoryProvider } from "@/hooks/useInventory";
 import Index from "./pages/Index";
@@ -21,42 +21,64 @@ import CasePage from "./pages/CasePage";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ToastContainer from "@/components/ui/ToastContainer";
+import BlockedUserModal from "@/components/BlockedUserModal";
 
 const queryClient = new QueryClient();
 
-const App = () => {
+// Компонент для отображения модального окна блокировки
+const BlockedUserWrapper = ({ children }: { children: React.ReactNode }) => {
+  const { isBlocked, blockReason } = useAuth();
+  
+  return (
+    <>
+      {children}
+      <BlockedUserModal isVisible={isBlocked} reason={blockReason} />
+    </>
+  );
+};
+
+const AppContent = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
+  
+  return (
+    <BlockedUserWrapper>
+      <TooltipProvider>
+        <ToastContainer />
+        <div className="flex flex-col min-h-screen">
+          {!isAdmin && <Header />}
+          <div className="flex-1">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/catalog" element={<Catalog />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/cases" element={<Cases />} />
+              <Route path="/case/:id" element={<CasePage />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+          {!isAdmin && <Footer />}
+        </div>
+      </TooltipProvider>
+    </BlockedUserWrapper>
+  );
+};
+
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <CartProvider>
           <InventoryProvider>
-            <TooltipProvider>
-              <ToastContainer />
-              <div className="flex flex-col min-h-screen">
-                {!isAdmin && <Header />}
-                <div className="flex-1">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/catalog" element={<Catalog />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/cases" element={<Cases />} />
-                    <Route path="/case/:id" element={<CasePage />} />
-                    <Route path="/support" element={<Support />} />
-                    <Route path="/product/:id" element={<ProductPage />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/terms" element={<Terms />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </div>
-                {!isAdmin && <Footer />}
-              </div>
-            </TooltipProvider>
+            <AppContent />
           </InventoryProvider>
         </CartProvider>
       </AuthProvider>

@@ -23,11 +23,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return saved ? JSON.parse(saved) : null;
   });
   const [balance, setBalance] = useState(0);
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [blockReason, setBlockReason] = useState('');
 
   // Проверяем администратора: либо по роли в профиле, либо по Telegram ID
   const isAdmin = (profile?.role as any) === 'admin' || 
                   (profile?.role as any) === 'superadmin' || 
                   (telegramUser?.id === 936111949);
+  
+  // Проверяем блокировку пользователя
+  const checkUserBlock = () => {
+    if (profile?.status === 'blocked') {
+      setIsBlocked(true);
+      setBlockReason(profile?.block_reason || 'Нарушение правил сайта');
+      return true;
+    } else {
+      setIsBlocked(false);
+      setBlockReason('');
+      return false;
+    }
+  };
   
   // Отладочная информация
   console.log('Auth Debug:', {
@@ -35,7 +50,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     telegramUserId: telegramUser?.id,
     profile,
     profileRole: profile?.role,
+    profileStatus: profile?.status,
     isAdmin,
+    isBlocked,
     user
   });
 
@@ -58,6 +75,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data?.balance) {
         setBalance(data.balance);
       }
+      // Проверяем блокировку после загрузки профиля
+      checkUserBlock();
       return data;
     } catch (error) {
       setProfile(null);
@@ -127,6 +146,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         
         setProfile(data);
         if (data?.balance) setBalance(data.balance);
+        // Проверяем блокировку после загрузки профиля
+        checkUserBlock();
       }
       
       console.log('Telegram user set successfully');
@@ -149,6 +170,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (error) throw error;
       setProfile(data);
       if (data?.balance) setBalance(data.balance);
+      // Проверяем блокировку после загрузки профиля
+      checkUserBlock();
     } catch (error) {
       setProfile(null);
       setBalance(0);
@@ -298,6 +321,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       telegramUser,
       balance,
       setBalance,
+      isBlocked,
+      blockReason,
       signOutTelegram,
       signIn,
       signUp,

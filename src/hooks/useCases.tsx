@@ -30,13 +30,21 @@ export const useCases = () => {
       setLoading(true);
       setError(null);
 
+      console.log('🔄 Загружаем кейсы...');
+
       // Загружаем кейсы
       const { data: casesData, error: casesError } = await supabase
         .from('cases')
         .select('*')
         .order('name');
 
-      if (casesError) throw casesError;
+      if (casesError) {
+        console.error('❌ Ошибка при загрузке кейсов:', casesError);
+        throw casesError;
+      }
+      
+      console.log('📦 Получены кейсы из БД:', casesData);
+      console.log('📊 Количество кейсов:', casesData?.length || 0);
       
       // Приводим данные к правильному формату
       const formattedCases = (casesData || []).map((caseData: any) => ({
@@ -48,6 +56,7 @@ export const useCases = () => {
         description: caseData.description || ''
       }));
       
+      console.log('✅ Форматированные кейсы:', formattedCases);
       setCases(formattedCases);
 
       // Загружаем предметы в кейсах
@@ -56,7 +65,13 @@ export const useCases = () => {
         .select('*')
         .order('name');
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error('❌ Ошибка при загрузке предметов:', itemsError);
+        throw itemsError;
+      }
+      
+      console.log('🎁 Получены предметы из БД:', itemsData);
+      console.log('📊 Количество предметов:', itemsData?.length || 0);
       
       // Приводим данные к правильному формату
       const formattedItems = (itemsData || []).map((itemData: any) => ({
@@ -68,10 +83,11 @@ export const useCases = () => {
         image_url: itemData.image_url || ''
       }));
       
+      console.log('✅ Форматированные предметы:', formattedItems);
       setCaseItems(formattedItems);
 
     } catch (err) {
-      console.error('Error fetching cases:', err);
+      console.error('❌ Ошибка при загрузке кейсов:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);

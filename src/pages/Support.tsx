@@ -31,7 +31,7 @@ const Support = () => {
       title: "Telegram",
       description: "Быстрая поддержка через Telegram",
       action: "Написать в Telegram",
-      link: "https://t.me/vaultory_support",
+      link: "https://t.me/Vaultory_manager",
       color: "from-blue-500 to-blue-600"
     },
     {
@@ -286,7 +286,7 @@ const Support = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
-                  onClick={() => window.open('https://t.me/vaultory_support', '_blank')}
+                  onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
                   className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-blue-500/30"
                 >
                   Написать в Telegram
