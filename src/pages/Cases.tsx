@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Package, Sparkles } from 'lucide-react';
@@ -10,14 +9,14 @@ const Cases = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { cases, caseItems, loading, error } = useCases();
-  const { telegramUser, refreshTelegramProfile } = useAuth();
+  const { telegramUser } = useAuth();
 
-  // Автоматически обновляем профиль при загрузке страницы
-  useEffect(() => {
-    if (telegramUser) {
-      refreshTelegramProfile();
-    }
-  }, [telegramUser, refreshTelegramProfile]);
+  // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре кейсов
+  // useEffect(() => {
+  //   if (telegramUser) {
+  //     refreshTelegramProfile();
+  //   }
+  // }, [telegramUser, refreshTelegramProfile]);
 
   if (loading) {
     return (

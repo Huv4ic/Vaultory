@@ -69,15 +69,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const refreshProfile = async () => {
     if (user) {
       await fetchProfile(user.id);
-    } else if (telegramUser) {
-      await fetchProfileByTelegramId(telegramUser.id);
-    }
-  };
-
-  // Функция для обновления профиля Telegram пользователя
-  const refreshTelegramProfile = async () => {
-    if (telegramUser) {
-      await fetchProfileByTelegramId(telegramUser.id);
     }
   };
 
@@ -217,45 +208,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [telegramUser, profile]);
 
-  // Автоматически обновляем профиль при каждом заходе на сайт
-  useEffect(() => {
-    if (telegramUser) {
-      // Обновляем профиль сразу при загрузке
-      fetchProfileByTelegramId(telegramUser.id);
-      
-      // Обновляем профиль каждые 30 секунд для актуальности баланса
-      const interval = setInterval(() => {
-        fetchProfileByTelegramId(telegramUser.id);
-      }, 30000);
-      
-      return () => clearInterval(interval);
-    }
-  }, [telegramUser]);
-
-  // Обновляем профиль при фокусе на окне (когда пользователь возвращается на вкладку)
-  useEffect(() => {
-    const handleFocus = () => {
-      if (telegramUser) {
-        fetchProfileByTelegramId(telegramUser.id);
-      }
-    };
-
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, [telegramUser]);
-
-  // Обновляем профиль при видимости страницы
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden && telegramUser) {
-        fetchProfileByTelegramId(telegramUser.id);
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [telegramUser]);
-
   // Подписываемся на изменения профиля для real-time обновления баланса
   useEffect(() => {
     if (!user?.id) return;
@@ -329,7 +281,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       signUp,
       signOut,
       refreshProfile,
-      refreshTelegramProfile,
       setTelegramUser
     }}>
       {children}

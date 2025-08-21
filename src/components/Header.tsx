@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Menu, X, DollarSign } from 'lucide-react';
+import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
@@ -12,19 +12,19 @@ const TELEGRAM_BOT = 'vaultory_notify_bot';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { telegramUser, balance, signOutTelegram, setTelegramUser, refreshTelegramProfile } = useAuth();
+  const { telegramUser, balance, signOutTelegram, setTelegramUser } = useAuth();
   const { items } = useCart();
   const { currentLanguage, changeLanguage, t } = useLanguage();
   const tgWidgetRef = useRef<HTMLDivElement>(null);
 
   const isActive = (path: string) => location.pathname === path;
 
-  // Автоматически обновляем профиль при каждом переходе между страницами
-  useEffect(() => {
-    if (telegramUser) {
-      refreshTelegramProfile();
-    }
-  }, [location.pathname, telegramUser, refreshTelegramProfile]);
+  // Убираем автоматическое обновление профиля при каждом переходе - это вызывает спам запросами
+  // useEffect(() => {
+  //   if (telegramUser) {
+  //     refreshTelegramProfile();
+  //   }
+  // }, [location.pathname, telegramUser, refreshTelegramProfile]);
 
   // Автоматическая обработка Telegram Login Widget
   useEffect(() => {
@@ -157,18 +157,6 @@ const Header = () => {
                   </span>
                 </Link>
                 
-                {/* Кнопка пополнения баланса */}
-                <Button
-                  size="sm"
-                  onClick={() => {
-                    // Здесь будет логика пополнения баланса
-                    // Можно открыть модальное окно или перенаправить на страницу пополнения
-                  }}
-                  className="ml-2 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105"
-                >
-                  <DollarSign className="w-4 h-4" />
-                </Button>
-                
                 <Button
                   size="sm"
                   className="ml-2 px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold border-none shadow hover:from-red-600 hover:to-purple-700 transition-all duration-200"
@@ -229,20 +217,6 @@ const Header = () => {
               >
                 {t("О нас")}
               </Link>
-              
-              {/* Кнопка пополнения баланса для мобильных */}
-              {telegramUser && (
-                <Button
-                  onClick={() => {
-                    // Здесь будет логика пополнения баланса
-                    setIsMenuOpen(false);
-                  }}
-                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200"
-                >
-                  <DollarSign className="w-4 h-4 mr-2" />
-                  {t("Пополнить баланс")}
-                </Button>
-              )}
             </nav>
           </div>
         )}

@@ -7,14 +7,14 @@ import { useAuth } from '@/hooks/useAuth';
 
 const Support = () => {
   const { t } = useLanguage();
-  const { telegramUser, refreshTelegramProfile } = useAuth();
+  const { telegramUser } = useAuth();
   
-  // Автоматически обновляем профиль при загрузке страницы
-  useEffect(() => {
-    if (telegramUser) {
-      refreshTelegramProfile();
-    }
-  }, [telegramUser, refreshTelegramProfile]);
+  // Убираем автоматическое обновление профиля при загрузке - это может вызывать конфликты
+  // useEffect(() => {
+  //   if (telegramUser) {
+  //     refreshTelegramProfile();
+  //   }
+  // }, [telegramUser, refreshTelegramProfile]);
   
   const supportMethods = [
     {

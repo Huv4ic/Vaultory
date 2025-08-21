@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,18 +22,18 @@ import { supabase } from '@/integrations/supabase/client';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { telegramUser, profile, balance, setBalance, refreshProfile, refreshTelegramProfile } = useAuth();
+  const { telegramUser, profile, balance, setBalance, refreshProfile } = useAuth();
   const { items, removeItem, updateQuantity, clear, total } = useCart();
   const { toast } = useToast();
   const { t } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Автоматически обновляем профиль при загрузке страницы
-  useEffect(() => {
-    if (telegramUser) {
-      refreshTelegramProfile();
-    }
-  }, [telegramUser, refreshTelegramProfile]);
+  // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре корзины
+  // useEffect(() => {
+  //   if (telegramUser) {
+  //     refreshTelegramProfile();
+  //   }
+  // }, [telegramUser, refreshTelegramProfile]);
 
   const handleQuantityChange = (id: string, change: number) => {
     const item = items.find(i => i.id === id);
@@ -283,10 +283,9 @@ const Cart = () => {
                         description: t("Функция пополнения баланса будет доступна в ближайшее время!"),
                       });
                     }}
-                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold px-4 py-3 rounded-lg border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105"
+                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold w-12 h-12 p-0 rounded-lg border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105 flex items-center justify-center"
                   >
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    {t("Пополнить")}
+                    <DollarSign className="w-5 h-5" />
                   </Button>
                 </div>
               </div>

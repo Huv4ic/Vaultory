@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,7 @@ import { Search, Filter, SlidersHorizontal } from 'lucide-react';
 
 const Catalog = () => {
   const navigate = useNavigate();
-  const { telegramUser, refreshTelegramProfile } = useAuth();
+  const { telegramUser } = useAuth();
   const { addItem, items } = useCart();
   const { t } = useLanguage();
   const { products, categories, loading, error } = useProducts();
@@ -20,12 +20,12 @@ const Catalog = () => {
   const [sortBy, setSortBy] = useState('popular');
   const [visibleProducts, setVisibleProducts] = useState(15);
 
-  // Автоматически обновляем профиль при загрузке страницы
-  useEffect(() => {
-    if (telegramUser) {
-      refreshTelegramProfile();
-    }
-  }, [telegramUser, refreshTelegramProfile]);
+  // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре каталога
+  // useEffect(() => {
+  //   if (telegramUser) {
+  //     refreshTelegramProfile();
+  //   }
+  // }, [telegramUser, refreshTelegramProfile]);
 
   // Функция для получения эмодзи иконки по названию
   const getCategoryIcon = (iconName: string) => {

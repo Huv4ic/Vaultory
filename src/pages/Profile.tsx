@@ -18,19 +18,19 @@ import {
 const TELEGRAM_BOT = 'vaultory_notify_bot';
 
 const Profile = () => {
-  const { telegramUser, balance, signOutTelegram, setBalance, profile, setTelegramUser, refreshTelegramProfile } = useAuth();
+  const { telegramUser, balance, signOutTelegram, setBalance, profile, setTelegramUser } = useAuth();
   const { items, casesOpened, spent, purchased, getTotalValue, sellItem, withdrawItem, getCasesOpened } = useInventory();
   const { toast } = useToast();
   const { t } = useLanguage();
   const [sellingItem, setSellingItem] = useState<number | null>(null);
   const tgWidgetRef = useRef<HTMLDivElement>(null);
 
-  // Автоматически обновляем профиль при загрузке страницы
-  useEffect(() => {
-    if (telegramUser) {
-      refreshTelegramProfile();
-    }
-  }, [telegramUser, refreshTelegramProfile]);
+  // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре профиля
+  // useEffect(() => {
+  //   if (telegramUser) {
+  //     refreshTelegramProfile();
+  //   }
+  // }, [telegramUser, refreshTelegramProfile]);
 
   // Вставка Telegram Login Widget (как в Header)
   useEffect(() => {
@@ -147,10 +147,10 @@ const Profile = () => {
                   description: t("Функция пополнения баланса будет доступна в ближайшее время!"),
                 });
               }}
-              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold px-6 py-2 rounded-lg border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105"
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold px-4 py-2 rounded-lg border-none shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 transform hover:scale-105"
             >
               <DollarSign className="w-4 h-4 mr-2" />
-              {t("Пополнить баланс")}
+              {t("Пополнить")}
             </Button>
             
             <Button
