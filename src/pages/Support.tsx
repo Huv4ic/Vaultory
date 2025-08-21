@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Send, Mail, Phone, Clock, MessageCircle, HelpCircle } from 'lucide-react';
+import { Send, Mail, Clock, MessageCircle, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -23,7 +23,6 @@ const Support = () => {
       description: t('Быстрый ответ в течение 5 минут'),
       contact: '@Vaultory_manager',
       action: t('Написать в Telegram'),
-      primary: true,
       link: 'https://t.me/Vaultory_manager'
     },
     {
@@ -32,20 +31,13 @@ const Support = () => {
       description: t('Ответ в течение 1 часа'),
       contact: 'support@vaultory.com',
       action: t('Отправить Email')
-    },
-    {
-      icon: <Phone className="w-6 h-6" />,
-      title: t('Телефон'),
-      description: t('Звонок в рабочие часы'),
-      contact: '+7 (999) 123-45-67',
-      action: t('Позвонить')
     }
   ];
 
   const faqItems = [
     {
       question: t('Как быстро приходят товары?'),
-      answer: t('Большинство товаров доставляется автоматически в течение 5 минут после успешной оплаты. В редких случаях доставка может занять до 15 минут.')
+      answer: t('Товары после оплаты выдаются вручную, поэтому время на выдачу товара может варьироваться от 5 минут до пары часов.')
     },
     {
       question: t('Что делать, если товар не пришел?'),
@@ -53,7 +45,7 @@ const Support = () => {
     },
     {
       question: t('Какие способы оплаты доступны?'),
-      answer: t('Мы принимаем банковские карты, электронные кошельки (QIWI, WebMoney, ЮMoney), криптовалюты и переводы через банк.')
+      answer: t('Моно банк, Приват банк, Пумб банк.')
     },
     {
       question: t('Можно ли вернуть товар?'),
@@ -61,7 +53,7 @@ const Support = () => {
     },
     {
       question: t('Безопасно ли покупать у вас?'),
-      answer: t('Да, мы работаем с 2020 года и имеем все необходимые лицензии. Все платежи проходят через защищенные каналы.')
+      answer: t('Да, мы работаем с 2025 года и имеем уже большое количество реальных отзывов. Все платежи проходят через защищенные каналы.')
     }
   ];
 
@@ -78,18 +70,14 @@ const Support = () => {
         </div>
 
         {/* Способы связи */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 max-w-4xl mx-auto">
           {supportMethods.map((method, index) => (
             <Card 
               key={index}
-              className={`bg-gray-800/50 backdrop-blur-sm border-gray-700/50 hover:border-red-500/50 transition-all duration-300 transform hover:scale-105 ${
-                method.primary ? 'ring-2 ring-red-500/50' : ''
-              }`}
+              className="bg-gray-800/50 backdrop-blur-sm border-gray-700/50 hover:border-red-500/50 transition-all duration-300 transform hover:scale-105"
             >
               <CardHeader className="text-center">
-                <div className={`w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center ${
-                  method.primary ? 'bg-gradient-to-r from-red-500 to-purple-600' : 'bg-gray-700'
-                }`}>
+                <div className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center bg-gradient-to-r from-red-500 to-purple-600">
                   {method.icon}
                 </div>
                 <CardTitle className="text-white">{method.title}</CardTitle>
@@ -97,34 +85,24 @@ const Support = () => {
               </CardHeader>
               <CardContent className="text-center">
                 <div className="text-red-400 font-semibold mb-4">
-                  <a href={method.link ? method.link : (method.title === 'Email' ? `mailto:${method.contact}` : (method.title === t('Телефон') ? `tel:${method.contact.replace(/[^\d+]/g, '')}` : '#'))} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-pink-500 transition-colors duration-200">
+                  <a href={method.link ? method.link : (method.title === 'Email' ? `mailto:${method.contact}` : '#')} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-pink-500 transition-colors duration-200">
                     {method.contact}
                   </a>
                 </div>
                 {method.link ? (
                   <a href={method.link} target="_blank" rel="noopener noreferrer">
                     <Button 
-                      className={`w-full ${
-                        method.primary 
-                          ? 'bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700' 
-                          : 'bg-gray-700 hover:bg-gray-600'
-                      } font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
+                      className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
                     >
                       {method.action}
                     </Button>
                   </a>
                 ) : (
                   <Button 
-                    className={`w-full ${
-                      method.primary 
-                        ? 'bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    } font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
+                    className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200"
                     onClick={() => {
                       if (method.title === 'Email') {
                         window.location.href = `mailto:${method.contact}`;
-                      } else if (method.title === t('Телефон')) {
-                        window.location.href = `tel:${method.contact.replace(/[^\\d+]/g, '')}`;
                       }
                     }}
                   >
@@ -150,7 +128,7 @@ const Support = () => {
                 <p className="text-sm text-gray-400">{t('Автоответчик + живая поддержка')}</p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-2 text-red-400">{t('Телефон и Email')}</h3>
+                <h3 className="text-lg font-semibold mb-2 text-red-400">{t('Email поддержка')}</h3>
                 <p className="text-gray-300">Пн-Вс: 9:00 - 23:00 (МСК)</p>
                 <p className="text-sm text-gray-400">{t('Время ответа: до 1 часа')}</p>
               </div>

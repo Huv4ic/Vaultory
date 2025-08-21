@@ -264,24 +264,29 @@ const Cart = () => {
 
           {/* Итоговая информация */}
           <div className="lg:col-span-1">
-            <div className="max-w-2xl mx-auto bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white rounded-2xl shadow-2xl p-8 mt-12 animate-fade-in">
-              <div className="flex items-center justify-between mb-6">
-                <div className="text-3xl font-bold">{t("Корзина")}</div>
-                <div className="flex items-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-xl px-6 py-3 rounded-lg shadow-lg animate-fade-in">
-                  <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/></svg>
+            <div className="sticky top-8 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 text-white rounded-2xl shadow-2xl p-6 animate-fade-in">
+              <div className="text-center mb-6">
+                <div className="text-3xl font-bold mb-4">{t("Корзина")}</div>
+                <div className="flex items-center justify-center bg-gradient-to-r from-red-500 to-purple-600 text-white font-bold text-lg px-4 py-2 rounded-lg shadow-lg">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm0 10c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/>
+                  </svg>
                   {t("Баланс")}: <span className="ml-2">{balance}₴</span>
                 </div>
               </div>
-              <div className="mb-6 text-lg font-semibold">{t("Сумма к оплате")}: <span className="text-white">{total}₴</span></div>
+              <div className="text-center mb-6">
+                <div className="text-lg font-semibold mb-2">{t("Сумма к оплате")}:</div>
+                <div className="text-2xl font-bold text-white">{total}₴</div>
+              </div>
               {balance < total && (
-                <div className="mb-4 text-red-200 font-bold">{t("Недостаточно средств для оплаты заказа")}</div>
+                <div className="mb-4 text-red-200 font-bold text-center text-sm">{t("Недостаточно средств для оплаты заказа")}</div>
               )}
               <button
-                className={`w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-4 rounded-lg shadow-lg transition-all duration-200 ${balance < total ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 ${balance < total ? 'opacity-50 cursor-not-allowed' : ''}`}
                 onClick={handleCheckout}
                 disabled={balance < total}
               >
-                                 {t("Оформить заказ")}
+                {t("Оформить заказ")}
               </button>
             </div>
           </div>
