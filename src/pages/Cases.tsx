@@ -103,11 +103,34 @@ const Cases = () => {
               {/* Иконка кейса */}
               <div className="relative w-full h-40 mb-6">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-xl"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30 animate-pulse">
-                    <Gift className="w-12 h-12 text-white" />
+                
+                {/* Изображение кейса */}
+                {caseData.image_url ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <img 
+                      src={caseData.image_url} 
+                      alt={caseData.name}
+                      className="w-full h-full object-cover rounded-xl"
+                      onError={(e) => {
+                        // Если изображение не загрузилось, показываем иконку
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.nextElementSibling?.classList.remove('hidden');
+                      }}
+                    />
+                    {/* Fallback иконка (скрыта по умолчанию) */}
+                    <div className="hidden w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30 animate-pulse">
+                      <Gift className="w-12 h-12 text-white" />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  /* Если нет изображения, показываем иконку */
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30 animate-pulse">
+                      <Gift className="w-12 h-12 text-white" />
+                    </div>
+                  </div>
+                )}
                 
                 {/* Декоративные элементы */}
                 <div className="absolute top-2 right-2 w-3 h-3 bg-amber-400/60 rounded-full animate-ping"></div>

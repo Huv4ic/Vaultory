@@ -107,12 +107,9 @@ export const useCases = () => {
   useEffect(() => {
     fetchCases();
     
-    // Автоматическое обновление каждые 5 секунд для синхронизации с админкой
-    const interval = setInterval(() => {
-      fetchCases();
-    }, 5000);
-
-    return () => clearInterval(interval);
+    // Убираем автоматическое обновление каждые 5 секунд
+    // Это создавало лишнюю нагрузку и могло вызывать мерцание интерфейса
+    // return () => clearInterval(interval);
   }, []);
 
   return {
