@@ -6,9 +6,10 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Separator } from '../ui/separator';
-import { Loader2, Users, DollarSign, Calendar } from 'lucide-react';
+import { Loader2, Users, DollarSign, Calendar, Shield } from 'lucide-react';
 import AdminProducts from './AdminProducts';
 import AdminCases from './AdminCases';
+import UserRoleManagement from './UserRoleManagement';
 
 interface User {
   id: string;
@@ -32,7 +33,7 @@ export default function AdminPanel() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases' | 'roles'>('users');
 
 
   useEffect(() => {
@@ -438,6 +439,13 @@ export default function AdminPanel() {
           >
             Кейсы
           </button>
+          <button
+            className={`px-6 py-2 rounded-lg font-semibold transition-all duration-200 border-b-2 ${activeTab === 'roles' ? 'border-amber-500 text-amber-400 bg-gray-800' : 'border-transparent text-gray-400 hover:text-white hover:bg-gray-800'}`}
+            onClick={() => setActiveTab('roles')}
+          >
+            <Shield className="w-4 h-4 mr-2 inline" />
+            Роли
+          </button>
         </div>
       </div>
 
@@ -446,6 +454,7 @@ export default function AdminPanel() {
         {activeTab === 'users' && usersTab}
         {activeTab === 'products' && <AdminProducts />}
         {activeTab === 'cases' && <AdminCases />}
+        {activeTab === 'roles' && <UserRoleManagement />}
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     id?: string;
     telegram_id?: number;
     username?: string;
-    role?: 'user' | 'admin';
+    role?: 'user' | 'admin' | 'support' | 'youtuber';
     status?: string;
     balance?: number;
     avatar_url?: string;
@@ -43,8 +43,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Проверяем администратора: либо по роли в профиле, либо по Telegram ID
   const isAdmin = (profile?.role as any) === 'admin' || 
-                  (profile?.role as any) === 'superadmin' || 
+                  (profile?.role as any) === 'support' || 
                   (telegramUser?.id === 936111949);
+  
+  // Проверяем может ли пользователь получить доступ к админке
+  const canAccessAdmin = (profile?.role as any) === 'admin' || 
+                        (profile?.role as any) === 'support' || 
+                        (telegramUser?.id === 936111949);
   
   // Проверяем блокировку пользователя
   const checkUserBlock = () => {
@@ -343,6 +348,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       session,
       profile,
       isAdmin,
+      canAccessAdmin,
       loading,
       telegramUser,
       balance,
