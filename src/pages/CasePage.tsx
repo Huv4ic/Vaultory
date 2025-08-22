@@ -61,7 +61,7 @@ const CasePage = () => {
       // Преобразуем данные к правильному формату
       const formattedCase: Case = {
         ...caseData,
-        image_url: caseData.image || '',
+        image_url: caseData.image || '', // Используем поле image из базы
         game: 'Unknown Game' // Пока используем заглушку, так как в базе нет поля game
       };
 
@@ -180,10 +180,11 @@ const CasePage = () => {
           <div className="flex justify-center lg:justify-start">
             <div className="relative">
               <img
-                src={caseData.image || '/images/placeholder.jpg'}
+                src={caseData.image_url || '/images/placeholder.jpg'}
                 alt={caseData.name}
                 className="w-80 h-80 object-contain rounded-2xl shadow-2xl"
                 onError={(e) => {
+                  console.log('Image failed to load:', caseData.image_url);
                   (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
                 }}
               />
