@@ -143,6 +143,14 @@ const CasePage = () => {
       return "bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/30 border-0";
     }
     
+    if (name.includes('гадюка') || name.includes('viper') || name.includes('змея') || name.includes('snake')) {
+      return "bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:from-green-600 hover:via-green-700 hover:to-green-800 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-green-500/30 border-0";
+    }
+    
+    if (name.includes('акула') || name.includes('shark') || name.includes('рыба') || name.includes('fish')) {
+      return "bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 hover:from-gray-700 hover:via-gray-800 hover:to-gray-900 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-gray-500/30 border-0";
+    }
+    
     if (name.includes('дракон') || name.includes('dragon')) {
       return "bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-700 hover:via-red-800 hover:to-red-900 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-red-500/30 border-0";
     }
