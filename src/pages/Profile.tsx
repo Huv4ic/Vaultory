@@ -1,29 +1,27 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import EditProfileModal from '@/components/EditProfileModal';
+import { useAuth } from '../hooks/useAuth';
+import { supabase } from '../integrations/supabase/client';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { 
   User, 
   Wallet, 
   ShoppingBag, 
   Gift, 
+  TrendingUp, 
+  Star, 
+  Award, 
   Settings, 
-  LogOut, 
-  ArrowLeft,
-  Crown,
-  Star,
-  TrendingUp,
-  Zap,
+  LogOut,
   CreditCard,
-  History,
-  Award,
-  Target
+  Shield,
+  History
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useLanguage } from '@/hooks/useLanguage';
-import { supabase } from '@/integrations/supabase/client';
+import { useLanguage } from '../hooks/useLanguage';
+import EditProfileModal from '../components/EditProfileModal';
+import TopUpModal from '../components/TopUpModal';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -31,6 +29,7 @@ const Profile = () => {
   const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showTopUpModal, setShowTopUpModal] = useState(false);
   const [stats, setStats] = useState({
     totalPurchases: 0,
     totalSpent: 0,
@@ -102,8 +101,7 @@ const Profile = () => {
   };
 
   const handleTopUp = () => {
-    // Здесь можно добавить логику пополнения баланса
-    alert('Функция пополнения баланса будет добавлена позже');
+    setShowTopUpModal(true);
   };
 
   const handleAvatarUpdate = async (avatarUrl: string) => {
@@ -233,14 +231,14 @@ const Profile = () => {
                   {/* Роль пользователя */}
                   {profile?.role === 'admin' && (
                     <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 mb-3 text-xs">
-                      <Crown className="w-3 h-3 mr-1" />
+                      <Shield className="w-3 h-3 mr-1" />
                       Администратор
                     </Badge>
                   )}
                   
                   {/* Статус */}
                   <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                    <Zap className="w-3 h-3 mr-1" />
+                    <Shield className="w-3 h-3 mr-1" />
                     Активен
                   </Badge>
                 </div>
@@ -353,7 +351,7 @@ const Profile = () => {
                   <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
-                        <Target className="w-4 h-4 text-amber-400" />
+                        <Shield className="w-4 h-4 text-amber-400" />
                       </div>
                       <span className="text-gray-300">Первая покупка</span>
                     </div>
@@ -438,7 +436,7 @@ const Profile = () => {
               variant="outline"
               className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
             >
-              <ArrowLeft className="w-5 h-5 mr-2" />
+              <Shield className="w-5 h-5 mr-2" />
               Вернуться на главную
             </Button>
           </div>
@@ -448,6 +446,10 @@ const Profile = () => {
         isOpen={showEditModal} 
         onClose={() => setShowEditModal(false)} 
         onAvatarUpdate={handleAvatarUpdate}
+      />
+      <TopUpModal
+        isOpen={showTopUpModal}
+        onClose={() => setShowTopUpModal(false)}
       />
     </div>
   );
