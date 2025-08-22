@@ -102,7 +102,7 @@ const Cases = () => {
               onClick={() => navigate(`/case/${caseData.id}`)}
             >
               {/* Карточка кейса в стиле GGDROP */}
-              <div className="relative w-full h-64">
+              <div className="relative w-full h-80">
                 {/* Убираем все фоны - оставляем только прозрачность */}
                 
                 {/* Изображение кейса с 3D эффектом */}
@@ -112,13 +112,6 @@ const Cases = () => {
                       src={caseData.image_url} 
                       alt={caseData.name}
                       className="w-full h-full object-contain rounded-2xl transition-all duration-500 group-hover:scale-105"
-                      style={{
-                        filter: 'brightness(1.1) contrast(1.2) saturate(1.1)',
-                        mixBlendMode: 'multiply'
-                        // Альтернативный вариант для более агрессивного удаления белого фона:
-                        // filter: 'brightness(1.2) contrast(1.5) saturate(1.3) hue-rotate(0deg)',
-                        // mixBlendMode: 'darken'
-                      }}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
@@ -127,36 +120,36 @@ const Cases = () => {
                     />
                     {/* Fallback иконка (скрыта по умолчанию) */}
                     <div className="hidden absolute inset-0 w-full h-full flex items-center justify-center">
-                      <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30">
-                        <Gift className="w-10 h-10 text-white" />
+                      <div className="w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30">
+                        <Gift className="w-12 h-12 text-white" />
                       </div>
                     </div>
                   </div>
                 ) : (
                   /* Если нет изображения, показываем стилизованную иконку */
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30">
-                      <Gift className="w-10 h-10 text-white" />
+                    <div className="w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30">
+                      <Gift className="w-12 h-12 text-white" />
                     </div>
                   </div>
                 )}
                 
                 {/* Информация о кейсе поверх изображения */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent rounded-b-2xl p-4">
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent rounded-b-2xl p-3">
                   {/* Название кейса */}
-                  <div className="text-lg font-bold text-white mb-2 drop-shadow-lg">
+                  <div className="text-base font-bold text-white mb-1 drop-shadow-lg">
                     {caseData.name}
                   </div>
                   
                   {/* Игра */}
-                  <div className="text-sm text-amber-300 mb-2 flex items-center gap-2">
-                    <Package className="w-4 h-4" />
+                  <div className="text-xs text-amber-300 mb-1 flex items-center gap-1">
+                    <Package className="w-3 h-3" />
                     {caseData.game}
                   </div>
                   
                   {/* Цена */}
-                  <div className="text-xl font-bold text-amber-400 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5" />
+                  <div className="text-lg font-bold text-amber-400 flex items-center gap-1">
+                    <Sparkles className="w-4 h-4" />
                     {caseData.price}₴
                   </div>
                 </div>
