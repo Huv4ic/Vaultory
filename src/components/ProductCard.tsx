@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Eye, ShoppingCart, Star, Heart } from 'lucide-react';
+import { Eye, ShoppingCart, Star, Heart, Share2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useFavorites } from '@/hooks/useFavorites';
+import ShareModal from './ShareModal';
 
 interface ProductCardProps {
   id: string;
@@ -38,11 +39,16 @@ const ProductCard = ({
   onDetails
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { t } = useLanguage();
   const { isFavorite, toggleFavorite, loading } = useFavorites();
 
   const handleFavoriteClick = async () => {
     await toggleFavorite(id);
+  };
+
+  const handleShare = () => {
+    setIsShareModalOpen(true);
   };
 
   // Используем изображение из массива или из image_url
@@ -139,10 +145,27 @@ const ProductCard = ({
             <ShoppingCart className="w-4 h-4 mr-2" />
             {isInCart ? t('В корзине') : t('В корзину')}
           </Button>
+
+          <Button
+            onClick={handleShare}
+            variant="outline"
+            size="sm"
+            className="w-full border-gray-500/30 text-gray-400 hover:bg-gray-500/10 hover:border-gray-400 hover:text-gray-300 transition-all duration-300 hover:scale-105 h-10 text-sm font-medium"
+          >
+            <Share2 className="w-4 h-4 mr-2" />
+            Поделиться
+          </Button>
         </div>
       </div>
       {/* Анимированное свечение при наведении */}
       <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-emerald-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+      {/* Модальное окно для шаринга */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        productName={name}
+      />
     </div>
   );
 };

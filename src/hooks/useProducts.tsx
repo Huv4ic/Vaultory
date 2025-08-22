@@ -65,7 +65,12 @@ export const useProducts = () => {
       
       // Добавляем информацию об избранности и сортируем
       const productsWithFavorites = (productsData || []).map(product => {
-        console.log('Product:', product.name, 'Images:', product.images, 'Full product:', product);
+        console.log('Product loaded:', {
+          id: product.id,
+          name: product.name,
+          images: product.images,
+          hasImage: !!(product.images && product.images.length > 0)
+        });
         return {
           ...product,
           is_favorite: isFavorite(product.id)

@@ -24,6 +24,7 @@ import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useFavorites } from '@/hooks/useFavorites';
+import ShareModal from '@/components/ShareModal';
 
 const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +36,7 @@ const ProductPage = () => {
   
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const product = products.find(p => p.id === id);
 
@@ -57,6 +59,10 @@ const ProductPage = () => {
         image_url: product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'
       });
     }
+  };
+
+  const handleShare = () => {
+    setIsShareModalOpen(true);
   };
 
   const isInCart = product ? items.some(item => item.id === product.id) : false;
@@ -208,6 +214,7 @@ const ProductPage = () => {
                 </Button>
                 
                 <Button
+                  onClick={handleShare}
                   variant="outline"
                   className="px-6 py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                 >
@@ -373,6 +380,13 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Модальное окно для шаринга */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        productName={product?.name || ''}
+      />
     </div>
   );
 };
