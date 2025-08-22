@@ -220,7 +220,7 @@ const CasePage = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
       <div className="container mx-auto px-4 py-8">
         {/* Кнопка возврата */}
-        <div className="mb-6 mt-20">
+        <div className="mb-6 mt-24">
           <Button 
             onClick={() => navigate('/cases')} 
             className={caseData ? getCaseTheme(caseData.name) : "bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:via-yellow-600 hover:to-amber-700 text-black font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30 border-0"}
