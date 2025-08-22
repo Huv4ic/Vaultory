@@ -87,18 +87,20 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
       console.log('Получен публичный URL:', publicUrl);
 
       // Обновляем профиль в базе данных
-      const { data: updateData, error: updateError } = await supabase
+      const { error: updateError } = await supabase
         .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('telegram_id', telegramUser.id)
-        .select();
+        .update({ 
+          avatar_url: publicUrl,
+          updated_at: new Date().toISOString()
+        } as any)
+        .eq('telegram_id', telegramUser.id);
 
       if (updateError) {
         console.error('Ошибка обновления профиля:', updateError);
         throw new Error(`Ошибка обновления профиля: ${updateError.message}`);
       }
 
-      console.log('Профиль обновлен:', updateData);
+      console.log('Профиль обновлен успешно');
 
       // Вызываем callback для обновления UI
       onAvatarUpdate(publicUrl);
@@ -136,7 +138,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
       // Убираем аватар из профиля
       const { error } = await supabase
         .from('profiles')
-        .update({ avatar_url: null })
+        .update({ avatar_url: null } as any)
         .eq('telegram_id', telegramUser.id);
 
       if (error) throw error;
