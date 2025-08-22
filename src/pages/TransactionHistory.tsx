@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Clock, TrendingUp, TrendingDown, Gift, ShoppingCart, Wallet, Filter } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Transaction {
   id: string;
@@ -24,59 +25,53 @@ const TransactionHistory = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'deposits' | 'withdrawals' | 'cases' | 'purchases'>('all');
 
-  // Моковые данные для демонстрации (замените на реальные данные из БД)
-  useEffect(() => {
-    const mockTransactions: Transaction[] = [
-      {
-        id: '1',
-        type: 'deposit',
-        amount: 1000,
-        description: 'Пополнение баланса',
-        date: '2024-01-15T10:30:00Z',
-        status: 'completed',
-        balance_after: 1000
-      },
-      {
-        id: '2',
-        type: 'case_opening',
-        amount: -500,
-        description: 'Открытие кейса CS2',
-        date: '2024-01-15T11:00:00Z',
-        status: 'completed',
-        balance_after: 500
-      },
-      {
-        id: '3',
-        type: 'purchase',
-        amount: -200,
-        description: 'Покупка товара "PUBG UC"',
-        date: '2024-01-15T12:00:00Z',
-        status: 'completed',
-        balance_after: 300
-      },
-      {
-        id: '4',
-        type: 'deposit',
-        amount: 2000,
-        description: 'Пополнение баланса',
-        date: '2024-01-14T15:30:00Z',
-        status: 'completed',
-        balance_after: 2300
-      },
-      {
-        id: '5',
-        type: 'case_opening',
-        amount: -300,
-        description: 'Открытие кейса Roblox',
-        date: '2024-01-14T16:00:00Z',
-        status: 'completed',
-        balance_after: 2000
-      }
-    ];
+  // Загружаем реальные транзакции пользователя из базы данных
+  const fetchUserTransactions = async () => {
+      if (!telegramUser) return;
+      
+      try {
+        setLoading(true);
+        
+        // Загружаем транзакции пользователя по telegram_id
+        const { data, error } = await supabase
+          .from('transactions')
+          .select('*')
+          .eq('user_id', telegramUser.id)
+          .order('created_at', { ascending: false });
 
-    setTransactions(mockTransactions);
-    setLoading(false);
-  }, []);
+        if (error) {
+          console.error('Ошибка загрузки транзакций:', error);
+          // Если таблица не существует или ошибка, показываем пустой список
+          setTransactions([]);
+        } else {
+          // Преобразуем данные в нужный формат
+          const formattedTransactions: Transaction[] = (data || []).map((tx: any) => ({
+            id: tx.id,
+            type: tx.type || tx.transaction_type,
+            amount: tx.amount,
+            description: tx.description || tx.note,
+            date: tx.created_at || tx.date,
+            status: tx.status || 'completed',
+            balance_after: tx.balance_after || tx.balance || 0
+          }));
+          
+          setTransactions(formattedTransactions);
+          
+          // Логируем для отладки
+          console.log('Загружено транзакций:', formattedTransactions.length);
+        }
+      } catch (error) {
+        console.error('Ошибка при загрузке транзакций:', error);
+        setTransactions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+  // Загружаем реальные транзакции пользователя из базы данных
+  useEffect(() => {
+    fetchUserTransactions();
+  }, [telegramUser]);
 
   const getTransactionIcon = (type: string) => {
     switch (type) {
