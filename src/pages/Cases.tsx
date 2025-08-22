@@ -102,7 +102,7 @@ const Cases = () => {
               onClick={() => navigate(`/case/${caseData.id}`)}
             >
               {/* Карточка кейса в стиле GGDROP */}
-              <div className="relative w-full h-80">
+              <div className="relative w-full h-96">
                 {/* Убираем все фоны - оставляем только прозрачность */}
                 
                 {/* Изображение кейса с 3D эффектом */}
