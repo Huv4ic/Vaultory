@@ -163,7 +163,7 @@ const CasePage = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
       <div className="container mx-auto px-4 py-8">
         {/* Кнопка возврата */}
-        <div className="mb-6">
+        <div className="mb-6 mt-20">
           <Button 
             onClick={() => navigate('/cases')} 
             variant="outline" 
@@ -180,7 +180,7 @@ const CasePage = () => {
           <div className="flex justify-center lg:justify-start">
             <div className="relative">
               <img
-                src={caseData.image_url}
+                src={caseData.image || caseData.image_url || '/images/placeholder.jpg'}
                 alt={caseData.name}
                 className="w-80 h-80 object-contain rounded-2xl shadow-2xl"
                 onError={(e) => {

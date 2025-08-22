@@ -248,17 +248,20 @@ const AdminCases = () => {
         return;
       }
 
+      const itemData = {
+        case_id: currentCaseId,
+        name: currentCaseItem.name,
+        rarity: currentCaseItem.rarity,
+        drop_chance: currentCaseItem.drop_chance,
+        image_url: currentCaseItem.image_url,
+        drop_after_cases: currentCaseItem.drop_after_cases || 0,
+      };
+
       if (itemEditMode === 'edit' && editingItemId) {
         // Обновление существующего предмета
         const { error } = await supabase
           .from('admin_case_items')
-          .update({
-            name: currentCaseItem.name,
-            rarity: currentCaseItem.rarity,
-            drop_chance: currentCaseItem.drop_chance,
-            image_url: currentCaseItem.image_url,
-            drop_after_cases: currentCaseItem.drop_after_cases,
-          })
+          .update(itemData)
           .eq('id', editingItemId);
 
         if (error) throw error;
@@ -267,14 +270,7 @@ const AdminCases = () => {
         // Добавление нового предмета
         const { error } = await supabase
           .from('admin_case_items')
-          .insert({
-            case_id: currentCaseId,
-            name: currentCaseItem.name,
-            rarity: currentCaseItem.rarity,
-            drop_chance: currentCaseItem.drop_chance,
-            image_url: currentCaseItem.image_url,
-            drop_after_cases: currentCaseItem.drop_after_cases || 0,
-          });
+          .insert(itemData);
 
         if (error) throw error;
         toast('Предмет успешно добавлен!', 'success');
@@ -285,7 +281,7 @@ const AdminCases = () => {
       
     } catch (err) {
       console.error('Error saving case item:', err);
-      toast('Ошибка при сохранении предмета', 'error');
+      toast(`Ошибка при сохранении предмета: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`, 'error');
     }
   };
 
