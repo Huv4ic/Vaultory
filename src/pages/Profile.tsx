@@ -377,6 +377,7 @@ const Profile = () => {
               <CardContent>
                 <div className="space-y-4">
                   <Button
+                    onClick={() => navigate('/transaction-history')}
                     variant="outline"
                     className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                   >

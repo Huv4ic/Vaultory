@@ -19,6 +19,7 @@ import Admin from "./pages/Admin";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import CasePage from "./pages/CasePage";
+import TransactionHistory from "./pages/TransactionHistory";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ToastContainer from "@/components/ui/ToastContainer";
@@ -63,6 +64,7 @@ const AppContent = () => {
               <Route path="/admin" element={<Admin />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/transaction-history" element={<TransactionHistory />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
