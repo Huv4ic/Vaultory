@@ -8,12 +8,14 @@ interface ProductCardProps {
   id: string;
   name: string;
   price: number;
-  discount_price?: number;
+  original_price?: number;
   images?: string[];
   image_url?: string;
-  category_id: string;
-  game_id: string;
-  description: string;
+  category_id?: string;
+  game?: string;
+  rating?: number;
+  sales?: number;
+  description?: string;
   isInCart: boolean;
   onAddToCart: () => void;
   onDetails: () => void;
@@ -23,11 +25,13 @@ const ProductCard = ({
   id,
   name,
   price,
-  discount_price,
+  original_price,
   images,
   image_url,
   category_id,
-  game_id,
+  game,
+  rating,
+  sales,
   description,
   isInCart,
   onAddToCart,
@@ -100,12 +104,16 @@ const ProductCard = ({
             <span className="text-xl font-bold text-amber-400">
               {price}₴
             </span>
-            <span className="text-gray-400 line-through text-xs">
-              800₴
-            </span>
-            <span className="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-lg border border-amber-500/30">
-              150 продаж
-            </span>
+            {original_price && original_price > price && (
+              <span className="text-gray-400 line-through text-xs">
+                {original_price}₴
+              </span>
+            )}
+            {sales && (
+              <span className="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-lg border border-amber-500/30">
+                {sales} продаж
+              </span>
+            )}
           </div>
         </div>
       </div>

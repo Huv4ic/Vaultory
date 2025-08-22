@@ -159,12 +159,16 @@ const ProductPage = () => {
               {/* Цена */}
               <div className="flex items-center space-x-4 mb-6">
                 <span className="text-3xl font-bold text-amber-400">{product.price}₴</span>
-                <span className="text-gray-400 line-through text-xl">
-                  800₴
-                </span>
-                <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
-                  150 продаж
-                </Badge>
+                {product.original_price && product.original_price > product.price && (
+                  <span className="text-gray-400 line-through text-xl">
+                    {product.original_price}₴
+                  </span>
+                )}
+                {product.sales && (
+                  <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                    {product.sales} продаж
+                  </Badge>
+                )}
               </div>
               
               {/* Описание */}
@@ -224,21 +228,25 @@ const ProductPage = () => {
                 
                 <div className="flex justify-between items-center py-2 border-b border-amber-500/20">
                   <span className="text-gray-300">Игра:</span>
-                  <span className="text-white font-medium">{product.game_id}</span>
+                  <span className="text-white font-medium">{product.game}</span>
                 </div>
                 
-                <div className="flex justify-between items-center py-2 border-b border-amber-500/20">
-                  <span className="text-gray-300">Рейтинг:</span>
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-amber-400 fill-current" />
-                    <span className="text-white font-medium">★4</span>
+                {product.rating && (
+                  <div className="flex justify-between items-center py-2 border-b border-amber-500/20">
+                    <span className="text-gray-300">Рейтинг:</span>
+                    <div className="flex items-center space-x-1">
+                      <Star className="w-4 h-4 text-amber-400 fill-current" />
+                      <span className="text-white font-medium">★{product.rating}</span>
+                    </div>
                   </div>
-                </div>
+                )}
                 
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-300">Продажи:</span>
-                  <span className="text-white font-medium">150</span>
-                </div>
+                {product.sales && (
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-gray-300">Продажи:</span>
+                    <span className="text-white font-medium">{product.sales}</span>
+                  </div>
+                )}
               </div>
             </div>
 

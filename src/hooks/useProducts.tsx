@@ -6,16 +6,17 @@ export interface Product {
   id: string;
   name: string;
   price: number;
-  discount_price?: number;
+  original_price?: number;
   images?: string[];
   image_url?: string;
-  category_id: string;
-  game_id: string;
-  description: string;
-  is_available: boolean;
-  is_featured: boolean;
-  created_at: string;
-  updated_at: string;
+  category_id?: string;
+  game?: string;
+  rating?: number;
+  sales?: number;
+  description?: string;
+  features?: string[];
+  created_at?: string;
+  updated_at?: string;
   is_favorite?: boolean;
 }
 
