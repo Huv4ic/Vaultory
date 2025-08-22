@@ -18,10 +18,18 @@ import {
   Mail
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../hooks/useLanguage';
 
 const Privacy = () => {
-  const { t } = useLanguage();
   const navigate = useNavigate();
+
+  // Функция для открытия Gmail
+  const openGmail = () => {
+    const subject = encodeURIComponent('Вопрос по конфиденциальности Vaultory');
+    const body = encodeURIComponent('Здравствуйте! У меня есть вопрос по политике конфиденциальности:\n\n');
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=vaultorypoderjka@gmail.com&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank');
+  };
 
   const privacySections = [
     {
@@ -286,7 +294,12 @@ const Privacy = () => {
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Mail className="w-5 h-5 text-amber-400" />
-                      <span className="text-gray-300 text-sm">Email: vaultorypoderjka@gmail.com</span>
+                      <button 
+                        onClick={openGmail}
+                        className="text-gray-300 hover:text-amber-400 transition-colors duration-300 text-sm underline"
+                      >
+                        Email: vaultorypoderjka@gmail.com
+                      </button>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Shield className="w-5 h-5 text-amber-400" />

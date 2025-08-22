@@ -19,8 +19,16 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const About = () => {
-  const { t } = useLanguage();
   const navigate = useNavigate();
+  const { t } = useLanguage();
+
+  // Функция для открытия Gmail
+  const openGmail = () => {
+    const subject = encodeURIComponent('Вопрос о Vaultory');
+    const body = encodeURIComponent('Здравствуйте! У меня есть вопрос о Vaultory:\n\n');
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=vaultorypoderjka@gmail.com&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank');
+  };
 
   const features = [
     {
@@ -319,7 +327,7 @@ const About = () => {
                   Перейти в каталог
                 </Button>
                 <Button
-                  onClick={() => navigate('/support')}
+                  onClick={openGmail}
                   variant="outline"
                   className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
                 >

@@ -1,10 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Home, Search, ArrowLeft, AlertTriangle, Compass, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const NotFound = () => {
+  const navigate = useNavigate();
   const { t } = useLanguage();
+
+  // Функция для открытия Gmail
+  const openGmail = () => {
+    const subject = encodeURIComponent('Проблема с сайтом Vaultory');
+    const body = encodeURIComponent('Здравствуйте! У меня возникла проблема с сайтом:\n\n');
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=vaultorypoderjka@gmail.com&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank');
+  };
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
@@ -151,11 +160,13 @@ const NotFound = () => {
               не стесняйтесь обращаться к нам.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/support">
-                <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300">
-                  Связаться с поддержкой
-                </Button>
-              </Link>
+              <Button 
+                onClick={openGmail}
+                variant="outline" 
+                className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+              >
+                Написать в поддержку
+              </Button>
               
               <Link to="/">
                 <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300">

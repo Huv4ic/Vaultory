@@ -39,7 +39,7 @@ const Support = () => {
       title: "Email поддержка",
       description: "Подробные вопросы и документация",
       action: "Отправить Email",
-      link: "mailto:vaultorypoderjka@gmail.com",
+      link: "mailto:vaultorypoderjka@gmail.com?subject=Вопрос по поддержке&body=Здравствуйте! У меня есть вопрос:",
       color: "from-amber-500 to-amber-600"
     }
   ];
@@ -101,6 +101,14 @@ const Support = () => {
       description: "Наши специалисты решают любые вопросы"
     }
   ];
+
+  // Функция для открытия Gmail
+  const openGmail = () => {
+    const subject = encodeURIComponent('Вопрос в поддержку Vaultory');
+    const body = encodeURIComponent('Здравствуйте! У меня есть вопрос:\n\n');
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=vaultorypoderjka@gmail.com&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
@@ -292,7 +300,7 @@ const Support = () => {
                   Написать в Telegram
                 </Button>
                 <Button
-                  onClick={() => window.open('mailto:vaultorypoderjka@gmail.com', '_blank')}
+                  onClick={openGmail}
                   variant="outline"
                   className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
                 >
