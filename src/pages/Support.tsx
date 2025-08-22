@@ -39,7 +39,7 @@ const Support = () => {
       title: "Email поддержка",
       description: "Подробные вопросы и документация",
       action: "Отправить Email",
-      link: "mailto:support@vaultory.com",
+      link: "mailto:vaultorypoderjka@gmail.com",
       color: "from-amber-500 to-amber-600"
     }
   ];
@@ -292,7 +292,7 @@ const Support = () => {
                   Написать в Telegram
                 </Button>
                 <Button
-                  onClick={() => window.open('mailto:support@vaultory.com', '_blank')}
+                  onClick={() => window.open('mailto:vaultorypoderjka@gmail.com', '_blank')}
                   variant="outline"
                   className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
                 >

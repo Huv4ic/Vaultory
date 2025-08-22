@@ -286,7 +286,7 @@ const Privacy = () => {
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Mail className="w-5 h-5 text-amber-400" />
-                      <span className="text-gray-300 text-sm">Email: support@vaultory.com</span>
+                      <span className="text-gray-300 text-sm">Email: vaultorypoderjka@gmail.com</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Shield className="w-5 h-5 text-amber-400" />

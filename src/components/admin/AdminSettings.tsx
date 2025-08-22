@@ -275,7 +275,7 @@ const AdminSettings = () => {
                   <Input
                     id="support_email"
                     type="email"
-                    defaultValue={settings?.find(s => s.key === 'support_email')?.value || 'support@vaultory.com'}
+                    defaultValue={settings?.find(s => s.key === 'support_email')?.value || 'vaultorypoderjka@gmail.com'}
                     className="bg-gray-700 border-gray-600 text-white"
                     onBlur={(e) => handleUpdateSetting('support_email', e.target.value)}
                   />

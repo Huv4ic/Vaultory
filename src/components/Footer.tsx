@@ -57,7 +57,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a 
-                href="mailto:support@vaultory.com" 
+                href="mailto:vaultorypoderjka@gmail.com" 
                 className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-purple-500 rounded-full flex items-center justify-center text-white hover:from-emerald-600 hover:to-purple-600 transition-all duration-300 hover:scale-110 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
