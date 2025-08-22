@@ -1,6 +1,6 @@
-import { useLanguage } from '@/hooks/useLanguage';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '../hooks/useLanguage';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { 
   ArrowLeft, 
   Shield, 
@@ -18,10 +18,10 @@ import {
   Mail
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../hooks/useLanguage';
 
 const Privacy = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   // Функция для открытия Gmail
   const openGmail = () => {

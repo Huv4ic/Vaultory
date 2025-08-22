@@ -130,6 +130,66 @@ const CasePage = () => {
     }
   };
 
+  // Функция для определения тематики кейса и стилей кнопки
+  const getCaseTheme = (caseName: string) => {
+    const name = caseName.toLowerCase();
+    
+    if (name.includes('феникс') || name.includes('phoenix') || name.includes('огонь') || name.includes('fire')) {
+      return {
+        buttonClass: "bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 hover:from-orange-600 hover:via-red-600 hover:to-orange-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-orange-500/30 border-0",
+        shadowClass: "shadow-orange-500/30"
+      };
+    }
+    
+    if (name.includes('лед') || name.includes('ice') || name.includes('снег') || name.includes('snow') || name.includes('мороз') || name.includes('frost')) {
+      return {
+        buttonClass: "bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 hover:from-blue-500 hover:via-cyan-600 hover:to-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/30 border-0",
+        shadowClass: "shadow-blue-500/30"
+      };
+    }
+    
+    if (name.includes('молния') || name.includes('lightning') || name.includes('электричество') || name.includes('electric') || name.includes('гром') || name.includes('thunder')) {
+      return {
+        buttonClass: "bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-yellow-500/30 border-0",
+        shadowClass: "shadow-yellow-500/30"
+      };
+    }
+    
+    if (name.includes('земля') || name.includes('earth') || name.includes('камень') || name.includes('stone') || name.includes('горы') || name.includes('mountain')) {
+      return {
+        buttonClass: "bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:via-green-800 hover:to-green-900 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-green-500/30 border-0",
+        shadowClass: "shadow-green-500/30"
+      };
+    }
+    
+    if (name.includes('вода') || name.includes('water') || name.includes('океан') || name.includes('ocean') || name.includes('море') || name.includes('sea')) {
+      return {
+        buttonClass: "bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/30 border-0",
+        shadowClass: "shadow-blue-500/30"
+      };
+    }
+    
+    if (name.includes('тьма') || name.includes('dark') || name.includes('ночь') || name.includes('night') || name.includes('тень') || name.includes('shadow')) {
+      return {
+        buttonClass: "bg-gradient-to-r from-purple-600 via-purple-700 to-purple-800 hover:from-purple-700 hover:via-purple-800 hover:to-purple-900 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/30 border-0",
+        shadowClass: "shadow-purple-500/30"
+      };
+    }
+    
+    if (name.includes('свет') || name.includes('light') || name.includes('солнце') || name.includes('sun') || name.includes('звезда') || name.includes('star')) {
+      return {
+        buttonClass: "bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 hover:from-yellow-400 hover:via-yellow-500 hover:to-yellow-600 text-black font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-yellow-400/30 border-0",
+        shadowClass: "shadow-yellow-400/30"
+      };
+    }
+    
+    // По умолчанию - золотая тема
+    return {
+      buttonClass: "bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:via-yellow-600 hover:to-amber-700 text-black font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30 border-0",
+      shadowClass: "shadow-amber-500/30"
+    };
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
@@ -166,7 +226,7 @@ const CasePage = () => {
         <div className="mb-6 mt-20">
           <Button 
             onClick={() => navigate('/cases')} 
-            className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 hover:from-orange-600 hover:via-red-600 hover:to-orange-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-orange-500/30 border-0"
+            className={caseData ? getCaseTheme(caseData.name).buttonClass : "bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:via-yellow-600 hover:to-amber-700 text-black font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30 border-0"}
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Вернуться к кейсам
