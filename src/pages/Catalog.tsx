@@ -25,13 +25,28 @@ const Catalog = () => {
   const getCategoryIcon = (categoryName: string) => {
     const iconMap: { [key: string]: string } = {
       'currency': '💰',
+      'accounts': '👤',
+      'keys': '🔑',
+      'subscriptions': '📱',
       'skins': '🎨',
       'weapons': '🔫',
-      'characters': '👤',
-      'vehicles': '🚗',
       'default': '📦'
     };
-    return iconMap[categoryName.toLowerCase()] || iconMap['default'];
+    
+    // Проверяем точное совпадение
+    if (iconMap[categoryName.toLowerCase()]) {
+      return iconMap[categoryName.toLowerCase()];
+    }
+    
+    // Проверяем частичное совпадение
+    const lowerName = categoryName.toLowerCase();
+    if (lowerName.includes('аккаунт') || lowerName.includes('account')) return '👤';
+    if (lowerName.includes('валюта') || lowerName.includes('currency')) return '💰';
+    if (lowerName.includes('ключ') || lowerName.includes('key')) return '🔑';
+    if (lowerName.includes('подписк') || lowerName.includes('subscription')) return '📱';
+    if (lowerName.includes('скин') || lowerName.includes('skin')) return '🎨';
+    
+    return iconMap['default'];
   };
 
   // Создаем gameCategories из данных БД
@@ -213,6 +228,37 @@ const Catalog = () => {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Кнопки категорий */}
+        <div className="mb-8">
+          <div className="flex flex-wrap justify-center gap-4">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`px-6 py-3 rounded-xl font-medium transition-all duration-500 transform hover:scale-105 flex items-center space-x-3 ${
+                selectedCategory === 'all'
+                  ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
+                  : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-amber-500/20 hover:text-amber-300 border border-gray-700/50 hover:border-amber-500/30'
+              }`}
+            >
+              <span className="text-lg">🎮</span>
+              <span>Все категории</span>
+            </button>
+            {gameCategories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`px-6 py-3 rounded-xl font-medium transition-all duration-500 transform hover:scale-105 flex items-center space-x-3 ${
+                  selectedCategory === category.id
+                    ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
+                    : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-amber-500/20 hover:text-amber-300 border border-gray-700/50 hover:border-amber-500/30'
+                }`}
+              >
+                <span className="text-lg">{getCategoryIcon(category.name)}</span>
+                <span>{category.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Результаты поиска */}
