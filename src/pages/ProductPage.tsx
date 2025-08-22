@@ -133,12 +133,12 @@ const ProductPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Галерея изображений */}
           <div className="space-y-6">
-            <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6">
-              <div className="relative h-96 mb-4">
+            <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8">
+              <div className="relative h-[600px] mb-4">
                 <img
                   src={selectedImage || (product.image_url || '/placeholder.svg')}
                   alt={product.name}
-                  className="w-full h-full object-cover rounded-xl"
+                  className="w-full h-full object-contain rounded-xl"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = '/placeholder.svg';
@@ -262,7 +262,7 @@ const ProductPage = () => {
             </div>
 
             {/* Информация о доставке */}
-            <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6">
+            <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <Truck className="w-6 h-6 mr-3 text-amber-400" />
                 Информация о доставке
