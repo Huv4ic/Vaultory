@@ -112,6 +112,13 @@ const Cases = () => {
                       src={caseData.image_url} 
                       alt={caseData.name}
                       className="w-full h-full object-contain rounded-2xl transition-all duration-500 group-hover:scale-105"
+                      style={{
+                        filter: 'brightness(1.1) contrast(1.2) saturate(1.1)',
+                        mixBlendMode: 'multiply'
+                        // Альтернативный вариант для более агрессивного удаления белого фона:
+                        // filter: 'brightness(1.2) contrast(1.5) saturate(1.3) hue-rotate(0deg)',
+                        // mixBlendMode: 'darken'
+                      }}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
