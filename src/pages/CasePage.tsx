@@ -182,14 +182,13 @@ const CasePage = () => {
               <img
                 src={caseData.image_url || '/images/placeholder.jpg'}
                 alt={caseData.name}
-                className="w-80 h-80 object-contain rounded-2xl shadow-2xl"
+                className="w-96 h-96 object-contain rounded-2xl shadow-2xl"
                 onError={(e) => {
                   console.log('Image failed to load:', caseData.image_url);
                   (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
                 }}
               />
-              {/* Градиентная рамка */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 pointer-events-none"></div>
+              {/* Убираем желтую рамку */}
             </div>
           </div>
 
@@ -236,23 +235,23 @@ const CasePage = () => {
           </h2>
           
           {caseItems.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {caseItems.map((item) => (
-                <Card key={item.id} className="bg-gray-800/50 border-gray-700 hover:border-amber-500/50 transition-all duration-300 hover:scale-105">
-                  <CardContent className="p-4">
-                    <div className="text-center space-y-3">
+                <Card key={item.id} className="bg-gray-800/30 border-gray-600/50 hover:border-amber-500/50 transition-all duration-300 hover:scale-105">
+                  <CardContent className="p-3">
+                    <div className="text-center space-y-2">
                       {/* Изображение предмета */}
                       <div className="relative mx-auto">
                         <img
                           src={item.image_url || '/images/placeholder.jpg'}
                           alt={item.name}
-                          className="w-20 h-20 object-contain mx-auto"
+                          className="w-24 h-24 object-contain mx-auto"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
                           }}
                         />
                         {/* Иконка редкости */}
-                        <div className="absolute -top-2 -right-2">
+                        <div className="absolute -top-1 -right-1">
                           {getRarityIcon(item.rarity)}
                         </div>
                       </div>
@@ -267,7 +266,7 @@ const CasePage = () => {
                       {/* Редкость */}
                       <Badge 
                         variant="outline" 
-                        className={`text-xs ${getRarityColor(item.rarity)}`}
+                        className={`text-xs px-2 py-1 ${getRarityColor(item.rarity)}`}
                       >
                         {getRarityName(item.rarity)}
                       </Badge>
