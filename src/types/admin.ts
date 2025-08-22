@@ -75,7 +75,6 @@ export interface CaseFormData {
 export interface CaseItemFormData {
   name: string;
   rarity: string; // Принимаем string для гибкости
-  drop_chance: number;
   image_url: string;
   drop_after_cases?: number; // Временно опциональное поле
 }

@@ -180,7 +180,7 @@ const CasePage = () => {
           <div className="flex justify-center lg:justify-start">
             <div className="relative">
               <img
-                src={caseData.image || caseData.image_url || '/images/placeholder.jpg'}
+                src={caseData.image || '/images/placeholder.jpg'}
                 alt={caseData.name}
                 className="w-80 h-80 object-contain rounded-2xl shadow-2xl"
                 onError={(e) => {

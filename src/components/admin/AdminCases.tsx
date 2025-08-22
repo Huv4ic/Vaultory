@@ -21,7 +21,6 @@ const emptyCase: CaseFormData = {
 const emptyCaseItem: CaseItemFormData = {
   name: '',
   rarity: 'common',
-  drop_chance: 0,
   image_url: '',
   drop_after_cases: 0,
 };
@@ -134,7 +133,6 @@ const AdminCases = () => {
     setCurrentCaseItem({
       name: item.name,
       rarity: item.rarity,
-      drop_chance: item.drop_chance,
       image_url: item.image_url || '',
       drop_after_cases: item.drop_after_cases || 0,
     });
@@ -174,7 +172,7 @@ const AdminCases = () => {
     const { name, value } = e.target;
     setCurrentCaseItem(prev => ({
       ...prev,
-      [name]: ['drop_chance', 'drop_after_cases'].includes(name) ? parseFloat(value) || 0 : value
+      [name]: ['drop_after_cases'].includes(name) ? parseFloat(value) || 0 : value
     }));
   };
 
@@ -252,7 +250,7 @@ const AdminCases = () => {
         case_id: currentCaseId,
         name: currentCaseItem.name,
         rarity: currentCaseItem.rarity,
-        drop_chance: currentCaseItem.drop_chance,
+        drop_chance: 0, // Устанавливаем в 0, так как не используем
         image_url: currentCaseItem.image_url,
         drop_after_cases: currentCaseItem.drop_after_cases || 0,
       };
@@ -574,7 +572,6 @@ const AdminCases = () => {
                       <th className="py-3 px-4 text-left">Изображение</th>
                       <th className="py-3 px-4 text-left">Название</th>
                       <th className="py-3 px-4 text-left">Редкость</th>
-                      <th className="py-3 px-4 text-left">Шанс выпадения</th>
                       <th className="py-3 px-4 text-left">Выпадает через</th>
                       <th className="py-3 px-4 text-left">Действия</th>
                     </tr>
@@ -610,9 +607,6 @@ const AdminCases = () => {
                              item.rarity === 'rare' ? 'Редкий' :
                              'Обычный'}
                           </Badge>
-                        </td>
-                        <td className="py-2 px-4">
-                          <div className="font-medium">{item.drop_chance}%</div>
                         </td>
                         <td className="py-2 px-4">
                           <div className="font-medium">{item.drop_after_cases} кейсов</div>
@@ -693,21 +687,6 @@ const AdminCases = () => {
                     <SelectItem value="legendary">Легендарный</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Шанс выпадения (%)</label>
-                <Input
-                  name="drop_chance"
-                  type="number"
-                  value={currentCaseItem.drop_chance}
-                  onChange={handleCaseItemChange}
-                  placeholder="0.00"
-                  step="0.01"
-                  min="0"
-                  max="100"
-                  className="bg-gray-700 border-gray-600"
-                />
               </div>
 
               <div>
