@@ -166,10 +166,9 @@ const CasePage = () => {
         <div className="mb-6 mt-20">
           <Button 
             onClick={() => navigate('/cases')} 
-            variant="outline" 
-            className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
+            className="bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 hover:from-orange-600 hover:via-red-600 hover:to-orange-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-orange-500/30 border-0"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-5 h-5 mr-2" />
             Вернуться к кейсам
           </Button>
         </div>
@@ -182,7 +181,7 @@ const CasePage = () => {
               <img
                 src={caseData.image_url || '/images/placeholder.jpg'}
                 alt={caseData.name}
-                className="w-96 h-96 object-contain rounded-2xl shadow-2xl"
+                className="w-[500px] h-[500px] object-contain rounded-2xl shadow-2xl"
                 onError={(e) => {
                   console.log('Image failed to load:', caseData.image_url);
                   (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
@@ -235,44 +234,42 @@ const CasePage = () => {
           </h2>
           
           {caseItems.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {caseItems.map((item) => (
-                <Card key={item.id} className="bg-gray-800/30 border-gray-600/50 hover:border-amber-500/50 transition-all duration-300 hover:scale-105">
-                  <CardContent className="p-3">
-                    <div className="text-center space-y-2">
-                      {/* Изображение предмета */}
-                      <div className="relative mx-auto">
-                        <img
-                          src={item.image_url || '/images/placeholder.jpg'}
-                          alt={item.name}
-                          className="w-24 h-24 object-contain mx-auto"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
-                          }}
-                        />
-                        {/* Иконка редкости */}
-                        <div className="absolute -top-1 -right-1">
-                          {getRarityIcon(item.rarity)}
-                        </div>
-                      </div>
-
-                      {/* Название предмета */}
-                      <div>
-                        <h3 className="font-medium text-white text-sm leading-tight">
-                          {item.name}
-                        </h3>
-                      </div>
-
-                      {/* Редкость */}
-                      <Badge 
-                        variant="outline" 
-                        className={`text-xs px-2 py-1 ${getRarityColor(item.rarity)}`}
-                      >
-                        {getRarityName(item.rarity)}
-                      </Badge>
+                <div key={item.id} className="text-center space-y-3 group">
+                  {/* Изображение предмета */}
+                  <div className="relative mx-auto">
+                    <img
+                      src={item.image_url || '/images/placeholder.jpg'}
+                      alt={item.name}
+                      className="w-28 h-28 object-contain mx-auto transition-transform duration-300 group-hover:scale-110"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+                      }}
+                    />
+                    {/* Иконка редкости */}
+                    <div className="absolute -top-2 -right-2">
+                      {getRarityIcon(item.rarity)}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+
+                  {/* Название предмета */}
+                  <div>
+                    <h3 className="font-semibold text-white text-base leading-tight">
+                      {item.name}
+                    </h3>
+                  </div>
+
+                  {/* Редкость */}
+                  <div className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium ${
+                    item.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                    item.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
+                    item.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+                    'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                  }`}>
+                    {getRarityName(item.rarity)}
+                  </div>
+                </div>
               ))}
             </div>
           ) : (
@@ -287,4 +284,4 @@ const CasePage = () => {
   );
 };
 
-export default CasePage; 
+export default CasePage;
