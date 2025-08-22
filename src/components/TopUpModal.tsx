@@ -25,6 +25,7 @@ interface PaymentMethod {
   color: string;
   description: string;
   details: string;
+  minAmount: string;
 }
 
 const paymentMethods: PaymentMethod[] = [
@@ -35,7 +36,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <CreditCard className="w-6 h-6" />,
     color: 'from-purple-500 to-purple-600',
     description: 'Банковская карта',
-    details: '5375 4141 0000 0000'
+    details: '4441111062334770',
+    minAmount: '1₴'
   },
   {
     id: 'pumb',
@@ -44,7 +46,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <Banknote className="w-6 h-6" />,
     color: 'from-blue-500 to-blue-600',
     description: 'Банковская карта',
-    details: '4149 4393 0000 0000'
+    details: '4314140004183320',
+    minAmount: '1₴'
   },
   {
     id: 'privatbank',
@@ -53,7 +56,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <CreditCard className="w-6 h-6" />,
     color: 'from-green-500 to-green-600',
     description: 'Банковская карта',
-    details: '5168 7554 0000 0000'
+    details: '5168745126341533',
+    minAmount: '1₴'
   },
   {
     id: 'pumb-us',
@@ -62,7 +66,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <Banknote className="w-6 h-6" />,
     color: 'from-indigo-500 to-indigo-600',
     description: 'Долларовая карта',
-    details: '4149 4393 0000 0000'
+    details: '4314140004183916',
+    minAmount: '2$'
   },
   {
     id: 'usdt-trc20',
@@ -71,7 +76,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <Coins className="w-6 h-6" />,
     color: 'from-orange-500 to-orange-600',
     description: 'Криптовалюта',
-    details: 'TRC20: TQn9Y2khDDcoGYGqVMxRQqBqRjFf9T72op'
+    details: 'TJr3gEZtMHQEbRPKz8mdx5rL178Rm4V2V3',
+    minAmount: '5$'
   },
   {
     id: 'usdt-erc20',
@@ -80,7 +86,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <Coins className="w-6 h-6" />,
     color: 'from-blue-500 to-blue-600',
     description: 'Криптовалюта',
-    details: 'ERC20: 0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6'
+    details: 'EQBNY7a1Gsy1O7TX0OhGBnM8YhpHQ6mAWIjq2glCTuJ1SlxF',
+    minAmount: '5$'
   },
   {
     id: 'usdc-erc20',
@@ -89,7 +96,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <Coins className="w-6 h-6" />,
     color: 'from-green-500 to-green-600',
     description: 'Криптовалюта',
-    details: 'ERC20: 0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6'
+    details: '0xf5eD6172C6C6C7aACBD03FEEF4B696f475AbC521',
+    minAmount: '15$'
   },
   {
     id: 'ltc',
@@ -98,7 +106,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <Coins className="w-6 h-6" />,
     color: 'from-gray-500 to-gray-600',
     description: 'Криптовалюта',
-    details: 'LTC: LQn9Y2khDDcoGYGqVMxRQqBqRjFf9T72op'
+    details: 'MPBVhMbcw1HzPM9zqDdp8okAThEyVf4i9u',
+    minAmount: '1$'
   },
   {
     id: 'ton',
@@ -107,7 +116,8 @@ const paymentMethods: PaymentMethod[] = [
     icon: <Coins className="w-6 h-6" />,
     color: 'from-cyan-500 to-cyan-600',
     description: 'Криптовалюта',
-    details: 'TON: UQn9Y2khDDcoGYGqVMxRQqBqRjFf9T72op'
+    details: 'UQCY1lTYT5qmL_avhfQzvJMu_8uB3cxfYIcdnP6iGbsOBLJ8',
+    minAmount: '1$'
   }
 ];
 
@@ -178,6 +188,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                             <div className="flex-1">
                               <h4 className="text-white font-semibold">{method.name}</h4>
                               <p className="text-gray-400 text-sm">{method.description}</p>
+                              <p className="text-amber-400 text-xs">Мин. сумма: {method.minAmount}</p>
                             </div>
                             <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
                               Выбрать
@@ -212,6 +223,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                             <div className="flex-1">
                               <h4 className="text-white font-semibold">{method.name}</h4>
                               <p className="text-gray-400 text-sm">{method.description}</p>
+                              <p className="text-amber-400 text-xs">Мин. сумма: {method.minAmount}</p>
                             </div>
                             <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
                               Выбрать
@@ -270,7 +282,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                     </div>
                     
                     <div className="text-gray-300 text-sm space-y-2">
-                      <p>• Минимальная сумма: 100₴</p>
+                      <p>• Минимальная сумма: {selectedMethod.minAmount}</p>
                       <p>• Время зачисления: до 24 часов</p>
                       <p>• Поддержка: vaultorypoderjka@gmail.com</p>
                     </div>
