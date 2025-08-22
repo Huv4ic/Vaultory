@@ -41,6 +41,10 @@ const ProductPage = () => {
   useEffect(() => {
     if (product && product.images && product.images.length > 0) {
       setSelectedImage(product.images[0]);
+    } else if (product && product.image_url) {
+      setSelectedImage(product.image_url);
+    } else {
+      setSelectedImage('/placeholder.svg');
     }
   }, [product]);
 
@@ -126,7 +130,7 @@ const ProductPage = () => {
             <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6">
               <div className="relative h-96 mb-4">
                 <img
-                  src={selectedImage || '/placeholder.svg'}
+                  src={selectedImage || (product.image_url || '/placeholder.svg')}
                   alt={product.name}
                   className="w-full h-full object-cover rounded-xl"
                   onError={(e) => {
