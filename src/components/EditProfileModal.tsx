@@ -51,29 +51,54 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
 
     setUploading(true);
     try {
+      console.log('Начинаем загрузку аватара:', {
+        fileName: selectedFile.name,
+        fileSize: selectedFile.size,
+        fileType: selectedFile.type,
+        userId: telegramUser.id
+      });
+
       // Загружаем файл в Supabase Storage
       const fileExt = selectedFile.name.split('.').pop();
       const fileName = `${telegramUser.id}-${Date.now()}.${fileExt}`;
       const filePath = `avatars/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, selectedFile);
+      console.log('Пытаемся загрузить файл:', filePath);
 
-      if (uploadError) throw uploadError;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, selectedFile, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) {
+        console.error('Ошибка загрузки в Storage:', uploadError);
+        throw new Error(`Ошибка загрузки файла: ${uploadError.message}`);
+      }
+
+      console.log('Файл успешно загружен:', uploadData);
 
       // Получаем публичную ссылку
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
 
+      console.log('Получен публичный URL:', publicUrl);
+
       // Обновляем профиль в базе данных
-      const { error: updateError } = await supabase
+      const { data: updateData, error: updateError } = await supabase
         .from('profiles')
         .update({ avatar_url: publicUrl })
-        .eq('telegram_id', telegramUser.id);
+        .eq('telegram_id', telegramUser.id)
+        .select();
 
-      if (updateError) throw updateError;
+      if (updateError) {
+        console.error('Ошибка обновления профиля:', updateError);
+        throw new Error(`Ошибка обновления профиля: ${updateError.message}`);
+      }
+
+      console.log('Профиль обновлен:', updateData);
 
       // Вызываем callback для обновления UI
       onAvatarUpdate(publicUrl);
@@ -85,9 +110,20 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
       setSelectedFile(null);
       setPreviewUrl('');
       
+      alert('Аватар успешно загружен!');
+      
     } catch (error) {
-      console.error('Ошибка загрузки аватара:', error);
-      alert('Ошибка при загрузке аватара. Попробуйте еще раз.');
+      console.error('Детальная ошибка загрузки аватара:', error);
+      
+      let errorMessage = 'Неизвестная ошибка при загрузке аватара';
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        errorMessage = JSON.stringify(error);
+      }
+      
+      alert(`Ошибка при загрузке аватара: ${errorMessage}`);
     } finally {
       setUploading(false);
     }
