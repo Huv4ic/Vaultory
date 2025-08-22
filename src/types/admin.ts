@@ -30,9 +30,10 @@ export interface AdminCaseItem {
   id: string;
   case_id: string;
   name: string;
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  rarity: string; // Принимаем string из базы данных
   drop_chance: number;
   image_url?: string;
+  drop_after_cases?: number; // Временно опциональное поле
   created_at: string;
 }
 
@@ -76,4 +77,5 @@ export interface CaseItemFormData {
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
   drop_chance: number;
   image_url: string;
+  drop_after_cases?: number; // Временно опциональное поле
 }

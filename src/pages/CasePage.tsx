@@ -1,115 +1,159 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
-import { useInventory } from '@/hooks/useInventory';
-import { useToast } from '@/hooks/use-toast';
-import { useLanguage } from '@/hooks/useLanguage';
-import { useCases } from '@/hooks/useCases';
-import CaseOpeningModal from '@/components/CaseOpeningModal';
+import { supabase } from '../integrations/supabase/client';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Package, ArrowLeft, Crown, Zap, Target, Shield } from 'lucide-react';
 
-const rarityColors = {
-  legendary: 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-yellow-900',
-  epic: 'bg-gradient-to-r from-purple-400 to-purple-700 text-purple-100',
-  rare: 'bg-gradient-to-r from-blue-400 to-blue-700 text-blue-100',
-  common: 'bg-gradient-to-r from-gray-500 to-gray-700 text-gray-100',
-};
+interface CaseItem {
+  id: string;
+  name: string;
+  rarity: string;
+  image_url?: string;
+}
+
+interface Case {
+  id: string;
+  name: string;
+  game_id?: string;
+  game?: string;
+  price: number;
+  image?: string;
+  image_url?: string;
+  description?: string;
+  gradient?: string;
+  icon?: string;
+  is_active?: boolean;
+  sort_order?: number;
+  created_at?: string;
+  updated_at?: string;
+}
 
 const CasePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { telegramUser, refreshTelegramProfile, balance, setBalance } = useAuth();
-  const { addItem } = useInventory();
-  const { toast } = useToast();
-  const { t } = useLanguage();
-  const { cases, caseItems, loading, error } = useCases();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [openingCase, setOpeningCase] = useState(false);
-  const [openedItem, setOpenedItem] = useState<any>(null);
-  const [openingCount, setOpeningCount] = useState(1);
-  const [currentCase, setCurrentCase] = useState<any>(null);
+  const [caseData, setCaseData] = useState<Case | null>(null);
+  const [caseItems, setCaseItems] = useState<CaseItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (telegramUser) {
-      refreshTelegramProfile();
+    if (id) {
+      fetchCaseData();
     }
-  }, [telegramUser, refreshTelegramProfile]);
+  }, [id]);
 
-  const caseData = cases.find(c => c.id === id);
+  const fetchCaseData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-  const openCase = () => {
-    console.log('openCase called:', { caseData, telegramUser, balance, openingCount });
-    
-    if (!caseData) return;
-    if (!telegramUser) {
-      toast({
-        title: t("Требуется авторизация"),
-        description: t("Войдите через Telegram для открытия кейсов"),
-      });
-      return;
+      // Загружаем данные кейса
+      const { data: caseData, error: caseError } = await supabase
+        .from('cases')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (caseError) throw caseError;
+
+      // Преобразуем данные к правильному формату
+      const formattedCase: Case = {
+        ...caseData,
+        image_url: caseData.image || '',
+        game: 'Unknown Game' // Пока используем заглушку, так как в базе нет поля game
+      };
+
+      setCaseData(formattedCase);
+
+      // Загружаем предметы кейса
+      const { data: itemsData, error: itemsError } = await supabase
+        .from('case_items')
+        .select('*')
+        .eq('case_id', id)
+        .order('name');
+
+      if (itemsError) throw itemsError;
+
+      setCaseItems(itemsData || []);
+      setLoading(false);
+
+    } catch (err) {
+      console.error('Error fetching case data:', err);
+      setError('Ошибка при загрузке данных кейса');
+      setLoading(false);
     }
-    if (balance < caseData.price * openingCount) {
-      toast({
-        title: t("Недостаточно средств"),
-        description: `${t("Для открытия")} ${openingCount} ${t("кейса(ов) нужно")} ${caseData.price * openingCount}₴, ${t("у вас")} ${balance}₴`,
-      });
-      return;
+  };
+
+  const handleOpenCase = () => {
+    // Здесь будет логика открытия кейса
+    alert('Функция открытия кейса будет добавлена позже');
+  };
+
+  const getRarityIcon = (rarity: string) => {
+    switch (rarity.toLowerCase()) {
+      case 'legendary':
+        return <Crown className="w-4 h-4 text-yellow-400" />;
+      case 'epic':
+        return <Zap className="w-4 h-4 text-purple-400" />;
+      case 'rare':
+        return <Target className="w-4 h-4 text-blue-400" />;
+      default:
+        return <Shield className="w-4 h-4 text-gray-400" />;
     }
-    
-    console.log('Opening case, setting modal to true');
-    setBalance(balance - caseData.price * openingCount);
-    setCurrentCase(caseData);
-    setIsModalOpen(true);
   };
 
-  const handleSellItem = (item, price) => {
-    setBalance(balance + price);
-    toast({
-      title: t("Предмет продан!"),
-      description: `${t("Вы получили")} ${price}₴ ${t("за продажу предмета")}`,
-    });
+  const getRarityColor = (rarity: string) => {
+    switch (rarity.toLowerCase()) {
+      case 'legendary':
+        return 'text-yellow-400 border-yellow-400';
+      case 'epic':
+        return 'text-purple-400 border-purple-400';
+      case 'rare':
+        return 'text-blue-400 border-blue-400';
+      default:
+        return 'text-gray-400 border-gray-400';
+    }
   };
 
-  const handleKeepItem = (item) => {
-    addItem({
-      ...item,
-      caseId: caseData.id,
-      status: 'new'
-    });
-    toast({
-      title: t("Предмет добавлен в инвентарь!"),
-      description: `${t("Предмет")} "${item.name}" ${t("добавлен в ваш инвентарь")}`,
-    });
+  const getRarityName = (rarity: string) => {
+    switch (rarity.toLowerCase()) {
+      case 'legendary':
+        return 'Легендарный';
+      case 'epic':
+        return 'Эпический';
+      case 'rare':
+        return 'Редкий';
+      default:
+        return 'Обычный';
+    }
   };
 
-  const handleAddToProfile = (item) => {
-    addItem({
-      ...item,
-      caseId: caseData.id,
-      status: 'withdrawn'
-    });
-    toast({
-      title: t("Заявка на вывод отправлена!"),
-      description: `${t("Предмет")} "${item.name}" ${t("будет обработан и выдан в ближайшее время")}`,
-    });
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setCurrentCase(null);
-  };
-
-  if (!caseData) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex items-center justify-center">
-        <div className="text-center bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
-          <h1 className="text-3xl font-bold mb-4 text-white">{t('Кейс не найден')}</h1>
-          <Button 
-            onClick={() => navigate(-1)}
-            className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
-          >
-            {t('Назад')}
-          </Button>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-xl">Загрузка кейса...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !caseData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-red-400 mb-4">Ошибка</h1>
+            <p className="text-gray-400 mb-6">{error || 'Кейс не найден'}</p>
+            <Button onClick={() => navigate('/cases')} className="bg-amber-600 hover:bg-amber-700">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Вернуться к кейсам
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -117,67 +161,128 @@ const CasePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
-      <div className="container mx-auto px-4 py-12 flex flex-col items-center">
-        <div className="bg-black/40 backdrop-blur-xl rounded-2xl shadow-2xl shadow-amber-500/20 p-8 max-w-md w-full text-center mb-8 border border-amber-500/30">
-          {caseData.image_url ? (
-            <img src={caseData.image_url} alt={caseData.name} className="rounded-xl w-32 h-32 object-cover mx-auto mb-4 border-4 border-amber-500/30" />
-          ) : (
-            <div className="w-32 h-32 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl mx-auto mb-4 border-4 border-amber-500/30 flex items-center justify-center">
-              <span className="text-4xl">🎁</span>
-            </div>
-          )}
-          <h2 className="text-3xl font-bold mb-2 text-white">{caseData.name}</h2>
-          <div className="text-gray-300 mb-2">{caseData.game}</div>
-          <div className="text-2xl font-bold text-amber-400 mb-4">{caseData.price * openingCount}₴</div>
-          <div className="mb-4 flex justify-center gap-2">
-            {[1, 2, 3, 4, 5].map((count) => (
-              <Button
-                key={count}
-                variant={openingCount === count ? "default" : "outline"}
-                size="sm"
-                onClick={() => setOpeningCount(count)}
-                className={
-                  (openingCount === count
-                    ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white border-amber-500 shadow-lg shadow-amber-500/30"
-                    : "bg-black/60 backdrop-blur-sm text-amber-300 border-amber-500/40 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200") +
-                  " rounded-xl px-4 py-2 text-base font-semibold transition-all duration-300"
-                }
-              >
-                {count}
-              </Button>
-            ))}
-          </div>
-          <Button
-            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-lg py-3 rounded-xl shadow-2xl shadow-amber-500/30 transition-all duration-300 hover:scale-105"
-            onClick={openCase}
+      <div className="container mx-auto px-4 py-8">
+        {/* Кнопка возврата */}
+        <div className="mb-6">
+          <Button 
+            onClick={() => navigate('/cases')} 
+            variant="outline" 
+            className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
           >
-            {t('Открыть')} {openingCount === 1 ? t('кейс') : `${openingCount} ${t('кейса')}`}
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Вернуться к кейсам
           </Button>
         </div>
-        <div className="bg-black/40 backdrop-blur-xl rounded-2xl shadow-2xl shadow-amber-500/20 p-8 max-w-2xl w-full text-center border border-amber-500/30">
-          <h3 className="text-2xl font-bold mb-6 text-white">{t('Содержимое кейса')}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {caseItems
-              .filter(item => item.case_id === caseData.id)
-              .map((item, idx) => (
-                <div key={idx} className={`rounded-xl p-4 flex flex-col items-center ${rarityColors[item.rarity]} shadow-md`}>
-                  <div className="font-bold text-lg mb-2">{item.name}</div>
-                  <div className="text-sm text-gray-200 mb-1">{t('Редкость:')} <span className="capitalize">{t(item.rarity)}</span></div>
-                  <div className="text-green-200 font-bold">{item.drop_chance}%</div>
-                </div>
-              ))}
+
+        {/* Основная информация о кейсе */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+          {/* Изображение кейса */}
+          <div className="flex justify-center lg:justify-start">
+            <div className="relative">
+              <img
+                src={caseData.image_url}
+                alt={caseData.name}
+                className="w-80 h-80 object-contain rounded-2xl shadow-2xl"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+                }}
+              />
+              {/* Градиентная рамка */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/20 to-yellow-500/20 pointer-events-none"></div>
+            </div>
+          </div>
+
+          {/* Информация о кейсе */}
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-2">{caseData.name}</h1>
+              <Badge variant="outline" className="text-amber-400 border-amber-400 text-lg px-4 py-2">
+                {caseData.game}
+              </Badge>
+            </div>
+
+            {caseData.description && (
+              <p className="text-gray-300 text-lg leading-relaxed">
+                {caseData.description}
+              </p>
+            )}
+
+            <div className="flex items-center gap-4">
+              <div className="text-3xl font-bold text-amber-400">
+                {caseData.price}₴
+              </div>
+              <Badge variant="outline" className="text-green-400 border-green-400">
+                <Package className="w-4 h-4 mr-2" />
+                {caseItems.length} предметов
+              </Badge>
+            </div>
+
+            {/* Кнопка открытия кейса */}
+            <Button
+              onClick={handleOpenCase}
+              className="w-full lg:w-auto px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30"
+            >
+              <Package className="w-6 h-6 mr-3" />
+              Открыть кейс
+            </Button>
           </div>
         </div>
+
+        {/* Содержимое кейса */}
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-white mb-6 text-center">
+            Содержимое кейса
+          </h2>
+          
+          {caseItems.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {caseItems.map((item) => (
+                <Card key={item.id} className="bg-gray-800/50 border-gray-700 hover:border-amber-500/50 transition-all duration-300 hover:scale-105">
+                  <CardContent className="p-4">
+                    <div className="text-center space-y-3">
+                      {/* Изображение предмета */}
+                      <div className="relative mx-auto">
+                        <img
+                          src={item.image_url || '/images/placeholder.jpg'}
+                          alt={item.name}
+                          className="w-20 h-20 object-contain mx-auto"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+                          }}
+                        />
+                        {/* Иконка редкости */}
+                        <div className="absolute -top-2 -right-2">
+                          {getRarityIcon(item.rarity)}
+                        </div>
+                      </div>
+
+                      {/* Название предмета */}
+                      <div>
+                        <h3 className="font-medium text-white text-sm leading-tight">
+                          {item.name}
+                        </h3>
+                      </div>
+
+                      {/* Редкость */}
+                      <Badge 
+                        variant="outline" 
+                        className={`text-xs ${getRarityColor(item.rarity)}`}
+                      >
+                        {getRarityName(item.rarity)}
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Package className="w-24 h-24 mx-auto mb-4 text-gray-600" />
+              <p className="text-gray-400 text-lg">В этом кейсе пока нет предметов</p>
+            </div>
+          )}
+        </div>
       </div>
-      <CaseOpeningModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        caseData={currentCase}
-        openingCount={openingCount}
-        onSellItem={handleSellItem}
-        onKeepItem={handleKeepItem}
-        onAddToProfile={handleAddToProfile}
-      />
     </div>
   );
 };
