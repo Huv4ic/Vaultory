@@ -103,8 +103,7 @@ const Cases = () => {
             >
               {/* Карточка кейса в стиле GGDROP */}
               <div className="relative w-full h-64">
-                {/* Прозрачный фон с легкой подсветкой */}
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-500/5 to-transparent rounded-2xl"></div>
+                {/* Убираем все фоны - оставляем только прозрачность */}
                 
                 {/* Изображение кейса с 3D эффектом */}
                 {caseData.image_url ? (
@@ -112,7 +111,7 @@ const Cases = () => {
                     <img 
                       src={caseData.image_url} 
                       alt={caseData.name}
-                      className="w-full h-full object-cover rounded-2xl shadow-2xl shadow-amber-500/20 transition-all duration-500 group-hover:shadow-amber-500/40"
+                      className="w-full h-full object-contain rounded-2xl transition-all duration-500 group-hover:scale-105"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
@@ -120,7 +119,7 @@ const Cases = () => {
                       }}
                     />
                     {/* Fallback иконка (скрыта по умолчанию) */}
-                    <div className="hidden absolute inset-0 w-full h-full bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-2xl flex items-center justify-center">
+                    <div className="hidden absolute inset-0 w-full h-full flex items-center justify-center">
                       <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30">
                         <Gift className="w-10 h-10 text-white" />
                       </div>
@@ -128,7 +127,7 @@ const Cases = () => {
                   </div>
                 ) : (
                   /* Если нет изображения, показываем стилизованную иконку */
-                  <div className="w-full h-full bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-2xl flex items-center justify-center border border-amber-500/30">
+                  <div className="w-full h-full flex items-center justify-center">
                     <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center shadow-2xl shadow-amber-500/30">
                       <Gift className="w-10 h-10 text-white" />
                     </div>
@@ -159,8 +158,8 @@ const Cases = () => {
                 <div className="absolute top-2 right-2 w-2 h-2 bg-amber-400/60 rounded-full animate-ping"></div>
                 <div className="absolute bottom-2 left-2 w-1.5 h-1.5 bg-amber-300/60 rounded-full animate-ping animation-delay-1000"></div>
                 
-                {/* Hover эффект - подсветка краев */}
-                <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-amber-500/50 transition-all duration-500"></div>
+                {/* Hover эффект - только легкая подсветка краев */}
+                <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-amber-500/30 transition-all duration-500"></div>
               </div>
             </div>
           ))}
