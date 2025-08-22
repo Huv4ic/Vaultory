@@ -10,7 +10,7 @@ import BalanceDisplay from './BalanceDisplay';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { telegramUser, signOutTelegram, balance } = useAuth();
+  const { telegramUser, signOutTelegram, balance, profile } = useAuth();
   const { items } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -127,7 +127,15 @@ const Header = () => {
                 <BalanceDisplay balance={balance} />
                 <div className="relative group">
                   <button className="flex items-center space-x-2 p-2 rounded-lg bg-gradient-to-r from-amber-500/20 to-emerald-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 border border-amber-500/30 hover:border-amber-500/50 transition-all duration-300 hover:scale-105">
-                    <User className="w-5 h-5 text-amber-400" />
+                    {profile?.avatar_url ? (
+                      <img
+                        src={profile.avatar_url}
+                        alt="Avatar"
+                        className="w-5 h-5 rounded-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-5 h-5 text-amber-400" />
+                    )}
                     <span className="text-amber-400 font-medium hidden sm:block">
                       {telegramUser.first_name}
                     </span>

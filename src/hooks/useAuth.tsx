@@ -16,7 +16,22 @@ const AuthContext = createContext<any>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<{
+    id?: string;
+    telegram_id?: number;
+    username?: string;
+    role?: 'user' | 'admin';
+    status?: string;
+    balance?: number;
+    avatar_url?: string;
+    block_reason?: string;
+    cases_opened?: number;
+    total_deposited?: number;
+    total_spent?: number;
+    created_at?: string;
+    updated_at?: string;
+    [key: string]: any; // Allow additional fields
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [telegramUser, setTelegramUserState] = useState(() => {
     const saved = localStorage.getItem('vaultory_telegram_user');
@@ -90,6 +105,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const refreshProfile = async () => {
     if (telegramUser) {
       await fetchProfile(telegramUser.id);
+    }
+  };
+
+  const updateProfile = async (updates: Partial<typeof profile>) => {
+    if (profile && telegramUser) {
+      const updatedProfile = { ...profile, ...updates };
+      setProfile(updatedProfile);
     }
   };
 
@@ -332,6 +354,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       signUp,
       signOut,
       refreshProfile,
+      updateProfile,
       setTelegramUser
     }}>
       {children}

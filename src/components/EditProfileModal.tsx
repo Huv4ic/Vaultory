@@ -1,0 +1,230 @@
+import { useState, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { X, Upload, User, Camera } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+
+interface EditProfileModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onAvatarUpdate: (avatarUrl: string) => void;
+}
+
+export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: EditProfileModalProps) {
+  const { telegramUser, profile } = useAuth();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  if (!isOpen) return null;
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Проверяем тип файла
+      if (!file.type.startsWith('image/')) {
+        alert('Пожалуйста, выберите изображение');
+        return;
+      }
+      
+      // Проверяем размер файла (максимум 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Размер файла должен быть меньше 5MB');
+        return;
+      }
+
+      setSelectedFile(file);
+      
+      // Создаем превью
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviewUrl(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!selectedFile || !telegramUser) return;
+
+    setUploading(true);
+    try {
+      // Загружаем файл в Supabase Storage
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${telegramUser.id}-${Date.now()}.${fileExt}`;
+      const filePath = `avatars/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, selectedFile);
+
+      if (uploadError) throw uploadError;
+
+      // Получаем публичную ссылку
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      // Обновляем профиль в базе данных
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('telegram_id', telegramUser.id);
+
+      if (updateError) throw updateError;
+
+      // Вызываем callback для обновления UI
+      onAvatarUpdate(publicUrl);
+      
+      // Закрываем модальное окно
+      onClose();
+      
+      // Очищаем состояние
+      setSelectedFile(null);
+      setPreviewUrl('');
+      
+    } catch (error) {
+      console.error('Ошибка загрузки аватара:', error);
+      alert('Ошибка при загрузке аватара. Попробуйте еще раз.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    if (!telegramUser) return;
+
+    try {
+      // Убираем аватар из профиля
+      const { error } = await supabase
+        .from('profiles')
+        .update({ avatar_url: null })
+        .eq('telegram_id', telegramUser.id);
+
+      if (error) throw error;
+
+      // Вызываем callback для обновления UI
+      onAvatarUpdate('');
+      
+      // Очищаем состояние
+      setSelectedFile(null);
+      setPreviewUrl('');
+      
+    } catch (error) {
+      console.error('Ошибка удаления аватара:', error);
+      alert('Ошибка при удалении аватара. Попробуйте еще раз.');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <Card className="w-full max-w-md bg-black/90 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/30">
+        <CardHeader className="border-b border-amber-500/20">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-white flex items-center">
+              <Camera className="w-5 h-5 mr-2 text-amber-400" />
+              Изменить аватар
+            </CardTitle>
+            <Button
+              onClick={onClose}
+              variant="ghost"
+              size="sm"
+              className="text-gray-400 hover:text-white hover:bg-gray-800/50"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </CardHeader>
+        
+        <CardContent className="p-6">
+          <div className="space-y-6">
+            {/* Текущий аватар */}
+            <div className="text-center">
+              <h3 className="text-gray-300 text-sm mb-3">Текущий аватар</h3>
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center border border-amber-500/30 overflow-hidden">
+                {profile?.avatar_url ? (
+                  <img
+                    src={profile.avatar_url}
+                    alt="Current Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-10 h-10 text-amber-400" />
+                )}
+              </div>
+            </div>
+
+            {/* Загрузка нового файла */}
+            <div className="space-y-4">
+              <div className="border-2 border-dashed border-amber-500/30 rounded-lg p-6 text-center hover:border-amber-500/50 transition-colors">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+                <Button
+                  onClick={() => fileInputRef.current?.click()}
+                  variant="outline"
+                  className="bg-transparent border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Выбрать изображение
+                </Button>
+                <p className="text-gray-400 text-xs mt-2">
+                  PNG, JPG до 5MB
+                </p>
+              </div>
+
+              {/* Превью выбранного файла */}
+              {previewUrl && (
+                <div className="text-center">
+                  <h4 className="text-gray-300 text-sm mb-2">Предварительный просмотр</h4>
+                  <div className="mx-auto w-20 h-20 rounded-full overflow-hidden border-2 border-amber-500/50">
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Кнопки действий */}
+            <div className="flex gap-3">
+              <Button
+                onClick={handleUpload}
+                disabled={!selectedFile || uploading}
+                className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold"
+              >
+                {uploading ? 'Загрузка...' : 'Сохранить'}
+              </Button>
+              
+              <Button
+                onClick={handleRemoveAvatar}
+                variant="outline"
+                className="px-4 bg-red-500/20 border-red-500/40 text-red-300 hover:bg-red-500/30 hover:border-red-500/50"
+              >
+                Убрать
+              </Button>
+            </div>
+
+            <div className="text-center">
+              <Button
+                onClick={onClose}
+                variant="ghost"
+                className="text-gray-400 hover:text-white"
+              >
+                Отмена
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

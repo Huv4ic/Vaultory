@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import EditProfileModal from '@/components/EditProfileModal';
 import { 
   User, 
   Wallet, 
@@ -14,7 +15,6 @@ import {
   Crown,
   Star,
   TrendingUp,
-  Shield,
   Zap,
   CreditCard,
   History,
@@ -27,10 +27,10 @@ import { supabase } from '@/integrations/supabase/client';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { telegramUser, signOutTelegram, balance } = useAuth();
+  const { telegramUser, signOutTelegram, balance, profile, updateProfile } = useAuth();
   const { t } = useLanguage();
-  const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [stats, setStats] = useState({
     totalPurchases: 0,
     totalSpent: 0,
@@ -50,7 +50,7 @@ const Profile = () => {
           .single();
 
         if (error) throw error;
-        setProfile(data);
+        // setProfile(data); // This line is removed as per the new_code
         
         // Здесь можно добавить загрузку статистики пользователя
         // Пока используем моковые данные
@@ -83,9 +83,9 @@ const Profile = () => {
           
           if (!error && data?.balance !== undefined) {
             // Обновляем профиль только если баланс изменился
-            if (profile?.balance !== data.balance) {
-              setProfile(prev => prev ? { ...prev, balance: data.balance } : null);
-            }
+            // if (profile?.balance !== data.balance) { // This line is removed as per the new_code
+            //   setProfile(prev => prev ? { ...prev, balance: data.balance } : null); // This line is removed as per the new_code
+            // } // This line is removed as per the new_code
           }
         } catch (error) {
           console.error('Ошибка обновления баланса:', error);
@@ -102,8 +102,22 @@ const Profile = () => {
   };
 
   const handleTopUp = () => {
-    // Здесь должна быть логика пополнения баланса
-    alert('Функция пополнения баланса будет доступна в ближайшее время!');
+    // Здесь можно добавить логику пополнения баланса
+    alert('Функция пополнения баланса будет добавлена позже');
+  };
+
+  const handleAvatarUpdate = async (avatarUrl: string) => {
+    // Обновляем профиль в контексте аутентификации
+    try {
+      // Обновляем профиль в контексте
+      if (updateProfile) {
+        updateProfile({ avatar_url: avatarUrl });
+      }
+      
+      console.log('Аватар обновлен:', avatarUrl);
+    } catch (error) {
+      console.error('Ошибка обновления аватара:', error);
+    }
   };
 
   const refreshBalance = async () => {
@@ -117,7 +131,7 @@ const Profile = () => {
         .single();
       
       if (!error && data?.balance !== undefined) {
-        setProfile(prev => prev ? { ...prev, balance: data.balance } : null);
+        // setProfile(prev => prev ? { ...prev, balance: data.balance } : null); // This line is removed as per the new_code
       }
     } catch (error) {
       console.error('Ошибка обновления баланса:', error);
@@ -200,8 +214,16 @@ const Profile = () => {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Аватар и основная информация */}
                 <div className="text-center lg:text-left">
-                  <div className="mx-auto lg:mx-0 w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-4 shadow-2xl shadow-amber-500/30">
-                    <User className="w-10 h-10 text-white" />
+                  <div className="mx-auto lg:mx-0 w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-4 shadow-2xl shadow-amber-500/30 overflow-hidden">
+                    {profile?.avatar_url ? (
+                      <img
+                        src={profile.avatar_url}
+                        alt="Avatar"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-10 h-10 text-white" />
+                    )}
                   </div>
                   <h2 className="text-xl font-bold text-white mb-2">
                     {profile?.username || telegramUser.first_name}
@@ -218,7 +240,7 @@ const Profile = () => {
                   
                   {/* Статус */}
                   <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                    <Shield className="w-3 h-3 mr-1" />
+                    <Zap className="w-3 h-3 mr-1" />
                     Активен
                   </Badge>
                 </div>
@@ -386,14 +408,7 @@ const Profile = () => {
                   </Button>
                   
                   <Button
-                    variant="outline"
-                    className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
-                  >
-                    <Shield className="w-4 h-4 mr-2" />
-                    Безопасность
-                  </Button>
-                  
-                  <Button
+                    onClick={() => setShowEditModal(true)}
                     variant="outline"
                     className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
                   >
@@ -429,6 +444,11 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <EditProfileModal 
+        isOpen={showEditModal} 
+        onClose={() => setShowEditModal(false)} 
+        onAvatarUpdate={handleAvatarUpdate}
+      />
     </div>
   );
 };
