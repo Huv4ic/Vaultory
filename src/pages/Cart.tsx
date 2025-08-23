@@ -378,40 +378,46 @@ const Cart = () => {
         </div>
       </div>
 
-
-                               {/* Модал успешного заказа */}
-        {showSuccessModal && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-            <div className="bg-gray-800 rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8 max-w-md w-full">
-              <div className="text-center">
-                <div className="text-6xl mb-4">🎉</div>
-                <h3 className="text-2xl font-bold text-white mb-4">Заказ оформлен!</h3>
-                
-                <div className="space-y-3 mb-6 text-left">
-                  <div className="bg-gray-700/50 rounded-lg p-3">
-                    <p className="text-gray-300 text-sm">Номер заказа:</p>
-                    <p className="text-amber-400 font-mono text-sm break-all">{orderId}</p>
-                  </div>
-                  
-                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
-                    <p className="text-amber-400 text-sm font-medium">
-                      Свяжитесь с администратором через Telegram для получения товаров
-                    </p>
-                  </div>
+      {/* Модал успешного заказа - ВНЕ основного контейнера */}
+      {/* Отладка: showSuccessModal = {showSuccessModal.toString()}, orderId = {orderId} */}
+      
+      {/* Тест-модал для проверки */}
+      <div style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '10px', zIndex: 10000 }}>
+        showSuccessModal: {showSuccessModal.toString()}
+      </div>
+      
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+          <div className="bg-gray-800 rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8 max-w-md w-full">
+            <div className="text-center">
+              <div className="text-6xl mb-4">🎉</div>
+              <h3 className="text-2xl font-bold text-white mb-4">Заказ оформлен!</h3>
+              
+              <div className="space-y-3 mb-6 text-left">
+                <div className="bg-gray-700/50 rounded-lg p-3">
+                  <p className="text-gray-300 text-sm">Номер заказа:</p>
+                  <p className="text-amber-400 font-mono text-sm break-all">{orderId}</p>
                 </div>
                 
-                <Button
-                  onClick={() => setShowSuccessModal(false)}
-                  className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
-                >
-                  OK
-                </Button>
+                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
+                  <p className="text-amber-400 text-sm font-medium">
+                    Свяжитесь с администратором через Telegram для получения товаров
+                  </p>
+                </div>
               </div>
+              
+              <Button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
+              >
+                OK
+              </Button>
             </div>
           </div>
-        )}
-     </div>
-   );
- };
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default Cart;
