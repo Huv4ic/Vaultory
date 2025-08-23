@@ -134,22 +134,20 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         baseDistance
       });
       
-      // Сначала устанавливаем начальную позицию без анимации
-      roulette.style.transition = 'none';
-      roulette.style.transform = `translateX(${startPosition}px)`;
-      
-      // Принудительно перерисовываем для применения начальной позиции
-      roulette.offsetHeight;
-      
       // Запускаем анимацию вращения (теперь справа налево)
       roulette.style.transition = 'transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-      roulette.style.transform = `translateX(${finalPosition}px)`;
+      roulette.style.transform = `translateX(${startPosition}px)`;
+      
+      // Небольшая задержка для плавного старта
+      requestAnimationFrame(() => {
+        roulette.style.transform = `translateX(${finalPosition}px)`;
+      });
       
       // Останавливаем анимацию через 3 секунды
       setTimeout(() => {
         setIsSpinning(false);
         setShowResult(true);
-        onCaseOpened(winner);
+        // НЕ вызываем onCaseOpened здесь - только после показа результата
       }, 3000);
       
       // Отладочная информация
@@ -193,14 +191,19 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
               <Package className="w-8 h-8 mr-3 text-amber-400" />
               Открытие кейса
             </h2>
-            <Button
-              onClick={onClose}
-              variant="ghost"
-              size="sm"
-              className="text-gray-400 hover:text-white hover:bg-white/10"
-            >
-              <X className="w-6 h-6" />
-            </Button>
+                         <Button
+               onClick={onClose}
+               variant="ghost"
+               size="sm"
+               disabled={isSpinning}
+               className={`${
+                 isSpinning 
+                   ? 'text-gray-600 cursor-not-allowed' 
+                   : 'text-gray-400 hover:text-white hover:bg-white/10'
+               }`}
+             >
+               <X className="w-6 h-6" />
+             </Button>
           </div>
           <p className="text-gray-300 mt-2">Стоимость: {casePrice}₴</p>
         </div>
@@ -254,7 +257,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                                        <div 
                       ref={rouletteRef}
                       className="flex items-center h-full transition-transform duration-1000 ease-out"
-                      style={{ transform: 'translateX(0px)' }}
+                      style={{ transform: 'translateX(300px)' }}
                     >
                                                               {/* Дублируем предметы для бесконечной прокрутки - много копий для плавности */}
                      {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
@@ -371,14 +374,17 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 </div>
               )}
               
-              <div className="flex justify-center space-x-4">
-                <Button
-                  onClick={onClose}
-                  className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
-                >
-                  Закрыть
-                </Button>
-              </div>
+                             <div className="flex justify-center space-x-4">
+                 <Button
+                   onClick={() => {
+                     onCaseOpened(winnerItem!);
+                     onClose();
+                   }}
+                   className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
+                 >
+                   Закрыть
+                 </Button>
+               </div>
             </div>
           )}
         </div>
