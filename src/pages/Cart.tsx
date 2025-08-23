@@ -374,62 +374,63 @@ const Cart = () => {
         </div>
       </div>
 
-             {/* Модал успешного оформления заказа */}
+
+       {/* Модал успешного оформления заказа - перемещен в конец */}
        {showSuccessModal && (
-         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-gray-900/95 backdrop-blur-xl border border-amber-500/30 rounded-2xl shadow-2xl shadow-amber-500/20 p-8 w-full max-w-md mx-auto">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="w-12 h-12 text-green-400" />
-              </div>
-              
-              <h2 className="text-2xl font-bold text-white mb-4">
-                Заказ оформлен! 🎉
-              </h2>
-              
-              <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 border border-amber-500/20 mb-6">
-                <p className="text-gray-300 text-sm mb-2">Номер заказа:</p>
-                <p className="text-amber-400 font-mono text-lg break-all">{orderId}</p>
-              </div>
-              
-              <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-6">
-                <div className="flex items-center justify-center space-x-2 mb-2">
-                  <MessageCircle className="w-5 h-5 text-amber-400" />
-                  <span className="text-amber-400 font-semibold">Свяжитесь с администратором</span>
-                </div>
-                <p className="text-amber-300 text-sm">
-                  Для получения товаров свяжитесь с нами через Telegram
-                </p>
-              </div>
-              
-              <div className="space-y-3">
-                <Button
-                  onClick={() => {
-                    setShowSuccessModal(false);
-                    navigate('/profile');
-                  }}
-                  className="w-full bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30"
-                >
-                  Перейти в профиль
-                </Button>
-                
-                <Button
-                  onClick={() => {
-                    setShowSuccessModal(false);
-                    navigate('/');
-                  }}
-                  variant="outline"
-                  className="w-full border-amber-500/40 text-amber-400 hover:bg-amber-500/20"
-                >
-                  На главную
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+         <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" style={{ display: 'flex', visibility: 'visible', opacity: 1 }}>
+           <div className="bg-gray-900/95 backdrop-blur-xl border border-amber-500/30 rounded-2xl shadow-2xl shadow-amber-500/20 p-8 w-full max-w-md mx-auto">
+             <div className="text-center">
+               <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                 <CheckCircle className="w-12 h-12 text-green-400" />
+               </div>
+               
+               <h2 className="text-2xl font-bold text-white mb-4">
+                 Заказ оформлен! 🎉
+               </h2>
+               
+               <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 border border-amber-500/20 mb-6">
+                 <p className="text-gray-300 text-sm mb-2">Номер заказа:</p>
+                 <p className="text-amber-400 font-mono text-lg break-all">{orderId}</p>
+               </div>
+               
+               <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-6">
+                 <div className="flex items-center justify-center space-x-2 mb-2">
+                   <MessageCircle className="w-5 h-5 text-amber-400" />
+                   <span className="text-amber-400 font-semibold">Свяжитесь с администратором</span>
+                 </div>
+                 <p className="text-amber-300 text-sm">
+                   Для получения товаров свяжитесь с нами через Telegram
+                 </p>
+               </div>
+               
+               <div className="space-y-3">
+                 <Button
+                   onClick={() => {
+                     setShowSuccessModal(false);
+                     navigate('/profile');
+                   }}
+                   className="w-full bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30"
+                 >
+                   Перейти в профиль
+                 </Button>
+                 
+                 <Button
+                   onClick={() => {
+                     setShowSuccessModal(false);
+                     navigate('/');
+                   }}
+                   variant="outline"
+                   className="w-full border-amber-500/40 text-amber-400 hover:bg-amber-500/20"
+                 >
+                   На главную
+                 </Button>
+               </div>
+             </div>
+           </div>
+         </div>
+       )}
+     </div>
+   );
+ };
 
 export default Cart;
