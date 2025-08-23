@@ -77,24 +77,24 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       const finalPosition = targetPosition + randomOffset;
       
       // Создаем полноценную анимацию с множественными оборотами
-      const totalDistance = 8000 + finalPosition; // 8000px для множественных оборотов
+      const totalDistance = 12000 + finalPosition; // 12000px для множественных оборотов
       
-      // Первая фаза: быстрое вращение (3 секунды)
-      roulette.style.transition = 'transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      // Первая фаза: быстрое вращение (4 секунды)
+      roulette.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
       roulette.style.transform = `translateX(-${totalDistance}px)`;
       
-      // Вторая фаза: замедление и остановка (4 секунды)
+      // Вторая фаза: замедление и остановка (5 секунд)
       setTimeout(() => {
-        roulette.style.transition = 'transform 4s cubic-bezier(0.1, 0.7, 0.1, 1)';
+        roulette.style.transition = 'transform 5s cubic-bezier(0.1, 0.7, 0.1, 1)';
         roulette.style.transform = `translateX(${finalPosition}px)`;
-      }, 3000);
+      }, 4000);
       
-      // Останавливаем анимацию через 7 секунд
+      // Останавливаем анимацию через 9 секунд
       setTimeout(() => {
         setIsSpinning(false);
         setShowResult(true);
         onCaseOpened(winner);
-      }, 7000);
+      }, 9000);
     }
   };
 
@@ -176,49 +176,67 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                    isSpinning ? 'animate-pulse' : ''
                  }`}></div>
                 
-                {/* Контейнер рулетки */}
-                <div className="relative h-40 bg-gray-800/50 rounded-2xl border border-amber-500/30 overflow-hidden">
-                  <div 
-                    ref={rouletteRef}
-                    className="flex items-center h-full transition-transform duration-1000 ease-out"
-                    style={{ transform: 'translateX(300px)' }}
-                  >
-                                                              {/* Дублируем предметы для бесконечной прокрутки - больше копий для плавности */}
-                     {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
-                       <div
-                         key={`${item.id}-${index}`}
-                         className={`flex-shrink-0 w-28 h-28 mx-2 rounded-xl border-2 ${getRarityColor(item.rarity)} bg-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center p-2 transition-all duration-300 hover:scale-110 ${
-                           isSpinning ? 'animate-pulse' : ''
-                         }`}
-                       >
-                        {/* Изображение предмета */}
-                        <div className="w-16 h-16 mb-2 rounded-lg overflow-hidden bg-gray-600 flex items-center justify-center">
-                          {item.image_url ? (
-                            <img
-                              src={item.image_url}
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <Package className="w-8 h-8 text-gray-400" />
-                          )}
-                        </div>
+                                 {/* Контейнер рулетки */}
+                 <div className="relative h-40 bg-gray-800/50 rounded-2xl border border-amber-500/30 overflow-hidden">
+                   {/* Градиентные края для плавного перехода */}
+                   <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-800/50 to-transparent z-10"></div>
+                   <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-800/50 to-transparent z-10"></div>
+                   
+                   <div 
+                     ref={rouletteRef}
+                     className="flex items-center h-full transition-transform duration-1000 ease-out"
+                     style={{ transform: 'translateX(300px)' }}
+                   >
+                                                              {/* Дублируем предметы для бесконечной прокрутки - много копий для плавности */}
+                     {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
+                                                <div
+                           key={`${item.id}-${index}`}
+                           className={`flex-shrink-0 w-28 h-28 mx-2 rounded-xl border-2 ${getRarityColor(item.rarity)} bg-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center p-2 transition-all duration-300 hover:scale-110 ${
+                             isSpinning ? 'animate-pulse' : ''
+                           }`}
+                           style={{
+                             animationDelay: `${(index % caseItems.length) * 0.1}s`
+                           }}
+                         >
+                                                 {/* Изображение предмета */}
+                         <div className="w-16 h-16 mb-2 rounded-lg overflow-hidden bg-gray-600 flex items-center justify-center">
+                           {item.image_url ? (
+                             <img
+                               src={item.image_url}
+                               alt={item.name}
+                               className={`w-full h-full object-cover transition-all duration-300 ${
+                                 isSpinning ? 'scale-110' : 'scale-100'
+                               }`}
+                               style={{
+                                 animationDelay: `${(index % caseItems.length) * 0.05}s`
+                               }}
+                             />
+                           ) : (
+                             <Package className={`w-8 h-8 text-gray-400 transition-all duration-300 ${
+                               isSpinning ? 'scale-110' : 'scale-100'
+                             }`} />
+                           )}
+                         </div>
                         
-                        {/* Название предмета */}
-                        <p className="text-white text-xs font-medium text-center leading-tight">
-                          {item.name}
-                        </p>
+                                                 {/* Название предмета */}
+                         <p className={`text-white text-xs font-medium text-center leading-tight transition-all duration-300 ${
+                           isSpinning ? 'text-amber-300 scale-105' : 'text-white scale-100'
+                         }`}>
+                           {item.name}
+                         </p>
                         
-                        {/* Редкость */}
-                        <span className={`text-xs px-2 py-1 rounded-full mt-1 ${
-                          item.rarity.toLowerCase() === 'common' ? 'bg-gray-500 text-white' :
-                          item.rarity.toLowerCase() === 'rare' ? 'bg-blue-500 text-white' :
-                          item.rarity.toLowerCase() === 'epic' ? 'bg-purple-500 text-white' :
-                          item.rarity.toLowerCase() === 'legendary' ? 'bg-yellow-500 text-black' :
-                          'bg-gray-500 text-white'
-                        }`}>
-                          {getRarityName(item.rarity)}
-                        </span>
+                                                 {/* Редкость */}
+                         <span className={`text-xs px-2 py-1 rounded-full mt-1 transition-all duration-300 ${
+                           item.rarity.toLowerCase() === 'common' ? 'bg-gray-500 text-white' :
+                           item.rarity.toLowerCase() === 'rare' ? 'bg-blue-500 text-white' :
+                           item.rarity.toLowerCase() === 'epic' ? 'bg-purple-500 text-white' :
+                           item.rarity.toLowerCase() === 'legendary' ? 'bg-yellow-500 text-black' :
+                           'bg-gray-500 text-white'
+                         } ${
+                           isSpinning ? 'scale-110 shadow-lg' : 'scale-100'
+                         }`}>
+                           {getRarityName(item.rarity)}
+                         </span>
                       </div>
                     ))}
                   </div>
