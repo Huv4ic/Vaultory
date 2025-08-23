@@ -253,7 +253,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       style={{ transform: 'translateX(300px)' }}
                     >
                                                                                     {/* Дублируем предметы для бесконечной прокрутки - много копий для плавности */}
-                      {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
+                      {Array.from({ length: 50 }, () => caseItems).flat().map((item, index) => (
                                                 <div
                            key={`${item.id}-${index}`}
                            className={`flex-shrink-0 w-28 h-28 mx-2 rounded-xl border-2 ${getRarityColor(item.rarity)} bg-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center p-2 transition-all duration-300 hover:scale-110 ${
