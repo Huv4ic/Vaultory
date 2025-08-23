@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Trash2, ShoppingBag, ArrowLeft, CheckCircle, Package, CreditCard, Shield, Zap, MessageCircle } from 'lucide-react';
@@ -14,8 +13,7 @@ const Cart = () => {
   const { telegramUser, balance, refreshBalance } = useAuth();
   const { t } = useLanguage();
   const { createOrder, isProcessing } = useOrders();
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [orderId, setOrderId] = useState<string>('');
+
 
 
 
@@ -37,23 +35,30 @@ const Cart = () => {
       const result = await createOrder(items, total);
       console.log('Результат createOrder:', result);
       
-      if (result.success && result.orderId) {
-        console.log('Заказ успешно создан!');
-        console.log('Устанавливаем orderId:', result.orderId);
-        setOrderId(result.orderId);
-        console.log('Устанавливаем showSuccessModal в true');
-        setShowSuccessModal(true);
-        console.log('Очищаем корзину');
-        clear(); // Очищаем корзину
-        
-        // Обновляем баланс сразу
-        console.log('Обновляем баланс...');
-        await refreshBalance();
-        console.log('Баланс обновлен');
-        
-        // Проверяем состояние после всех изменений
-        console.log('Финальное состояние:', { orderId: result.orderId, showSuccessModal: true });
-      } else {
+             if (result.success && result.orderId) {
+         console.log('Заказ успешно создан!');
+         console.log('OrderId:', result.orderId);
+         console.log('Очищаем корзину');
+         clear(); // Очищаем корзину
+         
+         // Обновляем баланс сразу
+         console.log('Обновляем баланс...');
+         await refreshBalance();
+         console.log('Баланс обновлен');
+         
+         // Формируем список товаров для передачи
+         const itemsList = items.map(item => `${item.name} x${item.quantity}`).join(', ');
+         
+         // Перенаправляем на страницу успеха с параметрами
+         const params = new URLSearchParams({
+           orderId: result.orderId,
+           total: total.toString(),
+           items: itemsList
+         });
+         
+         console.log('Перенаправляем на страницу успеха с параметрами:', params.toString());
+         navigate(`/order-success?${params.toString()}`);
+       } else {
         console.error('Ошибка создания заказа:', result.error);
         alert(`Ошибка при оформлении заказа: ${result.error}`);
       }
@@ -369,142 +374,7 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* Модал через Portal - рендерится прямо в body */}
-      {showSuccessModal && createPortal(
-        <div 
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.95)',
-            zIndex: 999999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px'
-          }}
-          onClick={() => setShowSuccessModal(false)}
-        >
-          <div 
-            style={{
-              backgroundColor: '#1a1a1a',
-              borderRadius: '20px',
-              padding: '40px',
-              maxWidth: '500px',
-              width: '100%',
-              textAlign: 'center',
-              border: '3px solid #f59e0b',
-              boxShadow: '0 0 50px rgba(245, 158, 11, 0.8)',
-              animation: 'fadeIn 0.3s ease-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            
-            <div style={{ fontSize: '80px', marginBottom: '20px' }}>🎉</div>
-            
-            <h2 style={{ 
-              color: '#f59e0b', 
-              fontSize: '32px', 
-              fontWeight: 'bold', 
-              marginBottom: '25px',
-              textShadow: '0 0 10px rgba(245, 158, 11, 0.5)'
-            }}>
-              Заказ оформлен!
-            </h2>
-            
-            <div style={{ 
-              backgroundColor: '#333', 
-              padding: '20px', 
-              borderRadius: '15px', 
-              marginBottom: '25px',
-              border: '1px solid #555'
-            }}>
-              <p style={{ color: '#ccc', marginBottom: '10px', fontSize: '16px' }}>Номер заказа:</p>
-              <p style={{ 
-                color: '#f59e0b', 
-                fontFamily: 'monospace', 
-                fontSize: '16px',
-                fontWeight: 'bold',
-                wordBreak: 'break-all',
-                backgroundColor: '#222',
-                padding: '10px',
-                borderRadius: '8px'
-              }}>
-                {orderId}
-              </p>
-            </div>
-            
-            <div style={{ 
-              backgroundColor: 'rgba(59, 130, 246, 0.2)', 
-              border: '2px solid #3b82f6', 
-              borderRadius: '15px', 
-              padding: '25px', 
-              marginBottom: '30px' 
-            }}>
-              <p style={{ color: '#60a5fa', marginBottom: '20px', fontSize: '18px', fontWeight: 'bold' }}>
-                📱 Свяжитесь с администратором
-              </p>
-              
-              <button
-                onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
-                style={{
-                  width: '100%',
-                  padding: '18px',
-                  backgroundColor: '#3b82f6',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  boxShadow: '0 4px 15px rgba(59, 130, 246, 0.4)'
-                }}
-                onMouseOver={(e) => {
-                  (e.target as HTMLButtonElement).style.backgroundColor = '#2563eb';
-                  (e.target as HTMLButtonElement).style.transform = 'scale(1.05)';
-                }}
-                onMouseOut={(e) => {
-                  (e.target as HTMLButtonElement).style.backgroundColor = '#3b82f6';
-                  (e.target as HTMLButtonElement).style.transform = 'scale(1)';
-                }}
-              >
-                🚀 Открыть Telegram
-              </button>
-            </div>
-            
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              style={{
-                width: '100%',
-                padding: '18px',
-                backgroundColor: '#f59e0b',
-                color: 'white',
-                border: 'none',
-                borderRadius: '12px',
-                fontSize: '18px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                transition: 'all 0.3s',
-                boxShadow: '0 4px 15px rgba(245, 158, 11, 0.4)'
-              }}
-              onMouseOver={(e) => {
-                (e.target as HTMLButtonElement).style.backgroundColor = '#d97706';
-                (e.target as HTMLButtonElement).style.transform = 'scale(1.05)';
-              }}
-              onMouseOut={(e) => {
-                (e.target as HTMLButtonElement).style.backgroundColor = '#f59e0b';
-                (e.target as HTMLButtonElement).style.transform = 'scale(1)';
-              }}
-            >
-              ✅ Закрыть
-            </button>
-          </div>
-        </div>,
-        document.body
-      )}
+
     </div>
   );
 };
