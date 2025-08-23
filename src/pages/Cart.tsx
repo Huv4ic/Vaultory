@@ -368,26 +368,10 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* Модал успешного заказа - в центре экрана */}
+      {/* Модал успешного заказа - максимально высокий z-index */}
       {showSuccessModal && (
-        <div 
-          style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: '#1a1a1a',
-            borderRadius: '20px',
-            padding: '40px',
-            maxWidth: '500px',
-            width: '90%',
-            textAlign: 'center',
-            border: '2px solid #f59e0b',
-            boxShadow: '0 20px 40px rgba(245, 158, 11, 0.5)',
-            zIndex: 10000
-          }}
-        >
-          {/* Фон затемнения */}
+        <>
+          {/* Фон затемнения - САМЫЙ ВЫСОКИЙ z-index */}
           <div 
             style={{
               position: 'fixed',
@@ -395,11 +379,30 @@ const Cart = () => {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              zIndex: -1
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
+              zIndex: 999999
             }}
             onClick={() => setShowSuccessModal(false)}
           />
+          
+          {/* Модал - ЕЩЕ ВЫШЕ */}
+          <div 
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              backgroundColor: '#1a1a1a',
+              borderRadius: '20px',
+              padding: '40px',
+              maxWidth: '500px',
+              width: '90%',
+              textAlign: 'center',
+              border: '2px solid #f59e0b',
+              boxShadow: '0 20px 40px rgba(245, 158, 11, 0.8)',
+              zIndex: 1000000
+            }}
+          >
           
           <div style={{ fontSize: '60px', marginBottom: '20px' }}>🎉</div>
           
@@ -480,7 +483,8 @@ const Cart = () => {
           >
             Закрыть
           </button>
-        </div>
+          </div>
+        </>
       )}
     </div>
   );
