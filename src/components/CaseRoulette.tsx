@@ -48,8 +48,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('showResult:', showResult);
     console.log('winnerItem:', winnerItem ? winnerItem.name : 'null');
     console.log('animationRef.current:', animationRef.current);
+    console.log('Component props:', { caseItems: caseItems.length, casePrice });
     console.log('========================');
-  }, [isSpinning, showResult, winnerItem, animationRef.current]);
+  }, [isSpinning, showResult, winnerItem, animationRef.current, caseItems, casePrice]);
 
   // Отладка вызовов onClose
   useEffect(() => {
@@ -65,6 +66,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('=== ONCLOSE CALLED ===');
     console.log('Stack trace:', new Error().stack);
     console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult, 'winnerItem:', winnerItem);
+    console.log('Component props:', { caseItems: caseItems.length, casePrice, onClose: typeof onClose, onCaseOpened: typeof onCaseOpened });
     onClose();
   };
 
@@ -293,44 +295,48 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
             return 1 - Math.pow(1 - t, 3); 
           };
 
-          const tween = () => {
-            const t = (performance.now() - startT) / D;
-            console.log('Tween called, t:', t, 'target:', targetX, 'startT:', startT, 'D:', D);
-            
-            if (t >= 1){
-              console.log('Tween animation completed, setting result');
-              setX(targetX);
-              
-              // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
-              setIsSpinning(false);
-              setShowResult(true);
-              
-              // Находим правильный предмет для показа
-              const realLocal = stopGlobal % caseItems.length; 
-              const it = caseItems[realLocal];
-              setWinnerItem(it);
-              
-              // Останавливаем анимацию
-              if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current);
-                animationRef.current = null;
-              }
-              
-              // Анимация яркости viewport
-              if (viewport) {
-                viewport.animate([
-                  {filter:'brightness(1.0)'},
-                  {filter:'brightness(1.6)'},
-                  {filter:'brightness(1.0)'}
-                ], {duration:500});
-              }
-              
-              console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
-              return;
-            }
-            setX(startX + dist * easeOutCubic(t));
-            requestAnimationFrame(tween);
-          };
+                     const tween = () => {
+             const t = (performance.now() - startT) / D;
+             console.log('Tween called, t:', t, 'target:', targetX, 'startT:', startT, 'D:', D);
+             
+             if (t >= 1){
+               console.log('Tween animation completed, setting result');
+               setX(targetX);
+               
+               // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
+               console.log('Setting isSpinning to false...');
+               setIsSpinning(false);
+               console.log('Setting showResult to true...');
+               setShowResult(true);
+               
+               // Находим правильный предмет для показа
+               const realLocal = stopGlobal % caseItems.length; 
+               const it = caseItems[realLocal];
+               console.log('Setting winnerItem to:', it.name);
+               setWinnerItem(it);
+               
+               // Останавливаем анимацию
+               if (animationRef.current) {
+                 console.log('Cancelling animation in tween completion');
+                 cancelAnimationFrame(animationRef.current);
+                 animationRef.current = null;
+               }
+               
+               // Анимация яркости viewport
+               if (viewport) {
+                 viewport.animate([
+                   {filter:'brightness(1.0)'},
+                   {filter:'brightness(1.6)'},
+                   {filter:'brightness(1.0)'}
+                 ], {duration:500});
+               }
+               
+               console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
+               return;
+             }
+             setX(startX + dist * easeOutCubic(t));
+             requestAnimationFrame(tween);
+           };
           
           // Запускаем основную анимацию на короткое время, потом переключаемся на tween
           let frameCount = 0;
