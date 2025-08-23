@@ -44,21 +44,24 @@ const Cart = () => {
     try {
       const result = await createOrder(items, total);
       
-      if (result.success && result.orderId) {
-        console.log('Заказ успешно создан:', result.orderId);
-        console.log('Устанавливаем orderId:', result.orderId);
-        setOrderId(result.orderId);
-        console.log('Устанавливаем showSuccessModal в true');
-        setShowSuccessModal(true);
-        console.log('Очищаем корзину');
-        clear(); // Очищаем корзину
-        
-        // Обновляем баланс сразу
-        console.log('Обновляем баланс');
-        refreshBalance();
-        
-        console.log('Состояние после обновления:', { orderId: result.orderId, showSuccessModal: true });
-      } else {
+             if (result.success && result.orderId) {
+         console.log('Заказ успешно создан:', result.orderId);
+         console.log('Устанавливаем orderId:', result.orderId);
+         setOrderId(result.orderId);
+         console.log('Устанавливаем showSuccessModal в true');
+         setShowSuccessModal(true);
+         console.log('Очищаем корзину');
+         clear(); // Очищаем корзину
+         
+         // Обновляем баланс сразу
+         console.log('Обновляем баланс');
+         refreshBalance();
+         
+         console.log('Состояние после обновления:', { orderId: result.orderId, showSuccessModal: true });
+         
+         // Временное решение - показываем alert
+         alert(`🎉 Заказ оформлен!\n\nНомер заказа: ${result.orderId}\n\nСвяжитесь с администратором через Telegram для получения товаров`);
+       } else {
         console.error('Ошибка создания заказа:', result.error);
         alert(`Ошибка при оформлении заказа: ${result.error}`);
       }
@@ -375,83 +378,11 @@ const Cart = () => {
       </div>
 
 
-               {/* Простой тестовый модал */}
+                       {/* Временное решение - alert вместо модала */}
         {showSuccessModal && (
-          <div 
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              zIndex: 99999,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '20px'
-            }}
-          >
-            <div 
-              style={{
-                backgroundColor: '#1f2937',
-                border: '2px solid #f59e0b',
-                borderRadius: '16px',
-                padding: '32px',
-                maxWidth: '500px',
-                width: '100%',
-                textAlign: 'center'
-              }}
-            >
-              <h2 style={{ color: 'white', fontSize: '24px', marginBottom: '20px' }}>
-                🎉 Заказ оформлен!
-              </h2>
-              
-              <p style={{ color: '#d1d5db', marginBottom: '20px' }}>
-                Номер заказа: <strong style={{ color: '#f59e0b' }}>{orderId}</strong>
-              </p>
-              
-              <p style={{ color: '#f59e0b', marginBottom: '20px' }}>
-                Свяжитесь с администратором через Telegram для получения товаров
-              </p>
-              
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                <button
-                  onClick={() => {
-                    setShowSuccessModal(false);
-                    navigate('/profile');
-                  }}
-                  style={{
-                    backgroundColor: '#f59e0b',
-                    color: 'white',
-                    border: 'none',
-                    padding: '12px 24px',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  В профиль
-                </button>
-                
-                <button
-                  onClick={() => {
-                    setShowSuccessModal(false);
-                    navigate('/');
-                  }}
-                  style={{
-                    backgroundColor: 'transparent',
-                    color: '#f59e0b',
-                    border: '2px solid #f59e0b',
-                    padding: '12px 24px',
-                    borderRadius: '8px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  На главную
-                </button>
-              </div>
-            </div>
+          <div style={{ display: 'none' }}>
+            {/* Скрытый элемент для отслеживания состояния */}
+            Модал активен: {orderId}
           </div>
         )}
      </div>
