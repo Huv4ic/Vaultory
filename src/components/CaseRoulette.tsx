@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Package, X, Gift } from 'lucide-react';
 
@@ -248,20 +248,28 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           return 1 - Math.pow(1 - t, 3); 
         };
 
-        const tween = () => {
+        const tween = useCallback(() => {
           const t = (performance.now() - startT) / D;
+          console.log('Tween called, t:', t, 'target:', targetX);
+          
           if (t >= 1){
             console.log('Tween animation completed, setting result');
             setX(targetX);
+            
+            // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
             setIsSpinning(false);
+            setShowResult(true);
+            
+            // Находим правильный предмет для показа
+            const realLocal = stopGlobal % caseItems.length; 
+            const it = caseItems[realLocal];
+            setWinnerItem(it);
+            
+            // Останавливаем анимацию
             if (animationRef.current) {
               cancelAnimationFrame(animationRef.current);
               animationRef.current = null;
             }
-            const realLocal = stopGlobal % caseItems.length; 
-            const it = caseItems[realLocal];
-            setWinnerItem(it);
-            setShowResult(true);
             
             // Анимация яркости viewport
             if (viewport) {
@@ -271,11 +279,14 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 {filter:'brightness(1.0)'}
               ], {duration:500});
             }
+            
+            console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
             return;
           }
           setX(startX + dist * easeOutCubic(t));
           requestAnimationFrame(tween);
-        };
+        }, [startT, D, startX, dist, targetX, stopGlobal, caseItems, viewport]);
+        
         requestAnimationFrame(tween);
       };
       
