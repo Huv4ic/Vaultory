@@ -114,6 +114,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   const startSpin = () => {
     if (isSpinning) return;
     
+    console.log('=== START SPIN START ===');
+    console.log('isSpinning state:', isSpinning);
+    console.log('showResult state:', showResult);
+    
     // Проверяем, что есть предметы для открытия
     if (caseItems.length === 0) {
       alert('В этом кейсе нет предметов для открытия');
@@ -138,6 +142,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       const strip = stripRef.current;
       const viewport = strip.parentElement;
       
+      console.log('Strip element found, starting animation...');
+      
              // Базовые параметры
        const REPEAT = 50; // длинная лента для бесконечных спинов
       let itemWidth = 0; // вычислим после вставки
@@ -147,6 +153,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       if (first) {
         const gap = 10; // gap между предметами
         itemWidth = first.getBoundingClientRect().width + gap;
+        console.log('Item width calculated:', itemWidth);
       }
       
       // Функции для работы с позицией
@@ -188,7 +195,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       
       // Запускаем спин
       const spinToLocalIndex = (localIndex: number) => {
+        console.log('spinToLocalIndex called with index:', localIndex);
+        
         if (isSpinning) {
+          console.log('Already spinning, cancelling previous animation');
           if (animationRef.current) {
             cancelAnimationFrame(animationRef.current);
           }
@@ -196,6 +206,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         
         // стартовая скорость и разгон
         v = -40; // влево
+        console.log('Starting animation with velocity:', v);
         animate();
         
         // выберем сегмент, где остановимся (далее по ленте + несколько кругов)
@@ -203,6 +214,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         const loops = 3; // сколько кругов до остановки
         const stopGlobal = Math.floor(currentGlobal/caseItems.length)*caseItems.length + loops*caseItems.length + localIndex;
         const targetX = indexToX(stopGlobal);
+
+        console.log('Animation target:', { currentGlobal, loops, stopGlobal, targetX });
 
         // Плавный довод с помощью встроенного аниматора
         const startX = x; 
@@ -217,6 +230,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         const tween = () => {
           const t = (performance.now() - startT) / D;
           if (t >= 1){
+            console.log('Tween animation completed, setting result');
             setX(targetX);
             setIsSpinning(false);
             if (animationRef.current) {
@@ -258,6 +272,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       spinToLocalIndex(winnerIndex);
       
       setIsSpinning(true);
+      console.log('=== START SPIN END ===');
+    } else {
+      console.error('Strip element not found!');
     }
   };
 
@@ -346,19 +363,23 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 <Package className="w-8 h-8 mr-3 text-amber-400" />
                 Открытие кейса
               </h2>
-              <Button
-                onClick={onClose}
-                variant="ghost"
-                size="sm"
-                disabled={isSpinning}
-                className={`${
-                  isSpinning 
-                    ? 'text-gray-600 cursor-not-allowed' 
-                    : 'text-gray-400 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                <X className="w-6 h-6" />
-              </Button>
+                             <Button
+                 onClick={() => {
+                   console.log('Close button clicked!');
+                   console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult);
+                   onClose();
+                 }}
+                 variant="ghost"
+                 size="sm"
+                 disabled={isSpinning}
+                 className={`${
+                   isSpinning 
+                     ? 'text-gray-600 cursor-not-allowed' 
+                     : 'text-gray-400 hover:text-white hover:bg-white/10'
+                 }`}
+               >
+                 <X className="w-6 h-6" />
+               </Button>
             </div>
             <p className="text-gray-300 mt-2">Стоимость: {casePrice}₴</p>
           </div>
