@@ -31,28 +31,65 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
 
   // Функция для определения победного предмета на основе drop_after_cases
   const calculateWinner = (): CaseItem => {
-    // Получаем текущий счетчик открытых кейсов (можно хранить в localStorage или базе)
+    // Получаем текущий счетчик открытых кейсов
     const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
     
-    // Находим предмет, который должен выпасть на текущем счетчике
-    let winner = caseItems[0]; // По умолчанию первый предмет
+    // Группируем предметы по drop_after_cases
+    const itemsByDropRate: { [key: number]: CaseItem[] } = {};
     
-    for (const item of caseItems) {
-      if (item.drop_after_cases && currentCaseCount >= item.drop_after_cases) {
-        winner = item;
-        break;
+    caseItems.forEach(item => {
+      const dropRate = item.drop_after_cases || 1;
+      if (!itemsByDropRate[dropRate]) {
+        itemsByDropRate[dropRate] = [];
       }
+      itemsByDropRate[dropRate].push(item);
+    });
+    
+    // Находим подходящие предметы для текущего кейса
+    let eligibleItems: CaseItem[] = [];
+    
+    // Проверяем каждый drop_after_cases
+    Object.keys(itemsByDropRate).forEach(dropRateStr => {
+      const dropRate = parseInt(dropRateStr);
+      if (currentCaseCount % dropRate === 0) {
+        // Если текущий кейс кратен drop_after_cases, добавляем все предметы с этим значением
+        eligibleItems = eligibleItems.concat(itemsByDropRate[dropRate]);
+      }
+    });
+    
+    // Если нет подходящих предметов, берем случайный из всех
+    if (eligibleItems.length === 0) {
+      eligibleItems = caseItems;
     }
+    
+    // Выбираем случайный предмет из подходящих
+    const randomIndex = Math.floor(Math.random() * eligibleItems.length);
+    const winner = eligibleItems[randomIndex];
     
     // Обновляем счетчик
     localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
     setSpinCount(currentCaseCount);
+    
+    // Отладочная информация
+    console.log('Winner calculation:', {
+      currentCaseCount,
+      itemsByDropRate,
+      eligibleItems,
+      winner: winner.name,
+      winnerDropRate: winner.drop_after_cases
+    });
     
     return winner;
   };
 
   const startSpin = () => {
     if (isSpinning) return;
+    
+    // Проверяем, что есть предметы для открытия
+    if (caseItems.length === 0) {
+      alert('В этом кейсе нет предметов для открытия');
+      return;
+    }
     
     setIsSpinning(true);
     setWinnerItem(null);
@@ -74,12 +111,19 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
       
       // Рассчитываем финальную позицию для центрирования предмета
-      const finalPosition = -(winnerIndex * itemSpacing) + centerOffset;
+      let finalPosition = -(winnerIndex * itemSpacing) + centerOffset;
+      
+      // Убеждаемся, что позиция корректна
+      if (Math.abs(finalPosition) > 5000) {
+        console.warn('Final position too large, adjusting...');
+        // Корректируем позицию если она слишком большая
+        finalPosition = finalPosition % itemSpacing;
+      }
       
       // Создаем анимацию с множественными оборотами
       // Важно: расстояние должно быть кратно itemSpacing для плавной остановки
-      const baseDistance = Math.ceil(10000 / itemSpacing) * itemSpacing; // 10000px для оборотов
-      const startPosition = -(baseDistance + finalPosition);
+      const baseDistance = Math.ceil(8000 / itemSpacing) * itemSpacing; // 8000px для оборотов
+      const startPosition = baseDistance + finalPosition; // Изменено направление
       
       // Проверяем корректность позиций
       console.log('Position check:', {
@@ -97,7 +141,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       // Принудительно перерисовываем для применения начальной позиции
       roulette.offsetHeight;
       
-      // Запускаем анимацию вращения
+      // Запускаем анимацию вращения (теперь справа налево)
       roulette.style.transition = 'transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
       roulette.style.transform = `translateX(${finalPosition}px)`;
       
@@ -207,11 +251,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                    <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-800/50 to-transparent z-10"></div>
                    <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-800/50 to-transparent z-10"></div>
                    
-                   <div 
-                     ref={rouletteRef}
-                     className="flex items-center h-full transition-transform duration-1000 ease-out"
-                     style={{ transform: 'translateX(300px)' }}
-                   >
+                                       <div 
+                      ref={rouletteRef}
+                      className="flex items-center h-full transition-transform duration-1000 ease-out"
+                      style={{ transform: 'translateX(0px)' }}
+                    >
                                                               {/* Дублируем предметы для бесконечной прокрутки - много копий для плавности */}
                      {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
                                                 <div
