@@ -10,7 +10,7 @@ import { useOrders } from '@/hooks/useOrders';
 const Cart = () => {
   const navigate = useNavigate();
   const { items, removeItem, clear, updateQuantity } = useCart();
-  const { telegramUser, balance } = useAuth();
+  const { telegramUser, balance, refreshBalance } = useAuth();
   const { t } = useLanguage();
   const { createOrder, isProcessing } = useOrders();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -36,6 +36,11 @@ const Cart = () => {
         setOrderId(result.orderId);
         setShowSuccessModal(true);
         clear(); // Очищаем корзину
+        
+        // Обновляем баланс в реальном времени
+        setTimeout(() => {
+          refreshBalance();
+        }, 1000); // Обновляем через 1 секунду
       } else {
         alert(`Ошибка при оформлении заказа: ${result.error}`);
       }
