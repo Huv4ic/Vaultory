@@ -163,12 +163,12 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
       const botToken = '8017714761:AAH9xTX_9fNUPGKuLaxqJWf85W7AixO2rEU';
       const chatId = '5931400368';
       
-      const message = `💰 *Пополнение баланса!*\n\n` +
+      const message = `💰 Пополнение баланса!\n\n` +
         `👤 Пользователь: ${profile?.username || 'Без username'}\n` +
-        `🆔 Telegram ID: \`${telegramUser.id}\n` +
+        `🆔 Telegram ID: ${telegramUser.id}\n` +
         `💳 Способ: ${selectedMethod.name}\n` +
         `📱 Время: ${new Date().toLocaleString('ru-RU')}\n\n` +
-        `⚠️ *Проверьте оплату и зачислите средства!*`;
+        `⚠️ Проверьте оплату и зачислите средства!`;
 
       // Отправляем в Telegram Bot API
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -178,8 +178,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
         },
         body: JSON.stringify({
           chat_id: chatId,
-          text: message,
-          parse_mode: 'Markdown'
+          text: message
         })
       });
 
