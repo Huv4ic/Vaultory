@@ -68,14 +68,25 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     onClose();
   };
 
-  // Cleanup анимации при размонтировании
+  // Cleanup анимации при размонтировании и изменении состояний
   useEffect(() => {
     return () => {
       if (animationRef.current) {
+        console.log('Cleanup: cancelling animation on unmount');
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
     };
   }, []);
+  
+  // Дополнительная очистка при изменении состояний
+  useEffect(() => {
+    if (!isSpinning && animationRef.current) {
+      console.log('Cleanup: cancelling animation when spinning stops');
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
+  }, [isSpinning]);
 
   // Функция для определения победного предмета на основе drop_after_cases
   const calculateWinner = (): CaseItem => {
@@ -154,6 +165,13 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('isSpinning state:', isSpinning);
     console.log('showResult state:', showResult);
     console.log('animationRef.current:', animationRef.current);
+    
+    // ПОЛНАЯ ОЧИСТКА АНИМАЦИИ ПЕРЕД НОВЫМ ЗАПУСКОМ
+    if (animationRef.current) {
+      console.log('Cancelling previous animation before new spin');
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
     
     // СБРАСЫВАЕМ СОСТОЯНИЯ ПРИ КАЖДОМ НОВОМ ЗАПУСКЕ
     if (showResult) {
