@@ -368,71 +368,68 @@ const Cart = () => {
         </div>
       </div>
 
-                           {/* Модал успешного заказа - ВНЕ основного контейнера */}
-        {/* Отладка: showSuccessModal = {showSuccessModal.toString()}, orderId = {orderId} */}
-        
-        {/* Модал успешного заказа */}
-        {showSuccessModal && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-            <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8 max-w-md w-full">
-              <div className="text-center">
-                {/* Анимированная иконка */}
-                <div className="text-7xl mb-6 animate-bounce">🎉</div>
+      {/* Модал успешного заказа - ВНЕ основного контейнера */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8 max-w-md w-full">
+            <div className="text-center">
+              {/* Анимированная иконка */}
+              <div className="text-7xl mb-6 animate-bounce">🎉</div>
+              
+              {/* Заголовок */}
+              <h3 className="text-3xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent mb-6">
+                Заказ оформлен!
+              </h3>
+              
+              <div className="space-y-4 mb-8 text-left">
+                {/* Номер заказа */}
+                <div className="bg-gradient-to-r from-gray-700/50 to-gray-800/50 rounded-xl p-4 border border-gray-600/30">
+                  <p className="text-gray-300 text-sm font-medium mb-2">Номер заказа:</p>
+                  <p className="text-amber-400 font-mono text-sm break-all bg-gray-800/50 p-2 rounded-lg border border-amber-500/20">
+                    {orderId}
+                  </p>
+                </div>
                 
-                {/* Заголовок */}
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent mb-6">
-                  Заказ оформлен!
-                </h3>
-                
-                <div className="space-y-4 mb-8 text-left">
-                  {/* Номер заказа */}
-                  <div className="bg-gradient-to-r from-gray-700/50 to-gray-800/50 rounded-xl p-4 border border-gray-600/30">
-                    <p className="text-gray-300 text-sm font-medium mb-2">Номер заказа:</p>
-                    <p className="text-amber-400 font-mono text-sm break-all bg-gray-800/50 p-2 rounded-lg border border-amber-500/20">
-                      {orderId}
+                {/* Telegram секция */}
+                <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-xl p-5">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
+                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                      </svg>
+                    </div>
+                    <p className="text-blue-300 text-base font-semibold">
+                      Свяжитесь с администратором через Telegram
                     </p>
                   </div>
                   
-                  {/* Telegram секция */}
-                  <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-xl p-5">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
-                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                      </div>
-                      <p className="text-blue-300 text-base font-semibold">
-                        Свяжитесь с администратором через Telegram
-                      </p>
-                    </div>
-                    
-                    <Button
-                      onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
-                      className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-3 shadow-lg shadow-blue-500/25"
-                    >
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                      </svg>
-                      <span>Открыть Telegram</span>
-                    </Button>
-                    
-                    <p className="text-gray-400 text-xs text-center mt-3">
-                      Нажмите кнопку выше для быстрого перехода в чат
-                    </p>
-                  </div>
+                  <Button
+                    onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
+                    className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-3 shadow-lg shadow-blue-500/25"
+                  >
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <span>Открыть Telegram</span>
+                  </Button>
+                  
+                  <p className="text-gray-400 text-xs text-center mt-3">
+                    Нажмите кнопку выше для быстрого перехода в чат
+                  </p>
                 </div>
-                
-                {/* Кнопка закрытия */}
-                <Button
-                  onClick={() => setShowSuccessModal(false)}
-                  className="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/25"
-                >
-                  Закрыть
-                </Button>
               </div>
+              
+              {/* Кнопка закрытия */}
+              <Button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/25"
+              >
+                Закрыть
+              </Button>
             </div>
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };
