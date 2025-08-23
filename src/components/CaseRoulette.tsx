@@ -28,6 +28,16 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   const [showResult, setShowResult] = useState(false);
   const rouletteRef = useRef<HTMLDivElement>(null);
   const [spinCount, setSpinCount] = useState(0);
+  const animationRef = useRef<number | null>(null);
+
+  // Cleanup анимации при размонтировании
+  useEffect(() => {
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, []);
 
   // Функция для определения победного предмета на основе drop_after_cases
   const calculateWinner = (): CaseItem => {
@@ -82,7 +92,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     return winner;
   };
 
-  const startSpin = () => {
+    const startSpin = () => {
     if (isSpinning) return;
     
     // Проверяем, что есть предметы для открытия
@@ -99,11 +109,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     const winner = calculateWinner();
     setWinnerItem(winner);
     
-    // Анимация вращения
+    // Анимация вращения как в примере
     if (rouletteRef.current) {
       const roulette = rouletteRef.current;
       
-      // Базовые параметры как в примере
+      // Базовые параметры
       const itemSpacing = 136; // Ширина предмета + отступы
       const centerOffset = 300; // Смещение центра
       
@@ -111,44 +121,91 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
       
       // Рассчитываем финальную позицию для центрирования предмета
-      let finalPosition = -(winnerIndex * itemSpacing) + centerOffset;
+      const finalPosition = -(winnerIndex * itemSpacing) + centerOffset;
       
-      // Создаем анимацию с множественными оборотами (как в примере)
-      const baseDistance = Math.ceil(12000 / itemSpacing) * itemSpacing; // 12000px для оборотов
-      const startPosition = baseDistance + finalPosition;
+      // Стартовая скорость и разгон (как в примере)
+      let velocity = -40; // влево
+      let currentX = 0; // текущая позиция
       
-      // Проверяем корректность позиций
-      console.log('Position check:', {
-        winnerIndex,
-        itemSpacing,
-        finalPosition,
-        startPosition,
-        baseDistance
-      });
+      // Функция для установки позиции
+      const setPosition = (x: number) => {
+        currentX = x;
+        roulette.style.transform = `translate3d(${x}px, 0, 0)`;
+      };
       
-      // Устанавливаем начальную позицию без анимации
-      roulette.style.transition = 'none';
-      roulette.style.transform = `translateX(${startPosition}px)`;
+      // Функция для получения текущего индекса под маркером
+      const getCurrentIndex = () => {
+        const idx = Math.round((centerOffset - currentX) / itemSpacing);
+        return ((idx % caseItems.length) + caseItems.length) % caseItems.length;
+      };
       
-      // Принудительно перерисовываем
-      roulette.offsetHeight;
+      // Функция для зацикливания ленты
+      const wrapPosition = () => {
+        const totalWidth = caseItems.length * 50 * itemSpacing; // 50 копий
+        if (currentX < -totalWidth + centerOffset) {
+          setPosition(currentX + totalWidth);
+        }
+        if (currentX > centerOffset) {
+          setPosition(currentX - totalWidth);
+        }
+      };
       
-             // Запускаем анимацию с правильным easing (как в примере)
-       roulette.style.transition = 'transform 8s cubic-bezier(0,0.4,0.4,1.025)';
-       roulette.style.transform = `translateX(${finalPosition}px)`;
-       
-       // Останавливаем анимацию через 8 секунд
-       setTimeout(() => {
-         setIsSpinning(false);
-         setShowResult(true);
-       }, 8000);
+      // Анимация с requestAnimationFrame (как в примере)
+      const animate = () => {
+        animationRef.current = requestAnimationFrame(animate);
+        
+        // Обновляем позицию
+        setPosition(currentX + velocity);
+        
+        // Применяем трение (как в примере)
+        velocity *= 0.985;
+        
+        // Зацикливаем ленту
+        wrapPosition();
+        
+        // Проверяем, нужно ли остановиться
+        if (Math.abs(velocity) < 0.1) {
+          // Плавный довод к финальной позиции
+          const startX = currentX;
+          const distance = finalPosition - startX;
+          const duration = 2000; // 2 секунды на довод
+          const startTime = performance.now();
+          
+          const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+          
+          const tween = () => {
+            const elapsed = performance.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            if (progress >= 1) {
+              setPosition(finalPosition);
+              setIsSpinning(false);
+              setShowResult(true);
+              if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+                animationRef.current = null;
+              }
+              return;
+            }
+            
+            const easedProgress = easeOutCubic(progress);
+            setPosition(startX + distance * easedProgress);
+            requestAnimationFrame(tween);
+          };
+          
+          requestAnimationFrame(tween);
+          return;
+        }
+      };
+      
+      // Запускаем анимацию
+      animate();
       
       // Отладочная информация
       console.log('Roulette animation:', {
         winnerIndex,
         itemSpacing,
         finalPosition,
-        startPosition,
         centerOffset
       });
     }
