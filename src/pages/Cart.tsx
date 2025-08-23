@@ -20,7 +20,7 @@ const Cart = () => {
 
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  const handleCheckout = async () => {
+    const handleCheckout = async () => {
     if (!telegramUser) {
       alert('Войдите через Telegram для оформления заказа');
       return;
@@ -32,16 +32,27 @@ const Cart = () => {
     }
 
     try {
+      console.log('Начинаем создание заказа...');
       const result = await createOrder(items, total);
+      console.log('Результат createOrder:', result);
       
-                   if (result.success && result.orderId) {
+      if (result.success && result.orderId) {
+        console.log('Заказ успешно создан!');
+        console.log('Устанавливаем orderId:', result.orderId);
         setOrderId(result.orderId);
+        console.log('Устанавливаем showSuccessModal в true');
         setShowSuccessModal(true);
+        console.log('Очищаем корзину');
         clear(); // Очищаем корзину
         
         // Обновляем баланс сразу
-        await refreshBalance();         
-       } else {
+        console.log('Обновляем баланс...');
+        await refreshBalance();
+        console.log('Баланс обновлен');
+        
+        // Проверяем состояние после всех изменений
+        console.log('Финальное состояние:', { orderId: result.orderId, showSuccessModal: true });
+      } else {
         console.error('Ошибка создания заказа:', result.error);
         alert(`Ошибка при оформлении заказа: ${result.error}`);
       }
@@ -357,12 +368,15 @@ const Cart = () => {
         </div>
       </div>
 
-             {/* Модал успешного заказа - ВНЕ основного контейнера */}
-       {/* Отладка: showSuccessModal = {showSuccessModal.toString()}, orderId = {orderId} */}
-       
-       
-       
-       {showSuccessModal && (
+                           {/* Модал успешного заказа - ВНЕ основного контейнера */}
+        {/* Отладка: showSuccessModal = {showSuccessModal.toString()}, orderId = {orderId} */}
+        
+        {/* Простой индикатор состояния */}
+        <div style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '10px', zIndex: 10000 }}>
+          showSuccessModal: {showSuccessModal.toString()}
+        </div>
+        
+        {showSuccessModal && (
          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-in fade-in duration-300">
            <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8 max-w-md w-full transform animate-in zoom-in-95 duration-300">
              <div className="text-center">
