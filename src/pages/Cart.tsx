@@ -374,12 +374,23 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* Модал успешного заказа - ВНЕ основного контейнера */}
-      {/* Отладка: showSuccessModal = {showSuccessModal.toString()}, orderId = {orderId} */}
-      
-      
-      
-             {showSuccessModal && (
+             {/* Модал успешного заказа - ВНЕ основного контейнера */}
+       {/* Отладка: showSuccessModal = {showSuccessModal.toString()}, orderId = {orderId} */}
+       
+       {/* Простой тест - всегда показываем что-то */}
+       <div style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '10px', zIndex: 10000 }}>
+         showSuccessModal: {showSuccessModal.toString()}
+       </div>
+       
+       {/* Тест-кнопка */}
+       <button 
+         onClick={() => setShowSuccessModal(!showSuccessModal)}
+         style={{ position: 'fixed', top: '50px', right: '10px', background: 'blue', color: 'white', padding: '10px', zIndex: 10000 }}
+       >
+         Тест модала
+       </button>
+       
+       {showSuccessModal && (
          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-in fade-in duration-300">
            <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-3xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8 max-w-md w-full transform animate-in zoom-in-95 duration-300">
              <div className="text-center">
