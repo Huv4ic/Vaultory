@@ -65,40 +65,57 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Анимация вращения
     if (rouletteRef.current) {
       const roulette = rouletteRef.current;
-      const itemWidth = 120; // Ширина каждого предмета
+      
+      // Базовые параметры
+      const itemSpacing = 136; // Ширина предмета + отступы (120px + 16px)
       const centerOffset = 300; // Смещение центра
       
-      // Позиция победного предмета - ТОЧНО в центре
+      // Позиция победного предмета
       const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
       
-      // Рассчитываем точную позицию для центрирования предмета
-      // centerOffset = 300px (центр экрана), itemWidth = 120px
-      // Каждый предмет занимает 120px + 16px (mx-2) = 136px
-      const itemSpacing = 136; // Ширина предмета + отступы
-      const targetPosition = -(winnerIndex * itemSpacing) + centerOffset;
+      // Рассчитываем финальную позицию для центрирования предмета
+      const finalPosition = -(winnerIndex * itemSpacing) + centerOffset;
       
-      // НЕ добавляем случайность - предмет должен остановиться точно в центре
-      const finalPosition = targetPosition;
+      // Создаем анимацию с множественными оборотами
+      // Важно: расстояние должно быть кратно itemSpacing для плавной остановки
+      const baseDistance = Math.ceil(10000 / itemSpacing) * itemSpacing; // 10000px для оборотов
+      const startPosition = -(baseDistance + finalPosition);
       
-      // Создаем полноценную анимацию с множественными оборотами
-      const totalDistance = 15000 + finalPosition; // 15000px для множественных оборотов
+      // Проверяем корректность позиций
+      console.log('Position check:', {
+        winnerIndex,
+        itemSpacing,
+        finalPosition,
+        startPosition,
+        baseDistance
+      });
       
-      // Первая фаза: быстрое вращение (5 секунд) - линейное движение
-      roulette.style.transition = 'transform 5s linear';
-      roulette.style.transform = `translateX(-${totalDistance}px)`;
+      // Сначала устанавливаем начальную позицию без анимации
+      roulette.style.transition = 'none';
+      roulette.style.transform = `translateX(${startPosition}px)`;
       
-      // Вторая фаза: замедление и остановка (4 секунды) - плавное замедление
-      setTimeout(() => {
-        roulette.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        roulette.style.transform = `translateX(${finalPosition}px)`;
-      }, 5000);
+      // Принудительно перерисовываем для применения начальной позиции
+      roulette.offsetHeight;
       
-      // Останавливаем анимацию через 9 секунд
+      // Запускаем анимацию вращения
+      roulette.style.transition = 'transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      roulette.style.transform = `translateX(${finalPosition}px)`;
+      
+      // Останавливаем анимацию через 3 секунды
       setTimeout(() => {
         setIsSpinning(false);
         setShowResult(true);
         onCaseOpened(winner);
-      }, 9000);
+      }, 3000);
+      
+      // Отладочная информация
+      console.log('Roulette animation:', {
+        winnerIndex,
+        itemSpacing,
+        finalPosition,
+        startPosition,
+        centerOffset
+      });
     }
   };
 
