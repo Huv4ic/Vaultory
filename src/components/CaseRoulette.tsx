@@ -30,6 +30,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   const [spinCount, setSpinCount] = useState(0);
   const animationRef = useRef<number | null>(null);
 
+  // Отладка изменений состояний
+  useEffect(() => {
+    console.log('State changed - isSpinning:', isSpinning, 'showResult:', showResult);
+  }, [isSpinning, showResult]);
+
   // Cleanup анимации при размонтировании
   useEffect(() => {
     return () => {
@@ -112,11 +117,14 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   };
 
   const startSpin = () => {
-    if (isSpinning) return;
-    
     console.log('=== START SPIN START ===');
     console.log('isSpinning state:', isSpinning);
     console.log('showResult state:', showResult);
+    
+    if (isSpinning) {
+      console.log('Already spinning, returning early');
+      return;
+    }
     
     // Проверяем, что есть предметы для открытия
     if (caseItems.length === 0) {
@@ -520,19 +528,25 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 )}
                 
                 <div className="flex justify-center space-x-4">
-                  <Button
-                    onClick={() => {
-                      // Обновляем счетчик только когда кейс действительно открыт
-                      const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
-                      localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
-                      
-                      onCaseOpened(winnerItem!);
-                      onClose();
-                    }}
-                    className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
-                  >
-                    Закрыть
-                  </Button>
+                                     <Button
+                     onClick={() => {
+                       console.log('=== CLOSE BUTTON CLICKED ===');
+                       console.log('Winner item:', winnerItem);
+                       
+                       // Обновляем счетчик только когда кейс действительно открыт
+                       const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
+                       localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
+                       
+                       console.log('Calling onCaseOpened with:', winnerItem);
+                       onCaseOpened(winnerItem!);
+                       
+                       console.log('Calling onClose');
+                       onClose();
+                     }}
+                     className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
+                   >
+                     Закрыть
+                   </Button>
                 </div>
               </div>
             )}
