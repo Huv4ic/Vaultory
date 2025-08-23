@@ -41,8 +41,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
 
   // Функция для определения победного предмета на основе drop_after_cases
   const calculateWinner = (): CaseItem => {
-    // Получаем текущий счетчик открытых кейсов
-    const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
+    // Получаем текущий счетчик открытых кейсов (БЕЗ +1)
+    const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0');
     
     // Группируем предметы по drop_after_cases
     const itemsByDropRate: { [key: number]: CaseItem[] } = {};
@@ -61,7 +61,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Проверяем каждый drop_after_cases
     Object.keys(itemsByDropRate).forEach(dropRateStr => {
       const dropRate = parseInt(dropRateStr);
-      if (currentCaseCount % dropRate === 0) {
+      if ((currentCaseCount + 1) % dropRate === 0) {
         // Если текущий кейс кратен drop_after_cases, добавляем все предметы с этим значением
         eligibleItems = eligibleItems.concat(itemsByDropRate[dropRate]);
       }
@@ -76,13 +76,13 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     const randomIndex = Math.floor(Math.random() * eligibleItems.length);
     const winner = eligibleItems[randomIndex];
     
-    // Обновляем счетчик ТОЛЬКО после успешного открытия кейса
-    // НЕ обновляем здесь, чтобы не сбивать логику
-    setSpinCount(currentCaseCount);
+    // Показываем текущий счетчик (БЕЗ обновления)
+    setSpinCount(currentCaseCount + 1);
     
     // Отладочная информация
     console.log('Winner calculation:', {
       currentCaseCount,
+      nextCaseCount: currentCaseCount + 1,
       itemsByDropRate,
       eligibleItems,
       winner: winner.name,
