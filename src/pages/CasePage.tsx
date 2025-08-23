@@ -5,12 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Package, ArrowLeft, Crown, Zap, Target, Shield } from 'lucide-react';
+import CaseRoulette from '../components/CaseRoulette';
 
 interface CaseItem {
   id: string;
   name: string;
   rarity: string;
   image_url?: string;
+  drop_after_cases?: number;
 }
 
 interface Case {
@@ -37,6 +39,7 @@ const CasePage = () => {
   const [caseItems, setCaseItems] = useState<CaseItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showRoulette, setShowRoulette] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -87,8 +90,25 @@ const CasePage = () => {
   };
 
   const handleOpenCase = () => {
-    // Здесь будет логика открытия кейса
-    alert('Функция открытия кейса будет добавлена позже');
+    // Проверяем, есть ли предметы в кейсе
+    if (caseItems.length === 0) {
+      alert('В этом кейсе нет предметов для открытия');
+      return;
+    }
+    
+    // Показываем рулетку
+    setShowRoulette(true);
+  };
+
+  const handleCaseOpened = (item: CaseItem) => {
+    // Здесь можно добавить логику для добавления предмета в инвентарь
+    console.log('Кейс открыт! Выпал предмет:', item);
+    
+    // Можно добавить уведомление или обновление баланса
+    // Пока просто закрываем рулетку
+    setTimeout(() => {
+      setShowRoulette(false);
+    }, 3000);
   };
 
   const getRarityIcon = (rarity: string) => {
@@ -337,6 +357,16 @@ const CasePage = () => {
           )}
         </div>
       </div>
+
+      {/* Рулетка для открытия кейса */}
+      {showRoulette && caseData && (
+        <CaseRoulette
+          caseItems={caseItems}
+          casePrice={caseData.price}
+          onClose={() => setShowRoulette(false)}
+          onCaseOpened={handleCaseOpened}
+        />
+      )}
     </div>
   );
 };
