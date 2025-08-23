@@ -110,8 +110,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       const strip = stripRef.current;
       const viewport = strip.parentElement;
       
-      // Базовые параметры
-      const REPEAT = 24; // длинная лента для бесконечных спинов
+             // Базовые параметры
+       const REPEAT = 50; // длинная лента для бесконечных спинов
       let itemWidth = 0; // вычислим после вставки
       
       // Вычисляем ширину карточки
@@ -374,8 +374,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       className="flex gap-2.5 items-center p-4 h-full"
                       style={{ transform: 'translateX(300px)' }}
                     >
-                      {/* Дублируем предметы для бесконечной прокрутки */}
-                      {Array.from({ length: 24 }, () => caseItems).flat().map((item, index) => (
+                                             {/* Дублируем предметы для бесконечной прокрутки */}
+                       {Array.from({ length: 50 }, () => caseItems).flat().map((item, index) => (
                         <div
                           key={`${item.id}-${index}`}
                           className={`flex-shrink-0 w-35 h-30 rounded-xl p-2.5 flex flex-col justify-end relative isolation isolate item ${
