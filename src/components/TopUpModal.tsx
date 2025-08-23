@@ -9,8 +9,11 @@ import {
   Coins, 
   X,
   Copy,
-  CheckCircle
+  CheckCircle,
+  RefreshCw,
+  Bell
 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -122,8 +125,11 @@ const paymentMethods: PaymentMethod[] = [
 ];
 
 export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
+  const { telegramUser, profile } = useAuth();
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
+  const [isCheckingBalance, setIsCheckingBalance] = useState(false);
+  const [balanceChecked, setBalanceChecked] = useState(false);
 
   const handleCopy = async (text: string, methodId: string) => {
     try {
@@ -137,12 +143,60 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
 
   const handleMethodSelect = (method: PaymentMethod) => {
     setSelectedMethod(method);
+    setBalanceChecked(false); // Сбрасываем статус проверки при выборе нового метода
   };
 
   const handleClose = () => {
     setSelectedMethod(null);
     setCopied(null);
+    setBalanceChecked(false);
     onClose();
+  };
+
+  const handleCheckBalance = async () => {
+    if (!telegramUser?.id || !selectedMethod) return;
+
+    setIsCheckingBalance(true);
+    
+    try {
+      // Отправляем уведомление в бота
+      const botToken = '8017714761:AAH9xTX_9fNUPGKuLaxqJWf85W7AixO2rEU';
+      const chatId = '5931400368';
+      
+      const message = `💰 *Пополнение баланса!*\n\n` +
+        `👤 Пользователь: ${profile?.username || 'Без username'}\n` +
+        `🆔 Telegram ID: \`${telegramUser.id}\n` +
+        `💳 Способ: ${selectedMethod.name}\n` +
+        `📱 Время: ${new Date().toLocaleString('ru-RU')}\n\n` +
+        `⚠️ *Проверьте оплату и зачислите средства!*`;
+
+      // Отправляем в Telegram Bot API
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'Markdown'
+        })
+      });
+
+      if (response.ok) {
+        setBalanceChecked(true);
+        // Показываем уведомление пользователю
+        alert('✅ Уведомление отправлено! Администратор проверит оплату и зачислит средства.');
+      } else {
+        console.error('Ошибка отправки уведомления:', response.statusText);
+        alert('❌ Ошибка отправки уведомления. Попробуйте позже.');
+      }
+    } catch (error) {
+      console.error('Ошибка при проверке баланса:', error);
+      alert('❌ Ошибка при отправке уведомления. Попробуйте позже.');
+    } finally {
+      setIsCheckingBalance(false);
+    }
   };
 
   return (
@@ -289,6 +343,42 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Кнопка проверки баланса */}
+              <div className="text-center">
+                <Button
+                  onClick={handleCheckBalance}
+                  disabled={isCheckingBalance || balanceChecked}
+                  className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${
+                    balanceChecked 
+                      ? 'bg-green-600 hover:bg-green-700 text-white' 
+                      : 'bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white hover:scale-105 shadow-lg shadow-amber-500/30'
+                  }`}
+                >
+                  {isCheckingBalance ? (
+                    <>
+                      <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
+                      Отправка уведомления...
+                    </>
+                  ) : balanceChecked ? (
+                    <>
+                      <CheckCircle className="w-5 h-5 mr-2" />
+                      Уведомление отправлено! ✅
+                    </>
+                  ) : (
+                    <>
+                      <Bell className="w-5 h-5 mr-2" />
+                      Проверить баланс
+                    </>
+                  )}
+                </Button>
+                
+                {balanceChecked && (
+                  <p className="text-green-400 text-sm mt-2">
+                    Администратор получил уведомление и проверит оплату
+                  </p>
+                )}
+              </div>
 
               <div className="flex space-x-4">
                 <Button
