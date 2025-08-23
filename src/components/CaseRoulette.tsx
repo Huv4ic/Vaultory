@@ -68,26 +68,30 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       const itemWidth = 120; // Ширина каждого предмета
       const centerOffset = 300; // Смещение центра
       
-      // Позиция победного предмета
+      // Позиция победного предмета - ТОЧНО в центре
       const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
-      const targetPosition = -(winnerIndex * itemWidth) + centerOffset;
       
-      // Добавляем случайность для реалистичности
-      const randomOffset = Math.random() * 100 - 50;
-      const finalPosition = targetPosition + randomOffset;
+      // Рассчитываем точную позицию для центрирования предмета
+      // centerOffset = 300px (центр экрана), itemWidth = 120px
+      // Каждый предмет занимает 120px + 16px (mx-2) = 136px
+      const itemSpacing = 136; // Ширина предмета + отступы
+      const targetPosition = -(winnerIndex * itemSpacing) + centerOffset;
+      
+      // НЕ добавляем случайность - предмет должен остановиться точно в центре
+      const finalPosition = targetPosition;
       
       // Создаем полноценную анимацию с множественными оборотами
-      const totalDistance = 12000 + finalPosition; // 12000px для множественных оборотов
+      const totalDistance = 15000 + finalPosition; // 15000px для множественных оборотов
       
-      // Первая фаза: быстрое вращение (4 секунды)
-      roulette.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      // Первая фаза: быстрое вращение (5 секунд) - линейное движение
+      roulette.style.transition = 'transform 5s linear';
       roulette.style.transform = `translateX(-${totalDistance}px)`;
       
-      // Вторая фаза: замедление и остановка (5 секунд)
+      // Вторая фаза: замедление и остановка (4 секунды) - плавное замедление
       setTimeout(() => {
-        roulette.style.transition = 'transform 5s cubic-bezier(0.1, 0.7, 0.1, 1)';
+        roulette.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         roulette.style.transform = `translateX(${finalPosition}px)`;
-      }, 4000);
+      }, 5000);
       
       // Останавливаем анимацию через 9 секунд
       setTimeout(() => {
@@ -174,7 +178,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                                  {/* Центральная линия с анимацией */}
                  <div className={`absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-yellow-400 transform -translate-x-1/2 z-10 shadow-lg shadow-amber-400/50 ${
                    isSpinning ? 'animate-pulse' : ''
-                 }`}></div>
+                 }`}>
+                   {/* Дополнительная подсветка центра */}
+                   <div className="absolute -top-1 -left-1 w-3 h-3 bg-amber-400 rounded-full opacity-50 animate-ping"></div>
+                   <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-amber-400 rounded-full opacity-50 animate-ping" style={{ animationDelay: '0.5s' }}></div>
+                 </div>
                 
                                  {/* Контейнер рулетки */}
                  <div className="relative h-40 bg-gray-800/50 rounded-2xl border border-amber-500/30 overflow-hidden">
@@ -188,7 +196,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                      style={{ transform: 'translateX(300px)' }}
                    >
                                                               {/* Дублируем предметы для бесконечной прокрутки - много копий для плавности */}
-                     {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
+                     {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
                                                 <div
                            key={`${item.id}-${index}`}
                            className={`flex-shrink-0 w-28 h-28 mx-2 rounded-xl border-2 ${getRarityColor(item.rarity)} bg-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center p-2 transition-all duration-300 hover:scale-110 ${
