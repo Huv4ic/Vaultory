@@ -9,12 +9,12 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface Transaction {
   id: string;
-  type: 'deposit' | 'withdrawal' | 'case_opening' | 'purchase' | 'refund';
+  user_id: number;
+  type: 'deposit' | 'withdrawal' | 'purchase' | 'refund';
   amount: number;
   description: string;
-  date: string;
-  status: 'completed' | 'pending' | 'failed';
-  balance_after: number;
+  order_id?: string;
+  created_at: string;
 }
 
 const TransactionHistory = () => {
@@ -47,12 +47,12 @@ const TransactionHistory = () => {
           // Преобразуем данные в нужный формат
           const formattedTransactions: Transaction[] = (data || []).map((tx: any) => ({
             id: tx.id,
-            type: tx.type || tx.transaction_type,
+            user_id: tx.user_id,
+            type: tx.type,
             amount: tx.amount,
-            description: tx.description || tx.note,
-            date: tx.created_at || tx.date,
-            status: tx.status || 'completed',
-            balance_after: tx.balance_after || tx.balance || 0
+            description: tx.description,
+            order_id: tx.order_id,
+            created_at: tx.created_at
           }));
           
           setTransactions(formattedTransactions);
@@ -96,8 +96,10 @@ const TransactionHistory = () => {
         return 'Пополнение';
       case 'withdrawal':
         return 'Списание';
-      case 'case_opening':
-        return 'Открытие кейса';
+      case 'purchase':
+        return 'Покупка';
+      case 'refund':
+        return 'Возврат';
       case 'purchase':
         return 'Покупка';
       case 'refund':
@@ -137,7 +139,7 @@ const TransactionHistory = () => {
     if (filter === 'all') return true;
     if (filter === 'deposits') return transaction.type === 'deposit';
     if (filter === 'withdrawals') return transaction.type === 'withdrawal';
-    if (filter === 'cases') return transaction.type === 'case_opening';
+    if (filter === 'cases') return transaction.type === 'purchase';
     if (filter === 'purchases') return transaction.type === 'purchase';
     return true;
   });
@@ -272,7 +274,7 @@ const TransactionHistory = () => {
                           {transaction.description}
                         </div>
                         <div className="text-gray-400 text-xs">
-                          {new Date(transaction.date).toLocaleString('ru-RU')}
+                          {new Date(transaction.created_at).toLocaleString('ru-RU')}
                         </div>
                       </div>
                     </div>
@@ -281,10 +283,7 @@ const TransactionHistory = () => {
                         {transaction.amount > 0 ? '+' : ''}{transaction.amount}₴
                       </div>
                       <div className="text-gray-400 text-sm">
-                        Баланс: {transaction.balance_after}₴
-                      </div>
-                      <div className={`text-xs font-medium ${getStatusColor(transaction.status)}`}>
-                        {getStatusText(transaction.status)}
+                        {transaction.order_id && `Заказ: ${transaction.order_id}`}
                       </div>
                     </div>
                   </div>

@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Trash2, ShoppingBag, ArrowLeft, CheckCircle, Package, CreditCard, Shield, Zap } from 'lucide-react';
+import { Trash2, ShoppingBag, ArrowLeft, CheckCircle, Package, CreditCard, Shield, Zap, MessageCircle } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useOrders } from '@/hooks/useOrders';
 
 const Cart = () => {
   const navigate = useNavigate();
   const { items, removeItem, clear, updateQuantity } = useCart();
   const { telegramUser, balance } = useAuth();
   const { t } = useLanguage();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { createOrder, isProcessing } = useOrders();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [orderId, setOrderId] = useState<string>('');
 
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -26,19 +29,19 @@ const Cart = () => {
       return;
     }
 
-    setIsProcessing(true);
-    
     try {
-      // Здесь должна быть логика оформления заказа
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Имитация API вызова
+      const result = await createOrder(items, total);
       
-      alert('Заказ успешно оформлен!');
-      clear();
-      navigate('/');
+      if (result.success && result.orderId) {
+        setOrderId(result.orderId);
+        setShowSuccessModal(true);
+        clear(); // Очищаем корзину
+      } else {
+        alert(`Ошибка при оформлении заказа: ${result.error}`);
+      }
     } catch (error) {
-      alert('Ошибка при оформлении заказа');
-    } finally {
-      setIsProcessing(false);
+      console.error('Ошибка при оформлении заказа:', error);
+      alert('Неожиданная ошибка при оформлении заказа');
     }
   };
 
@@ -347,6 +350,61 @@ const Cart = () => {
           </Button>
         </div>
       </div>
+
+      {/* Модал успешного оформления заказа */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-gray-900/95 backdrop-blur-xl border border-amber-500/30 rounded-2xl shadow-2xl shadow-amber-500/20 p-8 w-full max-w-md mx-auto">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CheckCircle className="w-12 h-12 text-green-400" />
+              </div>
+              
+              <h2 className="text-2xl font-bold text-white mb-4">
+                Заказ оформлен! 🎉
+              </h2>
+              
+              <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 border border-amber-500/20 mb-6">
+                <p className="text-gray-300 text-sm mb-2">Номер заказа:</p>
+                <p className="text-amber-400 font-mono text-lg break-all">{orderId}</p>
+              </div>
+              
+              <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-6">
+                <div className="flex items-center justify-center space-x-2 mb-2">
+                  <MessageCircle className="w-5 h-5 text-amber-400" />
+                  <span className="text-amber-400 font-semibold">Свяжитесь с администратором</span>
+                </div>
+                <p className="text-amber-300 text-sm">
+                  Для получения товаров свяжитесь с нами через Telegram
+                </p>
+              </div>
+              
+              <div className="space-y-3">
+                <Button
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    navigate('/profile');
+                  }}
+                  className="w-full bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30"
+                >
+                  Перейти в профиль
+                </Button>
+                
+                <Button
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    navigate('/');
+                  }}
+                  variant="outline"
+                  className="w-full border-amber-500/40 text-amber-400 hover:bg-amber-500/20"
+                >
+                  На главную
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

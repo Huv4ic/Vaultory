@@ -20,6 +20,7 @@ import {
   History
 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
+import { useOrders } from '../hooks/useOrders';
 import EditProfileModal from '../components/EditProfileModal';
 import TopUpModal from '../components/TopUpModal';
 
@@ -27,6 +28,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { telegramUser, signOutTelegram, balance, profile, updateProfile } = useAuth();
   const { t } = useLanguage();
+  const { getUserStatistics } = useOrders();
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTopUpModal, setShowTopUpModal] = useState(false);
@@ -42,23 +44,17 @@ const Profile = () => {
       if (!telegramUser) return;
       
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', telegramUser.id)
-          .single();
-
-        if (error) throw error;
-        // setProfile(data); // This line is removed as per the new_code
+        // Загружаем реальную статистику пользователя
+        const userStats = await getUserStatistics();
         
-        // Здесь можно добавить загрузку статистики пользователя
-        // Пока используем моковые данные
-        setStats({
-          totalPurchases: Math.floor(Math.random() * 50) + 10,
-          totalSpent: Math.floor(Math.random() * 5000) + 1000,
-          casesOpened: Math.floor(Math.random() * 100) + 20,
-          itemsSold: Math.floor(Math.random() * 30) + 5
-        });
+        if (userStats) {
+          setStats({
+            totalPurchases: (userStats as any).total_orders || 0,
+            totalSpent: (userStats as any).total_spent || 0,
+            casesOpened: (userStats as any).cases_opened || 0,
+            itemsSold: (userStats as any).purchases_count || 0
+          });
+        }
       } catch (error) {
         console.error('Ошибка загрузки профиля:', error);
       } finally {
@@ -67,7 +63,7 @@ const Profile = () => {
     };
 
     fetchProfile();
-  }, [telegramUser]);
+  }, [telegramUser, getUserStatistics]);
 
   // Синхронизация баланса в реальном времени
   useEffect(() => {
