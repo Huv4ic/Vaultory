@@ -103,8 +103,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     if (rouletteRef.current) {
       const roulette = rouletteRef.current;
       
-      // Базовые параметры
-      const itemSpacing = 136; // Ширина предмета + отступы (120px + 16px)
+      // Базовые параметры как в примере
+      const itemSpacing = 136; // Ширина предмета + отступы
       const centerOffset = 300; // Смещение центра
       
       // Позиция победного предмета
@@ -113,17 +113,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       // Рассчитываем финальную позицию для центрирования предмета
       let finalPosition = -(winnerIndex * itemSpacing) + centerOffset;
       
-      // Убеждаемся, что позиция корректна
-      if (Math.abs(finalPosition) > 5000) {
-        console.warn('Final position too large, adjusting...');
-        // Корректируем позицию если она слишком большая
-        finalPosition = finalPosition % itemSpacing;
-      }
-      
-      // Создаем анимацию с множественными оборотами
-      // Важно: расстояние должно быть кратно itemSpacing для плавной остановки
-      const baseDistance = Math.ceil(8000 / itemSpacing) * itemSpacing; // 8000px для оборотов
-      const startPosition = baseDistance + finalPosition; // Изменено направление
+      // Создаем анимацию с множественными оборотами (как в примере)
+      const baseDistance = Math.ceil(12000 / itemSpacing) * itemSpacing; // 12000px для оборотов
+      const startPosition = baseDistance + finalPosition;
       
       // Проверяем корректность позиций
       console.log('Position check:', {
@@ -134,21 +126,22 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         baseDistance
       });
       
-      // Запускаем анимацию вращения (теперь справа налево)
-      roulette.style.transition = 'transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      // Устанавливаем начальную позицию без анимации
+      roulette.style.transition = 'none';
       roulette.style.transform = `translateX(${startPosition}px)`;
       
-      // Небольшая задержка для плавного старта
-      requestAnimationFrame(() => {
-        roulette.style.transform = `translateX(${finalPosition}px)`;
-      });
+      // Принудительно перерисовываем
+      roulette.offsetHeight;
       
-      // Останавливаем анимацию через 3 секунды
-      setTimeout(() => {
-        setIsSpinning(false);
-        setShowResult(true);
-        // НЕ вызываем onCaseOpened здесь - только после показа результата
-      }, 3000);
+             // Запускаем анимацию с правильным easing (как в примере)
+       roulette.style.transition = 'transform 8s cubic-bezier(0,0.4,0.4,1.025)';
+       roulette.style.transform = `translateX(${finalPosition}px)`;
+       
+       // Останавливаем анимацию через 8 секунд
+       setTimeout(() => {
+         setIsSpinning(false);
+         setShowResult(true);
+       }, 8000);
       
       // Отладочная информация
       console.log('Roulette animation:', {
@@ -256,11 +249,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                    
                                        <div 
                       ref={rouletteRef}
-                      className="flex items-center h-full transition-transform duration-1000 ease-out"
+                      className="flex items-center h-full"
                       style={{ transform: 'translateX(300px)' }}
                     >
-                                                              {/* Дублируем предметы для бесконечной прокрутки - много копий для плавности */}
-                     {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
+                                                                                    {/* Дублируем предметы для бесконечной прокрутки - много копий для плавности */}
+                      {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
                                                 <div
                            key={`${item.id}-${index}`}
                            className={`flex-shrink-0 w-28 h-28 mx-2 rounded-xl border-2 ${getRarityColor(item.rarity)} bg-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center p-2 transition-all duration-300 hover:scale-110 ${
