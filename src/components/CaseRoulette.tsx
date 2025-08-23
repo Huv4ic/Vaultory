@@ -50,6 +50,14 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     };
   }, []);
 
+  // Отслеживаем все вызовы onClose
+  const handleClose = () => {
+    console.log('=== ONCLOSE CALLED ===');
+    console.log('Stack trace:', new Error().stack);
+    console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult, 'winnerItem:', winnerItem);
+    onClose();
+  };
+
   // Cleanup анимации при размонтировании
   useEffect(() => {
     return () => {
@@ -434,7 +442,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                  onClick={() => {
                    console.log('Close button clicked!');
                    console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult);
-                   onClose();
+                   handleClose();
                  }}
                  variant="ghost"
                  size="sm"
@@ -600,7 +608,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                        onCaseOpened(winnerItem!);
                        
                        console.log('Calling onClose');
-                       onClose();
+                       handleClose();
                      }}
                      className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
                    >
