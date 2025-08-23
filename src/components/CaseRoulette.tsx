@@ -65,7 +65,6 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Анимация вращения
     if (rouletteRef.current) {
       const roulette = rouletteRef.current;
-      const items = roulette.children;
       const itemWidth = 120; // Ширина каждого предмета
       const centerOffset = 300; // Смещение центра
       
@@ -77,16 +76,25 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       const randomOffset = Math.random() * 100 - 50;
       const finalPosition = targetPosition + randomOffset;
       
-      // Анимация
-      roulette.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-      roulette.style.transform = `translateX(${finalPosition}px)`;
+      // Создаем полноценную анимацию с множественными оборотами
+      const totalDistance = 8000 + finalPosition; // 8000px для множественных оборотов
       
-      // Останавливаем анимацию через 4 секунды
+      // Первая фаза: быстрое вращение (3 секунды)
+      roulette.style.transition = 'transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      roulette.style.transform = `translateX(-${totalDistance}px)`;
+      
+      // Вторая фаза: замедление и остановка (4 секунды)
+      setTimeout(() => {
+        roulette.style.transition = 'transform 4s cubic-bezier(0.1, 0.7, 0.1, 1)';
+        roulette.style.transform = `translateX(${finalPosition}px)`;
+      }, 3000);
+      
+      // Останавливаем анимацию через 7 секунд
       setTimeout(() => {
         setIsSpinning(false);
         setShowResult(true);
         onCaseOpened(winner);
-      }, 4000);
+      }, 7000);
     }
   };
 
@@ -163,8 +171,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
 
               {/* Рулетка */}
               <div className="relative">
-                {/* Центральная линия */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-yellow-400 transform -translate-x-1/2 z-10 shadow-lg shadow-amber-400/50"></div>
+                                 {/* Центральная линия с анимацией */}
+                 <div className={`absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-yellow-400 transform -translate-x-1/2 z-10 shadow-lg shadow-amber-400/50 ${
+                   isSpinning ? 'animate-pulse' : ''
+                 }`}></div>
                 
                 {/* Контейнер рулетки */}
                 <div className="relative h-40 bg-gray-800/50 rounded-2xl border border-amber-500/30 overflow-hidden">
@@ -173,12 +183,14 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     className="flex items-center h-full transition-transform duration-1000 ease-out"
                     style={{ transform: 'translateX(300px)' }}
                   >
-                    {/* Дублируем предметы для бесконечной прокрутки */}
-                    {[...caseItems, ...caseItems, ...caseItems].map((item, index) => (
-                      <div
-                        key={`${item.id}-${index}`}
-                        className={`flex-shrink-0 w-28 h-28 mx-2 rounded-xl border-2 ${getRarityColor(item.rarity)} bg-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center p-2 transition-all duration-300 hover:scale-110`}
-                      >
+                                                              {/* Дублируем предметы для бесконечной прокрутки - больше копий для плавности */}
+                     {[...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems, ...caseItems].map((item, index) => (
+                       <div
+                         key={`${item.id}-${index}`}
+                         className={`flex-shrink-0 w-28 h-28 mx-2 rounded-xl border-2 ${getRarityColor(item.rarity)} bg-gray-700/80 backdrop-blur-sm flex flex-col items-center justify-center p-2 transition-all duration-300 hover:scale-110 ${
+                           isSpinning ? 'animate-pulse' : ''
+                         }`}
+                       >
                         {/* Изображение предмета */}
                         <div className="w-16 h-16 mb-2 rounded-lg overflow-hidden bg-gray-600 flex items-center justify-center">
                           {item.image_url ? (
@@ -212,10 +224,21 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   </div>
                 </div>
                 
-                {/* Подсказка */}
-                <p className="text-center text-gray-400 mt-4 text-sm">
-                  {isSpinning ? 'Рулетка крутится...' : 'Нажмите кнопку, чтобы запустить рулетку'}
-                </p>
+                                 {/* Подсказка и счетчик */}
+                 <div className="text-center mt-4">
+                   {isSpinning ? (
+                     <div className="space-y-2">
+                       <p className="text-amber-400 text-sm font-medium">🎰 Рулетка крутится...</p>
+                       <div className="flex items-center justify-center space-x-2">
+                         <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
+                         <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                         <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                       </div>
+                     </div>
+                   ) : (
+                     <p className="text-gray-400 text-sm">Нажмите кнопку, чтобы запустить рулетку</p>
+                   )}
+                 </div>
               </div>
             </div>
           ) : (
