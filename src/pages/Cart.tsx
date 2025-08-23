@@ -53,15 +53,11 @@ const Cart = () => {
          console.log('Очищаем корзину');
          clear(); // Очищаем корзину
          
-         // Обновляем баланс сразу
-         console.log('Обновляем баланс');
-         await refreshBalance();
-         
-         
-         
-         console.log('Состояние после обновления:', { orderId: result.orderId, showSuccessModal: true });
-         
-         
+                   // Обновляем баланс сразу
+          console.log('Обновляем баланс');
+          await refreshBalance();
+          
+          console.log('Состояние после обновления:', { orderId: result.orderId, showSuccessModal: true });         
        } else {
         console.error('Ошибка создания заказа:', result.error);
         alert(`Ошибка при оформлении заказа: ${result.error}`);
@@ -381,10 +377,18 @@ const Cart = () => {
       {/* Модал успешного заказа - ВНЕ основного контейнера */}
       {/* Отладка: showSuccessModal = {showSuccessModal.toString()}, orderId = {orderId} */}
       
-      {/* Тест-модал для проверки */}
-      <div style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '10px', zIndex: 10000 }}>
-        showSuccessModal: {showSuccessModal.toString()}
-      </div>
+             {/* Тест-модал для проверки */}
+       <div style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '10px', zIndex: 10000 }}>
+         showSuccessModal: {showSuccessModal.toString()}
+       </div>
+       
+       {/* Тест-кнопка для проверки модала */}
+       <button 
+         onClick={() => setShowSuccessModal(!showSuccessModal)}
+         style={{ position: 'fixed', top: '50px', right: '10px', background: 'blue', color: 'white', padding: '10px', zIndex: 10000 }}
+       >
+         Тест модала (нажми)
+       </button>
       
       {showSuccessModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
