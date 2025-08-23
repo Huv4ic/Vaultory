@@ -48,9 +48,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('showResult:', showResult);
     console.log('winnerItem:', winnerItem ? winnerItem.name : 'null');
     console.log('animationRef.current:', animationRef.current);
-    console.log('Component props:', { caseItems: caseItems.length, casePrice });
     console.log('========================');
-  }, [isSpinning, showResult, winnerItem, animationRef.current, caseItems, casePrice]);
+  }, [isSpinning, showResult, winnerItem, animationRef.current]);
 
   // Отладка вызовов onClose
   useEffect(() => {
