@@ -16,17 +16,7 @@ const Cart = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [orderId, setOrderId] = useState<string>('');
 
-  // Отладка состояния модала
-  console.log('Cart render - showSuccessModal:', showSuccessModal, 'orderId:', orderId);
 
-  // Отслеживаем изменения состояния модала
-  useEffect(() => {
-    console.log('useEffect - showSuccessModal изменился:', showSuccessModal);
-  }, [showSuccessModal]);
-
-  useEffect(() => {
-    console.log('useEffect - orderId изменился:', orderId);
-  }, [orderId]);
 
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -44,20 +34,13 @@ const Cart = () => {
     try {
       const result = await createOrder(items, total);
       
-             if (result.success && result.orderId) {
-         console.log('Заказ успешно создан:', result.orderId);
-         console.log('Устанавливаем orderId:', result.orderId);
-         setOrderId(result.orderId);
-         console.log('Устанавливаем showSuccessModal в true');
-         setShowSuccessModal(true);
-         console.log('Очищаем корзину');
-         clear(); // Очищаем корзину
-         
-                   // Обновляем баланс сразу
-          console.log('Обновляем баланс');
-          await refreshBalance();
-          
-          console.log('Состояние после обновления:', { orderId: result.orderId, showSuccessModal: true });         
+                   if (result.success && result.orderId) {
+        setOrderId(result.orderId);
+        setShowSuccessModal(true);
+        clear(); // Очищаем корзину
+        
+        // Обновляем баланс сразу
+        await refreshBalance();         
        } else {
         console.error('Ошибка создания заказа:', result.error);
         alert(`Ошибка при оформлении заказа: ${result.error}`);
@@ -377,18 +360,7 @@ const Cart = () => {
              {/* Модал успешного заказа - ВНЕ основного контейнера */}
        {/* Отладка: showSuccessModal = {showSuccessModal.toString()}, orderId = {orderId} */}
        
-       {/* Простой тест - всегда показываем что-то */}
-       <div style={{ position: 'fixed', top: '10px', right: '10px', background: 'red', color: 'white', padding: '10px', zIndex: 10000 }}>
-         showSuccessModal: {showSuccessModal.toString()}
-       </div>
        
-       {/* Тест-кнопка */}
-       <button 
-         onClick={() => setShowSuccessModal(!showSuccessModal)}
-         style={{ position: 'fixed', top: '50px', right: '10px', background: 'blue', color: 'white', padding: '10px', zIndex: 10000 }}
-       >
-         Тест модала
-       </button>
        
        {showSuccessModal && (
          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-in fade-in duration-300">
@@ -425,7 +397,7 @@ const Cart = () => {
                    </div>
                    
                    <Button
-                     onClick={() => window.open('https://t.me/vaultory_support', '_blank')}
+                                           onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
                      className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-3 shadow-lg shadow-blue-500/25"
                    >
                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
