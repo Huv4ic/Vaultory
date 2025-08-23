@@ -33,7 +33,13 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   // Отладка изменений состояний
   useEffect(() => {
     console.log('State changed - isSpinning:', isSpinning, 'showResult:', showResult);
-  }, [isSpinning, showResult]);
+    
+    // Дополнительная проверка: если showResult стал false, сбрасываем winnerItem
+    if (!showResult && winnerItem) {
+      console.log('showResult became false, resetting winnerItem');
+      setWinnerItem(null);
+    }
+  }, [isSpinning, showResult, winnerItem]);
 
   // Cleanup анимации при размонтировании
   useEffect(() => {
@@ -120,6 +126,13 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('=== START SPIN START ===');
     console.log('isSpinning state:', isSpinning);
     console.log('showResult state:', showResult);
+    
+    // СБРАСЫВАЕМ СОСТОЯНИЯ ПРИ КАЖДОМ НОВОМ ЗАПУСКЕ
+    if (showResult) {
+      console.log('Resetting states for new spin...');
+      setShowResult(false);
+      setWinnerItem(null);
+    }
     
     if (isSpinning) {
       console.log('Already spinning, returning early');
