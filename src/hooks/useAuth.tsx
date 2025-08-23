@@ -83,6 +83,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Здесь можно добавить логику выхода из Telegram
   };
 
+  // Функция обновления баланса
+  const refreshBalance = async () => {
+    if (!telegramUser?.id) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('telegram_id', telegramUser.id)
+        .single();
+      
+      if (!error && data?.balance !== undefined) {
+        setBalance(data.balance);
+        setProfile(prev => prev ? { ...prev, balance: data.balance } : null);
+      }
+    } catch (error) {
+      console.error('Ошибка обновления баланса:', error);
+    }
+  };
+
   const fetchProfile = async (telegramId: number) => {
     try {
       // Используем telegram_id вместо id
@@ -361,7 +381,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       signOut,
       refreshProfile,
       updateProfile,
-      setTelegramUser
+      setTelegramUser,
+      refreshBalance
     }}>
       {children}
     </AuthContext.Provider>

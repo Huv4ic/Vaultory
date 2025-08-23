@@ -33,15 +33,15 @@ const Cart = () => {
       const result = await createOrder(items, total);
       
       if (result.success && result.orderId) {
+        console.log('Заказ успешно создан:', result.orderId);
         setOrderId(result.orderId);
         setShowSuccessModal(true);
         clear(); // Очищаем корзину
         
-        // Обновляем баланс в реальном времени
-        setTimeout(() => {
-          refreshBalance();
-        }, 1000); // Обновляем через 1 секунду
+        // Обновляем баланс сразу
+        refreshBalance();
       } else {
+        console.error('Ошибка создания заказа:', result.error);
         alert(`Ошибка при оформлении заказа: ${result.error}`);
       }
     } catch (error) {
