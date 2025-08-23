@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Trash2, ShoppingBag, ArrowLeft, CheckCircle, Package, CreditCard, Shield, Zap, MessageCircle } from 'lucide-react';
@@ -15,6 +15,18 @@ const Cart = () => {
   const { createOrder, isProcessing } = useOrders();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [orderId, setOrderId] = useState<string>('');
+
+  // Отладка состояния модала
+  console.log('Cart render - showSuccessModal:', showSuccessModal, 'orderId:', orderId);
+
+  // Отслеживаем изменения состояния модала
+  useEffect(() => {
+    console.log('useEffect - showSuccessModal изменился:', showSuccessModal);
+  }, [showSuccessModal]);
+
+  useEffect(() => {
+    console.log('useEffect - orderId изменился:', orderId);
+  }, [orderId]);
 
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -34,12 +46,18 @@ const Cart = () => {
       
       if (result.success && result.orderId) {
         console.log('Заказ успешно создан:', result.orderId);
+        console.log('Устанавливаем orderId:', result.orderId);
         setOrderId(result.orderId);
+        console.log('Устанавливаем showSuccessModal в true');
         setShowSuccessModal(true);
+        console.log('Очищаем корзину');
         clear(); // Очищаем корзину
         
         // Обновляем баланс сразу
+        console.log('Обновляем баланс');
         refreshBalance();
+        
+        console.log('Состояние после обновления:', { orderId: result.orderId, showSuccessModal: true });
       } else {
         console.error('Ошибка создания заказа:', result.error);
         alert(`Ошибка при оформлении заказа: ${result.error}`);
@@ -356,9 +374,9 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* Модал успешного оформления заказа */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+             {/* Модал успешного оформления заказа */}
+       {showSuccessModal && (
+         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-gray-900/95 backdrop-blur-xl border border-amber-500/30 rounded-2xl shadow-2xl shadow-amber-500/20 p-8 w-full max-w-md mx-auto">
             <div className="text-center">
               <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
