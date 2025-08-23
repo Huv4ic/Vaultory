@@ -368,101 +368,84 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* Модал успешного заказа - простая версия */}
+      {/* Модал успешного заказа - в центре экрана */}
       {showSuccessModal && (
         <div 
           style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            zIndex: 10000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px'
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: '#1a1a1a',
+            borderRadius: '20px',
+            padding: '40px',
+            maxWidth: '500px',
+            width: '90%',
+            textAlign: 'center',
+            border: '2px solid #f59e0b',
+            boxShadow: '0 20px 40px rgba(245, 158, 11, 0.5)',
+            zIndex: 10000
           }}
         >
+          {/* Фон затемнения */}
           <div 
             style={{
-              backgroundColor: '#1a1a1a',
-              borderRadius: '20px',
-              padding: '40px',
-              maxWidth: '500px',
-              width: '100%',
-              textAlign: 'center',
-              border: '2px solid #f59e0b',
-              boxShadow: '0 20px 40px rgba(245, 158, 11, 0.3)'
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              zIndex: -1
             }}
-          >
-            <div style={{ fontSize: '60px', marginBottom: '20px' }}>🎉</div>
-            
-            <h2 style={{ 
+            onClick={() => setShowSuccessModal(false)}
+          />
+          
+          <div style={{ fontSize: '60px', marginBottom: '20px' }}>🎉</div>
+          
+          <h2 style={{ 
+            color: '#f59e0b', 
+            fontSize: '28px', 
+            fontWeight: 'bold', 
+            marginBottom: '20px' 
+          }}>
+            Заказ оформлен!
+          </h2>
+          
+          <div style={{ 
+            backgroundColor: '#333', 
+            padding: '15px', 
+            borderRadius: '10px', 
+            marginBottom: '20px' 
+          }}>
+            <p style={{ color: '#ccc', marginBottom: '10px' }}>Номер заказа:</p>
+            <p style={{ 
               color: '#f59e0b', 
-              fontSize: '28px', 
-              fontWeight: 'bold', 
-              marginBottom: '20px' 
+              fontFamily: 'monospace', 
+              fontSize: '14px',
+              wordBreak: 'break-all'
             }}>
-              Заказ оформлен!
-            </h2>
-            
-            <div style={{ 
-              backgroundColor: '#333', 
-              padding: '15px', 
-              borderRadius: '10px', 
-              marginBottom: '20px' 
-            }}>
-              <p style={{ color: '#ccc', marginBottom: '10px' }}>Номер заказа:</p>
-              <p style={{ 
-                color: '#f59e0b', 
-                fontFamily: 'monospace', 
-                fontSize: '14px',
-                wordBreak: 'break-all'
-              }}>
-                {orderId}
-              </p>
-            </div>
-            
-            <div style={{ 
-              backgroundColor: '#1e3a8a20', 
-              border: '1px solid #3b82f6', 
-              borderRadius: '15px', 
-              padding: '20px', 
-              marginBottom: '30px' 
-            }}>
-              <p style={{ color: '#60a5fa', marginBottom: '15px', fontSize: '16px' }}>
-                Свяжитесь с администратором через Telegram
-              </p>
-              
-              <button
-                onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
-                style={{
-                  width: '100%',
-                  padding: '15px',
-                  backgroundColor: '#3b82f6',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '10px',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s'
-                }}
-                onMouseOver={(e) => e.target.style.backgroundColor = '#2563eb'}
-                onMouseOut={(e) => e.target.style.backgroundColor = '#3b82f6'}
-              >
-                📱 Открыть Telegram
-              </button>
-            </div>
+              {orderId}
+            </p>
+          </div>
+          
+          <div style={{ 
+            backgroundColor: 'rgba(30, 58, 138, 0.2)', 
+            border: '1px solid #3b82f6', 
+            borderRadius: '15px', 
+            padding: '20px', 
+            marginBottom: '30px' 
+          }}>
+            <p style={{ color: '#60a5fa', marginBottom: '15px', fontSize: '16px' }}>
+              Свяжитесь с администратором через Telegram
+            </p>
             
             <button
-              onClick={() => setShowSuccessModal(false)}
+              onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
               style={{
                 width: '100%',
                 padding: '15px',
-                backgroundColor: '#f59e0b',
+                backgroundColor: '#3b82f6',
                 color: 'white',
                 border: 'none',
                 borderRadius: '10px',
@@ -471,12 +454,32 @@ const Cart = () => {
                 cursor: 'pointer',
                 transition: 'all 0.3s'
               }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#d97706'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#f59e0b'}
+              onMouseOver={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#2563eb'}
+              onMouseOut={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#3b82f6'}
             >
-              Закрыть
+              📱 Открыть Telegram
             </button>
           </div>
+          
+          <button
+            onClick={() => setShowSuccessModal(false)}
+            style={{
+              width: '100%',
+              padding: '15px',
+              backgroundColor: '#f59e0b',
+              color: 'white',
+              border: 'none',
+              borderRadius: '10px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              transition: 'all 0.3s'
+            }}
+            onMouseOver={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#d97706'}
+            onMouseOut={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#f59e0b'}
+          >
+            Закрыть
+          </button>
         </div>
       )}
     </div>
