@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Package, X, Gift } from 'lucide-react';
 
@@ -202,93 +202,115 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         return ((idx % (caseItems.length*REPEAT)) + (caseItems.length*REPEAT)) % (caseItems.length*REPEAT);
       };
       
-      // Анимация
-      const animate = () => {
-        animationRef.current = requestAnimationFrame(animate);
-        setX(x + v);
-        // немного трения
-        v *= 0.985;
-        // безопасность — бесконечная лента (за цикл)
-        const totalW = caseItems.length * REPEAT * itemWidth;
-        if (x < -totalW + centerOffset()) setX(x + totalW);
-        if (x > centerOffset()) setX(x - totalW);
-      };
-      
-      // Запускаем спин
-      const spinToLocalIndex = (localIndex: number) => {
-        console.log('spinToLocalIndex called with index:', localIndex);
-        
-        if (isSpinning) {
-          console.log('Already spinning, cancelling previous animation');
-          if (animationRef.current) {
-            cancelAnimationFrame(animationRef.current);
-          }
-        }
-        
-        // стартовая скорость и разгон
-        v = -40; // влево
-        console.log('Starting animation with velocity:', v);
-        animate();
-        
-        // выберем сегмент, где остановимся (далее по ленте + несколько кругов)
-        const currentGlobal = nowIndex();
-        const loops = 3; // сколько кругов до остановки
-        const stopGlobal = Math.floor(currentGlobal/caseItems.length)*caseItems.length + loops*caseItems.length + localIndex;
-        const targetX = indexToX(stopGlobal);
-
-        console.log('Animation target:', { currentGlobal, loops, stopGlobal, targetX });
-
-        // Плавный довод с помощью встроенного аниматора
-        const startX = x; 
-        const dist = targetX - startX; 
-        const D = 3200; // длительность в мс
-        const startT = performance.now();
-        
-        const easeOutCubic = (t: number) => { 
-          return 1 - Math.pow(1 - t, 3); 
+              // Анимация
+        const animate = () => {
+          animationRef.current = requestAnimationFrame(animate);
+          setX(x + v);
+          // немного трения
+          v *= 0.985;
+          // безопасность — бесконечная лента (за цикл)
+          const totalW = caseItems.length * REPEAT * itemWidth;
+          if (x < -totalW + centerOffset()) setX(x + totalW);
+          if (x > centerOffset()) setX(x - totalW);
         };
-
-        const tween = useCallback(() => {
-          const t = (performance.now() - startT) / D;
-          console.log('Tween called, t:', t, 'target:', targetX);
+        
+        // Запускаем спин
+        const spinToLocalIndex = (localIndex: number) => {
+          console.log('spinToLocalIndex called with index:', localIndex);
           
-          if (t >= 1){
-            console.log('Tween animation completed, setting result');
-            setX(targetX);
-            
-            // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
-            setIsSpinning(false);
-            setShowResult(true);
-            
-            // Находим правильный предмет для показа
-            const realLocal = stopGlobal % caseItems.length; 
-            const it = caseItems[realLocal];
-            setWinnerItem(it);
-            
-            // Останавливаем анимацию
+          if (isSpinning) {
+            console.log('Already spinning, cancelling previous animation');
             if (animationRef.current) {
               cancelAnimationFrame(animationRef.current);
-              animationRef.current = null;
             }
-            
-            // Анимация яркости viewport
-            if (viewport) {
-              viewport.animate([
-                {filter:'brightness(1.0)'},
-                {filter:'brightness(1.6)'},
-                {filter:'brightness(1.0)'}
-              ], {duration:500});
-            }
-            
-            console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
-            return;
           }
-          setX(startX + dist * easeOutCubic(t));
-          requestAnimationFrame(tween);
-        }, [startT, D, startX, dist, targetX, stopGlobal, caseItems, viewport]);
-        
-        requestAnimationFrame(tween);
-      };
+          
+          // стартовая скорость и разгон
+          v = -40; // влево
+          console.log('Starting animation with velocity:', v);
+          
+          // выберем сегмент, где остановимся (далее по ленте + несколько кругов)
+          const currentGlobal = nowIndex();
+          const loops = 3; // сколько кругов до остановки
+          const stopGlobal = Math.floor(currentGlobal/caseItems.length)*caseItems.length + loops*caseItems.length + localIndex;
+          const targetX = indexToX(stopGlobal);
+
+          console.log('Animation target:', { currentGlobal, loops, stopGlobal, targetX });
+
+          // Плавный довод с помощью встроенного аниматора
+          const startX = x; 
+          const dist = targetX - startX; 
+          const D = 3200; // длительность в мс
+          const startT = performance.now();
+          
+          const easeOutCubic = (t: number) => { 
+            return 1 - Math.pow(1 - t, 3); 
+          };
+
+          const tween = () => {
+            const t = (performance.now() - startT) / D;
+            console.log('Tween called, t:', t, 'target:', targetX);
+            
+            if (t >= 1){
+              console.log('Tween animation completed, setting result');
+              setX(targetX);
+              
+              // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
+              setIsSpinning(false);
+              setShowResult(true);
+              
+              // Находим правильный предмет для показа
+              const realLocal = stopGlobal % caseItems.length; 
+              const it = caseItems[realLocal];
+              setWinnerItem(it);
+              
+              // Останавливаем анимацию
+              if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+                animationRef.current = null;
+              }
+              
+              // Анимация яркости viewport
+              if (viewport) {
+                viewport.animate([
+                  {filter:'brightness(1.0)'},
+                  {filter:'brightness(1.6)'},
+                  {filter:'brightness(1.0)'}
+                ], {duration:500});
+              }
+              
+              console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
+              return;
+            }
+            setX(startX + dist * easeOutCubic(t));
+            requestAnimationFrame(tween);
+          };
+          
+          // Запускаем основную анимацию на короткое время, потом переключаемся на tween
+          let frameCount = 0;
+          const maxFrames = 60; // примерно 1 секунда при 60fps
+          
+          const mainAnimation = () => {
+            frameCount++;
+            if (frameCount >= maxFrames) {
+              // Переключаемся на плавную остановку
+              console.log('Switching to tween animation');
+              requestAnimationFrame(tween);
+              return;
+            }
+            
+            animationRef.current = requestAnimationFrame(mainAnimation);
+            setX(x + v);
+            v *= 0.985;
+            
+            // безопасность — бесконечная лента (за цикл)
+            const totalW = caseItems.length * REPEAT * itemWidth;
+            if (x < -totalW + centerOffset()) setX(x + totalW);
+            if (x > centerOffset()) setX(x - totalW);
+          };
+          
+          mainAnimation();
+        };
       
       // Находим индекс победного предмета
       const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
