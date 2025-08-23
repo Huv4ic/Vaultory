@@ -44,6 +44,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Получаем текущий счетчик открытых кейсов (БЕЗ +1)
     const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0');
     
+    console.log('=== CALCULATE WINNER START ===');
+    console.log('Current case count from localStorage:', currentCaseCount);
+    console.log('All case items:', caseItems.map(item => ({ name: item.name, drop_after_cases: item.drop_after_cases })));
+    
     // Группируем предметы по drop_after_cases
     const itemsByDropRate: { [key: number]: CaseItem[] } = {};
     
@@ -55,20 +59,31 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       itemsByDropRate[dropRate].push(item);
     });
     
+    console.log('Items grouped by drop rate:', itemsByDropRate);
+    
     // Находим подходящие предметы для текущего кейса
     let eligibleItems: CaseItem[] = [];
     
     // Проверяем каждый drop_after_cases
     Object.keys(itemsByDropRate).forEach(dropRateStr => {
       const dropRate = parseInt(dropRateStr);
-      if ((currentCaseCount + 1) % dropRate === 0) {
+      const nextCaseNumber = currentCaseCount + 1;
+      const isEligible = nextCaseNumber % dropRate === 0;
+      
+      console.log(`Checking drop rate ${dropRate}: next case ${nextCaseNumber} % ${dropRate} = ${nextCaseNumber % dropRate}, eligible: ${isEligible}`);
+      
+      if (isEligible) {
         // Если текущий кейс кратен drop_after_cases, добавляем все предметы с этим значением
         eligibleItems = eligibleItems.concat(itemsByDropRate[dropRate]);
+        console.log(`Added items with drop rate ${dropRate}:`, itemsByDropRate[dropRate].map(item => item.name));
       }
     });
     
+    console.log('Final eligible items:', eligibleItems.map(item => ({ name: item.name, drop_after_cases: item.drop_after_cases })));
+    
     // Если нет подходящих предметов, берем случайный из всех
     if (eligibleItems.length === 0) {
+      console.log('No eligible items found, using all case items');
       eligibleItems = caseItems;
     }
     
@@ -76,18 +91,22 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     const randomIndex = Math.floor(Math.random() * eligibleItems.length);
     const winner = eligibleItems[randomIndex];
     
+    console.log('Selected winner:', { name: winner.name, rarity: winner.rarity, drop_after_cases: winner.drop_after_cases });
+    
     // Показываем текущий счетчик (БЕЗ обновления)
     setSpinCount(currentCaseCount + 1);
     
     // Отладочная информация
-    console.log('Winner calculation:', {
+    console.log('Winner calculation result:', {
       currentCaseCount,
       nextCaseCount: currentCaseCount + 1,
       itemsByDropRate,
-      eligibleItems,
+      eligibleItems: eligibleItems.map(item => ({ name: item.name, drop_after_cases: item.drop_after_cases })),
       winner: winner.name,
       winnerDropRate: winner.drop_after_cases
     });
+    
+    console.log('=== CALCULATE WINNER END ===');
     
     return winner;
   };
@@ -104,6 +123,15 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Определяем победный предмет
     const winner = calculateWinner();
     setWinnerItem(winner);
+    
+    // ДОПОЛНИТЕЛЬНАЯ ОТЛАДКА: проверяем, что winner не null
+    if (!winner) {
+      console.error('Winner is null! This should not happen.');
+      alert('Ошибка: не удалось определить победителя');
+      return;
+    }
+    
+    console.log('Starting spin with winner:', winner.name, 'rarity:', winner.rarity);
     
     // Анимация вращения как в HTML демо
     if (stripRef.current) {
@@ -218,6 +246,15 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       
       // Находим индекс победного предмета
       const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
+      
+      // ДОПОЛНИТЕЛЬНАЯ ОТЛАДКА: проверяем индекс
+      if (winnerIndex === -1) {
+        console.error('Winner index not found! Winner:', winner, 'Case items:', caseItems);
+        alert('Ошибка: не удалось найти индекс победителя');
+        return;
+      }
+      
+      console.log('Spinning to index:', winnerIndex, 'for winner:', winner.name);
       spinToLocalIndex(winnerIndex);
       
       setIsSpinning(true);
