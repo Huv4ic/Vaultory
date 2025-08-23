@@ -71,7 +71,7 @@ const Support = () => {
     },
     {
       question: "Есть ли гарантия на товары?",
-      answer: "Да, все товары имеют гарантию качества. Если возникли проблемы с полученным товаром, свяжитесь с поддержкой для решения вопроса."
+      answer: "Да, мы даем гарантию на момент покупки товара. То есть мы гарантируем то, что аккаунт\\услуга будет выполнена верно а аккаунт будет рабочим. За дальнейшее пользование товара вами, мы ответственности не несем"
     },
     {
       question: "Как работает система кейсов?",
@@ -261,7 +261,7 @@ const Support = () => {
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-amber-400" />
-                    <span className="text-gray-300 text-sm">Бесплатная консультация</span>
+                    <span className="text-gray-300 text-sm">Поддержка 24\7</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-amber-400" />
