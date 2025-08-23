@@ -41,6 +41,15 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     }
   }, [isSpinning, showResult, winnerItem]);
 
+  // Отладка вызовов onClose
+  useEffect(() => {
+    console.log('=== COMPONENT MOUNTED ===');
+    return () => {
+      console.log('=== COMPONENT UNMOUNTING ===');
+      console.log('Final state - isSpinning:', isSpinning, 'showResult:', showResult, 'winnerItem:', winnerItem);
+    };
+  }, []);
+
   // Cleanup анимации при размонтировании
   useEffect(() => {
     return () => {
@@ -126,6 +135,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('=== START SPIN START ===');
     console.log('isSpinning state:', isSpinning);
     console.log('showResult state:', showResult);
+    console.log('animationRef.current:', animationRef.current);
     
     // СБРАСЫВАЕМ СОСТОЯНИЯ ПРИ КАЖДОМ НОВОМ ЗАПУСКЕ
     if (showResult) {
@@ -292,6 +302,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           
           const mainAnimation = () => {
             frameCount++;
+            console.log('Main animation frame:', frameCount, 'of', maxFrames);
+            
             if (frameCount >= maxFrames) {
               // Переключаемся на плавную остановку
               console.log('Switching to tween animation');
@@ -309,6 +321,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
             if (x > centerOffset()) setX(x - totalW);
           };
           
+          console.log('Starting main animation...');
           mainAnimation();
         };
       
