@@ -76,8 +76,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     const randomIndex = Math.floor(Math.random() * eligibleItems.length);
     const winner = eligibleItems[randomIndex];
     
-    // Обновляем счетчик
-    localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
+    // Обновляем счетчик ТОЛЬКО после успешного открытия кейса
+    // НЕ обновляем здесь, чтобы не сбивать логику
     setSpinCount(currentCaseCount);
     
     // Отладочная информация
@@ -464,6 +464,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 <div className="flex justify-center space-x-4">
                   <Button
                     onClick={() => {
+                      // Обновляем счетчик только когда кейс действительно открыт
+                      const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
+                      localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
+                      
                       onCaseOpened(winnerItem!);
                       onClose();
                     }}
