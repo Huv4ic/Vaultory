@@ -6,7 +6,7 @@ export interface Database {
         Row: {
           id: number;
           user_id: number;
-          case_id: number;
+          case_id: string; // Изменено с number на string
           opened_count: number;
           last_opened_at: string;
           created_at: string;
@@ -15,7 +15,7 @@ export interface Database {
         Insert: {
           id?: number;
           user_id: number;
-          case_id: number;
+          case_id: string; // Изменено с number на string
           opened_count?: number;
           last_opened_at?: string;
           created_at?: string;
@@ -24,7 +24,7 @@ export interface Database {
         Update: {
           id?: number;
           user_id?: number;
-          case_id?: number;
+          case_id?: string; // Изменено с number на string
           opened_count?: number;
           last_opened_at?: string;
           created_at?: string;
@@ -50,19 +50,19 @@ export interface Database {
       // Другие существующие таблицы...
       cases: {
         Row: {
-          id: number;
+          id: string; // Изменено с number на string
           name: string;
           image?: string;
           // другие поля...
         };
         Insert: {
-          id?: number;
+          id?: string; // Изменено с number на string
           name: string;
           image?: string;
           // другие поля...
         };
         Update: {
-          id?: number;
+          id?: string; // Изменено с number на string
           name?: string;
           image?: string;
           // другие поля...

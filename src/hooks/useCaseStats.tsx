@@ -1,16 +1,17 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-import { useAuth } from './useAuth';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '../integrations/supabase/client';
+import { useAuth } from './useAuth';
 
+// Интерфейсы для типизации
 interface CaseStats {
-  case_id: number;
+  case_id: string; // Изменено с number на string
   case_name: string;
   opened_count: number;
   case_image_url?: string;
 }
 
 interface FavoriteCase {
-  case_id: number;
+  case_id: string; // Изменено с number на string
   case_name: string;
   opened_count: number;
   case_image_url?: string;
@@ -21,78 +22,73 @@ interface CaseStatsContextType {
   favoriteCase: FavoriteCase | null;
   loading: boolean;
   error: string | null;
-  incrementCaseOpened: (caseId: number, caseName: string, caseImageUrl?: string) => Promise<void>;
-  getFavoriteCase: () => Promise<FavoriteCase | null>;
-  refreshStats: () => Promise<void>;
+  loadUserCaseStats: () => Promise<void>;
+  incrementCaseOpened: (caseId: string, caseName: string, caseImageUrl?: string) => Promise<void>; // Изменено с number на string
+  getFavoriteCase: () => Promise<void>;
+  refreshStats: () => void;
 }
 
 const CaseStatsContext = createContext<CaseStatsContextType | undefined>(undefined);
 
-export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) => {
+export const useCaseStats = () => {
+  const context = useContext(CaseStatsContext);
+  if (context === undefined) {
+    throw new Error('useCaseStats must be used within a CaseStatsProvider');
+  }
+  return context;
+};
+
+interface CaseStatsProviderProps {
+  children: ReactNode;
+}
+
+export const CaseStatsProvider: React.FC<CaseStatsProviderProps> = ({ children }) => {
   const { telegramUser } = useAuth();
   const [caseStats, setCaseStats] = useState<CaseStats[]>([]);
   const [favoriteCase, setFavoriteCase] = useState<FavoriteCase | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Загрузка статистики пользователя из базы данных
+  // Загрузка статистики пользователя
   const loadUserCaseStats = async () => {
     if (!telegramUser) return;
 
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
-      setError(null);
-
       console.log('Загружаем статистику для пользователя:', telegramUser.id);
-
+      
       // Используем any для обхода проблем с типами
-      const { data: stats, error: statsError } = await (supabase as any)
+      const { data: stats, error: fetchError } = await (supabase as any)
         .from('user_case_stats')
         .select(`
           case_id,
           opened_count,
           last_opened_at,
-          cases!inner(
-            name,
-            image
-          )
+          cases!inner(name, image)
         `)
         .eq('user_id', telegramUser.id)
         .order('opened_count', { ascending: false });
 
-      if (statsError) {
-        console.error('Ошибка загрузки статистики:', statsError);
-        throw statsError;
+      if (fetchError) {
+        console.error('Ошибка загрузки статистики:', fetchError);
+        throw fetchError;
       }
 
-      console.log('Получена статистика с сервера:', stats);
+      if (stats) {
+        const formattedStats: CaseStats[] = stats.map((stat: any) => ({
+          case_id: stat.case_id,
+          case_name: stat.cases?.name || 'Неизвестный кейс',
+          opened_count: stat.opened_count,
+          case_image_url: stat.cases?.image
+        }));
 
-      const formattedStats: CaseStats[] = (stats || []).map((stat: any) => ({
-        case_id: stat.case_id,
-        case_name: stat.cases.name,
-        opened_count: stat.opened_count,
-        case_image_url: stat.cases.image
-      }));
-
-      setCaseStats(formattedStats);
-
-      // Определяем любимый кейс
-      if (formattedStats.length > 0) {
-        const favorite = formattedStats[0]; // Уже отсортировано по opened_count
-        setFavoriteCase({
-          case_id: favorite.case_id,
-          case_name: favorite.case_name,
-          opened_count: favorite.opened_count,
-          case_image_url: favorite.case_image_url
-        });
-        console.log('Установлен любимый кейс:', favorite);
-      } else {
-        setFavoriteCase(null);
-        console.log('У пользователя нет статистики кейсов');
+        console.log('Загруженная статистика:', formattedStats);
+        setCaseStats([...formattedStats]); // Принудительное обновление состояния
       }
-
     } catch (err) {
-      console.error('Ошибка загрузки статистики кейсов:', err);
+      console.error('Ошибка загрузки статистики:', err);
       setError('Ошибка загрузки статистики');
     } finally {
       setLoading(false);
@@ -100,8 +96,15 @@ export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) =
   };
 
   // Увеличение счетчика открытий кейса через прямые SQL запросы
-  const incrementCaseOpened = async (caseId: number, caseName: string, caseImageUrl?: string) => {
+  const incrementCaseOpened = async (caseId: string, caseName: string, caseImageUrl?: string) => { // Изменено с number на string
     if (!telegramUser) return;
+
+    // Проверяем валидность caseId
+    if (!caseId || caseId.trim() === '') {
+      console.error('Некорректный caseId:', caseId);
+      setError('Некорректный ID кейса');
+      return;
+    }
 
     try {
       console.log(`Увеличиваем счетчик для кейса ${caseId} (${caseName}) пользователя ${telegramUser.id}`);
@@ -167,81 +170,83 @@ export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) =
   };
 
   // Получение любимого кейса
-  const getFavoriteCase = async (): Promise<FavoriteCase | null> => {
-    if (!telegramUser) return null;
+  const getFavoriteCase = async () => {
+    if (!telegramUser) return;
 
     try {
-      const { data, error } = await (supabase as any)
+      console.log('Получаем любимый кейс для пользователя:', telegramUser.id);
+      
+      // Используем any для обхода проблем с типами
+      const { data: favorite, error: fetchError } = await (supabase as any)
         .from('user_case_stats')
         .select(`
           case_id,
           opened_count,
           last_opened_at,
-          cases!inner(
-            name,
-            image
-          )
+          cases!inner(name, image)
         `)
         .eq('user_id', telegramUser.id)
         .order('opened_count', { ascending: false })
+        .order('last_opened_at', { ascending: false })
         .limit(1)
         .single();
 
-      if (error) {
-        console.error('Ошибка получения любимого кейса:', error);
-        return null;
+      if (fetchError) {
+        console.error('Ошибка получения любимого кейса:', fetchError);
+        throw fetchError;
       }
 
-      if (data) {
-        return {
-          case_id: data.case_id,
-          case_name: data.cases.name,
-          opened_count: data.opened_count,
-          case_image_url: data.cases.image
+      if (favorite) {
+        const formattedFavorite: FavoriteCase = {
+          case_id: favorite.case_id,
+          case_name: favorite.cases?.name || 'Неизвестный кейс',
+          opened_count: favorite.opened_count,
+          case_image_url: favorite.cases?.image
         };
-      }
 
-      return null;
+        console.log('Найден любимый кейс:', formattedFavorite);
+        setFavoriteCase(formattedFavorite);
+      } else {
+        console.log('Любимый кейс не найден');
+        setFavoriteCase(null);
+      }
     } catch (err) {
       console.error('Ошибка получения любимого кейса:', err);
-      return null;
+      setError('Ошибка получения любимого кейса');
     }
   };
 
   // Обновление статистики
-  const refreshStats = async () => {
-    await loadUserCaseStats();
+  const refreshStats = () => {
+    loadUserCaseStats();
+    getFavoriteCase();
   };
 
   // Загружаем статистику при изменении пользователя
   useEffect(() => {
     if (telegramUser) {
       loadUserCaseStats();
+      getFavoriteCase();
     } else {
       setCaseStats([]);
       setFavoriteCase(null);
     }
   }, [telegramUser]);
 
+  const value: CaseStatsContextType = {
+    caseStats,
+    favoriteCase,
+    loading,
+    error,
+    loadUserCaseStats,
+    incrementCaseOpened,
+    getFavoriteCase,
+    refreshStats
+  };
+
   return (
-    <CaseStatsContext.Provider value={{
-      caseStats,
-      favoriteCase,
-      loading,
-      error,
-      incrementCaseOpened,
-      getFavoriteCase,
-      refreshStats
-    }}>
+    <CaseStatsContext.Provider value={value}>
       {children}
     </CaseStatsContext.Provider>
   );
-};
-
-export const useCaseStats = () => {
-  const context = useContext(CaseStatsContext);
-  if (!context) {
-    throw new Error('useCaseStats must be used within CaseStatsProvider');
-  }
-  return context;
 };

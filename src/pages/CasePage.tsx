@@ -109,11 +109,22 @@ const CasePage = () => {
     // Увеличиваем счетчик открытий кейса для статистики
     if (caseData && id) {
       try {
-        await incrementCaseOpened(parseInt(id), caseData.name, caseData.image_url);
+        // caseId уже является строкой из URL параметров
+        const caseId = id;
+        console.log('ID кейса из URL:', id, 'Тип:', typeof caseId);
+        
+        if (!caseId || caseId.trim() === '') {
+          console.error('Некорректный ID кейса:', id);
+          return;
+        }
+        
+        await incrementCaseOpened(caseId, caseData.name, caseData.image_url);
         console.log('Статистика открытий кейса обновлена');
       } catch (err) {
         console.error('Ошибка обновления статистики:', err);
       }
+    } else {
+      console.error('Отсутствуют данные кейса или ID:', { caseData, id });
     }
     
     // НЕ закрываем рулетку автоматически - пользователь сам закроет её кнопкой "Закрыть"
