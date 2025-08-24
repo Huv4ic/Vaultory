@@ -3,6 +3,24 @@ import { Button } from '@/components/ui/button';
 import { Package, X, Gift, DollarSign } from 'lucide-react';
 import { supabase } from '../integrations/supabase/client';
 
+// CSS стили для анимаций уведомлений
+const notificationStyles = `
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .animate-in.slide-in-from-right-2 {
+    animation: slideInFromRight 0.3s ease-out;
+  }
+`;
+
 interface CaseItem {
   id: string;
   name: string;
@@ -36,6 +54,17 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   const stripRef = useRef<HTMLDivElement>(null);
   const [spinCount, setSpinCount] = useState(0);
   const animationRef = useRef<number | null>(null);
+  
+  // Состояние для красивых уведомлений
+  const [notification, setNotification] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    show: false,
+    message: '',
+    type: 'success'
+  });
 
   // Отладка изменений состояний
   useEffect(() => {
@@ -80,6 +109,20 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     onClose();
   };
 
+  // Функция для показа красивых уведомлений
+  const showNotification = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'success') => {
+    setNotification({
+      show: true,
+      message,
+      type
+    });
+    
+    // Автоматически скрываем уведомление через 3 секунды
+    setTimeout(() => {
+      setNotification(prev => ({ ...prev, show: false }));
+    }, 3000);
+  };
+
   // Функция для продажи предмета сразу после открытия кейса
   const handleImmediateSell = async (item: CaseItem) => {
     try {
@@ -116,11 +159,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       }
 
       console.log('✅ Баланс успешно обновлен');
-      alert(`Предмет продан за ${item.price}₴! Деньги добавлены на баланс.`);
+      showNotification(`Предмет продан за ${item.price}₴! Деньги добавлены на баланс.`, 'success');
       
     } catch (error) {
       console.error('❌ Failed to sell item immediately:', error);
-      alert('Ошибка при продаже предмета!');
+      showNotification('Ошибка при продаже предмета!', 'error');
     }
   };
 
@@ -537,6 +580,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         .opacity-35 {
           opacity: 0.35 !important;
         }
+        ${notificationStyles}
       `}</style>
       
       <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-2 sm:p-4">
@@ -688,6 +732,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       {winnerItem.name}
                     </h4>
                     
+                    {/* Отображение цены предмета */}
+                    <div className="text-lg sm:text-xl font-bold text-green-400 mb-3">
+                      Цена: {winnerItem.price || 0}₴
+                    </div>
+                    
                     <div className={`inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold ${
                       winnerItem.rarity.toLowerCase() === 'common' ? 'bg-gray-500 text-white' :
                       winnerItem.rarity.toLowerCase() === 'rare' ? 'bg-blue-500 text-white' :
@@ -733,9 +782,13 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                         console.log('🔧 Вызываем onCaseOpened для добавления в инвентарь');
                         onCaseOpened(winnerItem);
                         
-                        // Показываем сообщение и закрываем окно
-                        alert('Предмет добавлен в инвентарь!');
-                        handleClose();
+                        // Показываем красивое уведомление
+                        showNotification('Предмет добавлен в инвентарь!', 'success');
+                        
+                        // Закрываем окно через небольшую задержку
+                        setTimeout(() => {
+                          handleClose();
+                        }, 1500);
                       }
                     }}
                     disabled={soldOrAdded}
@@ -791,6 +844,84 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           </div>
         </div>
       </div>
+      
+      {/* Красивое уведомление */}
+      {notification.show && (
+        <div className="fixed top-4 right-4 z-[9999] animate-in slide-in-from-right-2 duration-300">
+          <div className={`px-6 py-4 rounded-lg shadow-2xl border-l-4 ${
+            notification.type === 'success' 
+              ? 'bg-green-600 border-green-400 text-white' 
+              : notification.type === 'error'
+              ? 'bg-red-600 border-red-400 text-white'
+              : notification.type === 'warning'
+              ? 'bg-yellow-600 border-yellow-400 text-white'
+              : 'bg-blue-600 border-blue-400 text-white'
+          }`}>
+            <div className="flex items-center gap-3">
+              <div className="flex-shrink-0">
+                {notification.type === 'success' && (
+                  <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-green-800" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+                {notification.type === 'error' && (
+                  <div className="w-6 h-6 bg-red-400 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-red-800" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+                {notification.type === 'warning' && (
+                  <div className="w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-yellow-800" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+                {notification.type === 'info' && (
+                  <div className="w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-blue-800" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+              <div className="flex-1">
+                <p className="font-medium">{notification.message}</p>
+                <p className="text-sm opacity-90">vaultory.pro</p>
+              </div>
+              <button
+                onClick={() => setNotification(prev => ({ ...prev, show: false }))}
+                className="flex-shrink-0 ml-2 text-white/70 hover:text-white transition-colors"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* CSS стили для анимаций */}
+      <style>{`
+        @keyframes slideInFromRight {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        
+        .animate-in.slide-in-from-right-2 {
+          animation: slideInFromRight 0.3s ease-out;
+        }
+      `}</style>
     </>
   );
 };
