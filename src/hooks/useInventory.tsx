@@ -1,12 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface InventoryItem {
+  id?: string;
   name: string;
   price: number;
   rarity: string;
+  type?: string;
   caseId?: string;
+  case_name?: string;
   image?: string;
+  image_url?: string;
   status?: 'new' | 'sold' | 'withdrawn';
+  obtained_at?: string;
 }
 
 interface InventoryContextType {

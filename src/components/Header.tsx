@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingCart, User, LogOut, Settings } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, LogOut, Settings, Package } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -151,6 +151,13 @@ const Header = () => {
                         <Settings className="w-4 h-4 text-amber-400 group-hover/item:text-amber-300" />
                         <span className="text-gray-300 group-hover/item:text-amber-300 text-sm">{t('Профиль')}</span>
                       </Link>
+                      <Link 
+                        to="/inventory" 
+                        className="flex items-center space-x-2 sm:space-x-3 w-full p-2 sm:p-3 rounded-lg hover:bg-amber-500/10 transition-colors duration-200 group/item"
+                      >
+                        <Package className="w-4 h-4 text-amber-400 group-hover/item:text-amber-300" />
+                        <span className="text-gray-300 group-hover/item:text-amber-300 text-sm">Инвентарь</span>
+                      </Link>
                       <button 
                         onClick={handleLogout}
                         className="flex items-center space-x-2 sm:space-x-3 w-full p-2 sm:p-3 rounded-lg hover:bg-red-500/10 transition-colors duration-200 group/item"
@@ -224,6 +231,24 @@ const Header = () => {
               >
                 {t('Поддержка')}
               </Link>
+              {telegramUser && (
+                <>
+                  <Link 
+                    to="/profile" 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                  >
+                    {t('Профиль')}
+                  </Link>
+                  <Link 
+                    to="/inventory" 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                  >
+                    Инвентарь
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
         )}

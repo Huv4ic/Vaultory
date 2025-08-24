@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Profile from "./pages/Profile";
+import Inventory from "./pages/Inventory";
 import Cart from "./pages/Cart";
 import CasePage from "./pages/CasePage";
 import TransactionHistory from "./pages/TransactionHistory";
@@ -64,6 +65,7 @@ const AppContent = () => {
               <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/inventory" element={<Inventory />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/order-success" element={<OrderSuccess />} />
               <Route path="/transaction-history" element={<TransactionHistory />} />
