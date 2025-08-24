@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { useAuth } from './useAuth';
+import { supabase } from '../integrations/supabase/client';
 
 interface CaseStats {
   case_id: number;
@@ -34,7 +35,7 @@ export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) =
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Временная загрузка статистики пользователя (пока таблица не создана)
+  // Загрузка статистики пользователя из базы данных
   const loadUserCaseStats = async () => {
     if (!telegramUser) return;
 
@@ -42,21 +43,52 @@ export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) =
       setLoading(true);
       setError(null);
 
-      // Временно используем localStorage для демонстрации
-      const savedStats = localStorage.getItem(`vaultory_case_stats_${telegramUser.id}`);
-      const stats: CaseStats[] = savedStats ? JSON.parse(savedStats) : [];
+      console.log('Загружаем статистику для пользователя:', telegramUser.id);
 
-      setCaseStats(stats);
+      // Используем any для обхода проблем с типами
+      const { data: stats, error: statsError } = await (supabase as any)
+        .from('user_case_stats')
+        .select(`
+          case_id,
+          opened_count,
+          last_opened_at,
+          cases!inner(
+            name,
+            image
+          )
+        `)
+        .eq('user_id', telegramUser.id)
+        .order('opened_count', { ascending: false });
+
+      if (statsError) {
+        console.error('Ошибка загрузки статистики:', statsError);
+        throw statsError;
+      }
+
+      console.log('Получена статистика с сервера:', stats);
+
+      const formattedStats: CaseStats[] = (stats || []).map((stat: any) => ({
+        case_id: stat.case_id,
+        case_name: stat.cases.name,
+        opened_count: stat.opened_count,
+        case_image_url: stat.cases.image
+      }));
+
+      setCaseStats(formattedStats);
 
       // Определяем любимый кейс
-      if (stats.length > 0) {
-        const favorite = stats.sort((a, b) => b.opened_count - a.opened_count)[0];
+      if (formattedStats.length > 0) {
+        const favorite = formattedStats[0]; // Уже отсортировано по opened_count
         setFavoriteCase({
           case_id: favorite.case_id,
           case_name: favorite.case_name,
           opened_count: favorite.opened_count,
           case_image_url: favorite.case_image_url
         });
+        console.log('Установлен любимый кейс:', favorite);
+      } else {
+        setFavoriteCase(null);
+        console.log('У пользователя нет статистики кейсов');
       }
 
     } catch (err) {
@@ -67,56 +99,66 @@ export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) =
     }
   };
 
-  // Увеличение счетчика открытий кейса (временная реализация)
+  // Увеличение счетчика открытий кейса через прямые SQL запросы
   const incrementCaseOpened = async (caseId: number, caseName: string, caseImageUrl?: string) => {
     if (!telegramUser) return;
 
     try {
-      console.log(`Увеличиваем счетчик для кейса ${caseId} (${caseName})`);
+      console.log(`Увеличиваем счетчик для кейса ${caseId} (${caseName}) пользователя ${telegramUser.id}`);
       
-      // Временно используем localStorage
-      const savedStats = localStorage.getItem(`vaultory_case_stats_${telegramUser.id}`);
-      const stats: CaseStats[] = savedStats ? JSON.parse(savedStats) : [];
+      // Используем any для обхода проблем с типами
+      const { data: existingRecord, error: checkError } = await (supabase as any)
+        .from('user_case_stats')
+        .select('*')
+        .eq('user_id', telegramUser.id)
+        .eq('case_id', caseId)
+        .single();
 
-      // Ищем существующую запись
-      const existingIndex = stats.findIndex(stat => stat.case_id === caseId);
+      if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows returned
+        console.error('Ошибка проверки существующей записи:', checkError);
+        throw checkError;
+      }
 
-      if (existingIndex >= 0) {
+      if (existingRecord) {
         // Обновляем существующую запись
-        stats[existingIndex].opened_count += 1;
-        console.log(`Обновлен существующий кейс: ${caseName}, новый счетчик: ${stats[existingIndex].opened_count}`);
+        const { error: updateError } = await (supabase as any)
+          .from('user_case_stats')
+          .update({ 
+            opened_count: existingRecord.opened_count + 1,
+            last_opened_at: new Date().toISOString()
+          })
+          .eq('user_id', telegramUser.id)
+          .eq('case_id', caseId);
+
+        if (updateError) {
+          console.error('Ошибка обновления записи:', updateError);
+          throw updateError;
+        }
+
+        console.log(`Обновлен счетчик кейса ${caseName}: ${existingRecord.opened_count + 1}`);
       } else {
         // Создаем новую запись
-        stats.push({
-          case_id: caseId,
-          case_name: caseName,
-          opened_count: 1,
-          case_image_url: caseImageUrl
-        });
-        console.log(`Создан новый кейс: ${caseName}, счетчик: 1`);
+        const { error: insertError } = await (supabase as any)
+          .from('user_case_stats')
+          .insert({
+            user_id: telegramUser.id,
+            case_id: caseId,
+            opened_count: 1,
+            last_opened_at: new Date().toISOString()
+          });
+
+        if (insertError) {
+          console.error('Ошибка создания записи:', insertError);
+          throw insertError;
+        }
+
+        console.log(`Создана новая запись для кейса ${caseName}`);
       }
 
-      // Сохраняем в localStorage
-      localStorage.setItem(`vaultory_case_stats_${telegramUser.id}`, JSON.stringify(stats));
-      console.log('Данные сохранены в localStorage:', stats);
+      console.log('Счетчик кейса успешно обновлен на сервере');
 
-      // Принудительно обновляем локальное состояние
-      setCaseStats([...stats]);
-
-      // Определяем любимый кейс
-      if (stats.length > 0) {
-        const favorite = stats.sort((a, b) => b.opened_count - a.opened_count)[0];
-        const newFavoriteCase = {
-          case_id: favorite.case_id,
-          case_name: favorite.case_name,
-          opened_count: favorite.opened_count,
-          case_image_url: favorite.case_image_url
-        };
-        setFavoriteCase(newFavoriteCase);
-        console.log('Новый любимый кейс:', newFavoriteCase);
-      }
-
-      console.log('Статистика открытий кейса обновлена (временно в localStorage)');
+      // Перезагружаем статистику для обновления UI
+      await loadUserCaseStats();
 
     } catch (err) {
       console.error('Ошибка обновления статистики кейса:', err);
@@ -124,22 +166,38 @@ export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) =
     }
   };
 
-  // Получение любимого кейса (временная реализация)
+  // Получение любимого кейса
   const getFavoriteCase = async (): Promise<FavoriteCase | null> => {
     if (!telegramUser) return null;
 
     try {
-      // Временно используем localStorage
-      const savedStats = localStorage.getItem(`vaultory_case_stats_${telegramUser.id}`);
-      const stats: CaseStats[] = savedStats ? JSON.parse(savedStats) : [];
+      const { data, error } = await (supabase as any)
+        .from('user_case_stats')
+        .select(`
+          case_id,
+          opened_count,
+          last_opened_at,
+          cases!inner(
+            name,
+            image
+          )
+        `)
+        .eq('user_id', telegramUser.id)
+        .order('opened_count', { ascending: false })
+        .limit(1)
+        .single();
 
-      if (stats.length > 0) {
-        const favorite = stats.sort((a, b) => b.opened_count - a.opened_count)[0];
+      if (error) {
+        console.error('Ошибка получения любимого кейса:', error);
+        return null;
+      }
+
+      if (data) {
         return {
-          case_id: favorite.case_id,
-          case_name: favorite.case_name,
-          opened_count: favorite.opened_count,
-          case_image_url: favorite.case_image_url
+          case_id: data.case_id,
+          case_name: data.cases.name,
+          opened_count: data.opened_count,
+          case_image_url: data.cases.image
         };
       }
 
