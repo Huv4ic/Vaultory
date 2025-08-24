@@ -126,7 +126,7 @@ const OrderSuccess = () => {
             <div className="bg-black/40 backdrop-blur-sm rounded-lg sm:rounded-xl border border-blue-500/20 p-3 sm:p-4 mb-6 sm:mb-8">
               <div className="text-center">
                 <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">
-                  Нужна помощь?
+                  Для выдачи товара обратитесь к администратору
                 </h3>
                 <p className="text-sm sm:text-base text-gray-300 mb-4">
                   Наша служба поддержки готова помочь с любыми вопросами
@@ -135,7 +135,7 @@ const OrderSuccess = () => {
                   onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
                   className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 text-sm sm:text-base"
                 >
-                  💬 Написать в поддержку
+                  💬 Написать администратору
                 </Button>
                 
                 <p className="text-blue-300 text-xs sm:text-sm mt-3 sm:mt-4">

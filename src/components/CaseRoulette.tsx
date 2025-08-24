@@ -26,6 +26,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
 }) => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [winnerItem, setWinnerItem] = useState<CaseItem | null>(null);
+  const [soldOrAdded, setSoldOrAdded] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const stripRef = useRef<HTMLDivElement>(null);
   const [spinCount, setSpinCount] = useState(0);
@@ -67,6 +68,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('Stack trace:', new Error().stack);
     console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult, 'winnerItem:', winnerItem);
     console.log('Component props:', { caseItems: caseItems.length, casePrice, onClose: typeof onClose, onCaseOpened: typeof onCaseOpened });
+    
+    // Сбрасываем состояние при закрытии
+    setSoldOrAdded(false);
+    
     onClose();
   };
 
@@ -180,6 +185,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       console.log('Resetting states for new spin...');
       setShowResult(false);
       setWinnerItem(null);
+      setSoldOrAdded(false); // Сбрасываем состояние при новом открытии
     }
     
     if (isSpinning) {
@@ -652,7 +658,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-4">
                   <Button
                     onClick={() => {
-                      if (winnerItem) {
+                      if (winnerItem && !soldOrAdded) {
+                        // Устанавливаем состояние что действие выполнено
+                        setSoldOrAdded(true);
+                        
                         // Добавляем предмет в инвентарь
                         const inventoryItem = {
                           id: Date.now().toString(),
@@ -672,10 +681,25 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                         localStorage.setItem('vaultory_inventory', JSON.stringify(currentInventory));
                         
                         console.log('Предмет добавлен в инвентарь:', inventoryItem);
+                        
+                        // Обновляем счетчик открытий кейса
+                        const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
+                        localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
+                        
+                        // Вызываем onCaseOpened
+                        onCaseOpened(winnerItem);
+                        
+                        // Показываем сообщение и закрываем окно
                         alert('Предмет добавлен в инвентарь!');
+                        handleClose();
                       }
                     }}
-                    className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                    disabled={soldOrAdded}
+                    className={`px-6 sm:px-8 py-3 sm:py-4 font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base ${
+                      soldOrAdded 
+                        ? 'bg-gray-500 text-gray-300 cursor-not-allowed opacity-50' 
+                        : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white hover:scale-105'
+                    }`}
                   >
                     <Package className="w-4 h-4 mr-2" />
                     Добавить в инвентарь
@@ -683,41 +707,43 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   
                   <Button
                     onClick={() => {
-                      if (winnerItem) {
-                        // Продаем предмет (заглушка)
+                      if (winnerItem && !soldOrAdded) {
+                        // Устанавливаем состояние что действие выполнено
+                        setSoldOrAdded(true);
+                        
+                        // Продаем предмет
                         const sellPrice = Math.floor((winnerItem.price || 100) * 0.7); // 70% от цены
-                        alert(`Предмет продан за ${sellPrice}₽! (Заглушка)`);
-                        console.log('Предмет продан:', winnerItem.name, 'за', sellPrice);
+                        
+                        // Добавляем деньги на баланс пользователя
+                        const currentBalance = parseInt(localStorage.getItem('vaultory_balance') || '0');
+                        const newBalance = currentBalance + sellPrice;
+                        localStorage.setItem('vaultory_balance', newBalance.toString());
+                        
+                        // Обновляем счетчик открытий кейса
+                        const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
+                        localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
+                        
+                        // Вызываем onCaseOpened
+                        onCaseOpened(winnerItem);
+                        
+                        // Показываем сообщение и закрываем окно
+                        alert(`Предмет продан за ${sellPrice}₽! Деньги добавлены на баланс.`);
+                        handleClose();
                       }
                     }}
-                    className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                    disabled={soldOrAdded}
+                    className={`px-6 sm:px-8 py-3 sm:py-4 font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base ${
+                      soldOrAdded 
+                        ? 'bg-gray-500 text-gray-500 cursor-not-allowed opacity-50' 
+                        : 'bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white hover:scale-105'
+                    }`}
                   >
                     <DollarSign className="w-4 h-4 mr-2" />
                     Продать
                   </Button>
                 </div>
                 
-                <div className="flex justify-center space-x-3 sm:space-x-4">
-                  <Button
-                    onClick={() => {
-                      console.log('=== CLOSE BUTTON CLICKED ===');
-                      console.log('Winner item:', winnerItem);
-                      
-                      // Обновляем счетчик только когда кейс действительно открыт
-                      const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
-                      localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
-                      
-                      console.log('Calling onCaseOpened with:', winnerItem);
-                      onCaseOpened(winnerItem!);
-                      
-                      console.log('Calling onClose');
-                      handleClose();
-                    }}
-                    className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
-                  >
-                    Закрыть
-                  </Button>
-                </div>
+                {/* Убираем кнопку "Закрыть" - окно закрывается автоматически после действия */}
               </div>
             )}
           </div>
