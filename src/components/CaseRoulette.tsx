@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Package, X, Gift, DollarSign } from 'lucide-react';
+import { supabase } from '../integrations/supabase/client';
 
 interface CaseItem {
   id: string;
@@ -15,6 +16,7 @@ interface CaseRouletteProps {
   caseItems: CaseItem[];
   casePrice: number;
   caseName: string; // Добавляем название кейса
+  telegramId: number; // Добавляем telegram_id для продажи
   onClose: () => void;
   onCaseOpened: (item: CaseItem) => void;
 }
@@ -23,6 +25,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   caseItems, 
   casePrice, 
   caseName, // Добавляем в деструктуризацию
+  telegramId, // Добавляем в деструктуризацию
   onClose, 
   onCaseOpened 
 }) => {
@@ -75,6 +78,50 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     setSoldOrAdded(false);
     
     onClose();
+  };
+
+  // Функция для продажи предмета сразу после открытия кейса
+  const handleImmediateSell = async (item: CaseItem) => {
+    try {
+      console.log('💰 Продаем предмет сразу после открытия кейса:', item);
+      console.log('💵 Цена предмета:', item.price);
+      
+      // Добавляем деньги на баланс пользователя
+      const { data: currentProfile, error: fetchBalanceError } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('telegram_id', telegramId)
+        .single();
+
+      if (fetchBalanceError || !currentProfile) {
+        console.error('❌ Error fetching current balance:', fetchBalanceError);
+        alert('Ошибка при получении баланса!');
+        return;
+      }
+
+      const newBalance = (currentProfile.balance || 0) + item.price;
+      console.log('💰 Обновляем баланс:', { old: currentProfile.balance, new: newBalance });
+
+      const { error: balanceError } = await supabase
+        .from('profiles')
+        .update({ 
+          balance: newBalance 
+        })
+        .eq('telegram_id', telegramId);
+
+      if (balanceError) {
+        console.error('❌ Error updating balance:', balanceError);
+        alert('Ошибка при обновлении баланса!');
+        return;
+      }
+
+      console.log('✅ Баланс успешно обновлен');
+      alert(`Предмет продан за ${item.price}₴! Деньги добавлены на баланс.`);
+      
+    } catch (error) {
+      console.error('❌ Failed to sell item immediately:', error);
+      alert('Ошибка при продаже предмета!');
+    }
   };
 
   // Cleanup анимации при размонтировании и изменении состояний
@@ -662,14 +709,16 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     onClick={() => {
                       if (winnerItem && !soldOrAdded) {
                         console.log('🎁 Нажата кнопка "Добавить в инвентарь"');
+                        console.log('💵 Цена предмета из админки:', winnerItem.price);
+                        
                         // Устанавливаем состояние что действие выполнено
                         setSoldOrAdded(true);
                         
-                        // Добавляем предмет в инвентарь
+                        // Добавляем предмет в инвентарь с правильной ценой из админки
                         const inventoryItem = {
                           id: Date.now().toString(),
                           name: winnerItem.name,
-                          price: winnerItem.price || 100, // Тестовая цена, если нет
+                          price: winnerItem.price || 0, // Используем цену из админки
                           rarity: winnerItem.rarity,
                           type: 'Кейс',
                           case_name: caseName, // Используем caseName из пропсов
@@ -678,18 +727,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                           status: 'new' as const
                         };
                         
-                        // Сохраняем в localStorage
-                        const currentInventory = JSON.parse(localStorage.getItem('vaultory_inventory') || '[]');
-                        currentInventory.push(inventoryItem);
-                        localStorage.setItem('vaultory_inventory', JSON.stringify(currentInventory));
+                        console.log('✅ Предмет подготовлен для инвентаря:', inventoryItem);
                         
-                        console.log('✅ Предмет добавлен в инвентарь:', inventoryItem);
-                        
-                        // Обновляем счетчик открытий кейса
-                        const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
-                        localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
-                        
-                        // Вызываем onCaseOpened
+                        // Вызываем onCaseOpened для добавления в инвентарь
                         console.log('🔧 Вызываем onCaseOpened для добавления в инвентарь');
                         onCaseOpened(winnerItem);
                         
@@ -713,29 +753,28 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     onClick={() => {
                       if (winnerItem && !soldOrAdded) {
                         console.log('💰 Нажата кнопка "Продать"');
+                        console.log('💵 Цена предмета из админки:', winnerItem.price);
+                        
                         // Устанавливаем состояние что действие выполнено
                         setSoldOrAdded(true);
                         
-                        // Продаем предмет
-                        const sellPrice = Math.floor((winnerItem.price || 100) * 0.7); // 70% от цены
-                        console.log('💵 Цена продажи:', sellPrice);
+                        // Продаем предмет по полной цене из админки (без скидок)
+                        const sellPrice = winnerItem.price || 0;
+                        console.log('💵 Цена продажи (полная):', sellPrice);
                         
                         // ВАЖНО: НЕ вызываем onCaseOpened при продаже
                         // Предмет не должен попадать в инвентарь, если он сразу продается
-                        // onCaseOpened(winnerItem); // УБИРАЕМ ЭТУ СТРОКУ
                         console.log('❌ onCaseOpened НЕ вызывается при продаже');
                         
-                        // Обновляем счетчик открытий кейса
-                        const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
-                        localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
+                        // Продаем предмет сразу и добавляем деньги на баланс
+                        handleImmediateSell(winnerItem);
                         
-                        // Показываем сообщение и закрываем окно
-                        alert(`Предмет продан за ${sellPrice}₽! Деньги добавлены на баланс.`);
+                        // Закрываем окно после продажи
                         handleClose();
                       }
                     }}
                     disabled={soldOrAdded}
-                    className={`px-6 sm:px-8 py-3 sm:py-4 font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base ${
+                    className={`px-6 sm:px-8 py-3 sm:px-8 py-3 sm:py-4 font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base ${
                       soldOrAdded 
                         ? 'bg-gray-500 text-gray-500 cursor-not-allowed opacity-50' 
                         : 'bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white hover:scale-105'

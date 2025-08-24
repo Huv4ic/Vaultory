@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
 import { useCaseStats } from '../hooks/useCaseStats';
 import { useInventory } from '../hooks/useInventory';
+import { useAuth } from '../hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -16,6 +17,7 @@ interface CaseItem {
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
   drop_chance: number;
   image_url: string;
+  price: number; // Добавляем поле цены
 }
 
 interface Case {
@@ -40,6 +42,7 @@ const CasePage = () => {
   const navigate = useNavigate();
   const { incrementCaseOpened } = useCaseStats();
   const { addItem } = useInventory();
+  const { profile } = useAuth();
   const [caseData, setCaseData] = useState<Case | null>(null);
   const [caseItems, setCaseItems] = useState<CaseItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,7 +80,7 @@ const CasePage = () => {
 
       // Загружаем предметы кейса
       const { data: itemsData, error: itemsError } = await supabase
-        .from('case_items')
+        .from('admin_case_items') // Используем admin_case_items вместо case_items
         .select('*')
         .eq('case_id', id)
         .order('name');
@@ -90,8 +93,9 @@ const CasePage = () => {
         case_id: item.case_id,
         name: item.name,
         rarity: item.rarity,
-        drop_chance: item.chance || 0,
-        image_url: item.image_url || ''
+        drop_chance: item.drop_chance || 0,
+        image_url: item.image_url || '',
+        price: item.price || 0 // Добавляем цену из базы
       }));
 
       setCaseItems(formattedItems);
@@ -126,7 +130,7 @@ const CasePage = () => {
     try {
       const inventoryItem = {
         name: item.name,
-        price: 0, // У CaseItem нет поля price, используем 0
+        price: item.price, // Используем цену из CaseItem
         rarity: item.rarity,
         type: 'case_item', // Используем фиксированное значение
         caseId: item.case_id,
@@ -422,7 +426,8 @@ const CasePage = () => {
         <CaseRoulette
           caseItems={caseItems}
           casePrice={caseData.price}
-          caseName={caseData.name} // Передаем реальное название кейса
+          caseName={caseData.name}
+          telegramId={profile?.telegram_id || 0}
           onClose={() => setShowRoulette(false)}
           onCaseOpened={handleCaseOpened}
         />
