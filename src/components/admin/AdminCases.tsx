@@ -23,6 +23,7 @@ const emptyCaseItem: CaseItemFormData = {
   rarity: 'common',
   image_url: '',
   drop_after_cases: 0,
+  price: 0, // Добавляем поле цены
 };
 
 const AdminCases = () => {
@@ -66,7 +67,16 @@ const AdminCases = () => {
 
       if (error) throw error;
       
-      setCases(data || []);
+      // Преобразуем данные, добавляя поле price в items если его нет
+      const formattedCases = (data || []).map(caseData => ({
+        ...caseData,
+        items: (caseData.items || []).map((item: any) => ({
+          ...item,
+          price: item.price || 0, // Добавляем поле price если его нет
+        }))
+      }));
+      
+      setCases(formattedCases);
       setLoading(false);
       
     } catch (err) {
@@ -85,7 +95,14 @@ const AdminCases = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCaseItems(data || []);
+      
+      // Преобразуем данные, добавляя поле price если его нет
+      const formattedItems = (data || []).map((item: any) => ({
+        ...item,
+        price: item.price || 0, // Добавляем поле price если его нет
+      }));
+      
+      setCaseItems(formattedItems);
     } catch (err) {
       console.error('Error fetching case items:', err);
       toast('Ошибка при загрузке предметов кейса', 'error');
@@ -135,6 +152,7 @@ const AdminCases = () => {
       rarity: item.rarity,
       image_url: item.image_url || '',
       drop_after_cases: item.drop_after_cases || 0,
+      price: item.price || 0, // Добавляем поле цены
     });
     setEditingItemId(item.id);
     setCaseItemModalOpen(true);
@@ -245,6 +263,12 @@ const AdminCases = () => {
         toast('Заполните все обязательные поля!', 'error');
         return;
       }
+      
+      // Валидация цены
+      if (currentCaseItem.price < 0) {
+        toast('Цена не может быть отрицательной!', 'error');
+        return;
+      }
 
       const itemData = {
         case_id: currentCaseId,
@@ -253,6 +277,7 @@ const AdminCases = () => {
         drop_chance: 0, // Устанавливаем в 0, так как не используем
         image_url: currentCaseItem.image_url,
         drop_after_cases: currentCaseItem.drop_after_cases || 0,
+        price: currentCaseItem.price || 0, // Добавляем поле цены
       };
 
       if (itemEditMode === 'edit' && editingItemId) {
@@ -575,6 +600,7 @@ const AdminCases = () => {
                       <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Название</th>
                       <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden sm:table-cell">Редкость</th>
                       <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Выпадает через</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden md:table-cell">Цена</th>
                       <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Действия</th>
                     </tr>
                   </thead>
@@ -612,6 +638,9 @@ const AdminCases = () => {
                         </td>
                         <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
                           <div className="font-medium text-xs sm:text-sm">{item.drop_after_cases} кейсов</div>
+                        </td>
+                        <td className="py-2 px-2 sm:px-4 hidden md:table-cell">
+                          <div className="font-medium text-xs sm:text-sm text-green-400">{item.price || 0}₴</div>
                         </td>
                         <td className="py-2 px-2 sm:px-4">
                           <div className="flex gap-1 sm:gap-2">
@@ -702,6 +731,23 @@ const AdminCases = () => {
                   placeholder="https://example.com/item.jpg"
                   className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Цена предмета (₴) *</label>
+                <Input
+                  name="price"
+                  type="number"
+                  value={currentCaseItem.price || ''}
+                  onChange={handleCaseItemChange}
+                  placeholder="100"
+                  min="0"
+                  step="0.01"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Цена, за которую можно продать предмет
+                </p>
               </div>
 
               <div>

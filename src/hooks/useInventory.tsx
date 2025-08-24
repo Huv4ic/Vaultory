@@ -244,7 +244,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       // Продаем предмет через базу данных
       const sellPrice = await InventoryService.sellItem(item.id, telegramId);
       
-      if (sellPrice > 0) {
+      if (sellPrice >= 0) { // Изменяем > 0 на >= 0
         console.log('✅ Предмет продан за:', sellPrice);
         console.log('🗑️ Удаляем предмет из локального состояния...');
         

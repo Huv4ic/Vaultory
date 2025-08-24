@@ -34,6 +34,7 @@ export interface AdminCaseItem {
   drop_chance: number;
   image_url?: string;
   drop_after_cases?: number; // Временно опциональное поле
+  price: number; // Цена предмета
   created_at: string;
 }
 
@@ -77,4 +78,5 @@ export interface CaseItemFormData {
   rarity: string; // Принимаем string для гибкости
   image_url: string;
   drop_after_cases?: number; // Временно опциональное поле
+  price: number; // Цена предмета
 }
