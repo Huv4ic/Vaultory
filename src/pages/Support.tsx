@@ -151,7 +151,13 @@ const Support = () => {
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{method.title}</h3>
                   <p className="text-sm sm:text-base text-gray-300 mb-4">{method.description}</p>
                   <Button
-                    onClick={() => window.open(method.link, '_blank')}
+                    onClick={() => {
+                      if (method.title === 'Email поддержка') {
+                        openGmail();
+                      } else {
+                        window.open(method.link, '_blank');
+                      }
+                    }}
                     className={`w-full bg-gradient-to-r ${method.color} text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl text-sm sm:text-base py-2 sm:py-3`}
                   >
                     {method.action}

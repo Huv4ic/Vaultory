@@ -1,24 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
-import { FaTelegramPlane } from 'react-icons/fa';
-import { supabase } from '@/integrations/supabase/client';
-import { RefreshCw, Home } from 'lucide-react';
-
-const TELEGRAM_BOT = 'vaultory_notify_bot';
 
 const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [debugInfo, setDebugInfo] = useState<string>('');
   const { setTelegramUser, telegramUser } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
-  const tgWidgetRef = useRef<HTMLDivElement>(null);
 
   // Перенаправляем пользователя, если он уже авторизован
   useEffect(() => {
@@ -36,333 +29,116 @@ const Auth = () => {
     localStorage.setItem('vaultory_redirect_to', redirectTo);
   }, [location]);
 
-  // Проверяем подключение к базе данных
-  useEffect(() => {
-    const checkDatabase = async () => {
-      try {
-        // Проверяем, существует ли таблица profiles
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('count')
-          .limit(1);
-        
-        if (error) {
-          setDebugInfo(`Ошибка подключения к БД: ${error.message}`);
-        } else {
-          setDebugInfo('База данных подключена успешно');
-        }
-      } catch (err) {
-        setDebugInfo(`Ошибка проверки БД: ${err}`);
+  const handleTelegramAuth = async (user: any) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      if (!user || !user.id) {
+        throw new Error('Invalid Telegram response');
       }
-    };
 
-    checkDatabase();
-  }, []);
-
-  // Вставка Telegram Login Widget
-  useEffect(() => {
-    if (telegramUser) return; // Если уже авторизован, не показываем виджет
-    
-    // Очищаем предыдущий виджет
-    if (tgWidgetRef.current) {
-      tgWidgetRef.current.innerHTML = '';
-    }
-
-    // Создаем новый виджет
-    const createTelegramWidget = () => {
-      if (!tgWidgetRef.current) return;
-
-      const script = document.createElement('script');
-      script.src = 'https://telegram.org/js/telegram-widget.js?7';
-      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-userpic', 'true');
-      script.setAttribute('data-radius', '10');
-      script.setAttribute('data-request-access', 'write');
-      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
-      script.async = true;
-      
-      // Обработчик ошибок загрузки скрипта
-      script.onerror = () => {
-        setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
-      };
-
-      tgWidgetRef.current.appendChild(script);
-    };
-
-    // Глобальная функция для обработки авторизации Telegram
-    (window as any).onTelegramAuth = async function(user: any) {
-      try {
-        setLoading(true);
-        setError(null);
-        console.log('Telegram auth response:', user);
-        setDebugInfo(`Получен ответ от Telegram: ${JSON.stringify(user)}`);
-        
-        if (!user || !user.id) {
-          throw new Error('Неверный ответ от Telegram');
-        }
-
-        // Проверяем, что у пользователя есть необходимые данные
-        if (!user.first_name && !user.username) {
-          throw new Error('Недостаточно данных от Telegram');
-        }
-
-        await setTelegramUser(user);
-        console.log('Telegram user set successfully');
-        setDebugInfo('Пользователь успешно авторизован');
-        
-        // Успешная авторизация - useEffect выше перенаправит пользователя
-      } catch (error) {
-        console.error('Ошибка Telegram авторизации:', error);
-        setError('Ошибка авторизации через Telegram. Попробуйте еще раз.');
-        setDebugInfo(`Ошибка авторизации: ${error}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Создаем виджет с небольшой задержкой
-    const timer = setTimeout(createTelegramWidget, 100);
-
-    // Очистка при размонтировании
-    return () => {
-      clearTimeout(timer);
-      if ((window as any).onTelegramAuth) {
-        delete (window as any).onTelegramAuth;
-      }
-    };
-  }, [telegramUser, setTelegramUser]);
-
-  // Функция для повторной попытки
-  const retryAuth = () => {
-    setError(null);
-    setLoading(true);
-    setDebugInfo('Повторная попытка загрузки виджета...');
-    
-    if (tgWidgetRef.current) {
-      tgWidgetRef.current.innerHTML = '';
-      const script = document.createElement('script');
-      script.src = 'https://telegram.org/js/telegram-widget.js?7';
-      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-userpic', 'true');
-      script.setAttribute('data-radius', '10');
-      script.setAttribute('data-request-access', 'write');
-      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
-      script.async = true;
-      
-      script.onload = () => {
-        setDebugInfo('Telegram виджет загружен успешно');
-        setLoading(false);
-      };
-      
-      script.onerror = () => {
-        setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
-        setLoading(false);
-        setDebugInfo('Ошибка загрузки скрипта Telegram');
-      };
-      
-      tgWidgetRef.current.appendChild(script);
+      await setTelegramUser(user);
+      // Перенаправление произойдет через useEffect выше
+    } catch (error) {
+      console.error('Telegram auth error:', error);
+      setError('Ошибка авторизации через Telegram. Попробуйте еще раз.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleTelegramLogin = () => {
-    setError(null);
-    setLoading(true);
-    setDebugInfo('Инициализация Telegram авторизации...');
-    
-    // Очищаем предыдущий виджет
-    if (tgWidgetRef.current) {
-      tgWidgetRef.current.innerHTML = '';
-    }
-    
-    // Создаем новый виджет
+  // Создаем Telegram Login Widget
+  useEffect(() => {
+    if (telegramUser) return; // Если уже авторизован, не показываем виджет
+
+    // Глобальная функция для обработки авторизации
+    (window as any).onTelegramAuth = handleTelegramAuth;
+
+    // Создаем скрипт для Telegram виджета
     const script = document.createElement('script');
     script.src = 'https://telegram.org/js/telegram-widget.js?7';
-    script.setAttribute('data-telegram-login', TELEGRAM_BOT);
+    script.setAttribute('data-telegram-login', 'vaultory_notify_bot');
     script.setAttribute('data-size', 'large');
     script.setAttribute('data-userpic', 'true');
     script.setAttribute('data-radius', '10');
     script.setAttribute('data-request-access', 'write');
     script.setAttribute('data-onauth', 'onTelegramAuth(user)');
     script.async = true;
-    
-    script.onload = () => {
-      setDebugInfo('Telegram виджет загружен успешно');
-      setLoading(false);
+
+    // Добавляем скрипт в head
+    document.head.appendChild(script);
+
+    // Очистка при размонтировании
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+      if ((window as any).onTelegramAuth) {
+        delete (window as any).onTelegramAuth;
+      }
     };
-    
-    script.onerror = () => {
-      setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
-      setLoading(false);
-      setDebugInfo('Ошибка загрузки скрипта Telegram');
-    };
-    
-    if (tgWidgetRef.current) {
-      tgWidgetRef.current.appendChild(script);
-    }
-  };
+  }, [telegramUser]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      {/* Анимированные элементы фона */}
-      <div className="absolute inset-0">
-        {/* Основные анимированные круги */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-amber-500/10 rounded-full animate-bounce blur-xl"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-amber-400/10 rounded-full animate-pulse blur-xl"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-amber-500/10 rounded-full animate-spin blur-xl"></div>
-        
-        {/* Дополнительные декоративные элементы */}
-        <div className="absolute top-1/3 left-1/3 w-16 h-16 bg-amber-400/5 rounded-full animate-pulse blur-lg"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-28 h-28 bg-amber-500/5 rounded-full animate-bounce blur-xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-gradient-to-r from-amber-500/5 to-amber-400/5 rounded-full animate-pulse blur-2xl"></div>
-        
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400/30 rounded-full animate-ping"></div>
-        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-amber-300/20 rounded-full animate-ping animation-delay-1000"></div>
-        <div className="absolute bottom-1/4 left-3/4 w-2 h-2 bg-amber-400/20 rounded-full animate-ping animation-delay-2000"></div>
-      </div>
-
-      {/* Hero Section */}
-      <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
-        <div className="max-w-4xl mx-auto">
-          {/* Анимированный заголовок */}
-          <div className="mb-6 sm:mb-8">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
-              🔐 {t('Авторизация')}
-            </h1>
-            <div className="w-16 h-1 sm:w-20 sm:h-1 md:w-24 md:h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full animate-pulse"></div>
-          </div>
-          
-          {/* Подзаголовок с анимацией */}
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in px-4">
-            Войдите в свой аккаунт через Telegram для доступа к платформе Vaultory
-          </p>
-          
-          {/* Дополнительная информация */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto mb-6 sm:mb-8">
-            <div className="text-center p-3 sm:p-4 bg-black/40 backdrop-blur-sm rounded-lg sm:rounded-xl border border-amber-500/20">
-              <div className="text-xl sm:text-2xl mb-2">🔒</div>
-              <p className="text-gray-300 text-xs sm:text-sm">Безопасно</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold text-white mb-2">
+            🔐 Авторизация
+          </CardTitle>
+          <CardDescription className="text-gray-300">
+            Войдите в свой аккаунт через Telegram
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-6">
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-400 mx-auto mb-4"></div>
+              <p className="text-white">Авторизация...</p>
             </div>
-            <div className="text-center p-3 sm:p-4 bg-black/40 backdrop-blur-sm rounded-lg sm:rounded-xl border border-amber-500/20">
-              <div className="text-xl sm:text-2xl mb-2">⚡</div>
-              <p className="text-gray-300 text-xs sm:text-sm">Быстро</p>
+          ) : error ? (
+            <div className="text-center py-8">
+              <div className="text-red-400 text-4xl mb-4">⚠️</div>
+              <p className="text-red-400 mb-4">{error}</p>
+              <Button
+                onClick={() => window.location.reload()}
+                className="bg-amber-500 hover:bg-amber-600 text-white"
+              >
+                Попробовать снова
+              </Button>
             </div>
-            <div className="text-center p-3 sm:p-4 bg-black/40 backdrop-blur-sm rounded-lg sm:rounded-xl border border-amber-500/20">
-              <div className="text-xl sm:text-2xl mb-2">🛡️</div>
-              <p className="text-gray-300 text-xs sm:text-sm">Надежно</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Форма авторизации */}
-      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
-        <div className="max-w-2xl mx-auto">
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="p-4 sm:p-6 md:p-8">
-              {!loading && !error ? (
-                <div className="text-center">
-                  <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-amber-500/30">
-                    <FaTelegramPlane className="w-8 h-8 sm:w-10 sm:h-10 text-amber-400" />
-                  </div>
-                  
-                  <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">
-                    Войти через Telegram
-                  </h2>
-                  
-                  <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8">
-                    Нажмите кнопку ниже, чтобы войти в свой аккаунт Telegram
-                  </p>
-                  
-                  <Button
-                    onClick={handleTelegramLogin}
-                    disabled={loading}
-                    className="w-full py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 text-sm sm:text-base"
+          ) : (
+            <div className="text-center">
+              <div className="mb-6">
+                <p className="text-gray-300 mb-4">
+                  Нажмите кнопку ниже для авторизации
+                </p>
+                <div id="telegram-login-vaultory_notify_bot" className="flex justify-center"></div>
+              </div>
+              
+              <div className="text-xs text-gray-400 mt-6">
+                <p>Нажимая кнопку, вы соглашаетесь с нашими</p>
+                <div className="flex justify-center space-x-2 mt-2">
+                  <button 
+                    onClick={() => navigate('/terms')}
+                    className="text-amber-400 hover:text-amber-300 transition-colors"
                   >
-                    <FaTelegramPlane className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                    {loading ? 'Загрузка...' : 'Войти через Telegram'}
-                  </Button>
-                  
-                  {/* Скрытый div для Telegram виджета */}
-                  <div 
-                    ref={tgWidgetRef} 
-                    className="mt-4 opacity-0 pointer-events-none"
-                    style={{ height: '0', overflow: 'hidden' }}
-                  ></div>
-                  
-                  <div className="mt-6 sm:mt-8 text-xs sm:text-sm text-gray-400">
-                    <p>Нажимая кнопку, вы соглашаетесь с нашими</p>
-                    <div className="flex justify-center space-x-2 mt-2">
-                      <button 
-                        onClick={() => navigate('/terms')}
-                        className="text-amber-400 hover:text-amber-300 transition-colors"
-                      >
-                        Условиями использования
-                      </button>
-                      <span>и</span>
-                      <button 
-                        onClick={() => navigate('/privacy')}
-                        className="text-amber-400 hover:text-amber-300 transition-colors"
-                      >
-                        Политикой конфиденциальности
-                      </button>
-                    </div>
-                  </div>
+                    Условиями использования
+                  </button>
+                  <span>и</span>
+                  <button 
+                    onClick={() => navigate('/privacy')}
+                    className="text-amber-400 hover:text-amber-300 transition-colors"
+                  >
+                    Политикой конфиденциальности
+                  </button>
                 </div>
-              ) : loading ? (
-                <div className="text-center py-8 sm:py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-amber-400 mx-auto mb-4 sm:mb-6"></div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">Авторизация...</h3>
-                  <p className="text-sm sm:text-base text-gray-300">Пожалуйста, подождите</p>
-                </div>
-              ) : error ? (
-                <div className="text-center py-8 sm:py-12">
-                  <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-red-400/20 to-red-600/20 rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-red-500/30">
-                    <div className="text-red-400 text-2xl">⚠️</div>
-                  </div>
-                  
-                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">
-                    Ошибка авторизации
-                  </h3>
-                  
-                  <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
-                    {error}
-                  </p>
-                  
-                  {debugInfo && (
-                    <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-black/60 backdrop-blur-sm rounded-lg sm:rounded-xl border border-amber-500/30">
-                      <p className="text-xs sm:text-sm text-amber-300 font-mono">
-                        <span className="text-amber-400">Debug:</span> {debugInfo}
-                      </p>
-                    </div>
-                  )}
-                  
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <Button
-                      onClick={retryAuth}
-                      className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm sm:text-base"
-                    >
-                      <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                      Попробовать снова
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate('/')}
-                      className="px-4 sm:px-6 py-3 sm:py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
-                    >
-                      <Home className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                      На главную
-                    </Button>
-                  </div>
-                </div>
-              ) : null}
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
