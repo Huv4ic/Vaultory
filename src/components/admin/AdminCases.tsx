@@ -269,6 +269,12 @@ const AdminCases = () => {
         toast('Укажите корректную цену предмета!', 'error');
         return;
       }
+      
+      // Убираем ограничение на максимальную цену - теперь можно ставить любую цену
+      // if (currentCaseItem.price > 999999999.99) {
+      //   toast('Цена не может превышать 999,999,999.99₴!', 'error');
+      //   return;
+      // }
 
       const itemData = {
         case_id: currentCaseId,
@@ -742,13 +748,13 @@ const AdminCases = () => {
                   type="number"
                   value={currentCaseItem.price || ''}
                   onChange={handleCaseItemChange}
-                  placeholder="100"
+                  placeholder="10000000"
                   min="0"
                   step="0.01"
                   className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
                 <p className="text-xs text-gray-400 mt-1">
-                  Цена, за которую можно продать предмет
+                  Цена, за которую можно продать предмет (без ограничений)
                 </p>
               </div>
 

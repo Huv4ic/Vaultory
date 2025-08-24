@@ -173,7 +173,7 @@ const Inventory = () => {
                 <DollarSign className="w-8 h-8 text-green-400" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Общая стоимость</h3>
-              <p className="text-3xl font-bold text-green-400">${totalValue.toFixed(2)}</p>
+                              <p className="text-3xl font-bold text-green-400">{totalValue.toFixed(2)}₴</p>
             </CardContent>
           </Card>
 
@@ -250,7 +250,7 @@ const Inventory = () => {
                       <p className="text-gray-500 text-xs">Из кейса: {item.case_name || 'Неизвестно'}</p>
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-green-400">${(item.price || 0).toFixed(2)}</div>
+                      <div className="text-lg font-bold text-green-400">{(item.price || 0).toFixed(2)}₴</div>
                       <div className={`text-xs font-medium ${getRarityColor(item.rarity || 'common')} capitalize`}>
                         {item.rarity || 'common'}
                       </div>
@@ -295,7 +295,7 @@ const Inventory = () => {
                         // Продать предмет
                         console.log('🔄 Нажата кнопка "Продать" для предмета:', item);
                         
-                        if (confirm(`Продать "${item.name}" за $${(item.price || 0).toFixed(2)}?`)) {
+                        if (confirm(`Продать "${item.name}" за ${(item.price || 0).toFixed(2)}₴?`)) {
                           try {
                             // Находим индекс предмета в массиве
                             const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
@@ -338,7 +338,7 @@ const Inventory = () => {
                                   }
                                 }
                                 
-                                alert(`Предмет "${item.name}" продан за $${sellPrice.toFixed(2)}! Деньги добавлены на баланс.`);
+                                alert(`Предмет "${item.name}" продан за ${sellPrice.toFixed(2)}₴! Деньги добавлены на баланс.`);
                                 console.log('Предмет продан:', item.name, 'за', sellPrice);
                               } else {
                                 console.error('❌ Ошибка при продаже предмета, цена:', sellPrice);
