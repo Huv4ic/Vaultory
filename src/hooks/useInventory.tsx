@@ -21,6 +21,7 @@ interface InventoryContextType {
   sellItem: (index: number) => number; // возвращает сумму продажи
   withdrawItem: (index: number) => void;
   clear: () => void;
+  refreshItems: () => void; // Добавляем функцию обновления
   getTotalValue: () => number;
   getCasesOpened: () => number;
   casesOpened: number;
@@ -88,6 +89,14 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     setItems(prev => prev.filter((_, i) => i !== index)); // удаляем предмет
   };
 
+  const refreshItems = () => {
+    const saved = localStorage.getItem('vaultory_inventory');
+    let arr = saved ? JSON.parse(saved) : [];
+    // Фильтруем старые/проданные/выведенные предметы и без статуса
+    arr = arr.filter((item: any) => item.status && item.status !== 'sold' && item.status !== 'withdrawn');
+    setItems(arr);
+  };
+
   const getTotalValue = () => {
     return items.filter(item => item.status !== 'sold').reduce((sum, item) => sum + item.price, 0);
   };
@@ -102,7 +111,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
   };
 
   return (
-    <InventoryContext.Provider value={{ items, addItem, removeItem, sellItem, withdrawItem, clear, getTotalValue, getCasesOpened, casesOpened, spent, purchased }}>
+    <InventoryContext.Provider value={{ items, addItem, removeItem, sellItem, withdrawItem, clear, refreshItems, getTotalValue, getCasesOpened, casesOpened, spent, purchased }}>
       {children}
     </InventoryContext.Provider>
   );

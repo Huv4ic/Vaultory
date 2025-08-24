@@ -36,7 +36,7 @@ interface FavoriteCase {
 
 const Inventory = () => {
   const { telegramUser, profile } = useAuth();
-  const { items: inventoryItems, getTotalValue, casesOpened } = useInventory();
+  const { items: inventoryItems, getTotalValue, casesOpened, refreshItems } = useInventory();
   const { favoriteCase, caseStats, loading: statsLoading, error: statsError } = useCaseStats();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -49,13 +49,16 @@ const Inventory = () => {
       return;
     }
     
-    // Автоматическое обновление страницы один раз при заходе
+    // Принудительное обновление данных инвентаря при заходе на страницу
     const hasRefreshed = sessionStorage.getItem('inventory_refreshed');
     if (!hasRefreshed) {
       sessionStorage.setItem('inventory_refreshed', 'true');
-      window.location.reload();
+      
+      // Принудительно обновляем данные инвентаря
+      console.log('Обновляем инвентарь при заходе на страницу');
+      refreshItems();
     }
-  }, [telegramUser, navigate]);
+  }, [telegramUser, navigate, refreshItems]);
 
   // Получаем общую стоимость из хука
   const totalValue = getTotalValue();
@@ -224,7 +227,7 @@ const Inventory = () => {
               {displayItems.map((item) => (
                 <div
                   key={item.id || Math.random()}
-                  className={`p-4 rounded-xl border ${getRarityBg(item.rarity || 'common')} hover:scale-105 transition-all duration-300 cursor-pointer`}
+                  className={`p-4 rounded-xl border ${getRarityBg(item.rarity || 'common')} hover:scale-105 transition-all duration-300`}
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
@@ -241,12 +244,53 @@ const Inventory = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between text-xs text-gray-500">
+                  
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                     <span>Получен: {item.obtained_at ? new Date(item.obtained_at).toLocaleDateString('ru-RU') : 'Неизвестно'}</span>
                     <div className="flex items-center space-x-1">
                       <Trophy className="w-3 h-3" />
                       <span>Кейс</span>
                     </div>
+                  </div>
+                  
+                  {/* Кнопки действий */}
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={() => {
+                        // Вывести предмет (заглушка)
+                        alert('Функция вывода предмета пока в разработке!');
+                        console.log('Попытка вывести предмет:', item.name);
+                      }}
+                      className="flex-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
+                    >
+                      📤 Вывести
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        // Продать предмет
+                        if (confirm(`Продать "${item.name}" за $${(item.price || 0).toFixed(2)}?`)) {
+                          // Добавляем деньги на баланс
+                          const currentBalance = parseInt(localStorage.getItem('vaultory_balance') || '0');
+                          const newBalance = currentBalance + (item.price || 0);
+                          localStorage.setItem('vaultory_balance', newBalance.toString());
+                          
+                          // Удаляем предмет из инвентаря
+                          const currentInventory = JSON.parse(localStorage.getItem('vaultory_inventory') || '[]');
+                          const updatedInventory = currentInventory.filter((invItem: any) => invItem.id !== item.id);
+                          localStorage.setItem('vaultory_inventory', JSON.stringify(updatedInventory));
+                          
+                          // Обновляем состояние страницы
+                          refreshItems();
+                          
+                          alert(`Предмет "${item.name}" продан за $${(item.price || 0).toFixed(2)}! Деньги добавлены на баланс.`);
+                          console.log('Предмет продан:', item.name, 'за', item.price);
+                        }
+                      }}
+                      className="flex-1 px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
+                    >
+                      💰 Продать
+                    </button>
                   </div>
                 </div>
               ))}
