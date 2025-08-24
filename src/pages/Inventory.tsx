@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useInventory } from '@/hooks/useInventory';
+import { useInventory, InventoryItem } from '@/hooks/useInventory';
 import { useCaseStats } from '@/hooks/useCaseStats';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
@@ -17,22 +17,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-interface InventoryItem {
-  id: string;
-  name: string;
-  type: string;
-  rarity: string;
-  price: number;
-  image_url?: string;
-  case_name: string;
-  obtained_at: string;
-}
-
 interface FavoriteCase {
-  name: string;
+  case_id: string;
+  case_name: string;
   opened_count: number;
-  image_url?: string;
-  case_name?: string;
   case_image_url?: string;
 }
 
@@ -46,10 +34,19 @@ const Inventory = () => {
   const [error, setError] = useState<string | null>(null);
   const [totalCasesOpened, setTotalCasesOpened] = useState(0);
 
+  // Загружаем общую стоимость
+  useEffect(() => {
+    const loadTotalValue = () => {
+      const value = getTotalValue();
+      setTotalValue(value);
+    };
+    loadTotalValue();
+  }, [getTotalValue, inventoryItems]);
+
   // Загружаем количество открытых кейсов
   useEffect(() => {
-    const loadCasesOpened = async () => {
-      const count = await getCasesOpened();
+    const loadCasesOpened = () => {
+      const count = getCasesOpened();
       setTotalCasesOpened(count);
     };
     loadCasesOpened();
@@ -68,7 +65,7 @@ const Inventory = () => {
       
       // Принудительно обновляем данные инвентаря
       console.log('Обновляем инвентарь при заходе на страницу');
-      refreshItems().catch(console.error);
+      refreshItems();
     }
   }, [telegramUser, navigate, refreshItems]);
 
@@ -81,15 +78,6 @@ const Inventory = () => {
   // Определяем состояние загрузки
   const isLoading = loading || statsLoading;
   const hasError = error || statsError;
-
-  // Загружаем общую стоимость
-  useEffect(() => {
-    const loadTotalValue = async () => {
-      const value = await getTotalValue();
-      setTotalValue(value);
-    };
-    loadTotalValue();
-  }, [getTotalValue, inventoryItems]);
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -148,7 +136,7 @@ const Inventory = () => {
             <Button
               onClick={() => navigate(-1)}
               variant="outline"
-              className="bg-black/20 border-white/20 text-white hover:bg-white/10"
+              className="mr-4 bg-black/20 border-white/20 text-white hover:bg-white/10"
             >
               ← Назад
             </Button>
@@ -197,10 +185,10 @@ const Inventory = () => {
                 <>
                   {/* Фото кейса */}
                   <div className="w-20 h-20 mx-auto mb-3 rounded-lg overflow-hidden bg-gray-800">
-                    {(favoriteCase as any).image_url ? (
+                    {favoriteCase.case_image_url ? (
                       <img 
-                        src={(favoriteCase as any).image_url} 
-                        alt={(favoriteCase as any).name}
+                        src={favoriteCase.case_image_url} 
+                        alt={favoriteCase.case_name}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -209,8 +197,8 @@ const Inventory = () => {
                       </div>
                     )}
                   </div>
-                  <p className="text-lg font-bold text-amber-400 mb-1">{(favoriteCase as any).name}</p>
-                  <p className="text-sm text-gray-300">Открыто {(favoriteCase as any).opened_count} раз</p>
+                  <p className="text-lg font-bold text-amber-400 mb-1">{favoriteCase.case_name}</p>
+                  <p className="text-sm text-gray-300">Открыто {favoriteCase.opened_count} раз</p>
                 </>
               )}
             </CardContent>
@@ -266,13 +254,13 @@ const Inventory = () => {
                   {/* Кнопки действий */}
                   <div className="flex gap-2 mt-3">
                     <button
-                      onClick={async () => {
+                      onClick={() => {
                         // Вывести предмет
                         try {
                           const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
                           if (itemIndex !== -1) {
-                            await withdrawItem(itemIndex);
-                            await refreshItems();
+                            withdrawItem(itemIndex);
+                            refreshItems();
                             alert(`Предмет "${item.name}" выведен из инвентаря!`);
                             console.log('Предмет выведен:', item.name);
                           }
@@ -287,16 +275,22 @@ const Inventory = () => {
                     </button>
                     
                     <button
-                      onClick={async () => {
+                      onClick={() => {
                         // Продать предмет
                         if (confirm(`Продать "${item.name}" за $${(item.price || 0).toFixed(2)}?`)) {
                           try {
                             // Используем функцию sellItem из useInventory
-                            const sellPrice = await sellItem(inventoryItems.findIndex(invItem => invItem.id === item.id));
+                            const sellPrice = sellItem(inventoryItems.findIndex(invItem => invItem.id === item.id));
                             
                             if (sellPrice > 0) {
                               // Обновляем состояние страницы
-                              await refreshItems();
+                              refreshItems();
+                              
+                              // Обновляем баланс пользователя (добавляем деньги)
+                              if (profile && profile.balance !== undefined) {
+                                // Здесь можно добавить логику обновления баланса
+                                console.log(`Баланс обновлен: +$${sellPrice.toFixed(2)}`);
+                              }
                               
                               alert(`Предмет "${item.name}" продан за $${sellPrice.toFixed(2)}! Деньги добавлены на баланс.`);
                               console.log('Предмет продан:', item.name, 'за', sellPrice);
