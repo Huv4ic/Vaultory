@@ -53,8 +53,6 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   const [winnerItem, setWinnerItem] = useState<CaseItem | null>(null);
   const [soldOrAdded, setSoldOrAdded] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const [showConfirmSell, setShowConfirmSell] = useState(false);
-  const [itemToSell, setItemToSell] = useState<CaseItem | null>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const [spinCount, setSpinCount] = useState(0);
   const animationRef = useRef<number | null>(null);
@@ -153,7 +151,12 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       }
   
       console.log('✅ Баланс успешно обновлен');
-      showNotification(`Предмет продан за ${item.price}₴! Деньги добавлены на баланс.`, 'success');
+      showNotification(`Предмет "${item.name}" продан за ${item.price}₴! Деньги добавлены на баланс.`, 'success');
+      
+      // Закрываем окно только после успешной продажи
+      setTimeout(() => {
+        handleClose();
+      }, 2000); // Даем время пользователю увидеть уведомление
       
     } catch (error) {
       console.error('❌ Failed to sell item immediately:', error);
@@ -162,17 +165,16 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   };
 
   const handleConfirmSell = async () => {
-    if (itemToSell) {
-      await handleImmediateSell(itemToSell);
-      setShowConfirmSell(false);
-      setItemToSell(null);
+    if (winnerItem) {
+      await handleImmediateSell(winnerItem);
+      setSoldOrAdded(true);
       handleClose();
     }
   };
 
   const handleCancelSell = () => {
-    setShowConfirmSell(false);
-    setItemToSell(null);
+    // setShowConfirmSell(false); // Удалено
+    // setItemToSell(null); // Удалено
   };
 
   // Cleanup анимации при размонтировании и изменении состояний
@@ -810,28 +812,42 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     Добавить в инвентарь
                   </Button>
                   
-                  <Button
+                  <button
                     onClick={() => {
                       if (winnerItem && !soldOrAdded) {
-                        console.log('💰 Нажата кнопка "Продать"');
-                        console.log('💵 Цена предмета из админки:', winnerItem.price);
+                        // Добавить в инвентарь
+                        console.log('🔄 Нажата кнопка "Добавить в инвентарь" для предмета:', winnerItem);
                         
                         // Устанавливаем состояние что действие выполнено
                         setSoldOrAdded(true);
-                        setItemToSell(winnerItem); // Устанавливаем предмет для продажи
-                        setShowConfirmSell(true); // Показываем подтверждение продажи
+                        
+                        // Создаем предмет для инвентаря
+                        const inventoryItem = {
+                          name: winnerItem.name,
+                          price: winnerItem.price || 0, // Используем цену из CaseItem
+                          rarity: winnerItem.rarity,
+                          type: 'case_item', // Используем фиксированное значение
+                          caseId: winnerItem.id, // Используем id вместо case_id
+                          case_name: caseName, // Используем название кейса
+                          image: undefined, // У CaseItem нет поля image
+                          image_url: winnerItem.image_url,
+                          obtained_at: new Date().toISOString()
+                        };
+                        
+                        console.log('✅ Предмет подготовлен для инвентаря:', inventoryItem);
+                        
+                        // Вызываем функцию добавления в инвентарь
+                        onCaseOpened(winnerItem);
+                        
+                        // Закрываем окно
+                        handleClose();
                       }
                     }}
                     disabled={soldOrAdded}
-                    className={`px-6 sm:px-8 py-3 sm:px-8 py-3 sm:py-4 font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base ${
-                      soldOrAdded 
-                        ? 'bg-gray-500 text-gray-500 cursor-not-allowed opacity-50' 
-                        : 'bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white hover:scale-105'
-                    }`}
+                    className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    Продать
-                  </Button>
+                    📦 Добавить в инвентарь
+                  </button>
                 </div>
                 
                 {/* Убираем кнопку "Закрыть" - окно закрывается автоматически после действия */}
@@ -852,39 +868,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       />
 
       {/* Модальное окно подтверждения продажи */}
-      {showConfirmSell && itemToSell && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 max-w-md w-full">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <DollarSign className="w-8 h-8 text-yellow-400" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Подтверждение продажи</h3>
-              <p className="text-gray-300 mb-4">
-                Продать "{itemToSell.name}" за {itemToSell.price}₴?
-              </p>
-              <p className="text-sm text-gray-400 mb-6">
-                Деньги будут добавлены на ваш баланс
-              </p>
-              
-              <div className="flex gap-3">
-                <button
-                  onClick={handleCancelSell}
-                  className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
-                >
-                  Отмена
-                </button>
-                <button
-                  onClick={handleConfirmSell}
-                  className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
-                >
-                  Продать
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Удалено */}
       
       {/* CSS стили для анимаций */}
       <style>{`
