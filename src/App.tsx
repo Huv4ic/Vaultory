@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { CartProvider } from "@/hooks/useCart";
 import { InventoryProvider } from "@/hooks/useInventory";
+import { CaseStatsProvider } from "@/hooks/useCaseStats";
 import { FavoritesProvider } from "@/providers/FavoritesProvider";
 import Index from "./pages/Index";
 import Catalog from "./pages/Catalog";
@@ -85,9 +86,11 @@ const App = () => {
       <AuthProvider>
         <CartProvider>
           <InventoryProvider>
-            <FavoritesProvider>
-              <AppContent />
-            </FavoritesProvider>
+            <CaseStatsProvider>
+              <FavoritesProvider>
+                <AppContent />
+              </FavoritesProvider>
+            </CaseStatsProvider>
           </InventoryProvider>
         </CartProvider>
       </AuthProvider>

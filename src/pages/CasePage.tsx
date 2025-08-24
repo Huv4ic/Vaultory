@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
+import { useCaseStats } from '../hooks/useCaseStats';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -35,6 +36,7 @@ interface Case {
 const CasePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { incrementCaseOpened } = useCaseStats();
   const [caseData, setCaseData] = useState<Case | null>(null);
   const [caseItems, setCaseItems] = useState<CaseItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -100,9 +102,19 @@ const CasePage = () => {
     setShowRoulette(true);
   };
 
-  const handleCaseOpened = (item: CaseItem) => {
+  const handleCaseOpened = async (item: CaseItem) => {
     // Здесь можно добавить логику для добавления предмета в инвентарь
     console.log('Кейс открыт! Выпад предмет:', item);
+    
+    // Увеличиваем счетчик открытий кейса для статистики
+    if (caseData && id) {
+      try {
+        await incrementCaseOpened(parseInt(id), caseData.name);
+        console.log('Статистика открытий кейса обновлена');
+      } catch (err) {
+        console.error('Ошибка обновления статистики:', err);
+      }
+    }
     
     // НЕ закрываем рулетку автоматически - пользователь сам закроет её кнопкой "Закрыть"
     // Рулетка будет показывать результат до тех пор, пока пользователь не нажмет кнопку

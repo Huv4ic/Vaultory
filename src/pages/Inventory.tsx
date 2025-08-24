@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useInventory } from '@/hooks/useInventory';
+import { useCaseStats } from '@/hooks/useCaseStats';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -36,6 +37,7 @@ interface FavoriteCase {
 const Inventory = () => {
   const { telegramUser, profile } = useAuth();
   const { items: inventoryItems, getTotalValue, casesOpened } = useInventory();
+  const { favoriteCase, caseStats, loading: statsLoading, error: statsError } = useCaseStats();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -48,17 +50,10 @@ const Inventory = () => {
     }
   }, [telegramUser, navigate]);
 
-  // Моковые данные для любимого кейса (в реальности будут загружаться из БД)
-  const favoriteCase: FavoriteCase = {
-    name: 'Revolution Case',
-    opened_count: casesOpened,
-    image_url: '/images/cases/revolution.jpg'
-  };
-
   // Получаем общую стоимость из хука
   const totalValue = getTotalValue();
 
-  // Если инвентарь пуст, показываем моковые данные для демонстрации
+  // Используем реальные данные из useCaseStats или моковые данные для демонстрации
   const displayItems = inventoryItems.length > 0 ? inventoryItems : [
     {
       id: '1',
@@ -89,6 +84,10 @@ const Inventory = () => {
     }
   ];
 
+  // Определяем состояние загрузки
+  const isLoading = loading || statsLoading;
+  const hasError = error || statsError;
+
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'text-gray-400';
@@ -111,7 +110,7 @@ const Inventory = () => {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
         <div className="text-center">
@@ -122,7 +121,7 @@ const Inventory = () => {
     );
   }
 
-  if (error) {
+  if (hasError) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
         <div className="text-center">
@@ -194,19 +193,19 @@ const Inventory = () => {
                 <Crown className="w-8 h-8 text-amber-400" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Любимый кейс</h3>
-              <p className="text-lg font-bold text-amber-400">{favoriteCase?.name}</p>
-              <p className="text-sm text-gray-300">Открыто {favoriteCase?.opened_count} раз</p>
+              <p className="text-lg font-bold text-amber-400">{favoriteCase?.case_name || 'Нет данных'}</p>
+              <p className="text-sm text-gray-300">Открыто {favoriteCase?.opened_count || 0} раз</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Любимый кейс детально */}
-        {favoriteCase && (
+        {favoriteCase && favoriteCase.case_name && (
           <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 mb-8">
             <CardHeader>
               <CardTitle className="flex items-center text-amber-400">
                 <Star className="w-6 h-6 mr-2" />
-                Любимый кейс - {favoriteCase.name}
+                                 Любимый кейс - {favoriteCase.case_name || 'Нет данных'}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -216,7 +215,7 @@ const Inventory = () => {
                     <Package className="w-10 h-10 text-amber-400" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold text-white">{favoriteCase.name}</h4>
+                                         <h4 className="text-xl font-bold text-white">{favoriteCase.case_name || 'Нет данных'}</h4>
                     <p className="text-gray-300">Ваш самый любимый кейс</p>
                   </div>
                 </div>
