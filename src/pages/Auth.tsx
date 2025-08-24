@@ -319,7 +319,7 @@ const Auth = () => {
                     </Button>
                   </div>
                 </div>
-              )}
+              ) : null}
             </CardContent>
           </Card>
         </div>
