@@ -72,7 +72,7 @@ const AdminCases = () => {
         ...caseData,
         items: (caseData.items || []).map((item: any) => ({
           ...item,
-          price: item.price || 0, // Добавляем поле price если его нет
+          price: typeof item.price === 'number' ? item.price : 0, // Проверяем тип
         }))
       }));
       
@@ -99,7 +99,7 @@ const AdminCases = () => {
       // Преобразуем данные, добавляя поле price если его нет
       const formattedItems = (data || []).map((item: any) => ({
         ...item,
-        price: item.price || 0, // Добавляем поле price если его нет
+        price: typeof item.price === 'number' ? item.price : 0, // Проверяем тип
       }));
       
       setCaseItems(formattedItems);
@@ -190,7 +190,7 @@ const AdminCases = () => {
     const { name, value } = e.target;
     setCurrentCaseItem(prev => ({
       ...prev,
-      [name]: ['drop_after_cases'].includes(name) ? parseFloat(value) || 0 : value
+      [name]: ['drop_after_cases', 'price'].includes(name) ? parseFloat(value) || 0 : value
     }));
   };
 
@@ -265,8 +265,8 @@ const AdminCases = () => {
       }
       
       // Валидация цены
-      if (currentCaseItem.price < 0) {
-        toast('Цена не может быть отрицательной!', 'error');
+      if (typeof currentCaseItem.price !== 'number' || currentCaseItem.price < 0) {
+        toast('Укажите корректную цену предмета!', 'error');
         return;
       }
 
@@ -277,7 +277,7 @@ const AdminCases = () => {
         drop_chance: 0, // Устанавливаем в 0, так как не используем
         image_url: currentCaseItem.image_url,
         drop_after_cases: currentCaseItem.drop_after_cases || 0,
-        price: currentCaseItem.price || 0, // Добавляем поле цены
+        price: Number(currentCaseItem.price) || 0, // Явно преобразуем в число
       };
 
       if (itemEditMode === 'edit' && editingItemId) {
@@ -640,7 +640,9 @@ const AdminCases = () => {
                           <div className="font-medium text-xs sm:text-sm">{item.drop_after_cases} кейсов</div>
                         </td>
                         <td className="py-2 px-2 sm:px-4 hidden md:table-cell">
-                          <div className="font-medium text-xs sm:text-sm text-green-400">{item.price || 0}₴</div>
+                          <div className="font-medium text-xs sm:text-sm text-green-400">
+                            {typeof item.price === 'number' ? `${item.price}₴` : '0₴'}
+                          </div>
                         </td>
                         <td className="py-2 px-2 sm:px-4">
                           <div className="flex gap-1 sm:gap-2">
