@@ -111,7 +111,7 @@ const ProductPage = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 max-w-[1920px] mx-auto px-4 py-12">
+        <div className="relative z-10 container mx-auto px-4 py-12">
         </div>
         
         {/* Анимированные элементы фона */}
@@ -121,7 +121,7 @@ const ProductPage = () => {
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-20 max-w-[1920px] mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
+      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Кнопка назад */}
         <div className="mb-6 sm:mb-8 mt-16 sm:mt-20 md:mt-24">
           <Button
@@ -422,7 +422,7 @@ const ProductPage = () => {
       </div>
 
       {/* Дополнительная информация */}
-      <div className="mt-20 max-w-[1920px] mx-auto px-4">
+      <div className="mt-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 text-center">
             <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
