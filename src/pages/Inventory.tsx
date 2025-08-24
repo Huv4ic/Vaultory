@@ -193,81 +193,36 @@ const Inventory = () => {
                 <Crown className="w-8 h-8 text-amber-400" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Любимый кейс</h3>
-              <p className="text-lg font-bold text-amber-400">{favoriteCase?.case_name || 'Нет данных'}</p>
-              <p className="text-sm text-gray-300">Открыто {favoriteCase?.opened_count || 0} раз</p>
+              {favoriteCase ? (
+                <>
+                  {/* Фото кейса */}
+                  <div className="w-20 h-20 mx-auto mb-3 rounded-lg overflow-hidden bg-gray-800">
+                    {favoriteCase.case_image_url ? (
+                      <img 
+                        src={favoriteCase.case_image_url} 
+                        alt={favoriteCase.case_name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                        <Package className="w-10 h-10 text-gray-500" />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-lg font-bold text-amber-400 mb-1">{favoriteCase.case_name}</p>
+                  <p className="text-sm text-gray-300">Открыто {favoriteCase.opened_count} раз</p>
+                </>
+              ) : (
+                <>
+                  <div className="w-20 h-20 mx-auto mb-3 rounded-lg bg-gray-700 flex items-center justify-center">
+                    <Package className="w-10 h-10 text-gray-500" />
+                  </div>
+                  <p className="text-lg font-bold text-amber-400 mb-1">Не определен</p>
+                  <p className="text-sm text-gray-300">Откройте кейсы</p>
+                </>
+              )}
             </CardContent>
           </Card>
-        </div>
-
-        {/* Карточка любимого кейса */}
-        <div className="bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border border-amber-500/20 rounded-xl p-4 sm:p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full flex items-center justify-center">
-              <Crown className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-white">
-                Любимый кейс
-              </h3>
-              <p className="text-sm text-gray-400">
-                {favoriteCase ? favoriteCase.case_name : 'Не определен'}
-              </p>
-            </div>
-          </div>
-          
-          {favoriteCase ? (
-            <div className="flex items-center gap-4">
-              {/* Фото кейса */}
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-gray-800 flex-shrink-0">
-                {favoriteCase.case_image_url ? (
-                  <img 
-                    src={favoriteCase.case_image_url} 
-                    alt={favoriteCase.case_name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                    <Package className="w-8 h-8 text-gray-500" />
-                  </div>
-                )}
-              </div>
-              
-              {/* Информация о кейсе */}
-              <div className="flex-1">
-                <h4 className="text-lg font-semibold text-white mb-2">
-                  {favoriteCase.case_name}
-                </h4>
-                <p className="text-sm text-gray-400 mb-3">
-                  Ваш самый любимый кейс
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-amber-500">
-                      {favoriteCase.opened_count}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      раз открыт
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-white">
-                      {favoriteCase.opened_count * 100}₽
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      потрачено
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <Package className="w-12 h-12 text-gray-500 mx-auto mb-3" />
-              <p className="text-gray-400">
-                Откройте кейсы, чтобы определить любимый
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Сетка предметов инвентаря */}
