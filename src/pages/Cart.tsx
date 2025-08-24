@@ -6,13 +6,16 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useOrders } from '@/hooks/useOrders';
+import { useNotification } from '../hooks/useNotification';
+import Notification from '../components/ui/Notification';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { items, removeItem, clear, updateQuantity } = useCart();
-  const { telegramUser, balance, refreshBalance } = useAuth();
   const { t } = useLanguage();
+  const { telegramUser, balance } = useAuth();
+  const { items, removeItem, clear, updateQuantity } = useCart();
   const { createOrder, isProcessing } = useOrders();
+  const { showSuccess, showError, notification, hideNotification } = useNotification();
 
 
 
@@ -21,12 +24,12 @@ const Cart = () => {
 
     const handleCheckout = async () => {
     if (!telegramUser) {
-      alert('Войдите через Telegram для оформления заказа');
+      showError('Войдите через Telegram для оформления заказа');
       return;
     }
 
     if (balance < total) {
-      alert('Недостаточно средств для покупки');
+      showError('Недостаточно средств для покупки');
       return;
     }
 
@@ -43,7 +46,7 @@ const Cart = () => {
          
          // Обновляем баланс сразу
          console.log('Обновляем баланс...');
-         await refreshBalance();
+         // await refreshBalance(); // This line was removed from the new_code, so it's removed here.
          console.log('Баланс обновлен');
          
          // Формируем список товаров для передачи
@@ -60,22 +63,22 @@ const Cart = () => {
          navigate(`/order-success?${params.toString()}`);
        } else {
         console.error('Ошибка создания заказа:', result.error);
-        alert(`Ошибка при оформлении заказа: ${result.error}`);
+        showError(`Ошибка при оформлении заказа: ${result.error}`);
       }
     } catch (error) {
       console.error('Ошибка при оформлении заказа:', error);
-      alert('Неожиданная ошибка при оформлении заказа');
+              showError('Неожиданная ошибка при оформлении заказа');
     }
   };
 
   const handleRemoveItem = (itemId: string) => {
     removeItem(itemId);
-    alert('Товар удален из корзины');
+          showSuccess('Товар удален из корзины');
   };
 
   const handleClearCart = () => {
     clear();
-    alert('Корзина очищена');
+          showSuccess('Корзина очищена');
   };
 
   if (!telegramUser) {
@@ -312,8 +315,16 @@ const Cart = () => {
           </Button>
         </div>
       </div>
-
-
+      
+      {/* Красивые уведомления */}
+      <Notification
+        show={notification.show}
+        message={notification.message}
+        type={notification.type}
+        onClose={hideNotification}
+        autoHide={notification.autoHide}
+        duration={notification.duration}
+      />
     </div>
   );
 };

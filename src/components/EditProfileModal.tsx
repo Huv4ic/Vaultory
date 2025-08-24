@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { X, Upload, User, Camera } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { useNotification } from '@/hooks/useNotification';
+import Notification from '@/components/ui/Notification';
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -13,6 +15,7 @@ interface EditProfileModalProps {
 
 export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: EditProfileModalProps) {
   const { telegramUser, profile } = useAuth();
+  const { showSuccess, showError, notification, hideNotification } = useNotification();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [uploading, setUploading] = useState(false);
@@ -25,13 +28,13 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
     if (file) {
       // Проверяем тип файла
       if (!file.type.startsWith('image/')) {
-        alert('Пожалуйста, выберите изображение');
+        showError('Пожалуйста, выберите изображение');
         return;
       }
       
       // Проверяем размер файла (максимум 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('Размер файла должен быть меньше 5MB');
+        showError('Размер файла должен быть меньше 5MB');
         return;
       }
 
@@ -112,7 +115,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
       setSelectedFile(null);
       setPreviewUrl('');
       
-      alert('Аватар успешно загружен!');
+              showSuccess('Аватар успешно загружен!');
       
     } catch (error) {
       console.error('Детальная ошибка загрузки аватара:', error);
@@ -125,7 +128,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
         errorMessage = JSON.stringify(error);
       }
       
-      alert(`Ошибка при загрузке аватара: ${errorMessage}`);
+              showError(`Ошибка при загрузке аватара: ${errorMessage}`);
     } finally {
       setUploading(false);
     }
@@ -152,7 +155,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
       
     } catch (error) {
       console.error('Ошибка удаления аватара:', error);
-      alert('Ошибка при удалении аватара. Попробуйте еще раз.');
+              showError('Ошибка при удалении аватара. Попробуйте еще раз.');
     }
   };
 
@@ -263,6 +266,16 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
           </div>
         </CardContent>
       </Card>
+      
+      {/* Красивые уведомления */}
+      <Notification
+        show={notification.show}
+        message={notification.message}
+        type={notification.type}
+        onClose={hideNotification}
+        autoHide={notification.autoHide}
+        duration={notification.duration}
+      />
     </div>
   );
 }

@@ -9,6 +9,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/hooks/useCart';
+import { useNotification } from '../hooks/useNotification';
+import Notification from '../components/ui/Notification';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -18,6 +20,7 @@ const Index = () => {
   const { t } = useLanguage();
   const { products, categories, loading, error } = useProducts();
   const { items, addItem } = useCart();
+  const { showError, notification, hideNotification } = useNotification();
 
   // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре страницы
   // useEffect(() => {
@@ -101,7 +104,7 @@ const Index = () => {
 
   const handleAddToCart = (product) => {
     if (!telegramUser) {
-      alert(t('Войдите через Telegram, чтобы добавить в корзину!'));
+              showError(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
     addItem(product);
@@ -282,6 +285,16 @@ const Index = () => {
           </Accordion>
         </div>
       </section>
+      
+      {/* Красивые уведомления */}
+      <Notification
+        show={notification.show}
+        message={notification.message}
+        type={notification.type}
+        onClose={hideNotification}
+        autoHide={notification.autoHide}
+        duration={notification.duration}
+      />
     </div>
   );
 };

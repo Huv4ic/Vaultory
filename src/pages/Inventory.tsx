@@ -4,6 +4,8 @@ import { useInventory, InventoryItem } from '@/hooks/useInventory';
 import { useCaseStats } from '@/hooks/useCaseStats';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from '@/hooks/useNotification';
+import Notification from '@/components/ui/Notification';
 import { 
   Package, 
   Star, 
@@ -31,6 +33,7 @@ const Inventory = () => {
   const { favoriteCase, caseStats, loading: statsLoading, error: statsError } = useCaseStats();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { showSuccess, showError, showWarning, notification, hideNotification } = useNotification();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalCasesOpened, setTotalCasesOpened] = useState(0);
@@ -275,14 +278,14 @@ const Inventory = () => {
                           if (itemIndex !== -1) {
                             await withdrawItem(itemIndex);
                             
-                            alert(`Предмет "${item.name}" выведен из инвентаря!`);
+                            showSuccess(`Предмет "${item.name}" выведен из инвентаря!`);
                             console.log('Предмет выведен:', item.name);
-                          } else {
-                            alert('Предмет не найден в инвентаре!');
-                          }
+                                                     } else {
+                             showError('Предмет не найден в инвентаре!');
+                           }
                         } catch (error) {
                           console.error('Error withdrawing item:', error);
-                          alert('Ошибка при выводе предмета!');
+                                                     showError('Ошибка при выводе предмета!');
                         }
                       }}
                       className="flex-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
@@ -338,20 +341,20 @@ const Inventory = () => {
                                   }
                                 }
                                 
-                                alert(`Предмет "${item.name}" продан за ${sellPrice.toFixed(2)}₴! Деньги добавлены на баланс.`);
+                                                                 showSuccess(`Предмет "${item.name}" продан за ${sellPrice.toFixed(2)}₴! Деньги добавлены на баланс.`);
                                 console.log('Предмет продан:', item.name, 'за', sellPrice);
-                              } else {
-                                console.error('❌ Ошибка при продаже предмета, цена:', sellPrice);
-                                alert('Ошибка при продаже предмета!');
-                              }
-                            } else {
-                              console.error('❌ Предмет не найден в инвентаре!');
-                              alert('Предмет не найден в инвентаре!');
-                            }
-                          } catch (error) {
-                            console.error('❌ Error selling item:', error);
-                            alert('Ошибка при продаже предмета!');
-                          }
+                                                             } else {
+                                 console.error('❌ Ошибка при продаже предмета, цена:', sellPrice);
+                                 showError('Ошибка при продаже предмета!');
+                               }
+                                                         } else {
+                               console.error('❌ Предмет не найден в инвентаре!');
+                               showError('Предмет не найден в инвентаре!');
+                             }
+                                                     } catch (error) {
+                             console.error('❌ Error selling item:', error);
+                             showError('Ошибка при продаже предмета!');
+                           }
                         } else {
                           console.log('❌ Пользователь отменил продажу');
                         }
@@ -367,6 +370,16 @@ const Inventory = () => {
           )}
         </div>
       </div>
+      
+      {/* Красивые уведомления */}
+      <Notification
+        show={notification.show}
+        message={notification.message}
+        type={notification.type}
+        onClose={hideNotification}
+        autoHide={notification.autoHide}
+        duration={notification.duration}
+      />
     </div>
   );
 };

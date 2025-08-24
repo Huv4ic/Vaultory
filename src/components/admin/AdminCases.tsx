@@ -9,6 +9,8 @@ import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Search, Plus, Edit, Trash2, Save, X, Package, Settings, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
+import { useNotification } from '../../hooks/useNotification';
+import Notification from '../ui/Notification';
 
 const emptyCase: CaseFormData = {
   name: '',
@@ -47,6 +49,7 @@ const AdminCases = () => {
   const [itemEditMode, setItemEditMode] = useState<'edit' | 'add'>('add');
   
   const { toast } = useToast();
+  const { showSuccess, showError, showWarning, notification, hideNotification } = useNotification();
 
   useEffect(() => {
     fetchCases();
@@ -81,7 +84,7 @@ const AdminCases = () => {
       
     } catch (err) {
       console.error('Error fetching cases:', err);
-      toast('Ошибка при загрузке кейсов', 'error');
+      showError('Ошибка при загрузке кейсов');
       setLoading(false);
     }
   };
@@ -105,7 +108,7 @@ const AdminCases = () => {
       setCaseItems(formattedItems);
     } catch (err) {
       console.error('Error fetching case items:', err);
-      toast('Ошибка при загрузке предметов кейса', 'error');
+      showError('Ошибка при загрузке предметов кейса');
     }
   };
 
@@ -227,7 +230,7 @@ const AdminCases = () => {
           .select();
 
         if (error) throw error;
-        toast('Кейс успешно обновлен!', 'success');
+        showSuccess('Кейс успешно обновлен!');
       } else {
         // Добавление нового кейса
         const { data, error } = await supabase
@@ -242,7 +245,7 @@ const AdminCases = () => {
           .select();
 
         if (error) throw error;
-        toast('Кейс успешно добавлен!', 'success');
+        showSuccess('Кейс успешно добавлен!');
       }
 
       closeModal();
@@ -260,13 +263,13 @@ const AdminCases = () => {
       
       // Валидация
       if (!currentCaseItem.name.trim() || !currentCaseItem.image_url.trim()) {
-        toast('Заполните все обязательные поля!', 'error');
+        showError('Заполните все обязательные поля!');
         return;
       }
       
       // Валидация цены
       if (typeof currentCaseItem.price !== 'number' || currentCaseItem.price < 0) {
-        toast('Укажите корректную цену предмета!', 'error');
+        showError('Укажите корректную цену предмета!');
         return;
       }
       
@@ -294,7 +297,7 @@ const AdminCases = () => {
           .eq('id', editingItemId);
 
         if (error) throw error;
-        toast('Предмет успешно обновлен!', 'success');
+        showSuccess('Предмет успешно обновлен!');
       } else {
         // Добавление нового предмета
         const { error } = await supabase
@@ -302,7 +305,7 @@ const AdminCases = () => {
           .insert(itemData);
 
         if (error) throw error;
-        toast('Предмет успешно добавлен!', 'success');
+        showSuccess('Предмет успешно добавлен!');
       }
 
       closeCaseItemModal();
@@ -310,7 +313,7 @@ const AdminCases = () => {
       
     } catch (err) {
       console.error('Error saving case item:', err);
-      toast(`Ошибка при сохранении предмета: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`, 'error');
+              showError(`Ошибка при сохранении предмета: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`);
     }
   };
 
@@ -329,12 +332,12 @@ const AdminCases = () => {
 
       if (error) throw error;
       
-      toast('Кейс успешно удален!', 'success');
+              showSuccess('Кейс успешно удален!');
       fetchCases();
       
     } catch (err) {
       console.error('Error deleting case:', err);
-      toast('Ошибка при удалении кейса', 'error');
+             showError('Ошибка при удалении кейса');
     }
   };
 
@@ -349,14 +352,14 @@ const AdminCases = () => {
 
       if (error) throw error;
       
-      toast('Предмет успешно удален!', 'success');
+             showSuccess('Предмет успешно удален!');
       if (currentCaseId) {
         fetchCaseItems(currentCaseId);
       }
       
     } catch (err) {
       console.error('Error deleting case item:', err);
-      toast('Ошибка при удалении предмета', 'error');
+             showError('Ошибка при удалении предмета');
     }
   };
 
@@ -787,6 +790,16 @@ const AdminCases = () => {
           </Card>
         </div>
       )}
+      
+      {/* Красивые уведомления */}
+      <Notification
+        show={notification.show}
+        message={notification.message}
+        type={notification.type}
+        onClose={hideNotification}
+        autoHide={notification.autoHide}
+        duration={notification.duration}
+      />
     </div>
   );
 };

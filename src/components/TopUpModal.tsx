@@ -14,6 +14,8 @@ import {
   Bell
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useNotification } from '@/hooks/useNotification';
+import Notification from './ui/Notification';
 
 interface TopUpModalProps {
   isOpen: boolean;
@@ -125,7 +127,8 @@ const paymentMethods: PaymentMethod[] = [
 ];
 
 export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
-  const { telegramUser, profile } = useAuth();
+  const { telegramUser } = useAuth();
+  const { showSuccess, showError, notification, hideNotification } = useNotification();
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [isCheckingBalance, setIsCheckingBalance] = useState(false);
@@ -164,7 +167,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
       const chatId = '5931400368';
       
       const message = `💰 Пополнение баланса!\n\n` +
-        `👤 Пользователь: ${profile?.username || 'Без username'}\n` +
+        `👤 Пользователь: ${telegramUser.username || 'Без username'}\n` +
         `🆔 Telegram ID: ${telegramUser.id}\n` +
         `💳 Способ: ${selectedMethod.name}\n` +
         `📱 Время: ${new Date().toLocaleString('ru-RU')}\n\n` +
@@ -185,14 +188,14 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
       if (response.ok) {
         setBalanceChecked(true);
         // Показываем уведомление пользователю
-        alert('✅ Уведомление отправлено! Администратор проверит оплату и зачислит средства.');
+        showSuccess('✅ Уведомление отправлено! Администратор проверит оплату и зачислит средства.');
       } else {
         console.error('Ошибка отправки уведомления:', response.statusText);
-        alert('❌ Ошибка отправки уведомления. Попробуйте позже.');
+        showError('❌ Ошибка отправки уведомления. Попробуйте позже.');
       }
     } catch (error) {
       console.error('Ошибка при проверке баланса:', error);
-      alert('❌ Ошибка при отправке уведомления. Попробуйте позже.');
+      showError('❌ Ошибка при отправке уведомления. Попробуйте позже.');
     } finally {
       setIsCheckingBalance(false);
     }
@@ -412,6 +415,16 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
           )}
         </div>
       </DialogContent>
+      
+      {/* Красивые уведомления */}
+      <Notification
+        show={notification.show}
+        message={notification.message}
+        type={notification.type}
+        onClose={hideNotification}
+        autoHide={notification.autoHide}
+        duration={notification.duration}
+      />
     </Dialog>
   );
 }

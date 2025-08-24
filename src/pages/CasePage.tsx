@@ -4,6 +4,8 @@ import { supabase } from '../integrations/supabase/client';
 import { useCaseStats } from '../hooks/useCaseStats';
 import { useInventory } from '../hooks/useInventory';
 import { useAuth } from '../hooks/useAuth';
+import { useNotification } from '../hooks/useNotification';
+import Notification from '../components/ui/Notification';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -43,6 +45,7 @@ const CasePage = () => {
   const { incrementCaseOpened } = useCaseStats();
   const { addItem } = useInventory();
   const { profile } = useAuth();
+  const { showSuccess, showError, notification, hideNotification } = useNotification();
   const [caseData, setCaseData] = useState<Case | null>(null);
   const [caseItems, setCaseItems] = useState<CaseItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -111,7 +114,7 @@ const CasePage = () => {
   const handleOpenCase = () => {
     // Проверяем, есть ли предметы в кейсе
     if (caseItems.length === 0) {
-      alert('В этом кейсе нет предметов для открытия');
+      showError('В этом кейсе нет предметов для открытия');
       return;
     }
     
@@ -432,6 +435,16 @@ const CasePage = () => {
           onCaseOpened={handleCaseOpened}
         />
       )}
+      
+      {/* Красивые уведомления */}
+      <Notification
+        show={notification.show}
+        message={notification.message}
+        type={notification.type}
+        onClose={hideNotification}
+        autoHide={notification.autoHide}
+        duration={notification.duration}
+      />
     </div>
   );
 };
