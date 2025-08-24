@@ -59,33 +59,51 @@ export const CaseStatsProvider: React.FC<CaseStatsProviderProps> = ({ children }
     try {
       console.log('Загружаем статистику для пользователя:', telegramUser.id);
       
-      // Используем any для обхода проблем с типами
+      // Простой запрос без сложных JOIN
       const { data: stats, error: fetchError } = await (supabase as any)
         .from('user_case_stats')
-        .select(`
-          case_id,
-          opened_count,
-          last_opened_at,
-          cases!inner(name, image)
-        `)
-        .eq('user_id', telegramUser.id)
-        .order('opened_count', { ascending: false });
+        .select('*')
+        .eq('user_id', telegramUser.id);
 
       if (fetchError) {
         console.error('Ошибка загрузки статистики:', fetchError);
         throw fetchError;
       }
 
-      if (stats) {
-        const formattedStats: CaseStats[] = stats.map((stat: any) => ({
-          case_id: stat.case_id,
-          case_name: stat.cases?.name || 'Неизвестный кейс',
-          opened_count: stat.opened_count,
-          case_image_url: stat.cases?.image
-        }));
+      if (stats && stats.length > 0) {
+        // Получаем данные кейсов отдельно
+        const caseIds = stats.map((stat: any) => stat.case_id);
+        const { data: casesData, error: casesError } = await (supabase as any)
+          .from('cases')
+          .select('id, name, image')
+          .in('id', caseIds);
+
+        if (casesError) {
+          console.error('Ошибка загрузки данных кейсов:', casesError);
+          throw casesError;
+        }
+
+        // Создаем мапу кейсов для быстрого поиска
+        const casesMap = new Map();
+        casesData?.forEach((caseItem: any) => {
+          casesMap.set(caseItem.id, caseItem);
+        });
+
+        const formattedStats: CaseStats[] = stats.map((stat: any) => {
+          const caseData = casesMap.get(stat.case_id);
+          return {
+            case_id: stat.case_id,
+            case_name: caseData?.name || 'Неизвестный кейс',
+            opened_count: stat.opened_count,
+            case_image_url: caseData?.image
+          };
+        });
 
         console.log('Загруженная статистика:', formattedStats);
-        setCaseStats([...formattedStats]); // Принудительное обновление состояния
+        setCaseStats([...formattedStats]);
+      } else {
+        console.log('Статистика не найдена, устанавливаем пустой массив');
+        setCaseStats([]);
       }
     } catch (err) {
       console.error('Ошибка загрузки статистики:', err);
@@ -176,32 +194,40 @@ export const CaseStatsProvider: React.FC<CaseStatsProviderProps> = ({ children }
     try {
       console.log('Получаем любимый кейс для пользователя:', telegramUser.id);
       
-      // Используем any для обхода проблем с типами
-      const { data: favorite, error: fetchError } = await (supabase as any)
+      // Простой запрос без сложных JOIN
+      const { data: stats, error: fetchError } = await (supabase as any)
         .from('user_case_stats')
-        .select(`
-          case_id,
-          opened_count,
-          last_opened_at,
-          cases!inner(name, image)
-        `)
+        .select('*')
         .eq('user_id', telegramUser.id)
         .order('opened_count', { ascending: false })
         .order('last_opened_at', { ascending: false })
-        .limit(1)
-        .single();
+        .limit(1);
 
       if (fetchError) {
         console.error('Ошибка получения любимого кейса:', fetchError);
         throw fetchError;
       }
 
-      if (favorite) {
+      if (stats && stats.length > 0) {
+        const favoriteStat = stats[0];
+        
+        // Получаем данные кейса отдельно
+        const { data: caseData, error: caseError } = await (supabase as any)
+          .from('cases')
+          .select('id, name, image')
+          .eq('id', favoriteStat.case_id)
+          .single();
+
+        if (caseError) {
+          console.error('Ошибка загрузки данных кейса:', caseError);
+          throw caseError;
+        }
+
         const formattedFavorite: FavoriteCase = {
-          case_id: favorite.case_id,
-          case_name: favorite.cases?.name || 'Неизвестный кейс',
-          opened_count: favorite.opened_count,
-          case_image_url: favorite.cases?.image
+          case_id: favoriteStat.case_id,
+          case_name: caseData?.name || 'Неизвестный кейс',
+          opened_count: favoriteStat.opened_count,
+          case_image_url: caseData?.image
         };
 
         console.log('Найден любимый кейс:', formattedFavorite);
