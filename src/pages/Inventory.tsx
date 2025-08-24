@@ -199,93 +199,126 @@ const Inventory = () => {
           </Card>
         </div>
 
-        {/* Детальная карточка любимого кейса */}
-        {favoriteCase && (
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center text-amber-400">
-                <Star className="w-6 h-6 mr-2" />
-                Любимый кейс - {favoriteCase.case_name}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-20 h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-xl border border-amber-500/30 flex items-center justify-center overflow-hidden">
-                    {favoriteCase.case_image_url ? (
-                      <img 
-                        src={favoriteCase.case_image_url} 
-                        alt={favoriteCase.case_name}
-                        className="w-full h-full object-cover rounded-xl"
-                      />
-                    ) : (
-                      <Package className="w-10 h-10 text-amber-400" />
-                    )}
+        {/* Карточка любимого кейса */}
+        <div className="bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border border-amber-500/20 rounded-xl p-4 sm:p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full flex items-center justify-center">
+              <Crown className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg sm:text-xl font-semibold text-white">
+                Любимый кейс
+              </h3>
+              <p className="text-sm text-gray-400">
+                {favoriteCase ? favoriteCase.case_name : 'Не определен'}
+              </p>
+            </div>
+          </div>
+          
+          {favoriteCase ? (
+            <div className="flex items-center gap-4">
+              {/* Фото кейса */}
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-gray-800 flex-shrink-0">
+                {favoriteCase.case_image_url ? (
+                  <img 
+                    src={favoriteCase.case_image_url} 
+                    alt={favoriteCase.case_name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                    <Package className="w-8 h-8 text-gray-500" />
                   </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-white">{favoriteCase.case_name}</h4>
-                    <p className="text-gray-300">Ваш самый любимый кейс</p>
+                )}
+              </div>
+              
+              {/* Информация о кейсе */}
+              <div className="flex-1">
+                <h4 className="text-lg font-semibold text-white mb-2">
+                  {favoriteCase.case_name}
+                </h4>
+                <p className="text-sm text-gray-400 mb-3">
+                  Ваш самый любимый кейс
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-amber-500">
+                      {favoriteCase.opened_count}
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      раз открыт
+                    </div>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-3xl font-bold text-amber-400">{favoriteCase.opened_count}</div>
-                  <div className="text-gray-300">раз открыт</div>
+                  <div className="text-center">
+                    <div className="text-lg font-semibold text-white">
+                      {favoriteCase.opened_count * 100}₽
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      потрачено
+                    </div>
+                  </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Package className="w-12 h-12 text-gray-500 mx-auto mb-3" />
+              <p className="text-gray-400">
+                Откройте кейсы, чтобы определить любимый
+              </p>
+            </div>
+          )}
+        </div>
 
-        {/* Список предметов */}
-        <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-          <CardHeader>
-            <CardTitle className="flex items-center text-white">
-              <Package className="w-6 h-6 mr-2" />
+        {/* Сетка предметов инвентаря */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <Package className="w-6 h-6 text-white" />
+            <h3 className="text-xl font-semibold text-white">
               Предметы в инвентаре ({displayItems.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {displayItems.length === 0 ? (
-              <div className="text-center py-12">
-                <Package className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                <p className="text-gray-400 text-lg">Инвентарь пуст</p>
-                <p className="text-gray-500">Откройте кейсы, чтобы получить предметы</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {displayItems.map((item) => (
-                                     <div
-                     key={item.id || Math.random()}
-                     className={`p-4 rounded-xl border ${getRarityBg(item.rarity || 'common')} hover:scale-105 transition-all duration-300 cursor-pointer`}
-                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                                                 <h4 className={`font-semibold ${getRarityColor(item.rarity || 'common')} mb-1`}>
-                           {item.name || 'Неизвестный предмет'}
-                         </h4>
-                                                 <p className="text-gray-400 text-sm mb-2">{item.type || 'Неизвестно'}</p>
-                                                 <p className="text-gray-500 text-xs">Из кейса: {item.case_name || 'Неизвестно'}</p>
-                      </div>
-                      <div className="text-right">
-                                                 <div className="text-lg font-bold text-green-400">${(item.price || 0).toFixed(2)}</div>
-                                                 <div className={`text-xs font-medium ${getRarityColor(item.rarity || 'common')} capitalize`}>
-                           {item.rarity || 'common'}
-                         </div>
+            </h3>
+          </div>
+          
+          {displayItems.length === 0 ? (
+            <div className="text-center py-12 bg-black/20 rounded-xl border border-gray-700">
+              <Package className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+              <p className="text-gray-400 text-lg">Инвентарь пуст</p>
+              <p className="text-gray-500">Откройте кейсы, чтобы получить предметы</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              {displayItems.map((item) => (
+                <div
+                  key={item.id || Math.random()}
+                  className={`p-4 rounded-xl border ${getRarityBg(item.rarity || 'common')} hover:scale-105 transition-all duration-300 cursor-pointer`}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h4 className={`font-semibold ${getRarityColor(item.rarity || 'common')} mb-1`}>
+                        {item.name || 'Неизвестный предмет'}
+                      </h4>
+                      <p className="text-gray-400 text-sm mb-2">{item.type || 'Неизвестно'}</p>
+                      <p className="text-gray-500 text-xs">Из кейса: {item.case_name || 'Неизвестно'}</p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-green-400">${(item.price || 0).toFixed(2)}</div>
+                      <div className={`text-xs font-medium ${getRarityColor(item.rarity || 'common')} capitalize`}>
+                        {item.rarity || 'common'}
                       </div>
                     </div>
-                                         <div className="flex items-center justify-between text-xs text-gray-500">
-                       <span>Получен: {item.obtained_at ? new Date(item.obtained_at).toLocaleDateString('ru-RU') : 'Неизвестно'}</span>
-                       <div className="flex items-center space-x-1">
-                         <Trophy className="w-3 h-3" />
-                         <span>Кейс</span>
-                       </div>
-                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>Получен: {item.obtained_at ? new Date(item.obtained_at).toLocaleDateString('ru-RU') : 'Неизвестно'}</span>
+                    <div className="flex items-center space-x-1">
+                      <Trophy className="w-3 h-3" />
+                      <span>Кейс</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
