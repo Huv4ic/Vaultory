@@ -199,33 +199,43 @@ const Inventory = () => {
           </Card>
         </div>
 
-        {/* Любимый кейс детально */}
-        {favoriteCase && favoriteCase.case_name && (
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center text-amber-400">
-                <Star className="w-6 h-6 mr-2" />
-                                 Любимый кейс - {favoriteCase.case_name || 'Нет данных'}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-20 h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-xl border border-amber-500/30 flex items-center justify-center">
-                    <Package className="w-10 h-10 text-amber-400" />
-                  </div>
-                  <div>
-                                         <h4 className="text-xl font-bold text-white">{favoriteCase.case_name || 'Нет данных'}</h4>
-                    <p className="text-gray-300">Ваш самый любимый кейс</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-3xl font-bold text-amber-400">{favoriteCase.opened_count}</div>
-                  <div className="text-gray-300">раз открыт</div>
+        {/* Детальная карточка любимого кейса */}
+        {favoriteCase && (
+          <div className="bg-gray-800 rounded-lg p-6 border border-orange-500/20 shadow-lg">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center shadow-lg">
+                  {favoriteCase.case_image_url ? (
+                    <img 
+                      src={favoriteCase.case_image_url} 
+                      alt={favoriteCase.case_name}
+                      className="w-16 h-16 object-cover rounded-lg"
+                    />
+                  ) : (
+                    <Package className="w-10 h-10 text-white" />
+                  )}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+              
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  {favoriteCase.case_name}
+                </h3>
+                <p className="text-gray-400 text-lg">
+                  Ваш самый любимый кейс
+                </p>
+              </div>
+              
+              <div className="text-right">
+                <div className="text-4xl font-bold text-yellow-400">
+                  {favoriteCase.opened_count}
+                </div>
+                <div className="text-gray-400 text-sm">
+                  раз открыт
+                </div>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Список предметов */}

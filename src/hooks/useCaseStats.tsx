@@ -20,7 +20,7 @@ interface CaseStatsContextType {
   favoriteCase: FavoriteCase | null;
   loading: boolean;
   error: string | null;
-  incrementCaseOpened: (caseId: number, caseName: string) => Promise<void>;
+  incrementCaseOpened: (caseId: number, caseName: string, caseImageUrl?: string) => Promise<void>;
   getFavoriteCase: () => Promise<FavoriteCase | null>;
   refreshStats: () => Promise<void>;
 }
@@ -68,10 +68,12 @@ export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) =
   };
 
   // Увеличение счетчика открытий кейса (временная реализация)
-  const incrementCaseOpened = async (caseId: number, caseName: string) => {
+  const incrementCaseOpened = async (caseId: number, caseName: string, caseImageUrl?: string) => {
     if (!telegramUser) return;
 
     try {
+      console.log(`Увеличиваем счетчик для кейса ${caseId} (${caseName})`);
+      
       // Временно используем localStorage
       const savedStats = localStorage.getItem(`vaultory_case_stats_${telegramUser.id}`);
       const stats: CaseStats[] = savedStats ? JSON.parse(savedStats) : [];
@@ -82,31 +84,36 @@ export const CaseStatsProvider = ({ children }: { children: React.ReactNode }) =
       if (existingIndex >= 0) {
         // Обновляем существующую запись
         stats[existingIndex].opened_count += 1;
+        console.log(`Обновлен существующий кейс: ${caseName}, новый счетчик: ${stats[existingIndex].opened_count}`);
       } else {
         // Создаем новую запись
         stats.push({
           case_id: caseId,
           case_name: caseName,
           opened_count: 1,
-          case_image_url: undefined
+          case_image_url: caseImageUrl
         });
+        console.log(`Создан новый кейс: ${caseName}, счетчик: 1`);
       }
 
       // Сохраняем в localStorage
       localStorage.setItem(`vaultory_case_stats_${telegramUser.id}`, JSON.stringify(stats));
+      console.log('Данные сохранены в localStorage:', stats);
 
-      // Обновляем локальное состояние
-      setCaseStats(stats);
+      // Принудительно обновляем локальное состояние
+      setCaseStats([...stats]);
 
       // Определяем любимый кейс
       if (stats.length > 0) {
         const favorite = stats.sort((a, b) => b.opened_count - a.opened_count)[0];
-        setFavoriteCase({
+        const newFavoriteCase = {
           case_id: favorite.case_id,
           case_name: favorite.case_name,
           opened_count: favorite.opened_count,
           case_image_url: favorite.case_image_url
-        });
+        };
+        setFavoriteCase(newFavoriteCase);
+        console.log('Новый любимый кейс:', newFavoriteCase);
       }
 
       console.log('Статистика открытий кейса обновлена (временно в localStorage)');

@@ -109,7 +109,7 @@ const CasePage = () => {
     // Увеличиваем счетчик открытий кейса для статистики
     if (caseData && id) {
       try {
-        await incrementCaseOpened(parseInt(id), caseData.name);
+        await incrementCaseOpened(parseInt(id), caseData.name, caseData.image_url);
         console.log('Статистика открытий кейса обновлена');
       } catch (err) {
         console.error('Ошибка обновления статистики:', err);
