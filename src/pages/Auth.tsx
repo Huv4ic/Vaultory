@@ -63,33 +63,6 @@ const Auth = () => {
   useEffect(() => {
     if (telegramUser) return; // Если уже авторизован, не показываем виджет
     
-    // Очищаем предыдущий виджет
-    if (tgWidgetRef.current) {
-      tgWidgetRef.current.innerHTML = '';
-    }
-
-    // Создаем новый виджет
-    const createTelegramWidget = () => {
-      if (!tgWidgetRef.current) return;
-
-      const script = document.createElement('script');
-      script.src = 'https://telegram.org/js/telegram-widget.js?7';
-      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-userpic', 'true');
-      script.setAttribute('data-radius', '10');
-      script.setAttribute('data-request-access', 'write');
-      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
-      script.async = true;
-      
-      // Обработчик ошибок загрузки скрипта
-      script.onerror = () => {
-        setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
-      };
-
-      tgWidgetRef.current.appendChild(script);
-    };
-
     // Глобальная функция для обработки авторизации Telegram
     (window as any).onTelegramAuth = async function(user: any) {
       try {
@@ -116,12 +89,8 @@ const Auth = () => {
       }
     };
 
-    // Создаем виджет с небольшой задержкой
-    const timer = setTimeout(createTelegramWidget, 100);
-
     // Очистка при размонтировании
     return () => {
-      clearTimeout(timer);
       if ((window as any).onTelegramAuth) {
         delete (window as any).onTelegramAuth;
       }
@@ -132,41 +101,39 @@ const Auth = () => {
   const retryAuth = () => {
     setError(null);
     setDebugInfo('Повторная попытка загрузки виджета...');
-    if (tgWidgetRef.current) {
-      tgWidgetRef.current.innerHTML = '';
-      const script = document.createElement('script');
-      script.src = 'https://telegram.org/js/telegram-widget.js?7';
-      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-userpic', 'true');
-      script.setAttribute('data-radius', '10');
-      script.setAttribute('data-request-access', 'write');
-      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
-      script.async = true;
-      script.onerror = () => {
-        setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
-      };
-      tgWidgetRef.current.appendChild(script);
-    }
+    handleTelegramLogin();
   };
 
   const handleTelegramLogin = () => {
     setError(null);
-    setDebugInfo('Попытка авторизации через Telegram виджет...');
+    setDebugInfo('Инициализация Telegram авторизации...');
+    
+    // Очищаем предыдущий виджет
     if (tgWidgetRef.current) {
-      tgWidgetRef.current.innerHTML = ''; // Очищаем предыдущий виджет
-      const script = document.createElement('script');
-      script.src = 'https://telegram.org/js/telegram-widget.js?7';
-      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-userpic', 'true');
-      script.setAttribute('data-radius', '10');
-      script.setAttribute('data-request-access', 'write');
-      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
-      script.async = true;
-      script.onerror = () => {
-        setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
-      };
+      tgWidgetRef.current.innerHTML = '';
+    }
+    
+    // Создаем новый виджет
+    const script = document.createElement('script');
+    script.src = 'https://telegram.org/js/telegram-widget.js?7';
+    script.setAttribute('data-telegram-login', TELEGRAM_BOT);
+    script.setAttribute('data-size', 'large');
+    script.setAttribute('data-userpic', 'true');
+    script.setAttribute('data-radius', '10');
+    script.setAttribute('data-request-access', 'write');
+    script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+    script.async = true;
+    
+    script.onload = () => {
+      setDebugInfo('Telegram виджет загружен успешно');
+    };
+    
+    script.onerror = () => {
+      setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
+      setDebugInfo('Ошибка загрузки скрипта Telegram');
+    };
+    
+    if (tgWidgetRef.current) {
       tgWidgetRef.current.appendChild(script);
     }
   };
