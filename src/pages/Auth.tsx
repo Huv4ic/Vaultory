@@ -100,9 +100,16 @@ const Auth = () => {
       }
     };
 
+    // Автоматически загружаем виджет при монтировании
+    const timer = setTimeout(() => {
+      console.log('Автоматически загружаем Telegram виджет');
+      handleTelegramLogin();
+    }, 500);
+
     // Очистка при размонтировании
     return () => {
       console.log('Очистка useEffect для Telegram виджета'); // Логируем очистку
+      clearTimeout(timer);
       if ((window as any).onTelegramAuth) {
         delete (window as any).onTelegramAuth;
       }
@@ -232,22 +239,30 @@ const Auth = () => {
                   
                   <Button
                     onClick={() => {
-                      console.log('Кнопка нажата!'); // Логируем нажатие кнопки
+                      console.log('Кнопка нажата! Перезагружаем виджет...'); // Логируем нажатие кнопки
                       handleTelegramLogin();
                     }}
                     disabled={loading}
                     className="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 text-base"
                   >
                     <FaTelegramPlane className="w-5 h-5 mr-2" />
-                    {loading ? 'Загрузка...' : 'Войти через Telegram'}
+                    {loading ? 'Загрузка...' : 'Обновить виджет'}
                   </Button>
                   
-                  {/* Скрытый div для Telegram виджета */}
+                  {/* Видимый div для Telegram виджета */}
                   <div 
                     ref={tgWidgetRef} 
-                    className="mt-4 opacity-0 pointer-events-none"
-                    style={{ height: '0', overflow: 'hidden' }}
+                    className="mt-4 flex justify-center"
                   ></div>
+                  
+                  {/* Debug информация */}
+                  {debugInfo && (
+                    <div className="mt-4 p-3 bg-black/60 backdrop-blur-sm rounded-lg border border-amber-500/30">
+                      <p className="text-xs text-amber-300 font-mono">
+                        <span className="text-amber-400">Debug:</span> {debugInfo}
+                      </p>
+                    </div>
+                  )}
                   
                   <div className="mt-8 text-sm text-gray-400">
                     <p>Нажимая кнопку, вы соглашаетесь с нашими</p>
