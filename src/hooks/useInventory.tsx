@@ -224,51 +224,72 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
 
   const sellItem = async (index: number) => {
     try {
+      console.log('🔄 sellItem вызван с индексом:', index);
       const item = items[index];
-      if (!item || item.status === 'sold' || !item.id) return 0;
+      console.log('📦 Предмет для продажи:', item);
+      
+      if (!item || item.status === 'sold' || !item.id) {
+        console.error('❌ Предмет не найден или уже продан:', { item, index });
+        return 0;
+      }
 
       const telegramId = profile?.telegram_id;
       if (!telegramId) {
-        console.error('Telegram ID not found in profile');
+        console.error('❌ Telegram ID not found in profile');
         return 0;
       }
+
+      console.log('🔧 Вызываем InventoryService.sellItem:', { itemId: item.id, telegramId });
 
       // Продаем предмет через базу данных
       const sellPrice = await InventoryService.sellItem(item.id, telegramId);
       
       if (sellPrice > 0) {
+        console.log('✅ Предмет продан за:', sellPrice);
         // Удаляем предмет из локального состояния
         setItems(prev => prev.filter((_, i) => i !== index));
         return sellPrice;
+      } else {
+        console.error('❌ Не удалось продать предмет, цена:', sellPrice);
+        return 0;
       }
-      
-      return 0;
     } catch (error) {
-      console.error('Failed to sell item:', error);
+      console.error('❌ Failed to sell item:', error);
       return 0;
     }
   };
 
   const withdrawItem = async (index: number) => {
     try {
+      console.log('🔄 withdrawItem вызван с индексом:', index);
       const item = items[index];
-      if (!item || !item.id) return;
+      console.log('📦 Предмет для вывода:', item);
+      
+      if (!item || !item.id) {
+        console.error('❌ Предмет не найден:', { item, index });
+        return;
+      }
 
       const telegramId = profile?.telegram_id;
       if (!telegramId) {
-        console.error('Telegram ID not found in profile');
+        console.error('❌ Telegram ID not found in profile');
         return;
       }
+
+      console.log('🔧 Вызываем InventoryService.withdrawItem:', { itemId: item.id, telegramId });
 
       // Выводим предмет через базу данных
       const success = await InventoryService.withdrawItem(item.id, telegramId);
       
       if (success) {
+        console.log('✅ Предмет успешно выведен');
         // Удаляем предмет из локального состояния
         setItems(prev => prev.filter((_, i) => i !== index));
+      } else {
+        console.error('❌ Не удалось вывести предмет');
       }
     } catch (error) {
-      console.error('Failed to withdraw item:', error);
+      console.error('❌ Failed to withdraw item:', error);
     }
   };
 

@@ -86,20 +86,24 @@ export class InventoryService {
     telegramId: number
   ): Promise<number> {
     try {
-      // Сначала получаем цену предмета
+      console.log('🔄 Продаем предмет:', { itemId, telegramId });
+      
+      // Сначала получаем данные предмета
       const { data: itemData, error: fetchError } = await supabase
         .from('user_inventory')
-        .select('item_price')
+        .select('*')
         .eq('id', itemId)
         .eq('telegram_id', telegramId)
         .eq('status', 'new')
         .single();
 
       if (fetchError || !itemData) {
-        console.error('Error fetching item for sale:', fetchError);
+        console.error('❌ Error fetching item for sale:', fetchError);
+        console.error('🔍 Item data:', itemData);
         return 0;
       }
 
+      console.log('✅ Предмет найден:', itemData);
       const itemPrice = itemData.item_price;
 
       // Обновляем статус предмета на 'sold'
@@ -113,9 +117,11 @@ export class InventoryService {
         .eq('telegram_id', telegramId);
 
       if (updateError) {
-        console.error('Error updating item status:', updateError);
+        console.error('❌ Error updating item status:', updateError);
         throw updateError;
       }
+
+      console.log('✅ Статус предмета обновлен на "sold"');
 
       // Добавляем деньги на баланс пользователя
       // Сначала получаем текущий баланс
@@ -126,11 +132,13 @@ export class InventoryService {
         .single();
 
       if (fetchBalanceError || !currentProfile) {
-        console.error('Error fetching current balance:', fetchBalanceError);
+        console.error('❌ Error fetching current balance:', fetchBalanceError);
+        console.log('💰 Возвращаем цену предмета без обновления баланса:', itemPrice);
         return itemPrice;
       }
 
       const newBalance = (currentProfile.balance || 0) + itemPrice;
+      console.log('💰 Обновляем баланс:', { old: currentProfile.balance, new: newBalance });
 
       const { error: balanceError } = await supabase
         .from('profiles')
@@ -140,13 +148,16 @@ export class InventoryService {
         .eq('telegram_id', telegramId);
 
       if (balanceError) {
-        console.error('Error updating balance:', balanceError);
+        console.error('❌ Error updating balance:', balanceError);
         // Не бросаем ошибку, так как предмет уже продан
+      } else {
+        console.log('✅ Баланс успешно обновлен');
       }
 
+      console.log('🎉 Предмет успешно продан за:', itemPrice);
       return itemPrice;
     } catch (error) {
-      console.error('Failed to sell item:', error);
+      console.error('❌ Failed to sell item:', error);
       return 0;
     }
   }
@@ -157,6 +168,8 @@ export class InventoryService {
     telegramId: number
   ): Promise<boolean> {
     try {
+      console.log('🔄 Выводим предмет:', { itemId, telegramId });
+      
       const { error } = await supabase
         .from('user_inventory')
         .update({ 
@@ -168,13 +181,14 @@ export class InventoryService {
         .eq('status', 'new');
 
       if (error) {
-        console.error('Error withdrawing item:', error);
+        console.error('❌ Error withdrawing item:', error);
         throw error;
       }
 
+      console.log('✅ Предмет успешно выведен');
       return true;
     } catch (error) {
-      console.error('Failed to withdraw item:', error);
+      console.error('❌ Failed to withdraw item:', error);
       return false;
     }
   }

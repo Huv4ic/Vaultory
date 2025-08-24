@@ -139,20 +139,25 @@ const Inventory = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-12 text-center">
-          <div className="flex items-center justify-center mb-6">
+        <div className="relative z-10 container mx-auto px-4 py-12">
+          {/* Кнопка "Назад" - перемещена влево и ниже */}
+          <div className="mb-6">
             <Button
               onClick={() => navigate(-1)}
               variant="outline"
-              className="mr-4 bg-black/20 border-white/20 text-white hover:bg-white/10"
+              className="bg-black/20 border-white/20 text-white hover:bg-white/10"
             >
               ← Назад
             </Button>
           </div>
-          <h1 className="text-4xl font-bold text-white">Инвентарь</h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Ваши предметы, полученные из кейсов
-          </p>
+          
+          {/* Заголовок по центру */}
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-white">Инвентарь</h1>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Ваши предметы, полученные из кейсов
+            </p>
+          </div>
         </div>
       </div>
 

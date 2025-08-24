@@ -661,6 +661,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   <Button
                     onClick={() => {
                       if (winnerItem && !soldOrAdded) {
+                        console.log('🎁 Нажата кнопка "Добавить в инвентарь"');
                         // Устанавливаем состояние что действие выполнено
                         setSoldOrAdded(true);
                         
@@ -682,13 +683,14 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                         currentInventory.push(inventoryItem);
                         localStorage.setItem('vaultory_inventory', JSON.stringify(currentInventory));
                         
-                        console.log('Предмет добавлен в инвентарь:', inventoryItem);
+                        console.log('✅ Предмет добавлен в инвентарь:', inventoryItem);
                         
                         // Обновляем счетчик открытий кейса
                         const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
                         localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
                         
                         // Вызываем onCaseOpened
+                        console.log('🔧 Вызываем onCaseOpened для добавления в инвентарь');
                         onCaseOpened(winnerItem);
                         
                         // Показываем сообщение и закрываем окно
@@ -710,23 +712,22 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   <Button
                     onClick={() => {
                       if (winnerItem && !soldOrAdded) {
+                        console.log('💰 Нажата кнопка "Продать"');
                         // Устанавливаем состояние что действие выполнено
                         setSoldOrAdded(true);
                         
                         // Продаем предмет
                         const sellPrice = Math.floor((winnerItem.price || 100) * 0.7); // 70% от цены
+                        console.log('💵 Цена продажи:', sellPrice);
                         
-                        // Добавляем деньги на баланс пользователя
-                        const currentBalance = parseInt(localStorage.getItem('vaultory_balance') || '0');
-                        const newBalance = currentBalance + sellPrice;
-                        localStorage.setItem('vaultory_balance', newBalance.toString());
+                        // ВАЖНО: НЕ вызываем onCaseOpened при продаже
+                        // Предмет не должен попадать в инвентарь, если он сразу продается
+                        // onCaseOpened(winnerItem); // УБИРАЕМ ЭТУ СТРОКУ
+                        console.log('❌ onCaseOpened НЕ вызывается при продаже');
                         
                         // Обновляем счетчик открытий кейса
                         const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
                         localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
-                        
-                        // Вызываем onCaseOpened
-                        onCaseOpened(winnerItem);
                         
                         // Показываем сообщение и закрываем окно
                         alert(`Предмет продан за ${sellPrice}₽! Деньги добавлены на баланс.`);
