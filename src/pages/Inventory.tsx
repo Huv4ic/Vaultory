@@ -48,6 +48,13 @@ const Inventory = () => {
       navigate('/auth');
       return;
     }
+    
+    // Автоматическое обновление страницы один раз при заходе
+    const hasRefreshed = sessionStorage.getItem('inventory_refreshed');
+    if (!hasRefreshed) {
+      sessionStorage.setItem('inventory_refreshed', 'true');
+      window.location.reload();
+    }
   }, [telegramUser, navigate]);
 
   // Получаем общую стоимость из хука

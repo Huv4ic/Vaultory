@@ -384,6 +384,7 @@ const CasePage = () => {
         <CaseRoulette
           caseItems={caseItems}
           casePrice={caseData.price}
+          caseName={caseData.name} // Передаем реальное название кейса
           onClose={() => setShowRoulette(false)}
           onCaseOpened={handleCaseOpened}
         />

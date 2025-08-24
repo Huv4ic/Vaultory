@@ -14,6 +14,7 @@ interface CaseItem {
 interface CaseRouletteProps {
   caseItems: CaseItem[];
   casePrice: number;
+  caseName: string; // Добавляем название кейса
   onClose: () => void;
   onCaseOpened: (item: CaseItem) => void;
 }
@@ -21,6 +22,7 @@ interface CaseRouletteProps {
 const CaseRoulette: React.FC<CaseRouletteProps> = ({ 
   caseItems, 
   casePrice, 
+  caseName, // Добавляем в деструктуризацию
   onClose, 
   onCaseOpened 
 }) => {
@@ -669,7 +671,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                           price: winnerItem.price || 100, // Тестовая цена, если нет
                           rarity: winnerItem.rarity,
                           type: 'Кейс',
-                          case_name: 'Кейс',
+                          case_name: caseName, // Используем caseName из пропсов
                           image_url: winnerItem.image_url,
                           obtained_at: new Date().toISOString(),
                           status: 'new' as const
