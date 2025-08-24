@@ -20,6 +20,7 @@ interface CaseItem {
   drop_chance: number;
   image_url: string;
   price: number; // Добавляем поле цены
+  drop_after_cases?: number; // Добавляем поле для отслеживания выпадения
 }
 
 interface Case {
@@ -82,7 +83,7 @@ const CasePage = () => {
       setCaseData(formattedCase);
 
       // Загружаем предметы кейса
-      const { data: itemsData, error: itemsError } = await supabase
+      const { data, error: itemsError } = await supabase
         .from('admin_case_items') // Используем admin_case_items вместо case_items
         .select('*')
         .eq('case_id', id)
@@ -90,17 +91,21 @@ const CasePage = () => {
 
       if (itemsError) throw itemsError;
 
-      // Преобразуем данные к правильному формату
-      const formattedItems: CaseItem[] = (itemsData || []).map((item: any) => ({
+      // Преобразуем данные, добавляя поле price если его нет
+      const formattedItems = (data || []).map((item: any) => ({
         id: item.id,
-        case_id: item.case_id,
+        case_id: item.case_id || id || '', // Добавляем case_id
         name: item.name,
-        rarity: item.rarity,
+        rarity: item.rarity || 'common',
         drop_chance: item.drop_chance || 0,
         image_url: item.image_url || '',
-        price: item.price || 0 // Добавляем цену из базы
+        price: typeof item.price === 'number' ? item.price : 0, // Добавляем цену из базы
+        drop_after_cases: item.drop_after_cases // Добавляем поле drop_after_cases
       }));
 
+      console.log('📦 Загруженные предметы кейса:', formattedItems);
+      console.log('🔍 Значения редкости:', formattedItems.map(item => ({ name: item.name, rarity: item.rarity })));
+      
       setCaseItems(formattedItems);
       setLoading(false);
 
@@ -204,18 +209,33 @@ const CasePage = () => {
 
   // Функция для сортировки предметов по редкости
   const sortItemsByRarity = (items: CaseItem[]) => {
+    console.log('🔍 Сортируем предметы по редкости:', items.map(item => ({ name: item.name, rarity: item.rarity })));
+    
     const rarityOrder = {
       'legendary': 4,
       'epic': 3,
       'rare': 2,
-      'common': 1
+      'common': 1,
+      'uncommon': 1.5, // Добавляем промежуточную редкость
+      'normal': 1, // Альтернативное название для обычных
+      'basic': 1, // Еще одно альтернативное название
+      'default': 1 // Значение по умолчанию
     };
     
-    return [...items].sort((a, b) => {
-      const aRarity = rarityOrder[a.rarity?.toLowerCase() as keyof typeof rarityOrder] || 0;
-      const bRarity = rarityOrder[b.rarity?.toLowerCase() as keyof typeof rarityOrder] || 0;
-      return bRarity - aRarity; // Сортировка по убыванию (легендарные выше)
+    const sortedItems = [...items].sort((a, b) => {
+      const aRarity = a.rarity?.toLowerCase() || 'common';
+      const bRarity = b.rarity?.toLowerCase() || 'common';
+      
+      const aOrder = rarityOrder[aRarity as keyof typeof rarityOrder] || 0;
+      const bOrder = rarityOrder[bRarity as keyof typeof rarityOrder] || 0;
+      
+      console.log(`📊 Сравниваем: ${a.name} (${aRarity}: ${aOrder}) vs ${b.name} (${bRarity}: ${bOrder})`);
+      
+      return bOrder - aOrder; // Сортировка по убыванию (легендарные выше)
     });
+    
+    console.log('✅ Отсортированные предметы:', sortedItems.map(item => ({ name: item.name, rarity: item.rarity })));
+    return sortedItems;
   };
 
   const getRarityName = (rarity: string) => {
@@ -393,44 +413,65 @@ const CasePage = () => {
           </h2>
           
           {caseItems.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
-              {sortItemsByRarity(caseItems).map((item) => (
-                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group">
-                  {/* Изображение предмета */}
-                  <div className="relative mx-auto">
-                    <img
-                      src={item.image_url || '/images/placeholder.jpg'}
-                      alt={item.name}
-                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain mx-auto transition-transform duration-300 group-hover:scale-110"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
-                      }}
-                    />
-                    {/* Иконка редкости */}
-                    <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2">
-                      {getRarityIcon(item.rarity)}
+            <>
+              {/* Отладочная информация */}
+              <div className="mb-4 p-3 bg-gray-800/50 rounded-lg text-xs text-gray-400">
+                <p>🔍 Отладка сортировки:</p>
+                <p>Исходный порядок: {caseItems.map(item => `${item.name}(${item.rarity})`).join(' → ')}</p>
+                <p>Отсортированный порядок: {sortItemsByRarity(caseItems).map(item => `${item.name}(${item.rarity})`).join(' → ')}</p>
+                <hr className="my-2 border-gray-600" />
+                <p>📊 Настройки выпадения предметов:</p>
+                {caseItems.map(item => (
+                  <p key={item.id} className="ml-2">
+                    • {item.name}: выпадает на {item.drop_after_cases || 1}-м кейсе
+                  </p>
+                ))}
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+                {sortItemsByRarity(caseItems).map((item, index) => (
+                  <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative">
+                    {/* Номер позиции для отладки */}
+                    <div className="absolute top-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded z-10">
+                      #{index + 1}
+                    </div>
+                    
+                    {/* Изображение предмета */}
+                    <div className="relative mx-auto">
+                      <img
+                        src={item.image_url || '/images/placeholder.jpg'}
+                        alt={item.name}
+                        className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain mx-auto transition-transform duration-300 group-hover:scale-110"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+                        }}
+                      />
+                      {/* Иконка редкости */}
+                      <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2">
+                        {getRarityIcon(item.rarity)}
+                      </div>
+                    </div>
+
+                    {/* Название предмета */}
+                    <div>
+                      <h3 className="font-semibold text-white text-sm sm:text-base leading-tight px-2">
+                        {item.name}
+                      </h3>
+                    </div>
+
+                    {/* Редкость */}
+                    <div className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium ${
+                      item.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                      item.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
+                      item.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+                      'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                    }`}>
+                      {getRarityName(item.rarity)}
                     </div>
                   </div>
-
-                  {/* Название предмета */}
-                  <div>
-                    <h3 className="font-semibold text-white text-sm sm:text-base leading-tight px-2">
-                      {item.name}
-                    </h3>
-                  </div>
-
-                  {/* Редкость */}
-                  <div className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium ${
-                    item.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
-                    item.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
-                    item.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
-                    'bg-gray-500/20 text-gray-400 border border-gray-500/30'
-                  }`}>
-                    {getRarityName(item.rarity)}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </>
           ) : (
             <div className="text-center py-8 sm:py-12">
               <Package className="w-16 h-16 sm:w-20 sm:w-24 mx-auto mb-4 text-gray-600" />

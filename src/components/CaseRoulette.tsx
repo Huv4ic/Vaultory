@@ -201,9 +201,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   const calculateWinner = (): CaseItem => {
     // Получаем текущий счетчик открытых кейсов (БЕЗ +1)
     const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0');
+    const nextCaseNumber = currentCaseCount + 1;
     
     console.log('=== CALCULATE WINNER START ===');
     console.log('Current case count from localStorage:', currentCaseCount);
+    console.log('Next case number:', nextCaseNumber);
     console.log('All case items:', caseItems.map(item => ({ name: item.name, drop_after_cases: item.drop_after_cases })));
     
     // Группируем предметы по drop_after_cases
@@ -225,15 +227,20 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Проверяем каждый drop_after_cases
     Object.keys(itemsByDropRate).forEach(dropRateStr => {
       const dropRate = parseInt(dropRateStr);
-      const nextCaseNumber = currentCaseCount + 1;
-      const isEligible = nextCaseNumber % dropRate === 0;
       
-      console.log(`Checking drop rate ${dropRate}: next case ${nextCaseNumber} % ${dropRate} = ${nextCaseNumber % dropRate}, eligible: ${isEligible}`);
+      // ПРАВИЛЬНАЯ ЛОГИКА: предмет выпадает только когда номер кейса РАВЕН drop_after_cases
+      // Например: drop_after_cases = 1 означает выпадение на 1-м кейсе
+      // drop_after_cases = 11000 означает выпадение на 11000-м кейсе
+      const isEligible = nextCaseNumber === dropRate;
+      
+      console.log(`Checking drop rate ${dropRate}: next case ${nextCaseNumber} == ${dropRate}, eligible: ${isEligible}`);
       
       if (isEligible) {
-        // Если текущий кейс кратен drop_after_cases, добавляем все предметы с этим значением
+        // Если текущий кейс РАВЕН drop_after_cases, добавляем все предметы с этим значением
         eligibleItems = eligibleItems.concat(itemsByDropRate[dropRate]);
-        console.log(`Added items with drop rate ${dropRate}:`, itemsByDropRate[dropRate].map(item => item.name));
+        console.log(`✅ Added items with drop rate ${dropRate}:`, itemsByDropRate[dropRate].map(item => item.name));
+      } else {
+        console.log(`❌ Case ${nextCaseNumber} is not eligible for drop rate ${dropRate}`);
       }
     });
     
@@ -241,7 +248,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     // Если нет подходящих предметов, берем случайный из всех
     if (eligibleItems.length === 0) {
-      console.log('No eligible items found, using all case items');
+      console.log('⚠️ No eligible items found for case', nextCaseNumber, ', using all case items');
       eligibleItems = caseItems;
     }
     
@@ -249,15 +256,15 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     const randomIndex = Math.floor(Math.random() * eligibleItems.length);
     const winner = eligibleItems[randomIndex];
     
-    console.log('Selected winner:', { name: winner.name, rarity: winner.rarity, drop_after_cases: winner.drop_after_cases });
+    console.log('🎯 Selected winner:', { name: winner.name, rarity: winner.rarity, drop_after_cases: winner.drop_after_cases });
     
     // Показываем текущий счетчик (БЕЗ обновления)
-    setSpinCount(currentCaseCount + 1);
+    setSpinCount(nextCaseNumber);
     
     // Отладочная информация
     console.log('Winner calculation result:', {
       currentCaseCount,
-      nextCaseCount: currentCaseCount + 1,
+      nextCaseCount: nextCaseNumber,
       itemsByDropRate,
       eligibleItems: eligibleItems.map(item => ({ name: item.name, drop_after_cases: item.drop_after_cases })),
       winner: winner.name,
@@ -625,6 +632,22 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
 
           {/* Рулетка */}
           <div className="p-4 sm:p-6 md:p-8">
+            {/* Отладочная информация */}
+            <div className="mb-4 p-3 bg-gray-800/50 rounded-lg text-xs text-gray-400">
+              <p>🔍 Отладка открытия кейса:</p>
+              <p>Текущий счетчик кейсов: {parseInt(localStorage.getItem('totalCasesOpened') || '0')}</p>
+              <p>Следующий кейс: {parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1}</p>
+              <p>Предметы в кейсе: {caseItems.map(item => `${item.name}(${item.drop_after_cases || 1})`).join(', ')}</p>
+              <hr className="my-2 border-gray-600" />
+              <p>📊 Детальные настройки выпадения:</p>
+              {caseItems.map(item => (
+                <p key={item.id} className="ml-2">
+                  • {item.name}: выпадает на {item.drop_after_cases || 1}-м кейсе
+                </p>
+              ))}
+            </div>
+            
+            {/* Кнопка запуска рулетки */}
             {!showResult ? (
               <div className="space-y-6 sm:space-y-8">
                 {/* Кнопка запуска */}
@@ -763,6 +786,15 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   </div>
                 )}
                 
+                {/* Отладочная информация */}
+                <div className="mt-4 p-2 bg-gray-800/50 rounded text-xs text-gray-400">
+                  <p>🎯 Выпал предмет: {winnerItem?.name || 'N/A'}</p>
+                  <p>Редкость: {winnerItem?.rarity || 'N/A'}</p>
+                  <p>Настройка выпадения: каждые {winnerItem?.drop_after_cases || 1} кейсов</p>
+                  <p>Текущий кейс: {parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1}</p>
+                </div>
+                
+                {/* Кнопки действий */}
                 <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-4">
                   <Button
                     onClick={() => {
