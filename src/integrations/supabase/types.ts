@@ -752,6 +752,71 @@ export type Database = {
           },
         ]
       }
+      user_inventory: {
+        Row: {
+          id: string
+          telegram_id: number
+          item_name: string
+          item_price: number
+          item_rarity: string
+          item_type: string | null
+          case_id: string | null
+          case_name: string | null
+          item_image: string | null
+          item_image_url: string | null
+          status: string
+          obtained_at: string
+          sold_at: string | null
+          withdrawn_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          telegram_id: number
+          item_name: string
+          item_price: number
+          item_rarity: string
+          item_type?: string | null
+          case_id?: string | null
+          case_name?: string | null
+          item_image?: string | null
+          item_image_url?: string | null
+          status?: string
+          obtained_at?: string
+          sold_at?: string | null
+          withdrawn_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          telegram_id?: number
+          item_name?: string
+          item_price?: number
+          item_rarity?: string
+          item_type?: string | null
+          case_id?: string | null
+          case_name?: string | null
+          item_image?: string | null
+          item_image_url?: string | null
+          status?: string
+          obtained_at?: string
+          sold_at?: string | null
+          withdrawn_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_inventory_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       case_stats: {

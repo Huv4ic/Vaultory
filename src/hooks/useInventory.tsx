@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { InventoryService, DatabaseInventoryItem } from '../services/inventoryService';
 
 export interface InventoryItem {
   id?: string;
@@ -16,30 +17,25 @@ export interface InventoryItem {
 
 interface InventoryContextType {
   items: InventoryItem[];
-  addItem: (item: InventoryItem) => void;
-  removeItem: (index: number) => void;
-  sellItem: (index: number) => number; // возвращает сумму продажи
-  withdrawItem: (index: number) => void;
-  clear: () => void;
-  refreshItems: () => void; // Добавляем функцию обновления
-  getTotalValue: () => number;
-  getCasesOpened: () => number;
+  addItem: (item: InventoryItem) => Promise<void>; // возвращает Promise
+  removeItem: (index: number) => Promise<void>; // возвращает Promise
+  sellItem: (index: number) => Promise<number>; // возвращает Promise с суммой продажи
+  withdrawItem: (index: number) => Promise<void>; // возвращает Promise
+  clear: () => Promise<void>; // возвращает Promise
+  refreshItems: () => Promise<void>; // Добавляем функцию обновления
+  getTotalValue: () => Promise<number>; // возвращает Promise
+  getCasesOpened: () => Promise<number>; // возвращает Promise
   casesOpened: number;
   spent: number;
   purchased: number;
+  syncInventory: () => Promise<void>; // Синхронизация между устройствами
+  loading: boolean;
 }
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
 
 export const InventoryProvider = ({ children }: { children: React.ReactNode }) => {
-  const [items, setItems] = useState<InventoryItem[]>(() => {
-    const saved = localStorage.getItem('vaultory_inventory');
-    let arr = saved ? JSON.parse(saved) : [];
-    // Фильтруем старые/проданные/выведенные предметы и без статуса
-    arr = arr.filter((item: any) => item.status && item.status !== 'sold' && item.status !== 'withdrawn');
-    localStorage.setItem('vaultory_inventory', JSON.stringify(arr));
-    return arr;
-  });
+  const [items, setItems] = useState<InventoryItem[]>([]);
   const [casesOpened, setCasesOpened] = useState(() => {
     const saved = localStorage.getItem('vaultory_cases_opened');
     return saved ? Number(saved) : 0;
@@ -52,66 +48,188 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     const saved = localStorage.getItem('vaultory_purchased');
     return saved ? Number(saved) : 0;
   });
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem('vaultory_inventory', JSON.stringify(items));
-  }, [items]);
-  useEffect(() => {
-    localStorage.setItem('vaultory_cases_opened', String(casesOpened));
-  }, [casesOpened]);
-  useEffect(() => {
-    localStorage.setItem('vaultory_spent', String(spent));
-  }, [spent]);
-  useEffect(() => {
-    localStorage.setItem('vaultory_purchased', String(purchased));
-  }, [purchased]);
+  // Функция для загрузки инвентаря из базы данных
+  const loadInventoryFromDatabase = async (telegramId: number) => {
+    try {
+      setLoading(true);
+      const dbItems = await InventoryService.getUserInventory(telegramId);
+      
+      // Конвертируем DatabaseInventoryItem в InventoryItem
+      const convertedItems: InventoryItem[] = dbItems.map(dbItem => ({
+        id: dbItem.id,
+        name: dbItem.item_name,
+        price: dbItem.item_price,
+        rarity: dbItem.item_rarity,
+        type: dbItem.item_type,
+        caseId: dbItem.case_id,
+        case_name: dbItem.case_name,
+        image: dbItem.item_image,
+        image_url: dbItem.item_image_url,
+        status: dbItem.status,
+        obtained_at: dbItem.obtained_at
+      }));
 
-  const addItem = (item: InventoryItem & { spent?: number; purchased?: boolean }) => {
-    setItems(prev => [...prev, { ...item, status: 'new' }]);
-    setCasesOpened(prev => prev + 1);
-    if (item.spent) setSpent(prev => prev + item.spent);
-    if (item.purchased) setPurchased(prev => prev + 1);
+      setItems(convertedItems);
+    } catch (error) {
+      console.error('Failed to load inventory from database:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeItem = (index: number) => {
+  // Функция для миграции localStorage в базу данных
+  const migrateLocalStorage = async (telegramId: number) => {
+    try {
+      await InventoryService.migrateLocalStorageToDatabase(telegramId);
+      // После миграции загружаем данные из базы
+      await loadInventoryFromDatabase(telegramId);
+    } catch (error) {
+      console.error('Failed to migrate localStorage:', error);
+    }
+  };
+
+  const addItem = async (item: InventoryItem & { spent?: number; purchased?: boolean }) => {
+    try {
+      // Получаем telegram_id из localStorage или другого источника
+      const telegramId = localStorage.getItem('vaultory_telegram_id');
+      if (!telegramId) {
+        console.error('Telegram ID not found');
+        return;
+      }
+
+      // Добавляем предмет в базу данных
+      const newItemId = await InventoryService.addItemToInventory(Number(telegramId), item);
+      
+      if (newItemId) {
+        // Обновляем локальное состояние
+        const newItem = { ...item, id: newItemId, status: 'new' as const };
+        setItems(prev => [...prev, newItem]);
+        setCasesOpened(prev => prev + 1);
+        if (item.spent) setSpent(prev => prev + item.spent);
+        if (item.purchased) setPurchased(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error('Failed to add item:', error);
+    }
+  };
+
+  const removeItem = async (index: number) => {
     setItems(prev => prev.filter((_, i) => i !== index));
   };
 
-  const sellItem = (index: number) => {
-    const item = items[index];
-    if (!item || item.status === 'sold') return 0;
-    const sellPrice = item.price; // теперь 100% стоимости
-    setItems(prev => prev.filter((_, i) => i !== index));
-    return sellPrice;
+  const sellItem = async (index: number) => {
+    try {
+      const item = items[index];
+      if (!item || item.status === 'sold' || !item.id) return 0;
+
+      const telegramId = localStorage.getItem('vaultory_telegram_id');
+      if (!telegramId) {
+        console.error('Telegram ID not found');
+        return 0;
+      }
+
+      // Продаем предмет через базу данных
+      const sellPrice = await InventoryService.sellItem(item.id, Number(telegramId));
+      
+      if (sellPrice > 0) {
+        // Удаляем предмет из локального состояния
+        setItems(prev => prev.filter((_, i) => i !== index));
+        return sellPrice;
+      }
+      
+      return 0;
+    } catch (error) {
+      console.error('Failed to sell item:', error);
+      return 0;
+    }
   };
 
-  const withdrawItem = (index: number) => {
-    setItems(prev => prev.filter((_, i) => i !== index)); // удаляем предмет
+  const withdrawItem = async (index: number) => {
+    try {
+      const item = items[index];
+      if (!item || !item.id) return;
+
+      const telegramId = localStorage.getItem('vaultory_telegram_id');
+      if (!telegramId) {
+        console.error('Telegram ID not found');
+        return;
+      }
+
+      // Выводим предмет через базу данных
+      const success = await InventoryService.withdrawItem(item.id, Number(telegramId));
+      
+      if (success) {
+        // Удаляем предмет из локального состояния
+        setItems(prev => prev.filter((_, i) => i !== index));
+      }
+    } catch (error) {
+      console.error('Failed to withdraw item:', error);
+    }
   };
 
-  const refreshItems = () => {
-    const saved = localStorage.getItem('vaultory_inventory');
-    let arr = saved ? JSON.parse(saved) : [];
-    // Фильтруем старые/проданные/выведенные предметы и без статуса
-    arr = arr.filter((item: any) => item.status && item.status !== 'sold' && item.status !== 'withdrawn');
-    setItems(arr);
+  const refreshItems = async () => {
+    const telegramId = localStorage.getItem('vaultory_telegram_id');
+    if (telegramId) {
+      await loadInventoryFromDatabase(Number(telegramId));
+    }
   };
 
-  const getTotalValue = () => {
+  const syncInventory = async () => {
+    const telegramId = localStorage.getItem('vaultory_telegram_id');
+    if (telegramId) {
+      // Сначала мигрируем localStorage если есть
+      await migrateLocalStorage(Number(telegramId));
+      // Затем загружаем из базы
+      await loadInventoryFromDatabase(Number(telegramId));
+    }
+  };
+
+  const getTotalValue = async () => {
     return items.filter(item => item.status !== 'sold').reduce((sum, item) => sum + item.price, 0);
   };
 
-  const getCasesOpened = () => casesOpened;
+  const getCasesOpened = async () => casesOpened;
 
-  const clear = () => {
+  const clear = async () => {
     setItems([]);
     setCasesOpened(0);
     setSpent(0);
     setPurchased(0);
   };
 
+  // Инициализация при загрузке
+  useEffect(() => {
+    const telegramId = localStorage.getItem('vaultory_telegram_id');
+    if (telegramId) {
+      // Проверяем, есть ли данные в localStorage для миграции
+      const localInventory = localStorage.getItem('vaultory_inventory');
+      if (localInventory) {
+        migrateLocalStorage(Number(telegramId));
+      } else {
+        loadInventoryFromDatabase(Number(telegramId));
+      }
+    }
+  }, []);
+
   return (
-    <InventoryContext.Provider value={{ items, addItem, removeItem, sellItem, withdrawItem, clear, refreshItems, getTotalValue, getCasesOpened, casesOpened, spent, purchased }}>
+    <InventoryContext.Provider value={{ 
+      items, 
+      addItem, 
+      removeItem, 
+      sellItem, 
+      withdrawItem, 
+      clear, 
+      refreshItems, 
+      getTotalValue, 
+      getCasesOpened, 
+      casesOpened, 
+      spent, 
+      purchased,
+      syncInventory,
+      loading
+    }}>
       {children}
     </InventoryContext.Provider>
   );

@@ -32,16 +32,28 @@ interface FavoriteCase {
   name: string;
   opened_count: number;
   image_url?: string;
+  case_name?: string;
+  case_image_url?: string;
 }
 
 const Inventory = () => {
   const { telegramUser, profile } = useAuth();
-  const { items: inventoryItems, getTotalValue, casesOpened, refreshItems } = useInventory();
+  const { items: inventoryItems, getTotalValue, casesOpened, refreshItems, syncInventory, sellItem, withdrawItem, getCasesOpened } = useInventory();
   const { favoriteCase, caseStats, loading: statsLoading, error: statsError } = useCaseStats();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [totalCasesOpened, setTotalCasesOpened] = useState(0);
+
+  // Загружаем количество открытых кейсов
+  useEffect(() => {
+    const loadCasesOpened = async () => {
+      const count = await getCasesOpened();
+      setTotalCasesOpened(count);
+    };
+    loadCasesOpened();
+  }, [getCasesOpened]);
 
   useEffect(() => {
     if (!telegramUser) {
@@ -54,14 +66,14 @@ const Inventory = () => {
     if (!hasRefreshed) {
       sessionStorage.setItem('inventory_refreshed', 'true');
       
-      // Принудительно обновляем данные инвентаря
+      // Принудительно обновляем данные инвентаря и синхронизируем
       console.log('Обновляем инвентарь при заходе на страницу');
-      refreshItems();
+      syncInventory().catch(console.error);
     }
-  }, [telegramUser, navigate, refreshItems]);
+  }, [telegramUser, navigate, syncInventory]);
 
   // Получаем общую стоимость из хука
-  const totalValue = getTotalValue();
+  const [totalValue, setTotalValue] = useState(0);
 
   // Используем только реальные данные из useInventory
   const displayItems = inventoryItems;
@@ -69,6 +81,15 @@ const Inventory = () => {
   // Определяем состояние загрузки
   const isLoading = loading || statsLoading;
   const hasError = error || statsError;
+
+  // Загружаем общую стоимость
+  useEffect(() => {
+    const loadTotalValue = async () => {
+      const value = await getTotalValue();
+      setTotalValue(value);
+    };
+    loadTotalValue();
+  }, [getTotalValue, inventoryItems]);
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -127,15 +148,21 @@ const Inventory = () => {
             <Button
               onClick={() => navigate(-1)}
               variant="outline"
-              className="mr-4 bg-black/40 border-amber-500/30 text-amber-300 hover:bg-amber-500/20"
+              className="mr-4 bg-black/20 border-white/20 text-white hover:bg-white/10"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Назад
+              ← Назад
             </Button>
-            <h1 className="text-4xl font-bold text-white mb-4">
-              🎒 Инвентарь
-            </h1>
+            
+            {/* Кнопка синхронизации */}
+            <Button
+              onClick={syncInventory}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              disabled={loading}
+            >
+              {loading ? '🔄 Синхронизация...' : '🔄 Синхронизировать'}
+            </Button>
           </div>
+          <h1 className="text-4xl font-bold text-white">Инвентарь</h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Ваши предметы, полученные из кейсов
           </p>
@@ -175,32 +202,24 @@ const Inventory = () => {
                 <Crown className="w-8 h-8 text-amber-400" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Любимый кейс</h3>
-              {favoriteCase ? (
+              {favoriteCase && (
                 <>
                   {/* Фото кейса */}
                   <div className="w-20 h-20 mx-auto mb-3 rounded-lg overflow-hidden bg-gray-800">
-                    {favoriteCase.case_image_url ? (
+                    {(favoriteCase as any).image_url ? (
                       <img 
-                        src={favoriteCase.case_image_url} 
-                        alt={favoriteCase.case_name}
+                        src={(favoriteCase as any).image_url} 
+                        alt={(favoriteCase as any).name}
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                        <Package className="w-10 h-10 text-gray-500" />
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <Trophy className="w-8 h-8" />
                       </div>
                     )}
                   </div>
-                  <p className="text-lg font-bold text-amber-400 mb-1">{favoriteCase.case_name}</p>
-                  <p className="text-sm text-gray-300">Открыто {favoriteCase.opened_count} раз</p>
-                </>
-              ) : (
-                <>
-                  <div className="w-20 h-20 mx-auto mb-3 rounded-lg bg-gray-700 flex items-center justify-center">
-                    <Package className="w-10 h-10 text-gray-500" />
-                  </div>
-                  <p className="text-lg font-bold text-amber-400 mb-1">Не определен</p>
-                  <p className="text-sm text-gray-300">Откройте кейсы</p>
+                  <p className="text-lg font-bold text-amber-400 mb-1">{(favoriteCase as any).name}</p>
+                  <p className="text-sm text-gray-300">Открыто {(favoriteCase as any).opened_count} раз</p>
                 </>
               )}
             </CardContent>
@@ -256,10 +275,20 @@ const Inventory = () => {
                   {/* Кнопки действий */}
                   <div className="flex gap-2 mt-3">
                     <button
-                      onClick={() => {
-                        // Вывести предмет (заглушка)
-                        alert('Функция вывода предмета пока в разработке!');
-                        console.log('Попытка вывести предмет:', item.name);
+                      onClick={async () => {
+                        // Вывести предмет
+                        try {
+                          const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
+                          if (itemIndex !== -1) {
+                            await withdrawItem(itemIndex);
+                            await refreshItems();
+                            alert(`Предмет "${item.name}" выведен из инвентаря!`);
+                            console.log('Предмет выведен:', item.name);
+                          }
+                        } catch (error) {
+                          console.error('Error withdrawing item:', error);
+                          alert('Ошибка при выводе предмета!');
+                        }
                       }}
                       className="flex-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
                     >
@@ -267,24 +296,26 @@ const Inventory = () => {
                     </button>
                     
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         // Продать предмет
                         if (confirm(`Продать "${item.name}" за $${(item.price || 0).toFixed(2)}?`)) {
-                          // Добавляем деньги на баланс
-                          const currentBalance = parseInt(localStorage.getItem('vaultory_balance') || '0');
-                          const newBalance = currentBalance + (item.price || 0);
-                          localStorage.setItem('vaultory_balance', newBalance.toString());
-                          
-                          // Удаляем предмет из инвентаря
-                          const currentInventory = JSON.parse(localStorage.getItem('vaultory_inventory') || '[]');
-                          const updatedInventory = currentInventory.filter((invItem: any) => invItem.id !== item.id);
-                          localStorage.setItem('vaultory_inventory', JSON.stringify(updatedInventory));
-                          
-                          // Обновляем состояние страницы
-                          refreshItems();
-                          
-                          alert(`Предмет "${item.name}" продан за $${(item.price || 0).toFixed(2)}! Деньги добавлены на баланс.`);
-                          console.log('Предмет продан:', item.name, 'за', item.price);
+                          try {
+                            // Используем функцию sellItem из useInventory
+                            const sellPrice = await sellItem(inventoryItems.findIndex(invItem => invItem.id === item.id));
+                            
+                            if (sellPrice > 0) {
+                              // Обновляем состояние страницы
+                              await refreshItems();
+                              
+                              alert(`Предмет "${item.name}" продан за $${sellPrice.toFixed(2)}! Деньги добавлены на баланс.`);
+                              console.log('Предмет продан:', item.name, 'за', sellPrice);
+                            } else {
+                              alert('Ошибка при продаже предмета!');
+                            }
+                          } catch (error) {
+                            console.error('Error selling item:', error);
+                            alert('Ошибка при продаже предмета!');
+                          }
                         }
                       }}
                       className="flex-1 px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
