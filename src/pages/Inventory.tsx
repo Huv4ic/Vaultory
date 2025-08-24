@@ -33,11 +33,20 @@ const Inventory = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalCasesOpened, setTotalCasesOpened] = useState(0);
+  const [totalValue, setTotalValue] = useState(0);
+  
+  // Используем локальное состояние для отображения предметов
+  const [displayItems, setDisplayItems] = useState(inventoryItems);
+
+  // Инициализируем displayItems при загрузке
+  useEffect(() => {
+    setDisplayItems(inventoryItems);
+  }, []);
 
   // Загружаем общую стоимость
   useEffect(() => {
-    const loadTotalValue = () => {
-      const value = getTotalValue();
+    const loadTotalValue = async () => {
+      const value = await getTotalValue();
       setTotalValue(value);
     };
     loadTotalValue();
@@ -45,8 +54,8 @@ const Inventory = () => {
 
   // Загружаем количество открытых кейсов
   useEffect(() => {
-    const loadCasesOpened = () => {
-      const count = getCasesOpened();
+    const loadCasesOpened = async () => {
+      const count = await getCasesOpened();
       setTotalCasesOpened(count);
     };
     loadCasesOpened();
@@ -65,15 +74,14 @@ const Inventory = () => {
       
       // Принудительно обновляем данные инвентаря
       console.log('Обновляем инвентарь при заходе на страницу');
-      refreshItems();
+      refreshItems().catch(console.error);
     }
   }, [telegramUser, navigate, refreshItems]);
 
-  // Получаем общую стоимость из хука
-  const [totalValue, setTotalValue] = useState(0);
-
-  // Используем только реальные данные из useInventory
-  const displayItems = inventoryItems;
+  // Принудительно обновляем состояние при изменении inventoryItems
+  useEffect(() => {
+    setDisplayItems(inventoryItems);
+  }, [inventoryItems]);
 
   // Определяем состояние загрузки
   const isLoading = loading || statsLoading;
@@ -254,15 +262,17 @@ const Inventory = () => {
                   {/* Кнопки действий */}
                   <div className="flex gap-2 mt-3">
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         // Вывести предмет
                         try {
                           const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
                           if (itemIndex !== -1) {
-                            withdrawItem(itemIndex);
-                            refreshItems();
+                            await withdrawItem(itemIndex);
+                            
                             alert(`Предмет "${item.name}" выведен из инвентаря!`);
                             console.log('Предмет выведен:', item.name);
+                          } else {
+                            alert('Предмет не найден в инвентаре!');
                           }
                         } catch (error) {
                           console.error('Error withdrawing item:', error);
@@ -275,27 +285,31 @@ const Inventory = () => {
                     </button>
                     
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         // Продать предмет
                         if (confirm(`Продать "${item.name}" за $${(item.price || 0).toFixed(2)}?`)) {
                           try {
-                            // Используем функцию sellItem из useInventory
-                            const sellPrice = sellItem(inventoryItems.findIndex(invItem => invItem.id === item.id));
+                            // Находим индекс предмета в массиве
+                            const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
                             
-                            if (sellPrice > 0) {
-                              // Обновляем состояние страницы
-                              refreshItems();
+                            if (itemIndex !== -1) {
+                              // Используем функцию sellItem из useInventory
+                              const sellPrice = await sellItem(itemIndex);
                               
-                              // Обновляем баланс пользователя (добавляем деньги)
-                              if (profile && profile.balance !== undefined) {
-                                // Здесь можно добавить логику обновления баланса
-                                console.log(`Баланс обновлен: +$${sellPrice.toFixed(2)}`);
+                              if (sellPrice > 0) {
+                                // Обновляем баланс пользователя (добавляем деньги)
+                                if (profile && profile.balance !== undefined) {
+                                  // Здесь можно добавить логику обновления баланса
+                                  console.log(`Баланс обновлен: +$${sellPrice.toFixed(2)}`);
+                                }
+                                
+                                alert(`Предмет "${item.name}" продан за $${sellPrice.toFixed(2)}! Деньги добавлены на баланс.`);
+                                console.log('Предмет продан:', item.name, 'за', sellPrice);
+                              } else {
+                                alert('Ошибка при продаже предмета!');
                               }
-                              
-                              alert(`Предмет "${item.name}" продан за $${sellPrice.toFixed(2)}! Деньги добавлены на баланс.`);
-                              console.log('Предмет продан:', item.name, 'за', sellPrice);
                             } else {
-                              alert('Ошибка при продаже предмета!');
+                              alert('Предмет не найден в инвентаре!');
                             }
                           } catch (error) {
                             console.error('Error selling item:', error);
