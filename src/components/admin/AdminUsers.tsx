@@ -216,14 +216,14 @@ const AdminUsers = () => {
   });
 
   if (loading) {
-    return <div className="text-white">Загрузка пользователей...</div>;
+    return <div className="text-white text-sm sm:text-base">Загрузка пользователей...</div>;
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">Управление пользователями</h2>
-        <div className="flex items-center gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+        <h2 className="text-xl sm:text-2xl font-bold text-white">Управление пользователями</h2>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
           <Button
             onClick={async () => {
               try {
@@ -306,11 +306,11 @@ const AdminUsers = () => {
                 });
               }
             }}
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+            className="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-2 rounded-md text-sm sm:text-base"
           >
             Создать тестового пользователя
           </Button>
-          <div className="text-gray-300">
+          <div className="text-gray-300 text-xs sm:text-sm">
             Всего пользователей: {users.length} | Активных: {users.filter(u => u.status === 'active').length} | Забанено: {users.filter(u => u.status === 'banned').length}
           </div>
         </div>
@@ -318,21 +318,21 @@ const AdminUsers = () => {
 
       {/* Фильтры и поиск */}
       <Card className="bg-gray-800 border-gray-700">
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row gap-4">
+        <CardContent className="pt-4 sm:pt-6 p-4 sm:p-6">
+          <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Поиск по имени или ID пользователя..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-gray-700 border-gray-600 text-white pl-10"
+                className="bg-gray-700 border-gray-600 text-white pl-10 text-sm sm:text-base"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-gray-700 border-gray-600 text-white rounded-md px-3 py-2"
+              className="bg-gray-700 border-gray-600 text-white rounded-md px-3 py-2 text-sm sm:text-base"
             >
               <option value="all">Все статусы</option>
               <option value="active">Активные</option>
@@ -343,24 +343,24 @@ const AdminUsers = () => {
       </Card>
       
       <Card className="bg-gray-800 border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-white">Пользователи ({filteredUsers.length})</CardTitle>
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-white text-lg sm:text-xl">Пользователи ({filteredUsers.length})</CardTitle>
         </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[600px]">
+        <CardContent className="p-4 sm:p-6">
+          <ScrollArea className="h-[400px] sm:h-[600px]">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="text-gray-300">Пользователь</TableHead>
-                  <TableHead className="text-gray-300">Статус</TableHead>
-                  <TableHead className="text-gray-300">Баланс</TableHead>
-                  <TableHead className="text-gray-300">Кейсы</TableHead>
-                  <TableHead className="text-gray-300">Потрачено</TableHead>
-                  <TableHead className="text-gray-300">Внесено</TableHead>
-                  <TableHead className="text-gray-300">Заказы</TableHead>
-                  <TableHead className="text-gray-300">Регистрация</TableHead>
-                  <TableHead className="text-gray-300">Роль</TableHead>
-                  <TableHead className="text-gray-300">Действия</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm">Пользователь</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm hidden sm:table-cell">Статус</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm">Баланс</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm hidden lg:table-cell">Кейсы</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm hidden xl:table-cell">Потрачено</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm hidden xl:table-cell">Внесено</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm hidden lg:table-cell">Заказы</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm hidden md:table-cell">Регистрация</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm">Роль</TableHead>
+                  <TableHead className="text-gray-300 text-xs sm:text-sm">Действия</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -376,19 +376,19 @@ const AdminUsers = () => {
                           <User className="w-4 h-4 text-gray-400" />
                         )}
                         <div>
-                          <div>{user.username || 'Без имени'}</div>
+                          <div className="text-xs sm:text-sm">{user.username || 'Без имени'}</div>
                           <div className="text-xs text-gray-400">{user.id.substring(0, 8)}...</div>
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       <div className="flex items-center space-x-2">
                         {user.status === 'active' ? (
                           <CheckCircle className="w-4 h-4 text-green-500" />
                         ) : (
                           <Ban className="w-4 h-4 text-red-500" />
                         )}
-                        <span className={user.status === 'active' ? 'text-green-400' : 'text-red-400'}>
+                        <span className={`text-xs sm:text-sm ${user.status === 'active' ? 'text-green-400' : 'text-red-400'}`}>
                           {user.status === 'active' ? 'Активен' : 'Забанен'}
                         </span>
                       </div>
@@ -400,11 +400,12 @@ const AdminUsers = () => {
                             type="number"
                             value={newBalance}
                             onChange={(e) => setNewBalance(e.target.value)}
-                            className="w-24 bg-gray-700 border-gray-600 text-white"
+                            className="w-20 sm:w-24 bg-gray-700 border-gray-600 text-white text-xs sm:text-sm"
                           />
                           <Button
                             size="sm"
                             onClick={() => updateBalance(user.id, newBalance)}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
                           >
                             ✓
                           </Button>
@@ -412,13 +413,14 @@ const AdminUsers = () => {
                             size="sm"
                             variant="outline"
                             onClick={() => setEditingBalance(null)}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
                           >
                             ✕
                           </Button>
                         </div>
                       ) : (
                         <div className="flex items-center space-x-2">
-                          <span className="text-green-400">{user.balance}₽</span>
+                          <span className="text-green-400 text-xs sm:text-sm">{user.balance}₽</span>
                           <Button
                             size="sm"
                             variant="ghost"
@@ -426,24 +428,26 @@ const AdminUsers = () => {
                               setEditingBalance(user.id);
                               setNewBalance(user.balance?.toString() || '0');
                             }}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
                           >
-                            <Edit className="w-4 h-4" />
+                            <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
                           </Button>
                         </div>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden lg:table-cell">
                       {editingCases === user.id ? (
                         <div className="flex space-x-2">
                           <Input
                             type="number"
                             value={newCasesCount}
                             onChange={(e) => setNewCasesCount(e.target.value)}
-                            className="w-24 bg-gray-700 border-gray-600 text-white"
+                            className="w-20 sm:w-24 bg-gray-700 border-gray-600 text-white text-xs sm:text-sm"
                           />
                           <Button
                             size="sm"
                             onClick={() => updateCasesOpened(user.id, newCasesCount)}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
                           >
                             ✓
                           </Button>
@@ -451,13 +455,14 @@ const AdminUsers = () => {
                             size="sm"
                             variant="outline"
                             onClick={() => setEditingCases(null)}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
                           >
                             ✕
                           </Button>
                         </div>
                       ) : (
                         <div className="flex items-center space-x-2">
-                          <span className="text-blue-400">{user.cases_opened || 0}</span>
+                          <span className="text-blue-400 text-xs sm:text-sm">{user.cases_opened || 0}</span>
                           <Button
                             size="sm"
                             variant="ghost"
@@ -465,22 +470,23 @@ const AdminUsers = () => {
                               setEditingCases(user.id);
                               setNewCasesCount(user.cases_opened?.toString() || '0');
                             }}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
                           >
-                            <Edit className="w-4 h-4" />
+                            <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
                           </Button>
                         </div>
                       )}
                     </TableCell>
-                    <TableCell className="text-red-400">
+                    <TableCell className="text-red-400 text-xs sm:text-sm hidden xl:table-cell">
                       {user.total_spent || 0}₽
                     </TableCell>
-                    <TableCell className="text-green-400">
+                    <TableCell className="text-green-400 text-xs sm:text-sm hidden xl:table-cell">
                       {user.total_deposited || 0}₽
                     </TableCell>
-                    <TableCell className="text-purple-400">
+                    <TableCell className="text-purple-400 text-xs sm:text-sm hidden lg:table-cell">
                       {user.total_orders || 0} ({user.orders_total || 0}₽)
                     </TableCell>
-                    <TableCell className="text-gray-300">
+                    <TableCell className="text-gray-300 text-xs sm:text-sm hidden md:table-cell">
                       {new Date(user.created_at).toLocaleDateString('ru-RU')}
                     </TableCell>
                     <TableCell>
@@ -496,7 +502,7 @@ const AdminUsers = () => {
                           }}
                           disabled={telegramUser?.username !== 'Hub4ic'}
                         >
-                          <SelectTrigger className="w-[110px] bg-gray-700 text-white">
+                          <SelectTrigger className="w-[80px] sm:w-[110px] bg-gray-700 text-white text-xs sm:text-sm">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -512,6 +518,7 @@ const AdminUsers = () => {
                           size="sm"
                           variant={user.status === 'banned' ? 'default' : 'destructive'}
                           onClick={() => toggleUserStatus(user.id, user.status)}
+                          className="text-xs sm:text-sm h-6 sm:h-8 px-2 sm:px-3"
                         >
                           {user.status === 'banned' ? 'Разбанить' : 'Забанить'}
                         </Button>

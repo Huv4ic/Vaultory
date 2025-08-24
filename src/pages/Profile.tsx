@@ -200,15 +200,15 @@ const Profile = () => {
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-20 container mx-auto px-4 pb-20">
+      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Основная информация профиля */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <CardContent className="p-4 sm:p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Аватар и основная информация */}
                 <div className="text-center lg:text-left">
-                  <div className="mx-auto lg:mx-0 w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-4 shadow-2xl shadow-amber-500/30 overflow-hidden">
+                  <div className="mx-auto lg:mx-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-3 sm:mb-4 shadow-2xl shadow-amber-500/30 overflow-hidden">
                     {profile?.avatar_url ? (
                       <img
                         src={profile.avatar_url}
@@ -216,17 +216,17 @@ const Profile = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <User className="w-10 h-10 text-white" />
+                      <User className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                     )}
                   </div>
-                  <h2 className="text-xl font-bold text-white mb-2">
+                  <h2 className="text-lg sm:text-xl font-bold text-white mb-2">
                     {profile?.username || telegramUser.first_name}
                   </h2>
-                  <p className="text-gray-300 mb-3 text-sm">@{telegramUser.username || 'user'}</p>
+                  <p className="text-gray-300 mb-2 sm:mb-3 text-xs sm:text-sm">@{telegramUser.username || 'user'}</p>
                   
                   {/* Роль пользователя */}
                   {profile?.role === 'admin' && (
-                    <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 mb-3 text-xs">
+                    <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 mb-2 sm:mb-3 text-xs">
                       <Shield className="w-3 h-3 mr-1" />
                       Администратор
                     </Badge>
@@ -241,40 +241,40 @@ const Profile = () => {
 
                 {/* Баланс */}
                 <div className="text-center lg:text-left">
-                  <h3 className="text-lg font-bold text-white mb-3 flex items-center justify-center lg:justify-start">
-                    <Wallet className="w-5 h-5 mr-2 text-amber-400" />
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3 flex items-center justify-center lg:justify-start">
+                    <Wallet className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-amber-400" />
                     Баланс
                   </h3>
-                  <div className="text-2xl font-bold text-amber-400 mb-3">
+                  <div className="text-xl sm:text-2xl font-bold text-amber-400 mb-2 sm:mb-3">
                     {balance || 0}₴
                   </div>
                   <Button
                     onClick={handleTopUp}
-                    className="w-full lg:w-auto px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm"
+                    className="w-full lg:w-auto px-4 sm:px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-xs sm:text-sm"
                   >
-                    <CreditCard className="w-4 h-4 mr-2" />
+                    <CreditCard className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                     пополнить
                   </Button>
                 </div>
 
                 {/* Быстрые действия */}
                 <div className="text-center lg:text-left">
-                  <h3 className="text-lg font-bold text-white mb-3">Быстрые действия</h3>
+                  <h3 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3">Быстрые действия</h3>
                   <div className="space-y-2">
                     <Button
                       onClick={() => navigate('/catalog')}
                       variant="outline"
-                      className="w-full py-2 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg text-sm"
+                      className="w-full py-2 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg text-xs sm:text-sm"
                     >
-                      <ShoppingBag className="w-4 h-4 mr-2" />
+                      <ShoppingBag className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                       Каталог
                     </Button>
                     <Button
                       onClick={() => navigate('/cases')}
                       variant="outline"
-                      className="w-full py-2 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg text-sm"
+                      className="w-full py-2 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg text-xs sm:text-sm"
                     >
-                      <Gift className="w-4 h-4 mr-2" />
+                      <Gift className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                       Кейсы
                     </Button>
                   </div>
@@ -285,18 +285,18 @@ const Profile = () => {
         </div>
 
         {/* Статистика */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white text-center mb-6">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-4 sm:mb-6">
             Ваша статистика
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-4 text-center">
-                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 border border-amber-500/30">
-                  <ShoppingBag className="w-6 h-6 text-amber-400" />
+              <CardContent className="p-3 sm:p-4 text-center">
+                <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-2 sm:mb-3 border border-amber-500/30">
+                  <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
                 </div>
-                <h3 className="text-white font-semibold mb-1 text-sm">Покупки</h3>
-                <p className="text-xl font-bold text-amber-400">{stats.totalPurchases}</p>
+                <h3 className="text-white font-semibold mb-1 text-xs sm:text-sm">Покупки</h3>
+                <p className="text-lg sm:text-xl font-bold text-amber-400">{stats.totalPurchases}</p>
               </CardContent>
             </Card>
 

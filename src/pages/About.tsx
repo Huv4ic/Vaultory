@@ -83,267 +83,167 @@ const About = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
-            🏢 {t('О нас')}
+        <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+            О нас
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Vaultory - ваш надежный партнер в мире игровых товаров и кейсов. 
-            Мы создаем безопасную и удобную платформу для всех игроков.
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4">
+            Vaultory - ваш надежный партнер в мире игровых товаров и услуг. 
+            Мы стремимся предоставить лучший опыт покупок для геймеров.
           </p>
         </div>
         
         {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
+        <div className="absolute top-20 left-10 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-amber-400/10 rounded-full animate-bounce hidden md:block"></div>
+        <div className="absolute top-40 right-20 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-full animate-pulse hidden md:block"></div>
+        <div className="absolute bottom-20 left-1/4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-amber-400/10 rounded-full animate-spin hidden md:block"></div>
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-20 container mx-auto px-4 pb-20">
-        {/* Миссия и видение */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center">
-                <Target className="w-6 h-6 mr-3 text-amber-400" />
-                Наша миссия
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-300 leading-relaxed">
-                Создать самую надежную и удобную платформу для покупки игровых товаров. 
-                Мы стремимся сделать процесс покупки максимально простым и безопасным 
-                для каждого клиента.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center">
-                <Lightbulb className="w-6 h-6 mr-3 text-amber-400" />
-                Наше видение
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-300 leading-relaxed">
-                Стать лидером в сфере игровых товаров, предлагая инновационные решения 
-                и исключительный уровень обслуживания. Мы постоянно развиваемся, 
-                чтобы соответствовать растущим потребностям игрового сообщества.
-              </p>
-            </CardContent>
-          </Card>
+      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
+        {/* Наша миссия */}
+        <div className="mb-8 sm:mb-12">
+          <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 sm:p-8 text-center">
+            <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-amber-500/30">
+              <Target className="w-8 h-8 sm:w-10 sm:h-10 text-amber-400" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">Наша миссия</h2>
+            <p className="text-sm sm:text-base text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Мы создаем платформу, где каждый геймер может найти качественные товары и услуги 
+              по доступным ценам. Наша цель - сделать игровой мир более доступным и увлекательным.
+            </p>
+          </div>
         </div>
 
-        {/* Особенности */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
+        {/* Наши преимущества */}
+        <div className="mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8">
             Почему выбирают нас
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {features.map((feature, index) => (
-              <Card 
+              <div 
                 key={index}
-                className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105"
+                className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center hover:shadow-amber-500/40 transition-all duration-300"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardHeader className="text-center">
-                  <div className="mx-auto w-16 h-16 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 border border-amber-500/20">
-                    {feature.icon}
-                  </div>
-                  <CardTitle className="text-white text-lg">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-300 text-center text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
+                  {feature.icon}
+                </div>
+                <h3 className="text-sm sm:text-base font-semibold text-white mb-2">{feature.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">{feature.description}</p>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Статистика */}
-        <div className="mb-16">
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardHeader>
-              <CardTitle className="text-white text-center">Наши достижения</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {stats.map((stat, index) => (
-                  <div key={index} className="text-center p-4 bg-black/50 backdrop-blur-sm rounded-xl border border-amber-500/20">
-                    <div className="flex items-center justify-center mb-3">
-                      {stat.icon}
-                    </div>
-                    <div className="text-xl font-bold text-amber-400 mb-2">{stat.number}</div>
-                    <div className="text-gray-300 text-sm">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Команда */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
-            Наша команда
+        <div className="mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8">
+            Наши достижения
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {team.map((member, index) => (
-              <Card 
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {stats.map((stat, index) => (
+              <div 
                 key={index}
-                className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300"
+                className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center hover:shadow-amber-500/40 transition-all duration-300"
+                style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <CardHeader className="text-center">
-                  <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-4">
-                    <Users className="w-10 h-10 text-white" />
-                  </div>
-                  <CardTitle className="text-white">{member.name}</CardTitle>
-                  <CardDescription className="text-amber-300">{member.role}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-300 text-center leading-relaxed">
-                    {member.description}
-                  </p>
-                </CardContent>
-              </Card>
+                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
+                  {stat.icon}
+                </div>
+                <div className="text-2xl sm:text-3xl font-bold text-amber-400 mb-2">{stat.number}</div>
+                <p className="text-xs sm:text-sm text-gray-300">{stat.label}</p>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* История */}
-        <div className="mb-16">
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center">
-                <Globe className="w-6 h-6 mr-3 text-amber-400" />
-                История развития
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-3 h-3 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
+        {/* История компании */}
+        <div className="mb-8 sm:mb-12">
+          <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 sm:p-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8 flex items-center justify-center">
+              <Globe className="w-6 h-6 sm:w-8 sm:h-8 mr-3 text-amber-400" />
+              Наша история
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-amber-400 rounded-full mt-2 sm:mt-3 flex-shrink-0"></div>
                   <div>
-                    <h4 className="text-white font-semibold mb-2">2025 - Основание</h4>
-                    <p className="text-gray-300">
-                      Создание платформы Vaultory с базовым функционалом для покупки игровых товаров
-                    </p>
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">2023</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">Основание компании Vaultory</p>
                   </div>
                 </div>
-                
-                <div className="flex items-start space-x-4">
-                  <div className="w-3 h-3 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-amber-400 rounded-full mt-2 sm:mt-3 flex-shrink-0"></div>
                   <div>
-                    <h4 className="text-white font-semibold mb-2">2025 - Развитие</h4>
-                    <p className="text-gray-300">
-                      Добавление системы кейсов, расширение ассортимента и улучшение безопасности
-                    </p>
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">2024</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">Запуск платформы и первые клиенты</p>
                   </div>
                 </div>
-                
-                <div className="flex items-start space-x-4">
-                  <div className="w-3 h-3 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-amber-400 rounded-full mt-2 sm:mt-3 flex-shrink-0"></div>
                   <div>
-                    <h4 className="text-white font-semibold mb-2">2025 - Инновации</h4>
-                    <p className="text-gray-300">
-                      Внедрение новых технологий, улучшение пользовательского опыта и расширение команды
-                    </p>
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">Настоящее время</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">Постоянное развитие и улучшение сервиса</p>
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Ценности */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
-            Наши ценности
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <Shield className="w-5 h-5 mr-2 text-amber-400" />
-                  Надежность
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-300">
-                  Мы гарантируем безопасность каждой транзакции и защиту данных наших клиентов
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <Heart className="w-5 h-5 mr-2 text-amber-400" />
-                  Клиентоориентированность
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-300">
-                  Потребности клиентов всегда на первом месте. Мы стремимся превзойти ожидания
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <Zap className="w-5 h-5 mr-2 text-amber-400" />
-                  Инновации
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-300">
-                  Постоянно внедряем новые технологии для улучшения пользовательского опыта
-                </p>
-              </CardContent>
-            </Card>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-amber-400 rounded-full mt-2 sm:mt-3 flex-shrink-0"></div>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">Будущее</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">Расширение ассортимента и новые возможности</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-amber-400 rounded-full mt-2 sm:mt-3 flex-shrink-0"></div>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">Цель</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">Стать лидером в сфере игровых товаров</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Призыв к действию */}
         <div className="text-center">
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="pt-8">
-              <h3 className="text-2xl font-bold text-white mb-4">
-                Готовы присоединиться к нам?
-              </h3>
-              <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-                Начните свой путь с Vaultory уже сегодня. Откройте для себя мир качественных 
-                игровых товаров и незабываемых впечатлений.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  onClick={() => navigate('/catalog')}
-                  className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
-                >
-                  Перейти в каталог
-                </Button>
-                <Button
-                  onClick={openGmail}
-                  variant="outline"
-                  className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
-                >
-                  Связаться с нами
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 sm:p-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">
+              Готовы начать?
+            </h3>
+            <p className="text-sm sm:text-base text-gray-300 mb-6 max-w-2xl mx-auto">
+              Присоединяйтесь к тысячам довольных клиентов Vaultory и откройте для себя 
+              мир качественных игровых товаров!
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <Button
+                onClick={() => navigate('/catalog')}
+                className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm sm:text-base"
+              >
+                Перейти в каталог
+              </Button>
+              <Button
+                onClick={openGmail}
+                variant="outline"
+                className="px-6 sm:px-8 py-2 sm:py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+              >
+                Связаться с нами
+              </Button>
+            </div>
+          </div>
         </div>
 
         {/* Кнопка назад */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-8 sm:mt-12">
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-8 py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
+            className="px-6 sm:px-8 py-2 sm:py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную

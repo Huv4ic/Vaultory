@@ -163,111 +163,84 @@ const TransactionHistory = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
-            📊 {t('История транзакций')}
+        <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+            📊 История транзакций
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Отслеживайте все ваши финансовые операции: пополнения, покупки, открытие кейсов и многое другое.
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4">
+            Отслеживайте все ваши финансовые операции на платформе Vaultory
           </p>
         </div>
         
         {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
+        <div className="absolute top-20 left-10 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-amber-400/10 rounded-full animate-bounce hidden md:block"></div>
+        <div className="absolute top-40 right-20 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-full animate-pulse hidden md:block"></div>
+        <div className="absolute bottom-20 left-1/4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-amber-400/10 rounded-full animate-spin hidden md:block"></div>
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-20 container mx-auto px-4 pb-20">
+      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Фильтры */}
-        <div className="mb-8">
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="p-6">
-              <div className="flex flex-wrap justify-center gap-4">
+        <div className="mb-6 sm:mb-8">
+          <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 flex items-center">
+              <Filter className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-amber-400" />
+              Фильтры
+            </h2>
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              {[
+                { value: 'all', label: 'Все', icon: <TrendingUp className="w-4 h-4" /> },
+                { value: 'deposits', label: 'Пополнения', icon: <TrendingUp className="w-4 h-4" /> },
+                { value: 'withdrawals', label: 'Выводы', icon: <TrendingDown className="w-4 h-4" /> },
+                { value: 'cases', label: 'Кейсы', icon: <Gift className="w-4 h-4" /> },
+                { value: 'purchases', label: 'Покупки', icon: <ShoppingCart className="w-4 h-4" /> }
+              ].map((filterOption) => (
                 <Button
-                  onClick={() => setFilter('all')}
-                  variant={filter === 'all' ? 'default' : 'outline'}
-                  className={filter === 'all' 
-                    ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                    : 'bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200'
-                  }
+                  key={filterOption.value}
+                  onClick={() => setFilter(filterOption.value as any)}
+                  variant={filter === filterOption.value ? "default" : "outline"}
+                  className={`px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-lg sm:rounded-xl transition-all duration-300 ${
+                    filter === filterOption.value
+                      ? 'bg-amber-500 hover:bg-amber-600 text-white'
+                      : 'bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200'
+                  }`}
                 >
-                  <Filter className="w-4 h-4 mr-2" />
-                  Все транзакции
+                  <span className="mr-1 sm:mr-2">{filterOption.icon}</span>
+                  {filterOption.label}
                 </Button>
-                <Button
-                  onClick={() => setFilter('deposits')}
-                  variant={filter === 'deposits' ? 'default' : 'outline'}
-                  className={filter === 'deposits' 
-                    ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                    : 'bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200'
-                  }
-                >
-                  <TrendingUp className="w-4 h-4 mr-2" />
-                  Пополнения
-                </Button>
-                <Button
-                  onClick={() => setFilter('withdrawals')}
-                  variant={filter === 'withdrawals' ? 'default' : 'outline'}
-                  className={filter === 'withdrawals' 
-                    ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                    : 'bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200'
-                  }
-                >
-                  <TrendingDown className="w-4 h-4 mr-2" />
-                  Списания
-                </Button>
-                <Button
-                  onClick={() => setFilter('cases')}
-                  variant={filter === 'cases' ? 'default' : 'outline'}
-                  className={filter === 'cases' 
-                    ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                    : 'bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200'
-                  }
-                >
-                  <Gift className="w-4 h-4 mr-2" />
-                  Кейсы
-                </Button>
-                <Button
-                  onClick={() => setFilter('purchases')}
-                  variant={filter === 'purchases' ? 'default' : 'outline'}
-                  className={filter === 'purchases' 
-                    ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                    : 'bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200'
-                  }
-                >
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  Покупки
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Список транзакций */}
-        <div className="space-y-4">
-          {filteredTransactions.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="mx-auto w-24 h-24 bg-amber-500/20 rounded-full flex items-center justify-center mb-6 border border-amber-500/30">
-                <Clock className="w-12 h-12 text-amber-400" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-4">Транзакции не найдены</h3>
-              <p className="text-gray-300 mb-6 max-w-md mx-auto">
-                Попробуйте изменить фильтр или у вас пока нет транзакций
+        <div className="space-y-3 sm:space-y-4">
+          {loading ? (
+            <div className="text-center py-12 sm:py-16">
+              <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-amber-400 mx-auto mb-4 sm:mb-6"></div>
+              <p className="text-lg sm:text-xl text-gray-300">Загрузка транзакций...</p>
+            </div>
+          ) : filteredTransactions.length === 0 ? (
+            <div className="text-center py-12 sm:py-16">
+              <Wallet className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 text-gray-600" />
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-400 mb-2">Транзакции не найдены</h3>
+              <p className="text-gray-500 text-sm sm:text-base">
+                {filter === 'all' 
+                  ? 'У вас пока нет транзакций' 
+                  : `Транзакции типа "${filter}" не найдены`}
               </p>
             </div>
           ) : (
             filteredTransactions.map((transaction) => (
               <Card key={transaction.id} className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-3 sm:space-y-0">
+                    <div className="flex items-center space-x-3 sm:space-x-4">
                       <div className="flex-shrink-0">
                         {getTransactionIcon(transaction.type)}
                       </div>
                       <div>
-                        <div className="text-lg font-semibold text-white">
+                        <div className="text-base sm:text-lg font-semibold text-white">
                           {getTransactionTypeText(transaction.type)}
                         </div>
                         <div className="text-gray-300 text-sm">
@@ -279,12 +252,14 @@ const TransactionHistory = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className={`text-xl font-bold ${transaction.amount > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      <div className={`text-lg sm:text-xl font-bold ${transaction.amount > 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {transaction.amount > 0 ? '+' : ''}{transaction.amount}₴
                       </div>
-                      <div className="text-gray-400 text-sm">
-                        {transaction.order_id && `Заказ: ${transaction.order_id}`}
-                      </div>
+                      {transaction.order_id && (
+                        <div className="text-gray-400 text-xs sm:text-sm">
+                          Заказ: {transaction.order_id}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -294,14 +269,14 @@ const TransactionHistory = () => {
         </div>
 
         {/* Кнопка назад */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-8 sm:mt-12">
           <Button
-            onClick={() => navigate('/profile')}
+            onClick={() => navigate('/')}
             variant="outline"
-            className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
+            className="px-6 sm:px-8 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Вернуться в профиль
+            Вернуться на главную
           </Button>
         </div>
       </div>

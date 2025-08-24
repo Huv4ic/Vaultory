@@ -212,8 +212,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       
       console.log('Strip element found, starting animation...');
       
-             // Базовые параметры
-       const REPEAT = 50; // длинная лента для бесконечных спинов
+      // Базовые параметры
+      const REPEAT = 50; // длинная лента для бесконечных спинов
       let itemWidth = 0; // вычислим после вставки
       
       // Вычисляем ширину карточки
@@ -249,123 +249,123 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         return ((idx % (caseItems.length*REPEAT)) + (caseItems.length*REPEAT)) % (caseItems.length*REPEAT);
       };
       
-              // Анимация
-        const animate = () => {
-          animationRef.current = requestAnimationFrame(animate);
+      // Анимация
+      const animate = () => {
+        animationRef.current = requestAnimationFrame(animate);
+        setX(x + v);
+        // немного трения
+        v *= 0.985;
+        // безопасность — бесконечная лента (за цикл)
+        const totalW = caseItems.length * REPEAT * itemWidth;
+        if (x < -totalW + centerOffset()) setX(x + totalW);
+        if (x > centerOffset()) setX(x - totalW);
+      };
+      
+      // Запускаем спин
+      const spinToLocalIndex = (localIndex: number) => {
+        console.log('spinToLocalIndex called with index:', localIndex);
+        
+        if (isSpinning) {
+          console.log('Already spinning, cancelling previous animation');
+          if (animationRef.current) {
+            cancelAnimationFrame(animationRef.current);
+          }
+        }
+        
+        // стартовая скорость и разгон
+        v = -40; // влево
+        console.log('Starting animation with velocity:', v);
+        
+        // выберем сегмент, где остановимся (далее по ленте + несколько кругов)
+        const currentGlobal = nowIndex();
+        const loops = 3; // сколько кругов до остановки
+        const stopGlobal = Math.floor(currentGlobal/caseItems.length)*caseItems.length + loops*caseItems.length + localIndex;
+        const targetX = indexToX(stopGlobal);
+
+        console.log('Animation target:', { currentGlobal, loops, stopGlobal, targetX });
+
+        // Плавный довод с помощью встроенного аниматора
+        const startX = x; 
+        const dist = targetX - startX; 
+        const D = 3200; // длительность в мс
+        const startT = performance.now();
+        
+        const easeOutCubic = (t: number) => { 
+          return 1 - Math.pow(1 - t, 3); 
+        };
+
+        const tween = () => {
+          const t = (performance.now() - startT) / D;
+          console.log('Tween called, t:', t, 'target:', targetX, 'startT:', startT, 'D:', D);
+          
+          if (t >= 1){
+            console.log('Tween animation completed, setting result');
+            setX(targetX);
+            
+            // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
+            console.log('Setting isSpinning to false...');
+            setIsSpinning(false);
+            console.log('Setting showResult to true...');
+            setShowResult(true);
+            
+            // Находим правильный предмет для показа
+            const realLocal = stopGlobal % caseItems.length; 
+            const it = caseItems[realLocal];
+            console.log('Setting winnerItem to:', it.name);
+            setWinnerItem(it);
+            
+            // Останавливаем анимацию
+            if (animationRef.current) {
+              console.log('Cancelling animation in tween completion');
+              cancelAnimationFrame(animationRef.current);
+              animationRef.current = null;
+            }
+            
+            // Анимация яркости viewport
+            if (viewport) {
+              viewport.animate([
+                {filter:'brightness(1.0)'},
+                {filter:'brightness(1.6)'},
+                {filter:'brightness(1.0)'}
+              ], {duration:500});
+            }
+            
+            console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
+            return;
+          }
+          setX(startX + dist * easeOutCubic(t));
+          requestAnimationFrame(tween);
+        };
+        
+        // Запускаем основную анимацию на короткое время, потом переключаемся на tween
+        let frameCount = 0;
+        const maxFrames = 60; // примерно 1 секунда при 60fps
+        
+        const mainAnimation = () => {
+          frameCount++;
+          console.log('Main animation frame:', frameCount, 'of', maxFrames);
+          
+          if (frameCount >= maxFrames) {
+            // Переключаемся на плавную остановку
+            console.log('Switching to tween animation');
+            console.log('Final position before tween - x:', x, 'v:', v);
+            requestAnimationFrame(tween);
+            return;
+          }
+          
+          animationRef.current = requestAnimationFrame(mainAnimation);
           setX(x + v);
-          // немного трения
           v *= 0.985;
+          
           // безопасность — бесконечная лента (за цикл)
           const totalW = caseItems.length * REPEAT * itemWidth;
           if (x < -totalW + centerOffset()) setX(x + totalW);
           if (x > centerOffset()) setX(x - totalW);
         };
         
-        // Запускаем спин
-        const spinToLocalIndex = (localIndex: number) => {
-          console.log('spinToLocalIndex called with index:', localIndex);
-          
-          if (isSpinning) {
-            console.log('Already spinning, cancelling previous animation');
-            if (animationRef.current) {
-              cancelAnimationFrame(animationRef.current);
-            }
-          }
-          
-          // стартовая скорость и разгон
-          v = -40; // влево
-          console.log('Starting animation with velocity:', v);
-          
-          // выберем сегмент, где остановимся (далее по ленте + несколько кругов)
-          const currentGlobal = nowIndex();
-          const loops = 3; // сколько кругов до остановки
-          const stopGlobal = Math.floor(currentGlobal/caseItems.length)*caseItems.length + loops*caseItems.length + localIndex;
-          const targetX = indexToX(stopGlobal);
-
-          console.log('Animation target:', { currentGlobal, loops, stopGlobal, targetX });
-
-          // Плавный довод с помощью встроенного аниматора
-          const startX = x; 
-          const dist = targetX - startX; 
-          const D = 3200; // длительность в мс
-          const startT = performance.now();
-          
-          const easeOutCubic = (t: number) => { 
-            return 1 - Math.pow(1 - t, 3); 
-          };
-
-                     const tween = () => {
-             const t = (performance.now() - startT) / D;
-             console.log('Tween called, t:', t, 'target:', targetX, 'startT:', startT, 'D:', D);
-             
-             if (t >= 1){
-               console.log('Tween animation completed, setting result');
-               setX(targetX);
-               
-               // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
-               console.log('Setting isSpinning to false...');
-               setIsSpinning(false);
-               console.log('Setting showResult to true...');
-               setShowResult(true);
-               
-               // Находим правильный предмет для показа
-               const realLocal = stopGlobal % caseItems.length; 
-               const it = caseItems[realLocal];
-               console.log('Setting winnerItem to:', it.name);
-               setWinnerItem(it);
-               
-               // Останавливаем анимацию
-               if (animationRef.current) {
-                 console.log('Cancelling animation in tween completion');
-                 cancelAnimationFrame(animationRef.current);
-                 animationRef.current = null;
-               }
-               
-               // Анимация яркости viewport
-               if (viewport) {
-                 viewport.animate([
-                   {filter:'brightness(1.0)'},
-                   {filter:'brightness(1.6)'},
-                   {filter:'brightness(1.0)'}
-                 ], {duration:500});
-               }
-               
-               console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
-               return;
-             }
-             setX(startX + dist * easeOutCubic(t));
-             requestAnimationFrame(tween);
-           };
-          
-          // Запускаем основную анимацию на короткое время, потом переключаемся на tween
-          let frameCount = 0;
-          const maxFrames = 60; // примерно 1 секунда при 60fps
-          
-          const mainAnimation = () => {
-            frameCount++;
-            console.log('Main animation frame:', frameCount, 'of', maxFrames);
-            
-            if (frameCount >= maxFrames) {
-              // Переключаемся на плавную остановку
-              console.log('Switching to tween animation');
-              console.log('Final position before tween - x:', x, 'v:', v);
-              requestAnimationFrame(tween);
-              return;
-            }
-            
-            animationRef.current = requestAnimationFrame(mainAnimation);
-            setX(x + v);
-            v *= 0.985;
-            
-            // безопасность — бесконечная лента (за цикл)
-            const totalW = caseItems.length * REPEAT * itemWidth;
-            if (x < -totalW + centerOffset()) setX(x + totalW);
-            if (x > centerOffset()) setX(x - totalW);
-          };
-          
-          console.log('Starting main animation...');
-          mainAnimation();
-        };
+        console.log('Starting main animation...');
+        mainAnimation();
+      };
       
       // Находим индекс победного предмета
       const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
@@ -441,16 +441,36 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           border: 1px solid #d4af37 !important;
         }
         .w-35 {
-          width: 140px !important;
+          width: 120px !important;
+        }
+        @media (min-width: 640px) {
+          .w-35 {
+            width: 140px !important;
+          }
         }
         .h-30 {
-          height: 120px !important;
+          height: 100px !important;
+        }
+        @media (min-width: 640px) {
+          .h-30 {
+            height: 120px !important;
+          }
         }
         .gap-2\.5 {
-          gap: 10px !important;
+          gap: 8px !important;
+        }
+        @media (min-width: 640px) {
+          .gap-2\.5 {
+            gap: 10px !important;
+          }
         }
         .p-2\.5 {
-          padding: 10px !important;
+          padding: 8px !important;
+        }
+        @media (min-width: 640px) {
+          .p-2\.5 {
+            padding: 10px !important;
+          }
         }
         .mix-blend-mode-overlay {
           mix-blend-mode: overlay !important;
@@ -463,46 +483,46 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         }
       `}</style>
       
-      <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-4">
-        <div className="bg-gray-900/95 rounded-3xl border-2 border-amber-500/50 shadow-2xl shadow-amber-500/30 max-w-6xl w-full max-h-[90vh] overflow-hidden">
+      <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-2 sm:p-4">
+        <div className="bg-gray-900/95 rounded-2xl sm:rounded-3xl border-2 border-amber-500/50 shadow-2xl shadow-amber-500/30 max-w-4xl sm:max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden">
           {/* Заголовок */}
-          <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 p-6 border-b border-amber-500/30">
+          <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 p-4 sm:p-6 border-b border-amber-500/30">
             <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-bold text-white flex items-center">
-                <Package className="w-8 h-8 mr-3 text-amber-400" />
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center">
+                <Package className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-2 sm:mr-3 text-amber-400" />
                 Открытие кейса
               </h2>
-                             <Button
-                 onClick={() => {
-                   console.log('Close button clicked!');
-                   console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult);
-                   handleClose();
-                 }}
-                 variant="ghost"
-                 size="sm"
-                 disabled={isSpinning}
-                 className={`${
-                   isSpinning 
-                     ? 'text-gray-600 cursor-not-allowed' 
-                     : 'text-gray-400 hover:text-white hover:bg-white/10'
-                 }`}
-               >
-                 <X className="w-6 h-6" />
-               </Button>
+              <Button
+                onClick={() => {
+                  console.log('Close button clicked!');
+                  console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult);
+                  handleClose();
+                }}
+                variant="ghost"
+                size="sm"
+                disabled={isSpinning}
+                className={`${
+                  isSpinning 
+                    ? 'text-gray-600 cursor-not-allowed' 
+                    : 'text-gray-400 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              </Button>
             </div>
-            <p className="text-gray-300 mt-2">Стоимость: {casePrice}₴</p>
+            <p className="text-gray-300 mt-2 text-sm sm:text-base">Стоимость: {casePrice}₴</p>
           </div>
 
           {/* Рулетка */}
-          <div className="p-8">
+          <div className="p-4 sm:p-6 md:p-8">
             {!showResult ? (
-              <div className="space-y-8">
+              <div className="space-y-6 sm:space-y-8">
                 {/* Кнопка запуска */}
                 <div className="text-center">
                   <Button
                     onClick={startSpin}
                     disabled={isSpinning}
-                    className={`px-12 py-6 text-2xl font-bold rounded-2xl transition-all duration-300 ${
+                    className={`px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 text-lg sm:text-xl md:text-2xl font-bold rounded-xl sm:rounded-2xl transition-all duration-300 ${
                       isSpinning
                         ? 'bg-gray-600 cursor-not-allowed'
                         : 'bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 hover:scale-105 shadow-2xl shadow-amber-500/30'
@@ -510,12 +530,12 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   >
                     {isSpinning ? (
                       <div className="flex items-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mr-3"></div>
-                        Крутится...
+                        <div className="animate-spin rounded-full h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 border-b-2 border-white mr-2 sm:mr-3"></div>
+                        <span className="text-sm sm:text-base md:text-lg">Крутится...</span>
                       </div>
                     ) : (
                       <>
-                        <Package className="w-8 h-8 mr-3" />
+                        <Package className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-2 sm:mr-3" />
                         Запустить рулетку
                       </>
                     )}
@@ -525,37 +545,37 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 {/* Рулетка */}
                 <div className="relative">
                   {/* Контейнер рулетки */}
-                  <div className="relative h-40 bg-gray-800/50 rounded-2xl border border-amber-500/30 overflow-hidden">
+                  <div className="relative h-32 sm:h-36 md:h-40 bg-gray-800/50 rounded-xl sm:rounded-2xl border border-amber-500/30 overflow-hidden">
                     {/* Центральная линия с анимацией */}
-                    <div className={`absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-yellow-400 transform -translate-x-1/2 z-10 shadow-lg shadow-amber-400/50 ${
+                    <div className={`absolute left-1/2 top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-b from-amber-400 to-yellow-400 transform -translate-x-1/2 z-10 shadow-lg shadow-amber-400/50 ${
                       isSpinning ? 'animate-pulse' : ''
                     }`}>
                       {/* Дополнительная подсветка центра */}
-                      <div className="absolute -top-1 -left-1 w-3 h-3 bg-amber-400 rounded-full opacity-50 animate-ping"></div>
-                      <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-amber-400 rounded-full opacity-50 animate-ping" style={{ animationDelay: '0.5s' }}></div>
+                      <div className="absolute -top-1 -left-1 w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full opacity-50 animate-ping"></div>
+                      <div className="absolute -bottom-1 -left-1 w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full opacity-50 animate-ping" style={{ animationDelay: '0.5s' }}></div>
                     </div>
                     
                     {/* Лента с предметами */}
                     <div 
                       ref={stripRef}
-                      className="flex gap-2.5 items-center p-4 h-full"
+                      className="flex gap-2.5 items-center p-3 sm:p-4 h-full"
                       style={{ transform: 'translateX(300px)' }}
                     >
-                                             {/* Дублируем предметы для бесконечной прокрутки */}
-                       {Array.from({ length: 50 }, () => caseItems).flat().map((item, index) => (
+                      {/* Дублируем предметы для бесконечной прокрутки */}
+                      {Array.from({ length: 50 }, () => caseItems).flat().map((item, index) => (
                         <div
                           key={`${item.id}-${index}`}
-                          className={`flex-shrink-0 w-35 h-30 rounded-xl p-2.5 flex flex-col justify-end relative isolation isolate item ${
+                          className={`flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2.5 flex flex-col justify-end relative isolation isolate item ${
                             getRarityColor(item.rarity)
                           }`}
                         >
                           {/* Блеск */}
-                          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/15 to-transparent mix-blend-mode-overlay filter-blur-sm"></div>
+                          <div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-white/15 to-transparent mix-blend-mode-overlay filter-blur-sm"></div>
                           {/* Свечение */}
-                          <div className="absolute inset-0 rounded-xl shadow-lg opacity-35" style={{ boxShadow: '0 0 40px currentColor' }}></div>
+                          <div className="absolute inset-0 rounded-lg sm:rounded-xl shadow-lg opacity-35" style={{ boxShadow: '0 0 40px currentColor' }}></div>
                           
                           {/* Название предмета */}
-                          <div className="font-bold text-sm leading-tight relative z-10">
+                          <div className="font-bold text-xs sm:text-sm leading-tight relative z-10">
                             {item.name}
                           </div>
                           
@@ -569,50 +589,50 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   </div>
                   
                   {/* Подсказка и счетчик */}
-                  <div className="text-center mt-4">
+                  <div className="text-center mt-3 sm:mt-4">
                     {isSpinning ? (
                       <div className="space-y-2">
-                        <p className="text-amber-400 text-sm font-medium">🎰 Рулетка крутится...</p>
+                        <p className="text-amber-400 text-xs sm:text-sm font-medium">🎰 Рулетка крутится...</p>
                         <div className="flex items-center justify-center space-x-2">
-                          <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                          <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce"></div>
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                         </div>
                       </div>
                     ) : (
-                      <p className="text-gray-400 text-sm">Нажмите кнопку, чтобы запустить рулетку</p>
+                      <p className="text-gray-400 text-xs sm:text-sm">Нажмите кнопку, чтобы запустить рулетку</p>
                     )}
                   </div>
                 </div>
               </div>
             ) : (
               /* Результат */
-              <div className="text-center space-y-6">
-                <div className="text-8xl mb-6 animate-bounce">🎉</div>
+              <div className="text-center space-y-4 sm:space-y-6">
+                <div className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6 animate-bounce">🎉</div>
                 
-                <h3 className="text-3xl font-bold text-white mb-4">
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
                   Поздравляем!
                 </h3>
                 
                 {winnerItem && (
-                  <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 rounded-2xl p-8 border border-amber-500/30">
-                    <div className={`w-32 h-32 mx-auto mb-4 rounded-xl border-4 ${getRarityColor(winnerItem.rarity)} bg-gray-700/80 flex items-center justify-center`}>
+                  <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-amber-500/30">
+                    <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 rounded-lg sm:rounded-xl border-4 ${getRarityColor(winnerItem.rarity)} bg-gray-700/80 flex items-center justify-center`}>
                       {winnerItem.image_url ? (
                         <img
                           src={winnerItem.image_url}
                           alt={winnerItem.name}
-                          className="w-24 h-24 object-cover rounded-lg"
+                          className="w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 object-cover rounded-lg"
                         />
                       ) : (
-                        <Gift className="w-16 h-16 text-amber-400" />
+                        <Gift className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-amber-400" />
                       )}
                     </div>
                     
-                    <h4 className="text-2xl font-bold text-white mb-2">
+                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-2">
                       {winnerItem.name}
                     </h4>
                     
-                    <div className={`inline-block px-4 py-2 rounded-full text-sm font-bold ${
+                    <div className={`inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold ${
                       winnerItem.rarity.toLowerCase() === 'common' ? 'bg-gray-500 text-white' :
                       winnerItem.rarity.toLowerCase() === 'rare' ? 'bg-blue-500 text-white' :
                       winnerItem.rarity.toLowerCase() === 'epic' ? 'bg-purple-500 text-white' :
@@ -622,32 +642,32 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       {getRarityName(winnerItem.rarity)}
                     </div>
                     
-                    <p className="text-gray-300 mt-4">
+                    <p className="text-gray-300 mt-3 sm:mt-4 text-sm sm:text-base">
                       Предмет добавлен в ваш инвентарь!
                     </p>
                   </div>
                 )}
                 
-                <div className="flex justify-center space-x-4">
-                                     <Button
-                     onClick={() => {
-                       console.log('=== CLOSE BUTTON CLICKED ===');
-                       console.log('Winner item:', winnerItem);
-                       
-                       // Обновляем счетчик только когда кейс действительно открыт
-                       const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
-                       localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
-                       
-                       console.log('Calling onCaseOpened with:', winnerItem);
-                       onCaseOpened(winnerItem!);
-                       
-                       console.log('Calling onClose');
-                       handleClose();
-                     }}
-                     className="px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
-                   >
-                     Закрыть
-                   </Button>
+                <div className="flex justify-center space-x-3 sm:space-x-4">
+                  <Button
+                    onClick={() => {
+                      console.log('=== CLOSE BUTTON CLICKED ===');
+                      console.log('Winner item:', winnerItem);
+                      
+                      // Обновляем счетчик только когда кейс действительно открыт
+                      const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1;
+                      localStorage.setItem('totalCasesOpened', currentCaseCount.toString());
+                      
+                      console.log('Calling onCaseOpened with:', winnerItem);
+                      onCaseOpened(winnerItem!);
+                      
+                      console.log('Calling onClose');
+                      handleClose();
+                    }}
+                    className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                  >
+                    Закрыть
+                  </Button>
                 </div>
               </div>
             )}

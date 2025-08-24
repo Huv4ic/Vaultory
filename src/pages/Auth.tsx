@@ -150,6 +150,27 @@ const Auth = () => {
     }
   };
 
+  const handleTelegramLogin = () => {
+    setError(null);
+    setDebugInfo('Попытка авторизации через Telegram виджет...');
+    if (tgWidgetRef.current) {
+      tgWidgetRef.current.innerHTML = ''; // Очищаем предыдущий виджет
+      const script = document.createElement('script');
+      script.src = 'https://telegram.org/js/telegram-widget.js?7';
+      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
+      script.setAttribute('data-size', 'large');
+      script.setAttribute('data-userpic', 'true');
+      script.setAttribute('data-radius', '10');
+      script.setAttribute('data-request-access', 'write');
+      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+      script.async = true;
+      script.onerror = () => {
+        setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
+      };
+      tgWidgetRef.current.appendChild(script);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
       {/* Анимированные элементы фона */}
@@ -171,155 +192,131 @@ const Auth = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="relative z-10 container mx-auto px-4 py-20 text-center">
+      <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
         <div className="max-w-4xl mx-auto">
           {/* Анимированный заголовок */}
-          <div className="mb-8">
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
               🔐 {t('Авторизация')}
             </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full animate-pulse"></div>
+            <div className="w-16 h-1 sm:w-20 sm:h-1 md:w-24 md:h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full animate-pulse"></div>
           </div>
           
           {/* Подзаголовок с анимацией */}
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in px-4">
             Войдите в свой аккаунт через Telegram для доступа к платформе Vaultory
           </p>
           
           {/* Дополнительная информация */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
-              <div className="text-2xl mb-2">🔒</div>
-              <p className="text-gray-300 text-sm">Безопасно</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto mb-6 sm:mb-8">
+            <div className="text-center p-3 sm:p-4 bg-black/40 backdrop-blur-sm rounded-lg sm:rounded-xl border border-amber-500/20">
+              <div className="text-xl sm:text-2xl mb-2">🔒</div>
+              <p className="text-gray-300 text-xs sm:text-sm">Безопасно</p>
             </div>
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
-              <div className="text-2xl mb-2">⚡</div>
-              <p className="text-gray-300 text-sm">Быстро</p>
+            <div className="text-center p-3 sm:p-4 bg-black/40 backdrop-blur-sm rounded-lg sm:rounded-xl border border-amber-500/20">
+              <div className="text-xl sm:text-2xl mb-2">⚡</div>
+              <p className="text-gray-300 text-xs sm:text-sm">Быстро</p>
             </div>
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
-              <div className="text-2xl mb-2">🛡️</div>
-              <p className="text-gray-300 text-sm">Надежно</p>
+            <div className="text-center p-3 sm:p-4 bg-black/40 backdrop-blur-sm rounded-lg sm:rounded-xl border border-amber-500/20">
+              <div className="text-xl sm:text-2xl mb-2">🛡️</div>
+              <p className="text-gray-300 text-xs sm:text-sm">Надежно</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Форма авторизации */}
-      <div className="relative z-20 container mx-auto px-4 pb-20">
-        <div className="flex justify-center">
-          <Card className="w-full max-w-lg bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-500 hover:scale-105">
-            <CardHeader className="text-center pb-8">
-              {/* Анимированная иконка Telegram */}
-              <div className="mx-auto w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-6 animate-pulse shadow-2xl shadow-amber-500/30">
-                <FaTelegramPlane className="w-12 h-12 text-white animate-bounce" />
-              </div>
-              
-              <CardTitle className="text-3xl text-white font-bold mb-3">
-                Вход через Telegram
-              </CardTitle>
-              <CardDescription className="text-amber-300 text-lg">
-                Безопасная и быстрая авторизация
-              </CardDescription>
-              
-              {/* Декоративная линия */}
-              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4"></div>
-            </CardHeader>
-            
-            <CardContent className="text-center px-8 pb-8">
-              {loading ? (
-                <div className="py-12">
-                  <div className="relative">
-                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-400/30 mx-auto mb-6"></div>
-                    <div className="absolute inset-0 animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-amber-400 mx-auto"></div>
+      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
+        <div className="max-w-2xl mx-auto">
+          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+            <CardContent className="p-4 sm:p-6 md:p-8">
+              {!loading && !error ? (
+                <div className="text-center">
+                  <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-amber-500/30">
+                    <FaTelegramPlane className="w-8 h-8 sm:w-10 sm:h-10 text-amber-400" />
                   </div>
-                  <p className="text-gray-300 text-lg font-medium">Выполняется авторизация...</p>
-                  <div className="flex justify-center space-x-1 mt-4">
-                    <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-100"></div>
-                    <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-200"></div>
+                  
+                  <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">
+                    Войти через Telegram
+                  </h2>
+                  
+                  <p className="text-sm sm:text-base text-gray-300 mb-6 sm:mb-8">
+                    Нажмите кнопку ниже, чтобы войти в свой аккаунт Telegram
+                  </p>
+                  
+                  <Button
+                    onClick={handleTelegramLogin}
+                    disabled={loading}
+                    className="w-full py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 text-sm sm:text-base"
+                  >
+                    <FaTelegramPlane className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    {loading ? 'Загрузка...' : 'Войти через Telegram'}
+                  </Button>
+                  
+                  <div className="mt-6 sm:mt-8 text-xs sm:text-sm text-gray-400">
+                    <p>Нажимая кнопку, вы соглашаетесь с нашими</p>
+                    <div className="flex justify-center space-x-2 mt-2">
+                      <button 
+                        onClick={() => navigate('/terms')}
+                        className="text-amber-400 hover:text-amber-300 transition-colors"
+                      >
+                        Условиями использования
+                      </button>
+                      <span>и</span>
+                      <button 
+                        onClick={() => navigate('/privacy')}
+                        className="text-amber-400 hover:text-amber-300 transition-colors"
+                      >
+                        Политикой конфиденциальности
+                      </button>
+                    </div>
                   </div>
                 </div>
-              ) : (
-                <div className="space-y-8">
-                  {error ? (
-                    <div className="space-y-6">
-                      <div className="p-6 bg-red-500/20 border border-red-500/40 rounded-2xl backdrop-blur-sm">
-                        <div className="flex items-center justify-center mb-3">
-                          <div className="w-8 h-8 bg-red-500/30 rounded-full flex items-center justify-center mr-3">
-                            <span className="text-red-400 text-xl">⚠️</span>
-                          </div>
-                          <p className="text-red-400 font-medium">Ошибка авторизации</p>
-                        </div>
-                        <p className="text-red-300 text-sm">{error}</p>
-                      </div>
-                      
-                      <Button
-                        onClick={retryAuth}
-                        className="w-full py-4 bg-black/70 backdrop-blur-sm border border-red-500/50 text-red-200 hover:bg-red-500/30 hover:border-red-400 hover:text-red-100 transition-all duration-300 hover:scale-105 shadow-lg shadow-red-500/20 rounded-2xl"
-                      >
-                        <span className="mr-2">🔄</span>
-                        Попробовать снова
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-6">
-                      {/* Telegram виджет */}
-                      <div ref={tgWidgetRef} className="flex justify-center transform hover:scale-105 transition-transform duration-300"></div>
-                      
-                      {/* Отладочная информация */}
-                      {debugInfo && (
-                        <div className="p-4 bg-amber-500/20 border border-amber-500/40 rounded-2xl backdrop-blur-sm">
-                          <div className="flex items-center justify-center mb-2">
-                            <div className="w-6 h-6 bg-amber-500/30 rounded-full flex items-center justify-center mr-2">
-                              <span className="text-amber-400 text-sm">✓</span>
-                            </div>
-                            <p className="text-amber-300 text-sm font-medium">Статус системы</p>
-                          </div>
-                          <p className="text-amber-200 text-xs">{debugInfo}</p>
-                        </div>
-                      )}
+              ) : loading ? (
+                <div className="text-center py-8 sm:py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-amber-400 mx-auto mb-4 sm:mb-6"></div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">Авторизация...</h3>
+                  <p className="text-sm sm:text-base text-gray-300">Пожалуйста, подождите</p>
+                </div>
+              ) : error ? (
+                <div className="text-center py-8 sm:py-12">
+                  <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-red-400/20 to-red-600/20 rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-red-500/30">
+                    <div className="text-red-400 text-2xl">⚠️</div>
+                  </div>
+                  
+                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">
+                    Ошибка авторизации
+                  </h3>
+                  
+                  <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6">
+                    {error}
+                  </p>
+                  
+                  {debugInfo && (
+                    <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-black/60 backdrop-blur-sm rounded-lg sm:rounded-xl border border-amber-500/30">
+                      <p className="text-xs sm:text-sm text-amber-300 font-mono">
+                        <span className="text-amber-400">Debug:</span> {debugInfo}
+                      </p>
                     </div>
                   )}
                   
-                  {/* Дополнительная информация */}
-                  <div className="space-y-6">
-                    <div className="p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-amber-500/20">
-                      <p className="text-gray-300 text-sm leading-relaxed">
-                        Нажимая кнопку выше, вы соглашаетесь с нашими{' '}
-                        <span 
-                          className="text-amber-400 hover:text-amber-300 cursor-pointer underline transition-colors duration-200"
-                          onClick={() => navigate('/terms')}
-                        >
-                          условиями использования
-                        </span>{' '}
-                        и{' '}
-                        <span 
-                          className="text-amber-400 hover:text-amber-300 cursor-pointer underline transition-colors duration-200"
-                          onClick={() => navigate('/privacy')}
-                        >
-                          политикой конфиденциальности
-                        </span>
-                      </p>
-                    </div>
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <Button
+                      onClick={() => window.location.reload()}
+                      className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm sm:text-base"
+                    >
+                      <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                      Обновить страницу
+                    </Button>
                     
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <Button
-                        onClick={() => window.location.reload()}
-                        className="flex-1 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
-                      >
-                        <RefreshCw className="w-5 h-5 mr-2" />
-                        Обновить страницу
-                      </Button>
-                      
-                      <Button
-                        variant="outline"
-                        onClick={() => navigate('/')}
-                        className="px-6 py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
-                      >
-                        <Home className="w-5 h-5 mr-2" />
-                        На главную
-                      </Button>
-                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate('/')}
+                      className="px-4 sm:px-6 py-3 sm:py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
+                    >
+                      <Home className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                      На главную
+                    </Button>
                   </div>
                 </div>
               )}

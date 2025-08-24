@@ -336,26 +336,26 @@ const AdminCases = () => {
 
   if (loading) {
     return (
-      <div className="p-6 bg-gray-900 text-white rounded-xl shadow-xl">
-        <div className="flex items-center justify-center h-32">
-          <div className="text-lg">Загрузка кейсов...</div>
+      <div className="p-3 sm:p-6 bg-gray-900 text-white rounded-xl shadow-xl">
+        <div className="flex items-center justify-center h-24 sm:h-32">
+          <div className="text-base sm:text-lg">Загрузка кейсов...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 bg-gray-900 text-white rounded-xl shadow-xl">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Управление кейсами</h2>
-        <Button onClick={openAddModal} className="bg-purple-600 hover:bg-purple-700">
+    <div className="p-3 sm:p-6 bg-gray-900 text-white rounded-xl shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
+        <h2 className="text-xl sm:text-2xl font-bold">Управление кейсами</h2>
+        <Button onClick={openAddModal} className="bg-purple-600 hover:bg-purple-700 text-sm sm:text-base">
           <Plus className="w-4 h-4 mr-2" />
           Добавить кейс
         </Button>
       </div>
 
       {/* Поиск */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
@@ -363,67 +363,68 @@ const AdminCases = () => {
             placeholder="Поиск по названию или игре..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-gray-800 border-gray-700 text-white"
+            className="pl-10 bg-gray-800 border-gray-700 text-white text-sm sm:text-base"
           />
         </div>
       </div>
 
       {/* Таблица кейсов */}
       <div className="overflow-x-auto">
-        <table className="w-full text-sm bg-gray-800 rounded-xl">
+        <table className="w-full text-xs sm:text-sm bg-gray-800 rounded-xl">
           <thead>
             <tr className="border-b border-gray-700">
-              <th className="py-3 px-4 text-left">Изображение</th>
-              <th className="py-3 px-4 text-left">Название</th>
-              <th className="py-3 px-4 text-left">Игра</th>
-              <th className="py-3 px-4 text-left">Цена</th>
-              <th className="py-3 px-4 text-left">Предметы</th>
-              <th className="py-3 px-4 text-left">Действия</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Изображение</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Название</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden sm:table-cell">Игра</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Цена</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Предметы</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Действия</th>
             </tr>
           </thead>
           <tbody>
             {filteredCases.map(gameCase => (
               <tr key={gameCase.id} className="border-b border-gray-700/50 hover:bg-gray-700/20">
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4">
                   <img 
                     src={gameCase.image_url} 
                     alt={gameCase.name}
-                    className="w-12 h-12 object-cover rounded"
+                    className="w-8 h-8 sm:w-12 sm:h-12 object-cover rounded"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
                     }}
                   />
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4">
                   <div>
-                    <div className="font-medium">{gameCase.name}</div>
+                    <div className="font-medium text-xs sm:text-sm">{gameCase.name}</div>
                     {gameCase.description && (
-                      <div className="text-xs text-gray-400 truncate max-w-xs">
+                      <div className="text-xs text-gray-400 truncate max-w-xs hidden sm:block">
                         {gameCase.description}
                       </div>
                     )}
                   </div>
                 </td>
-                <td className="py-2 px-4">
-                  <Badge variant="outline">{gameCase.game}</Badge>
+                <td className="py-2 px-2 sm:px-4 hidden sm:table-cell">
+                  <Badge variant="outline" className="text-xs">{gameCase.game}</Badge>
                 </td>
-                <td className="py-2 px-4">
-                  <div className="font-medium">{gameCase.price}₴</div>
+                <td className="py-2 px-2 sm:px-4">
+                  <div className="font-medium text-xs sm:text-sm">{gameCase.price}₴</div>
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
                   <div className="flex items-center gap-2">
                     <Package className="w-4 h-4 text-blue-400" />
-                    <span className="text-blue-400 font-medium">
+                    <span className="text-blue-400 font-medium text-xs sm:text-sm">
                       {gameCase.items?.length || 0}
                     </span>
                   </div>
                 </td>
-                <td className="py-2 px-4">
-                  <div className="flex gap-2">
+                <td className="py-2 px-2 sm:px-4">
+                  <div className="flex gap-1 sm:gap-2">
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => openEditModal(gameCase)}
+                      className="h-6 w-6 sm:h-8 sm:w-8 p-0 sm:px-2 sm:py-1"
                     >
                       <Edit className="w-3 h-3" />
                     </Button>
@@ -431,7 +432,7 @@ const AdminCases = () => {
                       size="sm"
                       variant="outline"
                       onClick={() => openCaseItemsModal(gameCase)}
-                      className="bg-blue-600 hover:bg-blue-700 border-blue-600"
+                      className="bg-blue-600 hover:bg-blue-700 border-blue-600 h-6 w-6 sm:h-8 sm:w-8 p-0 sm:px-2 sm:py-1"
                     >
                       <Settings className="w-3 h-3" />
                     </Button>
@@ -439,6 +440,7 @@ const AdminCases = () => {
                       size="sm"
                       variant="destructive"
                       onClick={() => handleDelete(gameCase.id)}
+                      className="h-6 w-6 sm:h-8 sm:w-8 p-0 sm:px-2 sm:py-1"
                     >
                       <Trash2 className="w-3 h-3" />
                     </Button>
@@ -452,17 +454,17 @@ const AdminCases = () => {
 
       {/* Модальное окно добавления/редактирования кейса */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
           <Card className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center justify-between text-lg sm:text-xl">
                 {editMode === 'add' ? 'Добавить кейс' : 'Редактировать кейс'}
                 <Button variant="ghost" size="sm" onClick={closeModal}>
                   <X className="w-4 h-4" />
                 </Button>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6">
               {error && (
                 <div className="text-red-400 text-sm bg-red-900/20 p-3 rounded">
                   {error}
@@ -476,7 +478,7 @@ const AdminCases = () => {
                   value={currentCase.name}
                   onChange={handleChange}
                   placeholder="Название кейса"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -487,7 +489,7 @@ const AdminCases = () => {
                   value={currentCase.game}
                   onChange={handleChange}
                   placeholder="CS2, Roblox, PUBG"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -499,7 +501,7 @@ const AdminCases = () => {
                   value={currentCase.price}
                   onChange={handleChange}
                   placeholder="0.00"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -510,7 +512,7 @@ const AdminCases = () => {
                   value={currentCase.image_url}
                   onChange={handleChange}
                   placeholder="https://example.com/image.jpg"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -522,16 +524,16 @@ const AdminCases = () => {
                   onChange={handleChange}
                   placeholder="Описание кейса..."
                   rows={3}
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
-              <div className="flex gap-2 pt-4">
-                <Button onClick={handleSave} className="flex-1 bg-purple-600 hover:bg-purple-700">
+              <div className="flex flex-col sm:flex-row gap-2 pt-4">
+                <Button onClick={handleSave} className="flex-1 bg-purple-600 hover:bg-purple-700 text-sm sm:text-base">
                   <Save className="w-4 h-4 mr-2" />
                   {editMode === 'add' ? 'Добавить' : 'Сохранить'}
                 </Button>
-                <Button onClick={closeModal} variant="outline" className="flex-1">
+                <Button onClick={closeModal} variant="outline" className="flex-1 text-sm sm:text-base">
                   Отмена
                 </Button>
               </div>
@@ -542,23 +544,23 @@ const AdminCases = () => {
 
       {/* Модальное окно управления предметами кейса */}
       {caseItemsModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
           <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Package className="w-6 h-6 text-blue-400" />
-                  <span>Предметы кейса: {currentCaseName}</span>
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center justify-between text-lg sm:text-xl">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <Package className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
+                  <span className="text-sm sm:text-base">Предметы кейса: {currentCaseName}</span>
                 </div>
                 <Button variant="ghost" size="sm" onClick={closeCaseItemsModal}>
                   <X className="w-4 h-4" />
                 </Button>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
               {/* Кнопка добавления предмета */}
               <div className="flex justify-end">
-                <Button onClick={openAddItemModal} className="bg-green-600 hover:bg-green-700">
+                <Button onClick={openAddItemModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
                   <Plus className="w-4 h-4 mr-2" />
                   Добавить предмет
                 </Button>
@@ -566,41 +568,41 @@ const AdminCases = () => {
 
               {/* Таблица предметов */}
               <div className="overflow-x-auto">
-                <table className="w-full text-sm bg-gray-800 rounded-xl">
+                <table className="w-full text-xs sm:text-sm bg-gray-800 rounded-xl">
                   <thead>
                     <tr className="border-b border-gray-700">
-                      <th className="py-3 px-4 text-left">Изображение</th>
-                      <th className="py-3 px-4 text-left">Название</th>
-                      <th className="py-3 px-4 text-left">Редкость</th>
-                      <th className="py-3 px-4 text-left">Выпадает через</th>
-                      <th className="py-3 px-4 text-left">Действия</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Изображение</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Название</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden sm:table-cell">Редкость</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Выпадает через</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Действия</th>
                     </tr>
                   </thead>
                   <tbody>
                     {caseItems.map(item => (
                       <tr key={item.id} className="border-b border-gray-700/50 hover:bg-gray-700/20">
-                        <td className="py-2 px-4">
+                        <td className="py-2 px-2 sm:px-4">
                           <img 
                             src={item.image_url || '/images/placeholder.jpg'} 
                             alt={item.name}
-                            className="w-12 h-12 object-cover rounded"
+                            className="w-8 h-8 sm:w-12 sm:h-12 object-cover rounded"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
                             }}
                           />
                         </td>
-                        <td className="py-2 px-4">
-                          <div className="font-medium">{item.name}</div>
+                        <td className="py-2 px-2 sm:px-4">
+                          <div className="font-medium text-xs sm:text-sm">{item.name}</div>
                         </td>
-                        <td className="py-2 px-4">
+                        <td className="py-2 px-2 sm:px-4 hidden sm:table-cell">
                           <Badge 
                             variant="outline" 
-                            className={
+                            className={`text-xs ${
                               item.rarity === 'legendary' ? 'text-yellow-400 border-yellow-400' :
                               item.rarity === 'epic' ? 'text-purple-400 border-purple-400' :
                               item.rarity === 'rare' ? 'text-blue-400 border-blue-400' :
                               'text-gray-400 border-gray-400'
-                            }
+                            }`}
                           >
                             {item.rarity === 'legendary' ? 'Легендарный' :
                              item.rarity === 'epic' ? 'Эпический' :
@@ -608,15 +610,16 @@ const AdminCases = () => {
                              'Обычный'}
                           </Badge>
                         </td>
-                        <td className="py-2 px-4">
-                          <div className="font-medium">{item.drop_after_cases} кейсов</div>
+                        <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
+                          <div className="font-medium text-xs sm:text-sm">{item.drop_after_cases} кейсов</div>
                         </td>
-                        <td className="py-2 px-4">
-                          <div className="flex gap-2">
+                        <td className="py-2 px-2 sm:px-4">
+                          <div className="flex gap-1 sm:gap-2">
                             <Button
                               size="sm"
                               variant="outline"
                               onClick={() => openEditItemModal(item)}
+                              className="h-6 w-6 sm:h-8 sm:w-8 p-0 sm:px-2 sm:py-1"
                             >
                               <Edit className="w-3 h-3" />
                             </Button>
@@ -624,6 +627,7 @@ const AdminCases = () => {
                               size="sm"
                               variant="destructive"
                               onClick={() => handleDeleteCaseItem(item.id)}
+                              className="h-6 w-6 sm:h-8 sm:w-8 p-0 sm:px-2 sm:py-1"
                             >
                               <Trash2 className="w-3 h-3" />
                             </Button>
@@ -636,10 +640,10 @@ const AdminCases = () => {
               </div>
 
               {caseItems.length === 0 && (
-                <div className="text-center py-8 text-gray-400">
-                  <Package className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p>В этом кейсе пока нет предметов</p>
-                  <p className="text-sm">Добавьте первый предмет, нажав кнопку выше</p>
+                <div className="text-center py-6 sm:py-8 text-gray-400">
+                  <Package className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 opacity-50" />
+                  <p className="text-sm sm:text-base">В этом кейсе пока нет предметов</p>
+                  <p className="text-xs sm:text-sm">Добавьте первый предмет, нажав кнопку выше</p>
                 </div>
               )}
             </CardContent>
@@ -649,17 +653,17 @@ const AdminCases = () => {
 
       {/* Модальное окно добавления/редактирования предмета */}
       {caseItemModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
           <Card className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center justify-between text-lg sm:text-xl">
                 {itemEditMode === 'add' ? 'Добавить предмет' : 'Редактировать предмет'}
                 <Button variant="ghost" size="sm" onClick={closeCaseItemModal}>
                   <X className="w-4 h-4" />
                 </Button>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6">
               <div>
                 <label className="block text-sm font-medium mb-2">Название предмета *</label>
                 <Input
@@ -667,7 +671,7 @@ const AdminCases = () => {
                   value={currentCaseItem.name}
                   onChange={handleCaseItemChange}
                   placeholder="Название предмета"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -677,7 +681,7 @@ const AdminCases = () => {
                   value={currentCaseItem.rarity}
                   onValueChange={(value) => handleCaseItemSelectChange('rarity', value)}
                 >
-                  <SelectTrigger className="bg-gray-700 border-gray-600">
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-sm sm:text-base">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-700 border-gray-600">
@@ -696,7 +700,7 @@ const AdminCases = () => {
                   value={currentCaseItem.image_url}
                   onChange={handleCaseItemChange}
                   placeholder="https://example.com/item.jpg"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -709,19 +713,19 @@ const AdminCases = () => {
                   onChange={handleCaseItemChange}
                   placeholder="1000"
                   min="0"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
                 <p className="text-xs text-gray-400 mt-1">
                   Глобальный счетчик открытых кейсов на всем сайте
                 </p>
               </div>
 
-              <div className="flex gap-2 pt-4">
-                <Button onClick={handleSaveCaseItem} className="flex-1 bg-green-600 hover:bg-green-700">
+              <div className="flex flex-col sm:flex-row gap-2 pt-4">
+                <Button onClick={handleSaveCaseItem} className="flex-1 bg-green-600 hover:bg-green-700 text-sm sm:text-base">
                   <Save className="w-4 h-4 mr-2" />
                   {itemEditMode === 'add' ? 'Добавить' : 'Сохранить'}
                 </Button>
-                <Button onClick={closeCaseItemModal} variant="outline" className="flex-1">
+                <Button onClick={closeCaseItemModal} variant="outline" className="flex-1 text-sm sm:text-base">
                   Отмена
                 </Button>
               </div>

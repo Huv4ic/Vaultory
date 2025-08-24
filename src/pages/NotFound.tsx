@@ -20,161 +20,89 @@ const NotFound = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-          <div className="mb-8">
-            <div className="text-9xl font-bold text-amber-400 mb-4 animate-pulse">404</div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
-              {t('Страница не найдена')}
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-              {t('К сожалению, запрашиваемая страница не существует или была перемещена.')}
-              <br />
-              Не волнуйтесь, мы поможем вам найти то, что вы ищете.
-            </p>
-          </div>
-          
-          {/* Кнопки действий */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link to="/">
-              <Button className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold px-8 py-4 rounded-xl shadow-2xl shadow-amber-500/30 transition-all duration-300 hover:scale-105">
-                <Home className="w-5 h-5 mr-2" />
-                {t('На главную')}
-              </Button>
-            </Link>
-            
-            <Link to="/catalog">
-              <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105">
-                <Search className="w-5 h-5 mr-2" />
-                {t('В каталог')}
-              </Button>
-            </Link>
-          </div>
+        <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+            404
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4">
+            Страница не найдена. Возможно, она была удалена или перемещена.
+          </p>
         </div>
         
         {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
+        <div className="absolute top-20 left-10 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-amber-400/10 rounded-full animate-bounce hidden md:block"></div>
+        <div className="absolute top-40 right-20 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-full animate-pulse hidden md:block"></div>
+        <div className="absolute bottom-20 left-1/4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-amber-400/10 rounded-full animate-spin hidden md:block"></div>
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-20 container mx-auto px-4 pb-20">
-        {/* Информационные карточки */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-16">
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 text-center hover:shadow-amber-500/40 transition-all duration-300">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-              <Home className="w-8 h-8 text-amber-400" />
-            </div>
-            <h3 className="text-white font-semibold mb-2">Главная страница</h3>
-            <p className="text-gray-300 text-sm">
-              Вернитесь на главную страницу и найдите нужную информацию
-            </p>
-          </div>
-          
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 text-center hover:shadow-amber-500/40 transition-all duration-300">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-              <Search className="w-8 h-8 text-amber-400" />
-            </div>
-            <h3 className="text-white font-semibold mb-2">Каталог товаров</h3>
-            <p className="text-gray-300 text-sm">
-              Изучите наш каталог и найдите интересующие вас товары
-            </p>
-          </div>
-          
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 text-center hover:shadow-amber-500/40 transition-all duration-300">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-              <HelpCircle className="w-8 h-8 text-amber-400" />
-            </div>
-            <h3 className="text-white font-semibold mb-2">Поддержка</h3>
-            <p className="text-gray-300 text-sm">
-              Обратитесь к нашей службе поддержки за помощью
-            </p>
-          </div>
-        </div>
-
-        {/* Дополнительная информация */}
-        <div className="text-center max-w-2xl mx-auto">
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-8">
-            <div className="mx-auto w-20 h-20 bg-amber-500/20 rounded-full flex items-center justify-center mb-6 border border-amber-500/30">
-              <AlertTriangle className="w-10 h-10 text-amber-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Что могло пойти не так?
-            </h3>
-            <div className="space-y-3 text-gray-300 text-left max-w-md mx-auto">
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-sm">Страница была перемещена или удалена</span>
+      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
+        {/* Что делать дальше */}
+        <div className="mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8">
+            Что делать дальше?
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
+            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center hover:shadow-amber-500/40 transition-all duration-300">
+              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
+                <Home className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-sm">Ошибка в URL адресе</span>
+              <h3 className="text-sm sm:text-base font-semibold text-white mb-2">Вернуться на главную</h3>
+              <p className="text-xs sm:text-sm text-gray-300">
+                Перейдите на главную страницу сайта
+              </p>
+            </div>
+            
+            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center hover:shadow-amber-500/40 transition-all duration-300">
+              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
+                <Search className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-sm">Страница находится в разработке</span>
+              <h3 className="text-sm sm:text-base font-semibold text-white mb-2">Поиск</h3>
+              <p className="text-xs sm:text-sm text-gray-300">
+                Используйте поиск для нахождения нужной страницы
+              </p>
+            </div>
+            
+            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center hover:shadow-amber-500/40 transition-all duration-300">
+              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
+                <HelpCircle className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
               </div>
+              <h3 className="text-sm sm:text-base font-semibold text-white mb-2">Поддержка</h3>
+              <p className="text-xs sm:text-sm text-gray-300">
+                Обратитесь к нашей службе поддержки за помощью
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Полезные ссылки */}
-        <div className="mt-16 text-center">
-          <h3 className="text-2xl font-bold text-white mb-8">Полезные ссылки</h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/about">
-              <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300">
-                О нас
-              </Button>
-            </Link>
+        {/* Кнопки действий */}
+        <div className="text-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8">
+            <Button
+              onClick={() => navigate('/')}
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm sm:text-base"
+            >
+              <Home className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              На главную
+            </Button>
             
-            <Link to="/cases">
-              <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300">
-                Кейсы
-              </Button>
-            </Link>
+            <Button
+              onClick={() => navigate('/catalog')}
+              variant="outline"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            >
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              В каталог
+            </Button>
             
-            <Link to="/support">
-              <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300">
-                Поддержка
-              </Button>
-            </Link>
-            
-            <Link to="/terms">
-              <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300">
-                Условия использования
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Контактная информация */}
-        <div className="mt-16 text-center">
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 max-w-2xl mx-auto">
-            <div className="flex items-center justify-center mb-4">
-              <Compass className="w-6 h-6 mr-3 text-amber-400" />
-              <h3 className="text-xl font-bold text-white">Нужна помощь?</h3>
-            </div>
-            <p className="text-gray-300 mb-4">
-              Если вы считаете, что это ошибка, или у вас есть вопросы, 
-              не стесняйтесь обращаться к нам.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                onClick={openGmail}
-                variant="outline" 
-                className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300"
-              >
-                Написать в поддержку
-              </Button>
-              
-              <Link to="/">
-                <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Вернуться на главную
-                </Button>
-              </Link>
-            </div>
+            <Button
+              onClick={() => navigate('/support')}
+              variant="outline"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            >
+              <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              Поддержка
+            </Button>
           </div>
         </div>
       </div>

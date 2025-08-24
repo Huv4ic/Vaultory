@@ -229,17 +229,17 @@ const AdminProducts = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-900 text-white rounded-xl shadow-xl">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Управление товарами</h2>
-        <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700">
+    <div className="p-3 sm:p-6 bg-gray-900 text-white rounded-xl shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
+        <h2 className="text-xl sm:text-2xl font-bold">Управление товарами</h2>
+        <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
           <Plus className="w-4 h-4 mr-2" />
           Добавить товар
         </Button>
       </div>
 
       {/* Поиск */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
@@ -247,78 +247,79 @@ const AdminProducts = () => {
             placeholder="Поиск по названию, категории или игре..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-gray-800 border-gray-700 text-white"
+            className="pl-10 bg-gray-800 border-gray-700 text-white text-sm sm:text-base"
           />
         </div>
       </div>
 
       {/* Таблица товаров */}
       <div className="overflow-x-auto">
-        <table className="w-full text-sm bg-gray-800 rounded-xl">
+        <table className="w-full text-xs sm:text-sm bg-gray-800 rounded-xl">
           <thead>
             <tr className="border-b border-gray-700">
-              <th className="py-3 px-4 text-left">Изображение</th>
-              <th className="py-3 px-4 text-left">Название</th>
-              <th className="py-3 px-4 text-left">Цена</th>
-              <th className="py-3 px-4 text-left">Категория</th>
-              <th className="py-3 px-4 text-left">Игра</th>
-              <th className="py-3 px-4 text-left">Рейтинг</th>
-              <th className="py-3 px-4 text-left">Продано</th>
-              <th className="py-3 px-4 text-left">Действия</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Изображение</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Название</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Цена</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden sm:table-cell">Категория</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Игра</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Рейтинг</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden xl:table-cell">Продано</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Действия</th>
             </tr>
           </thead>
           <tbody>
             {filteredProducts.map(product => (
               <tr key={product.id} className="border-b border-gray-700/50 hover:bg-gray-700/20">
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4">
                   <img 
                     src={product.image_url} 
                     alt={product.name}
-                    className="w-12 h-12 object-cover rounded"
+                    className="w-8 h-8 sm:w-12 sm:h-12 object-cover rounded"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
                     }}
                   />
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4">
                   <div>
-                    <div className="font-medium">{product.name}</div>
+                    <div className="font-medium text-xs sm:text-sm">{product.name}</div>
                     {product.description && (
-                      <div className="text-xs text-gray-400 truncate max-w-xs">
+                      <div className="text-xs text-gray-400 truncate max-w-xs hidden sm:block">
                         {product.description}
                       </div>
                     )}
                   </div>
                 </td>
-                <td className="py-2 px-4">
-                  <div className="font-medium">{product.price}₴</div>
+                <td className="py-2 px-2 sm:px-4">
+                  <div className="font-medium text-xs sm:text-sm">{product.price}₴</div>
                   {product.original_price && (
                     <div className="text-xs text-gray-400 line-through">
                       {product.original_price}₴
                     </div>
                   )}
                 </td>
-                <td className="py-2 px-4">
-                  <Badge variant="secondary">{product.category}</Badge>
+                <td className="py-2 px-2 sm:px-4 hidden sm:table-cell">
+                  <Badge variant="secondary" className="text-xs">{product.category}</Badge>
                 </td>
-                <td className="py-2 px-4">
-                  <Badge variant="outline">{product.game}</Badge>
+                <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
+                  <Badge variant="outline" className="text-xs">{product.game}</Badge>
                 </td>
-                <td className="py-2 px-4">
+                <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
                   <div className="flex items-center">
                     <span className="text-yellow-400">★</span>
-                    <span className="ml-1">{product.rating}</span>
+                    <span className="ml-1 text-xs sm:text-sm">{product.rating}</span>
                   </div>
                 </td>
-                <td className="py-2 px-4">
-                  <div className="text-green-400 font-medium">{product.sales}</div>
+                <td className="py-2 px-2 sm:px-4 hidden xl:table-cell">
+                  <div className="text-green-400 font-medium text-xs sm:text-sm">{product.sales}</div>
                 </td>
-                <td className="py-2 px-4">
-                  <div className="flex gap-2">
+                <td className="py-2 px-2 sm:px-4">
+                  <div className="flex gap-1 sm:gap-2">
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => openEditModal(product)}
+                      className="h-6 w-6 sm:h-8 sm:w-8 p-0 sm:px-2 sm:py-1"
                     >
                       <Edit className="w-3 h-3" />
                     </Button>
@@ -326,6 +327,7 @@ const AdminProducts = () => {
                       size="sm"
                       variant="destructive"
                       onClick={() => handleDelete(product.id)}
+                      className="h-6 w-6 sm:h-8 sm:w-8 p-0 sm:px-2 sm:py-1"
                     >
                       <Trash2 className="w-3 h-3" />
                     </Button>
@@ -339,24 +341,24 @@ const AdminProducts = () => {
 
       {/* Модальное окно добавления/редактирования */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
           <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center justify-between text-lg sm:text-xl">
                 {editMode === 'add' ? 'Добавить товар' : 'Редактировать товар'}
                 <Button variant="ghost" size="sm" onClick={closeModal}>
                   <X className="w-4 h-4" />
                 </Button>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6">
               {error && (
                 <div className="text-red-400 text-sm bg-red-900/20 p-3 rounded">
                   {error}
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Название *</label>
                   <Input
@@ -364,7 +366,7 @@ const AdminProducts = () => {
                     value={currentProduct.name}
                     onChange={handleChange}
                     placeholder="Название товара"
-                    className="bg-gray-700 border-gray-600"
+                    className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                   />
                 </div>
                 <div>
@@ -375,12 +377,12 @@ const AdminProducts = () => {
                     value={currentProduct.price}
                     onChange={handleChange}
                     placeholder="0.00"
-                    className="bg-gray-700 border-gray-600"
+                    className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Старая цена</label>
                   <Input
@@ -389,7 +391,7 @@ const AdminProducts = () => {
                     value={currentProduct.original_price || ''}
                     onChange={handleChange}
                     placeholder="0.00"
-                    className="bg-gray-700 border-gray-600"
+                    className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                   />
                 </div>
                 <div>
@@ -403,12 +405,12 @@ const AdminProducts = () => {
                     value={currentProduct.rating}
                     onChange={handleChange}
                     placeholder="0.0"
-                    className="bg-gray-700 border-gray-600"
+                    className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Категория *</label>
                   <Input
@@ -416,7 +418,7 @@ const AdminProducts = () => {
                     value={currentProduct.category}
                     onChange={handleChange}
                     placeholder="Ключи, Валюта, и т.д."
-                    className="bg-gray-700 border-gray-600"
+                    className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                   />
                 </div>
                 <div>
@@ -426,7 +428,7 @@ const AdminProducts = () => {
                     value={currentProduct.game}
                     onChange={handleChange}
                     placeholder="CS2, Roblox, PUBG"
-                    className="bg-gray-700 border-gray-600"
+                    className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                   />
                 </div>
               </div>
@@ -439,7 +441,7 @@ const AdminProducts = () => {
                   value={currentProduct.sales}
                   onChange={handleChange}
                   placeholder="0"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -450,7 +452,7 @@ const AdminProducts = () => {
                   value={currentProduct.image_url}
                   onChange={handleChange}
                   placeholder="https://example.com/image.jpg"
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -462,7 +464,7 @@ const AdminProducts = () => {
                   onChange={handleChange}
                   placeholder="Описание товара..."
                   rows={3}
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
@@ -473,16 +475,16 @@ const AdminProducts = () => {
                   onChange={handleFeaturesChange}
                   placeholder="Мгновенная доставка&#10;Официальный ключ&#10;Поддержка 24/7"
                   rows={3}
-                  className="bg-gray-700 border-gray-600"
+                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                 />
               </div>
 
-              <div className="flex gap-2 pt-4">
-                <Button onClick={handleSave} className="flex-1 bg-green-600 hover:bg-green-700">
+              <div className="flex flex-col sm:flex-row gap-2 pt-4">
+                <Button onClick={handleSave} className="flex-1 bg-green-600 hover:bg-green-700 text-sm sm:text-base">
                   <Save className="w-4 h-4 mr-2" />
                   {editMode === 'add' ? 'Добавить' : 'Сохранить'}
                 </Button>
-                <Button onClick={closeModal} variant="outline" className="flex-1">
+                <Button onClick={closeModal} variant="outline" className="flex-1 text-sm sm:text-base">
                   Отмена
                 </Button>
               </div>
