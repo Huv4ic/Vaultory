@@ -53,36 +53,8 @@ const Inventory = () => {
   // Получаем общую стоимость из хука
   const totalValue = getTotalValue();
 
-  // Используем реальные данные из useCaseStats или моковые данные для демонстрации
-  const displayItems = inventoryItems.length > 0 ? inventoryItems : [
-    {
-      id: '1',
-      name: 'AK-47 | Redline',
-      type: 'Rifle',
-      rarity: 'rare',
-      price: 45.50,
-      case_name: 'Revolution Case',
-      obtained_at: '2025-01-15'
-    },
-    {
-      id: '2',
-      name: 'M4A1-S | Hyper Beast',
-      type: 'Rifle',
-      rarity: 'epic',
-      price: 78.20,
-      case_name: 'Chroma Case',
-      obtained_at: '2025-01-10'
-    },
-    {
-      id: '3',
-      name: 'AWP | Dragon Lore',
-      type: 'Sniper',
-      rarity: 'legendary',
-      price: 1250.00,
-      case_name: 'Dragon Lore Case',
-      obtained_at: '2025-01-05'
-    }
-  ];
+  // Используем только реальные данные из useInventory
+  const displayItems = inventoryItems;
 
   // Определяем состояние загрузки
   const isLoading = loading || statsLoading;

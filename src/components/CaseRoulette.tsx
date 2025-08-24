@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Package, X, Gift } from 'lucide-react';
+import { Package, X, Gift, DollarSign } from 'lucide-react';
 
 interface CaseItem {
   id: string;
@@ -8,6 +8,7 @@ interface CaseItem {
   rarity: string;
   image_url?: string;
   drop_after_cases?: number;
+  price?: number; // Добавляем поле для цены
 }
 
 interface CaseRouletteProps {
@@ -647,6 +648,54 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     </p>
                   </div>
                 )}
+                
+                <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-4">
+                  <Button
+                    onClick={() => {
+                      if (winnerItem) {
+                        // Добавляем предмет в инвентарь
+                        const inventoryItem = {
+                          id: Date.now().toString(),
+                          name: winnerItem.name,
+                          price: winnerItem.price || 100, // Тестовая цена, если нет
+                          rarity: winnerItem.rarity,
+                          type: 'Кейс',
+                          case_name: 'Кейс',
+                          image_url: winnerItem.image_url,
+                          obtained_at: new Date().toISOString(),
+                          status: 'new' as const
+                        };
+                        
+                        // Сохраняем в localStorage
+                        const currentInventory = JSON.parse(localStorage.getItem('vaultory_inventory') || '[]');
+                        currentInventory.push(inventoryItem);
+                        localStorage.setItem('vaultory_inventory', JSON.stringify(currentInventory));
+                        
+                        console.log('Предмет добавлен в инвентарь:', inventoryItem);
+                        alert('Предмет добавлен в инвентарь!');
+                      }
+                    }}
+                    className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                  >
+                    <Package className="w-4 h-4 mr-2" />
+                    Добавить в инвентарь
+                  </Button>
+                  
+                  <Button
+                    onClick={() => {
+                      if (winnerItem) {
+                        // Продаем предмет (заглушка)
+                        const sellPrice = Math.floor((winnerItem.price || 100) * 0.7); // 70% от цены
+                        alert(`Предмет продан за ${sellPrice}₽! (Заглушка)`);
+                        console.log('Предмет продан:', winnerItem.name, 'за', sellPrice);
+                      }
+                    }}
+                    className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Продать
+                  </Button>
+                </div>
                 
                 <div className="flex justify-center space-x-3 sm:space-x-4">
                   <Button

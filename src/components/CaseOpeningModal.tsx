@@ -30,7 +30,6 @@ interface CaseOpeningModalProps {
   openingCount: number;
   onSellItem: (item: CaseItem, price: number) => void;
   onKeepItem: (item: CaseItem) => void;
-  onAddToProfile: (item: CaseItem) => void;
 }
 
 const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
@@ -40,7 +39,6 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   openingCount,
   onSellItem,
   onKeepItem,
-  onAddToProfile,
 }) => {
   const { telegramUser, balance, setBalance } = useAuth();
   const [isOpening, setIsOpening] = useState(false);
@@ -172,17 +170,6 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     }
   };
 
-  const handleAddToProfile = async () => {
-    if (!telegramUser || soldOrAdded || !winningItem) return;
-    try {
-      setSoldOrAdded(true);
-      onAddToProfile({ ...(winningItem as any), spent: caseData.price });
-    } catch (error) {
-      console.error('Ошибка при добавлении в профиль:', error);
-      alert('Произошла ошибка при добавлении в профиль');
-    }
-  };
-
   const handleSell = async () => {
     if (!telegramUser || soldOrAdded || !winningItem) return;
     try {
@@ -231,12 +218,12 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
             </div>
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-8">
               <button
-                className={`w-full md:w-40 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
-                onClick={handleAddToProfile}
+                className={`w-full md:w-40 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
+                onClick={handleAddToInventory}
                 disabled={soldOrAdded}
               >
-                <User className="w-5 h-5" />
-                Добавить в профиль
+                <Package className="w-5 h-5" />
+                Добавить в инвентарь
               </button>
               <button
                 className={`w-full md:w-40 bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200 mb-2 flex items-center justify-center gap-2 ${soldOrAdded ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
