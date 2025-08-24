@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../integrations/supabase/client';
 import { useCaseStats } from '../hooks/useCaseStats';
+import { useInventory } from '../hooks/useInventory';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -10,10 +11,11 @@ import CaseRoulette from '../components/CaseRoulette';
 
 interface CaseItem {
   id: string;
+  case_id: string;
   name: string;
-  rarity: string;
-  image_url?: string;
-  drop_after_cases?: number;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  drop_chance: number;
+  image_url: string;
 }
 
 interface Case {
@@ -37,6 +39,7 @@ const CasePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { incrementCaseOpened } = useCaseStats();
+  const { addItem } = useInventory();
   const [caseData, setCaseData] = useState<Case | null>(null);
   const [caseItems, setCaseItems] = useState<CaseItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,7 +84,17 @@ const CasePage = () => {
 
       if (itemsError) throw itemsError;
 
-      setCaseItems(itemsData || []);
+      // Преобразуем данные к правильному формату
+      const formattedItems: CaseItem[] = (itemsData || []).map((item: any) => ({
+        id: item.id,
+        case_id: item.case_id,
+        name: item.name,
+        rarity: item.rarity,
+        drop_chance: item.chance || 0,
+        image_url: item.image_url || ''
+      }));
+
+      setCaseItems(formattedItems);
       setLoading(false);
 
     } catch (err) {
@@ -104,7 +117,30 @@ const CasePage = () => {
 
   const handleCaseOpened = async (item: CaseItem) => {
     // Здесь можно добавить логику для добавления предмета в инвентарь
-    console.log('Кейс открыт! Выпад предмет:', item);
+    console.log('🎉 Кейс открыт! Выпад предмет:', item);
+    console.log('📦 Данные кейса:', caseData);
+    
+    // ДОБАВЛЯЕМ ПРЕДМЕТ В ИНВЕНТАРЬ
+    try {
+      const inventoryItem = {
+        name: item.name,
+        price: 0, // У CaseItem нет поля price, используем 0
+        rarity: item.rarity,
+        type: 'case_item', // Используем фиксированное значение
+        caseId: item.case_id,
+        case_name: caseData?.name || 'Неизвестный кейс',
+        image: undefined, // У CaseItem нет поля image
+        image_url: item.image_url,
+        obtained_at: new Date().toISOString()
+      };
+      
+      console.log('🎁 Создаем предмет для инвентаря:', inventoryItem);
+      console.log('🔧 Вызываем addItem...');
+      await addItem(inventoryItem);
+      console.log('✅ Предмет успешно добавлен в инвентарь!');
+    } catch (error) {
+      console.error('❌ Ошибка при добавлении предмета в инвентарь:', error);
+    }
     
     // Увеличиваем счетчик открытий кейса для статистики
     if (caseData && id) {
