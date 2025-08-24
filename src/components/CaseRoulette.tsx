@@ -53,6 +53,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   const [winnerItem, setWinnerItem] = useState<CaseItem | null>(null);
   const [soldOrAdded, setSoldOrAdded] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [showConfirmSell, setShowConfirmSell] = useState(false);
+  const [itemToSell, setItemToSell] = useState<CaseItem | null>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const [spinCount, setSpinCount] = useState(0);
   const animationRef = useRef<number | null>(null);
@@ -122,35 +124,34 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       console.log('💰 Продаем предмет сразу после открытия кейса:', item);
       console.log('💵 Цена предмета:', item.price);
       
-      // Добавляем деньги на баланс пользователя
       const { data: currentProfile, error: fetchBalanceError } = await supabase
         .from('profiles')
         .select('balance')
         .eq('telegram_id', telegramId)
         .single();
-
+  
       if (fetchBalanceError || !currentProfile) {
         console.error('❌ Error fetching current balance:', fetchBalanceError);
-        alert('Ошибка при получении баланса!');
+        showNotification('Ошибка при получении баланса!', 'error');
         return;
       }
-
+  
       const newBalance = (currentProfile.balance || 0) + item.price;
       console.log('💰 Обновляем баланс:', { old: currentProfile.balance, new: newBalance });
-
+  
       const { error: balanceError } = await supabase
         .from('profiles')
         .update({ 
           balance: newBalance 
         })
         .eq('telegram_id', telegramId);
-
+  
       if (balanceError) {
         console.error('❌ Error updating balance:', balanceError);
-        alert('Ошибка при обновлении баланса!');
+        showNotification('Ошибка при обновлении баланса!', 'error');
         return;
       }
-
+  
       console.log('✅ Баланс успешно обновлен');
       showNotification(`Предмет продан за ${item.price}₴! Деньги добавлены на баланс.`, 'success');
       
@@ -158,6 +159,20 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       console.error('❌ Failed to sell item immediately:', error);
       showNotification('Ошибка при продаже предмета!', 'error');
     }
+  };
+
+  const handleConfirmSell = async () => {
+    if (itemToSell) {
+      await handleImmediateSell(itemToSell);
+      setShowConfirmSell(false);
+      setItemToSell(null);
+      handleClose();
+    }
+  };
+
+  const handleCancelSell = () => {
+    setShowConfirmSell(false);
+    setItemToSell(null);
   };
 
   // Cleanup анимации при размонтировании и изменении состояний
@@ -803,20 +818,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                         
                         // Устанавливаем состояние что действие выполнено
                         setSoldOrAdded(true);
-                        
-                        // Продаем предмет по полной цене из админки (без скидок)
-                        const sellPrice = winnerItem.price || 0;
-                        console.log('💵 Цена продажи (полная):', sellPrice);
-                        
-                        // ВАЖНО: НЕ вызываем onCaseOpened при продаже
-                        // Предмет не должен попадать в инвентарь, если он сразу продается
-                        console.log('❌ onCaseOpened НЕ вызывается при продаже');
-                        
-                        // Продаем предмет сразу и добавляем деньги на баланс
-                        handleImmediateSell(winnerItem);
-                        
-                        // Закрываем окно после продажи
-                        handleClose();
+                        setItemToSell(winnerItem); // Устанавливаем предмет для продажи
+                        setShowConfirmSell(true); // Показываем подтверждение продажи
                       }
                     }}
                     disabled={soldOrAdded}
@@ -847,6 +850,41 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         autoHide={notification.autoHide}
         duration={notification.duration}
       />
+
+      {/* Модальное окно подтверждения продажи */}
+      {showConfirmSell && itemToSell && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 max-w-md w-full">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <DollarSign className="w-8 h-8 text-yellow-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Подтверждение продажи</h3>
+              <p className="text-gray-300 mb-4">
+                Продать "{itemToSell.name}" за {itemToSell.price}₴?
+              </p>
+              <p className="text-sm text-gray-400 mb-6">
+                Деньги будут добавлены на ваш баланс
+              </p>
+              
+              <div className="flex gap-3">
+                <button
+                  onClick={handleCancelSell}
+                  className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                >
+                  Отмена
+                </button>
+                <button
+                  onClick={handleConfirmSell}
+                  className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+                >
+                  Продать
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       
       {/* CSS стили для анимаций */}
       <style>{`

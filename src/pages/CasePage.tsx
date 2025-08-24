@@ -202,6 +202,22 @@ const CasePage = () => {
     }
   };
 
+  // Функция для сортировки предметов по редкости
+  const sortItemsByRarity = (items: CaseItem[]) => {
+    const rarityOrder = {
+      'legendary': 4,
+      'epic': 3,
+      'rare': 2,
+      'common': 1
+    };
+    
+    return [...items].sort((a, b) => {
+      const aRarity = rarityOrder[a.rarity?.toLowerCase() as keyof typeof rarityOrder] || 0;
+      const bRarity = rarityOrder[b.rarity?.toLowerCase() as keyof typeof rarityOrder] || 0;
+      return bRarity - aRarity; // Сортировка по убыванию (легендарные выше)
+    });
+  };
+
   const getRarityName = (rarity: string) => {
     switch (rarity.toLowerCase()) {
       case 'legendary':
@@ -378,7 +394,7 @@ const CasePage = () => {
           
           {caseItems.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
-              {caseItems.map((item) => (
+              {sortItemsByRarity(caseItems).map((item) => (
                 <div key={item.id} className="text-center space-y-2 sm:space-y-3 group">
                   {/* Изображение предмета */}
                   <div className="relative mx-auto">
