@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { supabase } from '../integrations/supabase/client';
 
 interface FavoriteCase {
   case_id: string;
@@ -292,34 +293,67 @@ const Inventory = () => {
                     <button
                       onClick={async () => {
                         // Продать предмет
+                        console.log('🔄 Нажата кнопка "Продать" для предмета:', item);
+                        
                         if (confirm(`Продать "${item.name}" за $${(item.price || 0).toFixed(2)}?`)) {
                           try {
                             // Находим индекс предмета в массиве
                             const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
+                            console.log('🔍 Индекс предмета в массиве:', itemIndex);
                             
                             if (itemIndex !== -1) {
+                              console.log('✅ Предмет найден, вызываем sellItem...');
                               // Используем функцию sellItem из useInventory
                               const sellPrice = await sellItem(itemIndex);
+                              console.log('💰 Результат продажи:', sellPrice);
                               
                               if (sellPrice > 0) {
-                                // Обновляем баланс пользователя (добавляем деньги)
+                                console.log('✅ Предмет успешно продан за:', sellPrice);
+                                
+                                // Обновляем баланс пользователя в профиле
                                 if (profile && profile.balance !== undefined) {
-                                  // Здесь можно добавить логику обновления баланса
-                                  console.log(`Баланс обновлен: +$${sellPrice.toFixed(2)}`);
+                                  try {
+                                    // Обновляем баланс в базе данных
+                                    const { error: balanceError } = await supabase
+                                      .from('profiles')
+                                      .update({ 
+                                        balance: profile.balance + sellPrice 
+                                      })
+                                      .eq('telegram_id', profile.telegram_id);
+                                    
+                                    if (balanceError) {
+                                      console.error('❌ Ошибка обновления баланса:', balanceError);
+                                    } else {
+                                      console.log('✅ Баланс обновлен в базе данных:', {
+                                        old: profile.balance,
+                                        new: profile.balance + sellPrice
+                                      });
+                                      
+                                      // Обновляем локальное состояние профиля
+                                      // Это нужно для отображения нового баланса в UI
+                                      // Примечание: в реальном приложении лучше использовать контекст или хук для обновления профиля
+                                    }
+                                  } catch (balanceError) {
+                                    console.error('❌ Ошибка при обновлении баланса:', balanceError);
+                                  }
                                 }
                                 
                                 alert(`Предмет "${item.name}" продан за $${sellPrice.toFixed(2)}! Деньги добавлены на баланс.`);
                                 console.log('Предмет продан:', item.name, 'за', sellPrice);
                               } else {
+                                console.error('❌ Ошибка при продаже предмета, цена:', sellPrice);
                                 alert('Ошибка при продаже предмета!');
                               }
                             } else {
+                              console.error('❌ Предмет не найден в инвентаре!');
                               alert('Предмет не найден в инвентаре!');
                             }
                           } catch (error) {
-                            console.error('Error selling item:', error);
+                            console.error('❌ Error selling item:', error);
                             alert('Ошибка при продаже предмета!');
                           }
+                        } else {
+                          console.log('❌ Пользователь отменил продажу');
                         }
                       }}
                       className="flex-1 px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"

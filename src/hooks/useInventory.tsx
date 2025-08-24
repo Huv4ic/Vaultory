@@ -246,8 +246,20 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       
       if (sellPrice > 0) {
         console.log('✅ Предмет продан за:', sellPrice);
+        console.log('🗑️ Удаляем предмет из локального состояния...');
+        
         // Удаляем предмет из локального состояния
-        setItems(prev => prev.filter((_, i) => i !== index));
+        setItems(prev => {
+          const newItems = prev.filter((_, i) => i !== index);
+          console.log('📊 Состояние обновлено:', { 
+            oldCount: prev.length, 
+            newCount: newItems.length,
+            removedItem: item.name 
+          });
+          return newItems;
+        });
+        
+        console.log('✅ Предмет успешно удален из состояния');
         return sellPrice;
       } else {
         console.error('❌ Не удалось продать предмет, цена:', sellPrice);
