@@ -11,6 +11,8 @@ import { RefreshCw, Home } from 'lucide-react';
 const TELEGRAM_BOT = 'vaultory_notify_bot';
 
 const Auth = () => {
+  console.log('Компонент Auth рендерится'); // Логируем рендер компонента
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [debugInfo, setDebugInfo] = useState<string>('');
@@ -19,6 +21,8 @@ const Auth = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const tgWidgetRef = useRef<HTMLDivElement>(null);
+  
+  console.log('Состояния компонента:', { loading, error, debugInfo, telegramUser }); // Логируем состояния
 
   // Перенаправляем пользователя, если он уже авторизован
   useEffect(() => {
@@ -61,11 +65,18 @@ const Auth = () => {
 
   // Вставка Telegram Login Widget
   useEffect(() => {
-    if (telegramUser) return; // Если уже авторизован, не показываем виджет
+    console.log('useEffect для Telegram виджета запущен'); // Логируем запуск useEffect
+    if (telegramUser) {
+      console.log('Пользователь уже авторизован, выходим'); // Логируем если пользователь авторизован
+      return;
+    }
+    
+    console.log('Устанавливаем глобальную функцию onTelegramAuth'); // Логируем установку функции
     
     // Глобальная функция для обработки авторизации Telegram
     (window as any).onTelegramAuth = async function(user: any) {
       try {
+        console.log('onTelegramAuth вызвана с пользователем:', user); // Логируем вызов функции
         setLoading(true);
         setError(null);
         console.log('Telegram auth response:', user);
@@ -91,6 +102,7 @@ const Auth = () => {
 
     // Очистка при размонтировании
     return () => {
+      console.log('Очистка useEffect для Telegram виджета'); // Логируем очистку
       if ((window as any).onTelegramAuth) {
         delete (window as any).onTelegramAuth;
       }
@@ -105,6 +117,7 @@ const Auth = () => {
   };
 
   const handleTelegramLogin = () => {
+    console.log('handleTelegramLogin вызвана!'); // Логируем вызов функции
     setError(null);
     setDebugInfo('Инициализация Telegram авторизации...');
     
@@ -125,16 +138,22 @@ const Auth = () => {
     script.async = true;
     
     script.onload = () => {
+      console.log('Telegram скрипт загружен успешно'); // Логируем успешную загрузку
       setDebugInfo('Telegram виджет загружен успешно');
     };
     
     script.onerror = () => {
+      console.error('Ошибка загрузки Telegram скрипта'); // Логируем ошибку
       setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
       setDebugInfo('Ошибка загрузки скрипта Telegram');
     };
     
     if (tgWidgetRef.current) {
+      console.log('Добавляем скрипт в tgWidgetRef'); // Логируем добавление скрипта
       tgWidgetRef.current.appendChild(script);
+    } else {
+      console.error('tgWidgetRef.current равен null!'); // Логируем ошибку с ref
+      setError('Ошибка: не удалось найти контейнер для виджета');
     }
   };
 
@@ -212,7 +231,10 @@ const Auth = () => {
                   </p>
                   
                   <Button
-                    onClick={handleTelegramLogin}
+                    onClick={() => {
+                      console.log('Кнопка нажата!'); // Логируем нажатие кнопки
+                      handleTelegramLogin();
+                    }}
                     disabled={loading}
                     className="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 text-base"
                   >
