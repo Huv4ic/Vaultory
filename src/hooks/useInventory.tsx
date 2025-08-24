@@ -51,6 +51,9 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     return saved ? Number(saved) : 0;
   });
   const [loading, setLoading] = useState(false);
+  
+  // Очередь для предметов, если профиль не загружен
+  const [pendingItems, setPendingItems] = useState<InventoryItem[]>([]);
 
   // Функция для загрузки инвентаря из базы данных
   const loadInventoryFromDatabase = async (telegramId: number) => {
@@ -92,17 +95,55 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     }
   };
 
+  // Функция для проверки подключения к базе данных
+  const checkDatabaseConnection = async () => {
+    try {
+      const telegramId = profile?.telegram_id;
+      if (!telegramId) return false;
+      
+      // Пытаемся получить инвентарь из базы
+      const dbItems = await InventoryService.getUserInventory(telegramId);
+      console.log('Database connection successful, items count:', dbItems.length);
+      return true;
+    } catch (error) {
+      console.error('Database connection failed:', error);
+      return false;
+    }
+  };
+
   // Инициализация при загрузке
   useEffect(() => {
+    console.log('Profile changed:', profile);
     const telegramId = profile?.telegram_id;
     if (telegramId) {
+      console.log('Telegram ID found:', telegramId);
       // Проверяем, есть ли данные в localStorage для миграции
       const localInventory = localStorage.getItem('vaultory_inventory');
       if (localInventory) {
+        console.log('Found local inventory, migrating...');
         migrateLocalStorage(telegramId);
       } else {
+        console.log('No local inventory, loading from database...');
         loadInventoryFromDatabase(telegramId);
       }
+      
+      // Обрабатываем очередь предметов, если они есть
+      if (pendingItems.length > 0) {
+        console.log('Processing pending items:', pendingItems);
+        pendingItems.forEach(async (pendingItem) => {
+          await addItem(pendingItem);
+        });
+        setPendingItems([]); // Очищаем очередь
+      }
+    } else {
+      console.log('No telegram ID yet, profile:', profile);
+    }
+  }, [profile]);
+
+  // Проверяем подключение к базе при загрузке профиля
+  useEffect(() => {
+    if (profile?.telegram_id) {
+      checkDatabaseConnection();
     }
   }, [profile]);
 
@@ -124,19 +165,48 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
 
   const addItem = async (item: InventoryItem & { spent?: number; purchased?: boolean }) => {
     try {
+      console.log('addItem called with:', item);
+      console.log('Current profile:', profile);
+      
       // Получаем telegram_id из профиля пользователя
       const telegramId = profile?.telegram_id;
       if (!telegramId) {
-        console.error('Telegram ID not found in profile');
+        console.error('Telegram ID not found in profile, profile:', profile);
+        // Если профиль еще не загружен, добавляем в очередь
+        if (!profile) {
+          console.log('Profile not loaded yet, adding to queue...');
+          setPendingItems(prev => [...prev, item]);
+          return;
+        }
         return;
       }
 
-      // Добавляем предмет в базу данных
-      const newItemId = await InventoryService.addItemToInventory(telegramId, item);
-      
-      if (newItemId) {
-        // Обновляем локальное состояние
-        const newItem = { ...item, id: newItemId, status: 'new' as const };
+      console.log('Adding item to database with telegramId:', telegramId);
+
+      try {
+        // Пытаемся добавить предмет в базу данных
+        const newItemId = await InventoryService.addItemToInventory(telegramId, item);
+        
+        if (newItemId) {
+          console.log('Item added successfully to database with ID:', newItemId);
+          // Обновляем локальное состояние
+          const newItem = { ...item, id: newItemId, status: 'new' as const };
+          setItems(prev => [...prev, newItem]);
+          setCasesOpened(prev => prev + 1);
+          if (item.spent) setSpent(prev => prev + item.spent);
+          if (item.purchased) setPurchased(prev => prev + 1);
+        } else {
+          console.error('Failed to get new item ID from database');
+          throw new Error('Database operation failed');
+        }
+      } catch (dbError) {
+        console.error('Database error, falling back to localStorage:', dbError);
+        // Fallback на localStorage
+        const newItem = {
+          ...item,
+          status: 'new' as const,
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 9)
+        };
         setItems(prev => [...prev, newItem]);
         setCasesOpened(prev => prev + 1);
         if (item.spent) setSpent(prev => prev + item.spent);
