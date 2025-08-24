@@ -102,6 +102,11 @@ const Auth = () => {
           throw new Error('Неверный ответ от Telegram');
         }
 
+        // Проверяем, что у пользователя есть необходимые данные
+        if (!user.first_name && !user.username) {
+          throw new Error('Недостаточно данных от Telegram');
+        }
+
         await setTelegramUser(user);
         console.log('Telegram user set successfully');
         setDebugInfo('Пользователь успешно авторизован');
@@ -131,7 +136,9 @@ const Auth = () => {
   // Функция для повторной попытки
   const retryAuth = () => {
     setError(null);
+    setLoading(true);
     setDebugInfo('Повторная попытка загрузки виджета...');
+    
     if (tgWidgetRef.current) {
       tgWidgetRef.current.innerHTML = '';
       const script = document.createElement('script');
@@ -143,30 +150,55 @@ const Auth = () => {
       script.setAttribute('data-request-access', 'write');
       script.setAttribute('data-onauth', 'onTelegramAuth(user)');
       script.async = true;
+      
+      script.onload = () => {
+        setDebugInfo('Telegram виджет загружен успешно');
+        setLoading(false);
+      };
+      
       script.onerror = () => {
         setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
+        setLoading(false);
+        setDebugInfo('Ошибка загрузки скрипта Telegram');
       };
+      
       tgWidgetRef.current.appendChild(script);
     }
   };
 
   const handleTelegramLogin = () => {
     setError(null);
-    setDebugInfo('Попытка авторизации через Telegram виджет...');
+    setLoading(true);
+    setDebugInfo('Инициализация Telegram авторизации...');
+    
+    // Очищаем предыдущий виджет
     if (tgWidgetRef.current) {
-      tgWidgetRef.current.innerHTML = ''; // Очищаем предыдущий виджет
-      const script = document.createElement('script');
-      script.src = 'https://telegram.org/js/telegram-widget.js?7';
-      script.setAttribute('data-telegram-login', TELEGRAM_BOT);
-      script.setAttribute('data-size', 'large');
-      script.setAttribute('data-userpic', 'true');
-      script.setAttribute('data-radius', '10');
-      script.setAttribute('data-request-access', 'write');
-      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
-      script.async = true;
-      script.onerror = () => {
-        setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
-      };
+      tgWidgetRef.current.innerHTML = '';
+    }
+    
+    // Создаем новый виджет
+    const script = document.createElement('script');
+    script.src = 'https://telegram.org/js/telegram-widget.js?7';
+    script.setAttribute('data-telegram-login', TELEGRAM_BOT);
+    script.setAttribute('data-size', 'large');
+    script.setAttribute('data-userpic', 'true');
+    script.setAttribute('data-radius', '10');
+    script.setAttribute('data-request-access', 'write');
+    script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+    script.async = true;
+    
+    script.onload = () => {
+      setDebugInfo('Telegram виджет загружен успешно');
+      setLoading(false);
+    };
+    
+    script.onerror = () => {
+      setError('Ошибка загрузки Telegram виджета. Проверьте интернет-соединение.');
+      setLoading(false);
+      setDebugInfo('Ошибка загрузки скрипта Telegram');
+    };
+    
+    if (tgWidgetRef.current) {
       tgWidgetRef.current.appendChild(script);
     }
   };
@@ -253,6 +285,13 @@ const Auth = () => {
                     {loading ? 'Загрузка...' : 'Войти через Telegram'}
                   </Button>
                   
+                  {/* Скрытый div для Telegram виджета */}
+                  <div 
+                    ref={tgWidgetRef} 
+                    className="mt-4 opacity-0 pointer-events-none"
+                    style={{ height: '0', overflow: 'hidden' }}
+                  ></div>
+                  
                   <div className="mt-6 sm:mt-8 text-xs sm:text-sm text-gray-400">
                     <p>Нажимая кнопку, вы соглашаетесь с нашими</p>
                     <div className="flex justify-center space-x-2 mt-2">
@@ -302,11 +341,11 @@ const Auth = () => {
                   
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <Button
-                      onClick={() => window.location.reload()}
+                      onClick={retryAuth}
                       className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm sm:text-base"
                     >
                       <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                      Обновить страницу
+                      Попробовать снова
                     </Button>
                     
                     <Button

@@ -171,15 +171,15 @@ const About = () => {
                 <div className="flex items-start space-x-3 sm:space-x-4">
                   <div className="w-3 h-3 sm:w-4 sm:h-4 bg-amber-400 rounded-full mt-2 sm:mt-3 flex-shrink-0"></div>
                   <div>
-                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">2023</h3>
-                    <p className="text-xs sm:text-sm text-gray-300">Основание компании Vaultory</p>
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">2025</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">Основание магазина Vaultory</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3 sm:space-x-4">
                   <div className="w-3 h-3 sm:w-4 sm:h-4 bg-amber-400 rounded-full mt-2 sm:mt-3 flex-shrink-0"></div>
                   <div>
-                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">2024</h3>
-                    <p className="text-xs sm:text-sm text-gray-300">Запуск платформы и первые клиенты</p>
+                    <h3 className="text-sm sm:text-base font-semibold text-white mb-1">2025</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">Запуск магазина и первые клиенты</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3 sm:space-x-4">

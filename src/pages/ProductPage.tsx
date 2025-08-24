@@ -422,7 +422,7 @@ const ProductPage = () => {
       </div>
 
       {/* Дополнительная информация */}
-      <div className="mt-20">
+      <div className="mt-20 max-w-[1920px] mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 text-center">
             <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
