@@ -34,7 +34,7 @@ interface InventoryContextType {
 
 const InventoryContext = createContext<InventoryContextType | undefined>(undefined);
 
-export const InventoryProvider = ({ children }: { children: React.ReactNode }) => {
+export const InventoryProvider = ({ children, profile }: { children: React.ReactNode; profile?: any }) => {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [casesOpened, setCasesOpened] = useState(() => {
     const saved = localStorage.getItem('vaultory_cases_opened');
@@ -92,15 +92,15 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
 
   const addItem = async (item: InventoryItem & { spent?: number; purchased?: boolean }) => {
     try {
-      // Получаем telegram_id из localStorage или другого источника
-      const telegramId = localStorage.getItem('vaultory_telegram_id');
+      // Получаем telegram_id из профиля пользователя
+      const telegramId = profile?.telegram_id;
       if (!telegramId) {
-        console.error('Telegram ID not found');
+        console.error('Telegram ID not found in profile');
         return;
       }
 
       // Добавляем предмет в базу данных
-      const newItemId = await InventoryService.addItemToInventory(Number(telegramId), item);
+      const newItemId = await InventoryService.addItemToInventory(telegramId, item);
       
       if (newItemId) {
         // Обновляем локальное состояние
@@ -124,14 +124,14 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       const item = items[index];
       if (!item || item.status === 'sold' || !item.id) return 0;
 
-      const telegramId = localStorage.getItem('vaultory_telegram_id');
+      const telegramId = profile?.telegram_id;
       if (!telegramId) {
-        console.error('Telegram ID not found');
+        console.error('Telegram ID not found in profile');
         return 0;
       }
 
       // Продаем предмет через базу данных
-      const sellPrice = await InventoryService.sellItem(item.id, Number(telegramId));
+      const sellPrice = await InventoryService.sellItem(item.id, telegramId);
       
       if (sellPrice > 0) {
         // Удаляем предмет из локального состояния
@@ -151,14 +151,14 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       const item = items[index];
       if (!item || !item.id) return;
 
-      const telegramId = localStorage.getItem('vaultory_telegram_id');
+      const telegramId = profile?.telegram_id;
       if (!telegramId) {
-        console.error('Telegram ID not found');
+        console.error('Telegram ID not found in profile');
         return;
       }
 
       // Выводим предмет через базу данных
-      const success = await InventoryService.withdrawItem(item.id, Number(telegramId));
+      const success = await InventoryService.withdrawItem(item.id, telegramId);
       
       if (success) {
         // Удаляем предмет из локального состояния
@@ -170,19 +170,19 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
   };
 
   const refreshItems = async () => {
-    const telegramId = localStorage.getItem('vaultory_telegram_id');
+    const telegramId = profile?.telegram_id;
     if (telegramId) {
-      await loadInventoryFromDatabase(Number(telegramId));
+      await loadInventoryFromDatabase(telegramId);
     }
   };
 
   const syncInventory = async () => {
-    const telegramId = localStorage.getItem('vaultory_telegram_id');
+    const telegramId = profile?.telegram_id;
     if (telegramId) {
       // Сначала мигрируем localStorage если есть
-      await migrateLocalStorage(Number(telegramId));
+      await migrateLocalStorage(telegramId);
       // Затем загружаем из базы
-      await loadInventoryFromDatabase(Number(telegramId));
+      await loadInventoryFromDatabase(telegramId);
     }
   };
 
@@ -201,17 +201,25 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
 
   // Инициализация при загрузке
   useEffect(() => {
-    const telegramId = localStorage.getItem('vaultory_telegram_id');
+    const telegramId = profile?.telegram_id;
+    if (telegramId) {
+      // Автоматически загружаем инвентарь из базы данных
+      loadInventoryFromDatabase(telegramId);
+    }
+  }, [profile]);
+
+  // Автоматическая синхронизация при изменении профиля
+  useEffect(() => {
+    const telegramId = profile?.telegram_id;
     if (telegramId) {
       // Проверяем, есть ли данные в localStorage для миграции
       const localInventory = localStorage.getItem('vaultory_inventory');
       if (localInventory) {
-        migrateLocalStorage(Number(telegramId));
-      } else {
-        loadInventoryFromDatabase(Number(telegramId));
+        // Мигрируем данные в фоне
+        migrateLocalStorage(telegramId);
       }
     }
-  }, []);
+  }, [profile]);
 
   return (
     <InventoryContext.Provider value={{ 

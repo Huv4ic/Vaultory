@@ -38,7 +38,7 @@ interface FavoriteCase {
 
 const Inventory = () => {
   const { telegramUser, profile } = useAuth();
-  const { items: inventoryItems, getTotalValue, casesOpened, refreshItems, syncInventory, sellItem, withdrawItem, getCasesOpened } = useInventory();
+  const { items: inventoryItems, getTotalValue, casesOpened, refreshItems, sellItem, withdrawItem, getCasesOpened } = useInventory();
   const { favoriteCase, caseStats, loading: statsLoading, error: statsError } = useCaseStats();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -66,11 +66,11 @@ const Inventory = () => {
     if (!hasRefreshed) {
       sessionStorage.setItem('inventory_refreshed', 'true');
       
-      // Принудительно обновляем данные инвентаря и синхронизируем
+      // Принудительно обновляем данные инвентаря
       console.log('Обновляем инвентарь при заходе на страницу');
-      syncInventory().catch(console.error);
+      refreshItems().catch(console.error);
     }
-  }, [telegramUser, navigate, syncInventory]);
+  }, [telegramUser, navigate, refreshItems]);
 
   // Получаем общую стоимость из хука
   const [totalValue, setTotalValue] = useState(0);
@@ -148,18 +148,9 @@ const Inventory = () => {
             <Button
               onClick={() => navigate(-1)}
               variant="outline"
-              className="mr-4 bg-black/20 border-white/20 text-white hover:bg-white/10"
+              className="bg-black/20 border-white/20 text-white hover:bg-white/10"
             >
               ← Назад
-            </Button>
-            
-            {/* Кнопка синхронизации */}
-            <Button
-              onClick={syncInventory}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-              disabled={loading}
-            >
-              {loading ? '🔄 Синхронизация...' : '🔄 Синхронизировать'}
             </Button>
           </div>
           <h1 className="text-4xl font-bold text-white">Инвентарь</h1>
