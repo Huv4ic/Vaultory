@@ -1,137 +1,132 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 export const useGlobalCaseCounter = () => {
   const [totalCasesOpened, setTotalCasesOpened] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Получаем текущий глобальный счетчик
+  // Получаем текущий счетчик из базы данных
   const getGlobalCounter = async (): Promise<number> => {
     try {
-      const { data: counterData, error: fetchError } = await supabase
-        .from('admin_cases')
-        .select('description')
-        .eq('name', '__GLOBAL_COUNTER__')
+      const { data, error } = await supabase
+        .from('global_case_counter')
+        .select('total_cases_opened')
+        .eq('counter_name', 'total_cases_opened')
         .single();
 
-      if (fetchError || !counterData) {
+      if (error) {
+        console.error('❌ Error fetching global counter:', error);
         return 0;
       }
 
-      try {
-        const details = JSON.parse(counterData.description || '{}');
-        return details.total_cases_opened || 0;
-      } catch (parseError) {
-        console.error('Ошибка парсинга описания счетчика:', parseError);
-        return 0;
-      }
+      return data?.total_cases_opened || 0;
     } catch (err) {
-      console.error('Ошибка при получении глобального счетчика:', err);
+      console.error('❌ Failed to get global counter:', err);
       return 0;
     }
   };
 
-  // Увеличиваем глобальный счетчик на 1
+  // Увеличиваем счетчик на 1
   const incrementGlobalCounter = async (): Promise<boolean> => {
     try {
-      const currentCount = await getGlobalCounter();
-      const newCount = currentCount + 1;
-
-      const { error: updateError } = await supabase
-        .from('admin_cases')
-        .update({
-          description: JSON.stringify({ 
-            total_cases_opened: newCount, 
-            last_reset_at: new Date().toISOString() 
-          }),
-          updated_at: new Date().toISOString()
+      const { data, error } = await supabase
+        .from('global_case_counter')
+        .update({ 
+          total_cases_opened: totalCasesOpened + 1,
+          last_reset_at: new Date().toISOString()
         })
-        .eq('name', '__GLOBAL_COUNTER__');
+        .eq('counter_name', 'total_cases_opened')
+        .select();
 
-      if (updateError) {
-        console.error('Не удалось обновить глобальный счетчик:', updateError);
+      if (error) {
+        console.error('❌ Error incrementing global counter:', error);
         return false;
       }
 
-      // Обновляем локальное состояние
-      setTotalCasesOpened(newCount);
-      
-      // Также обновляем localStorage для совместимости
-      localStorage.setItem('totalCasesOpened', newCount.toString());
-      
-      return true;
+      if (data && data.length > 0) {
+        setTotalCasesOpened(data[0].total_cases_opened);
+        // Синхронизируем с localStorage для совместимости
+        localStorage.setItem('totalCasesOpened', data[0].total_cases_opened.toString());
+        return true;
+      }
+
+      return false;
     } catch (err) {
-      console.error('Ошибка при увеличении глобального счетчика:', err);
+      console.error('❌ Failed to increment global counter:', err);
       return false;
     }
   };
 
-  // Сбрасываем глобальный счетчик
+  // Сбрасываем счетчик
   const resetGlobalCounter = async (): Promise<boolean> => {
     try {
-      const { error: updateError } = await supabase
-        .from('admin_cases')
-        .update({
-          description: JSON.stringify({ 
-            total_cases_opened: 0, 
-            last_reset_at: new Date().toISOString() 
-          }),
-          updated_at: new Date().toISOString()
+      const { data, error } = await supabase
+        .from('global_case_counter')
+        .update({ 
+          total_cases_opened: 0,
+          last_reset_at: new Date().toISOString()
         })
-        .eq('name', '__GLOBAL_COUNTER__');
+        .eq('counter_name', 'total_cases_opened')
+        .select();
 
-      if (updateError) {
-        console.error('Не удалось сбросить глобальный счетчик:', updateError);
+      if (error) {
+        console.error('❌ Error resetting global counter:', error);
         return false;
       }
 
-      // Обновляем локальное состояние
-      setTotalCasesOpened(0);
-      
-      // Также обновляем localStorage для совместимости
-      localStorage.setItem('totalCasesOpened', '0');
-      
-      return true;
+      if (data && data.length > 0) {
+        setTotalCasesOpened(0);
+        // Синхронизируем с localStorage для совместимости
+        localStorage.setItem('totalCasesOpened', '0');
+        return true;
+      }
+
+      return false;
     } catch (err) {
-      console.error('Ошибка при сбросе глобального счетчика:', err);
+      console.error('❌ Failed to reset global counter:', err);
       return false;
     }
   };
 
-  // Функция для создания глобального счетчика кейсов
-  const ensureGlobalCounter = async () => {
+  // Создаем счетчик если его нет
+  const ensureGlobalCounter = async (): Promise<boolean> => {
     try {
-      // Проверяем, есть ли запись о глобальном счетчике в admin_cases
-      const { data: counterData, error: fetchError } = await supabase
-        .from('admin_cases')
+      const { data, error } = await supabase
+        .from('global_case_counter')
         .select('*')
-        .eq('name', '__GLOBAL_COUNTER__')
+        .eq('counter_name', 'total_cases_opened')
         .single();
 
-      if (fetchError || !counterData) {
-        // Создаем начальную запись о глобальном счетчике
-        const { error: insertError } = await supabase
-          .from('admin_cases')
+      if (error && error.code === 'PGRST116') {
+        // Счетчик не существует, создаем его
+        console.log('🔄 Creating global counter...');
+        const { data: newCounter, error: createError } = await supabase
+          .from('global_case_counter')
           .insert({
-            id: `counter_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // Генерируем уникальный ID
-            name: '__GLOBAL_COUNTER__',
-            game: 'system',
-            price: 0,
-            image_url: 'https://via.placeholder.com/100x100?text=Counter', // Добавляем заглушку
-            description: JSON.stringify({ total_cases_opened: 0, last_reset_at: new Date().toISOString() }),
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          });
+            counter_name: 'total_cases_opened',
+            total_cases_opened: 0,
+            last_reset_at: new Date().toISOString()
+          })
+          .select()
+          .single();
 
-        if (insertError) {
-          console.error('Не удалось создать начальную запись счетчика:', insertError);
+        if (createError) {
+          console.error('❌ Failed to create global counter:', createError);
           return false;
         }
+
+        setTotalCasesOpened(newCounter.total_cases_opened);
+        return true;
       }
 
-      return true;
+      if (data) {
+        setTotalCasesOpened(data.total_cases_opened);
+        return true;
+      }
+
+      return false;
     } catch (err) {
-      console.error('Ошибка при создании глобального счетчика:', err);
+      console.error('❌ Failed to ensure global counter:', err);
       return false;
     }
   };
@@ -139,17 +134,18 @@ export const useGlobalCaseCounter = () => {
   // Загружаем счетчик при инициализации
   useEffect(() => {
     const loadCounter = async () => {
-      setLoading(true);
+      setIsLoading(true);
       try {
-        const count = await getGlobalCounter();
-        setTotalCasesOpened(count);
-        
-        // Также обновляем localStorage для совместимости
-        localStorage.setItem('totalCasesOpened', count.toString());
+        await ensureGlobalCounter();
       } catch (err) {
-        console.error('Ошибка при загрузке глобального счетчика:', err);
+        console.error('❌ Failed to load global counter:', err);
+        // Fallback к localStorage
+        const localCount = localStorage.getItem('totalCasesOpened');
+        if (localCount) {
+          setTotalCasesOpened(parseInt(localCount, 10));
+        }
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -158,9 +154,10 @@ export const useGlobalCaseCounter = () => {
 
   return {
     totalCasesOpened,
-    loading,
+    isLoading,
     getGlobalCounter,
     incrementGlobalCounter,
-    resetGlobalCounter
+    resetGlobalCounter,
+    ensureGlobalCounter
   };
 };

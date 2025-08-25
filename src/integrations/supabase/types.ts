@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export type Database = {
+export interface Database {
   public: {
     Tables: {
       accounts: {
@@ -816,6 +816,32 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
+      }
+      global_case_counter: {
+        Row: {
+          id: number
+          counter_name: string
+          total_cases_opened: number
+          last_reset_at: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          counter_name?: string
+          total_cases_opened?: number
+          last_reset_at?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          counter_name?: string
+          total_cases_opened?: number
+          last_reset_at?: string
+          created_at?: string
+          updated_at?: string
+        }
       }
     }
     Views: {

@@ -812,7 +812,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       }
                     }}
                     disabled={soldOrAdded}
-                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-green-500/30"
                   >
                     <Package className="w-4 h-4 mr-2" />
                     Добавить в инвентарь
@@ -831,7 +831,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       }
                     }}
                     disabled={soldOrAdded}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/30"
                   >
                     <DollarSign className="w-4 h-4 mr-2" />
                     Продать
