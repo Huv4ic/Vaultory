@@ -137,24 +137,24 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
-      <section className="relative py-24 px-4 bg-gradient-to-br from-amber-600 via-emerald-500 to-purple-700 text-white overflow-hidden animate-fade-in">
-        {/* Анимированный фон */}
+      <section className="relative py-24 px-4 bg-gradient-to-br from-slate-800 via-gray-900 to-black text-white overflow-hidden animate-fade-in">
+        {/* Темный анимированный фон */}
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-amber-500/20 rounded-full animate-spin" style={{animationDuration: '30s'}}></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-red-500/20 rounded-full animate-spin" style={{animationDuration: '30s'}}></div>
         </div>
         
         <div className="container mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-amber-100 to-emerald-100 bg-clip-text text-transparent animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-red-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
             {t('Vaultory — магазин игровых кейсов и товаров')}
           </h1>
-          <p className="text-2xl mb-8 max-w-2xl mx-auto animate-slide-up text-amber-50">
+          <p className="text-2xl mb-8 max-w-2xl mx-auto animate-slide-up text-gray-200">
             {t('Открывай уникальные кейсы, покупай топовые товары, пополняй баланс и выигрывай крутые призы!')}
           </p>
           <a
             href="/cases"
-            className="inline-block bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold text-xl px-10 py-4 rounded-xl shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50 transition-all duration-500 mb-4 transform hover:scale-105 hover:-translate-y-1"
+            className="inline-block bg-gradient-to-r from-red-600 to-purple-700 hover:from-red-700 hover:to-purple-800 text-white font-bold text-xl px-10 py-4 rounded-xl shadow-2xl shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-500 mb-4 transform hover:scale-105 hover:-translate-y-1"
           >
             {t('Открыть кейсы')}
           </a>
@@ -163,7 +163,7 @@ const Index = () => {
               href="https://t.me/Vaultory_manager"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-white/10 backdrop-blur-sm text-white font-bold px-6 py-2 rounded-xl border border-amber-400/30 shadow-lg hover:bg-white/20 hover:border-amber-400/50 transition-all duration-300 hover:scale-105"
+              className="inline-block bg-white/10 backdrop-blur-sm text-white font-bold px-6 py-2 rounded-xl border border-red-400/30 shadow-lg hover:bg-white/20 hover:border-red-400/50 transition-all duration-300 hover:scale-105"
             >
               {t('Telegram поддержка')}
             </a>
@@ -173,15 +173,15 @@ const Index = () => {
 
       {/* Категории игр с новым фоном и анимацией */}
       <section className="py-16 px-4 relative overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-900">
-        {/* Анимированный фон */}
+        {/* Темный анимированный фон */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-amber-500/10 rounded-full animate-spin" style={{animationDuration: '40s'}}></div>
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-red-500/10 rounded-full animate-spin" style={{animationDuration: '40s'}}></div>
         </div>
         
         <div className="container mx-auto relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-amber-400 via-emerald-400 to-purple-400 bg-clip-text text-transparent animate-fade-in">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-red-400 via-purple-400 to-slate-300 bg-clip-text text-transparent animate-fade-in">
             {t('Популярные игры')}
           </h2>
           
@@ -190,8 +190,8 @@ const Index = () => {
               onClick={() => setSelectedCategory('all')}
               className={`px-6 py-3 rounded-xl font-medium transition-all duration-500 transform hover:scale-105 flex items-center space-x-3 ${
                 selectedCategory === 'all'
-                  ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                  : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-amber-500/20 hover:text-amber-300 border border-gray-700/50 hover:border-amber-500/30'
+                  ? 'bg-gradient-to-r from-red-600 to-purple-700 text-white shadow-2xl shadow-red-500/30'
+                  : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-red-500/20 hover:text-red-300 border border-gray-700/50 hover:border-red-500/30'
               }`}
             >
               <span className="text-lg">🎮</span>
@@ -203,8 +203,8 @@ const Index = () => {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-6 py-3 rounded-xl font-medium transition-all duration-500 transform hover:scale-105 flex items-center space-x-3 ${
                   selectedCategory === category.id
-                    ? 'bg-gradient-to-r from-amber-500 to-emerald-600 text-white shadow-2xl shadow-amber-500/30'
-                    : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-amber-500/20 hover:text-amber-300 border border-gray-700/50 hover:border-amber-500/30'
+                    ? 'bg-gradient-to-r from-red-600 to-purple-700 text-white shadow-2xl shadow-red-500/30'
+                    : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-red-500/20 hover:text-red-300 border border-gray-700/50 hover:border-red-500/30'
                 }`}
               >
                 <span className="text-lg">{getCategoryIcon(category.name)}</span>
@@ -246,7 +246,7 @@ const Index = () => {
               <Button
                 onClick={loadMore}
                 size="lg"
-                className="bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 border-none px-8 py-6 rounded-xl transform hover:scale-105 transition-all duration-500 shadow-2xl shadow-amber-500/30 hover:shadow-amber-500/50"
+                className="bg-gradient-to-r from-red-600 to-purple-700 hover:from-red-700 hover:to-purple-800 border-none px-8 py-6 rounded-xl transform hover:scale-105 transition-all duration-500 shadow-2xl shadow-red-500/30 hover:shadow-red-500/50"
               >
                 {t('Показать еще товары')}
               </Button>
@@ -257,9 +257,9 @@ const Index = () => {
 
       {/* FAQ с новым дизайном */}
       <section className="py-16 px-4 bg-gradient-to-r from-gray-800/30 to-gray-900/30 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-900/10 via-transparent to-emerald-900/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-red-900/10 via-transparent to-purple-900/10"></div>
         <div className="container mx-auto max-w-4xl relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-amber-400 via-emerald-400 to-purple-400 bg-clip-text text-transparent animate-fade-in">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-red-400 via-purple-400 to-slate-300 bg-clip-text text-transparent animate-fade-in">
             {t('Частые вопросы')}
           </h2>
           
@@ -268,12 +268,12 @@ const Index = () => {
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`} 
-                className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-amber-500/20 px-6 animate-fade-in hover:border-amber-500/40 transition-all duration-300"
+                className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-red-500/20 px-6 animate-fade-in hover:border-red-500/40 transition-all duration-300"
                 style={{animationDelay: `${index * 0.1}s`}}
               >
-                <AccordionTrigger className="text-lg font-semibold text-white hover:text-amber-400 transition-colors py-6 hover:no-underline">
+                <AccordionTrigger className="text-lg font-semibold text-white hover:text-red-400 transition-colors py-6 hover:no-underline">
                   <div className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-amber-500 mr-3" />
+                    <CheckCircle className="w-5 h-5 text-red-500 mr-3" />
                     {item.question}
                   </div>
                 </AccordionTrigger>
