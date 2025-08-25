@@ -63,18 +63,47 @@ const AdminCases = () => {
     try {
       setLoading(true);
       
-      // Загружаем ТОЛЬКО кейсы без связанных данных
-      const { data, error } = await supabase
+      // Загружаем кейсы
+      const { data: casesData, error: casesError } = await supabase
         .from('admin_cases')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (casesError) throw casesError;
       
       // Фильтруем системные записи
-      const formattedCases = (data || []).filter(caseData => !caseData.name.startsWith('__'));
+      const filteredCases = (casesData || []).filter(caseData => !caseData.name.startsWith('__'));
       
-      setCases(formattedCases);
+      // Для каждого кейса загружаем предметы отдельно
+      const casesWithItems = await Promise.all(
+        filteredCases.map(async (gameCase) => {
+          try {
+            const { data: itemsData, error: itemsError } = await supabase
+              .from('admin_case_items')
+              .select('*')
+              .eq('case_id', gameCase.id)
+              .order('created_at', { ascending: false });
+
+            if (itemsError) {
+              console.error(`Error fetching items for case ${gameCase.id}:`, itemsError);
+              return { ...gameCase, items: [] };
+            }
+
+            // Преобразуем данные, добавляя поле price если его нет
+            const formattedItems = (itemsData || []).map((item: any) => ({
+              ...item,
+              price: typeof item.price === 'number' ? item.price : 0,
+            }));
+
+            return { ...gameCase, items: formattedItems };
+          } catch (itemErr) {
+            console.error(`Error processing items for case ${gameCase.id}:`, itemErr);
+            return { ...gameCase, items: [] };
+          }
+        })
+      );
+      
+      setCases(casesWithItems);
       setLoading(false);
       
     } catch (err) {
