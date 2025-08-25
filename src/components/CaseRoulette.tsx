@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Package, X, Gift, DollarSign } from 'lucide-react';
 import { supabase } from '../integrations/supabase/client';
 import { useNotification } from '../hooks/useNotification';
+import { useGlobalCaseCounter } from '../hooks/useGlobalCaseCounter';
 import Notification from './ui/Notification';
 
 // CSS стили для анимаций уведомлений
@@ -59,6 +60,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   
   // Используем новый хук для уведомлений
   const { showSuccess, showError, showWarning, showInfo, notification, hideNotification } = useNotification();
+  const { totalCasesOpened, incrementGlobalCounter } = useGlobalCaseCounter();
 
   // Отладка изменений состояний
   useEffect(() => {
@@ -200,11 +202,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   // Функция для определения победного предмета на основе drop_after_cases
   const calculateWinner = (): CaseItem => {
     // Получаем текущий счетчик открытых кейсов (БЕЗ +1)
-    const currentCaseCount = parseInt(localStorage.getItem('totalCasesOpened') || '0');
+    const currentCaseCount = totalCasesOpened;
     const nextCaseNumber = currentCaseCount + 1;
     
     console.log('=== CALCULATE WINNER START ===');
-    console.log('Current case count from localStorage:', currentCaseCount);
+    console.log('Current case count from DB:', currentCaseCount);
     console.log('Next case number:', nextCaseNumber);
     console.log('All case items:', caseItems.map(item => ({ name: item.name, drop_after_cases: item.drop_after_cases })));
     
@@ -276,7 +278,157 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     return winner;
   };
 
-  const startSpin = () => {
+  // Функция для анимации рулетки
+  const spinToLocalIndex = (winner: CaseItem) => {
+    if (!stripRef.current) return;
+    
+    const strip = stripRef.current;
+    const viewport = strip.parentElement;
+    
+    if (!viewport) return;
+    
+    console.log('Starting animation for winner:', winner.name);
+    
+    // Базовые параметры
+    const REPEAT = 50; // длинная лента для бесконечных спинов
+    let itemWidth = 0; // вычислим после вставки
+    
+    // Вычисляем ширину карточки
+    const first = strip.querySelector('.item');
+    if (first) {
+      const gap = 10; // gap между предметами
+      itemWidth = first.getBoundingClientRect().width + gap;
+      console.log('Item width calculated:', itemWidth);
+    }
+    
+    // Функции для работы с позицией
+    let x = 0; // текущая позиция ленты (translateX)
+    let v = 0; // скорость (px/frame)
+    
+    const setX = (val: number) => { 
+      x = val; 
+      strip.style.transform = `translate3d(${val}px,0,0)`; 
+    };
+    
+    const centerOffset = () => {
+      const vpW = viewport.clientWidth;
+      return vpW/2 - itemWidth/2; // чтобы середина карточки пришла под маркер
+    };
+    
+    const indexToX = (index: number) => {
+      // глобальный индекс по длинной ленте
+      return -(index*itemWidth) + centerOffset();
+    };
+    
+    const nowIndex = () => {
+      // какой индекс примерно под маркером
+      const idx = Math.round((centerOffset() - x) / itemWidth);
+      return ((idx % (caseItems.length*REPEAT)) + (caseItems.length*REPEAT)) % (caseItems.length*REPEAT);
+    };
+    
+    // Находим индекс победного предмета
+    const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
+    
+    if (winnerIndex === -1) {
+      console.error('Winner index not found! Winner:', winner, 'Case items:', caseItems);
+      return;
+    }
+    
+    console.log('Spinning to index:', winnerIndex, 'for winner:', winner.name);
+    
+    // стартовая скорость и разгон
+    v = -40; // влево
+    console.log('Starting animation with velocity:', v);
+    
+    // выберем сегмент, где остановимся (далее по ленте + несколько кругов)
+    const currentGlobal = nowIndex();
+    const loops = 3; // сколько кругов до остановки
+    const stopGlobal = Math.floor(currentGlobal/caseItems.length)*caseItems.length + loops*caseItems.length + winnerIndex;
+    const targetX = indexToX(stopGlobal);
+
+    console.log('Animation target:', { currentGlobal, loops, stopGlobal, targetX });
+
+    // Плавный довод с помощью встроенного аниматора
+    const startX = x; 
+    const dist = targetX - startX; 
+    const D = 3200; // длительность в мс
+    const startT = performance.now();
+    
+    const easeOutCubic = (t: number) => { 
+      return 1 - Math.pow(1 - t, 3); 
+    };
+
+    const tween = () => {
+      const t = (performance.now() - startT) / D;
+      
+      if (t >= 1){
+        console.log('Tween animation completed, setting result');
+        setX(targetX);
+        
+        // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
+        console.log('Setting isSpinning to false...');
+        setIsSpinning(false);
+        console.log('Setting showResult to true...');
+        setShowResult(true);
+        
+        // Находим правильный предмет для показа
+        const realLocal = stopGlobal % caseItems.length; 
+        const it = caseItems[realLocal];
+        console.log('Setting winnerItem to:', it.name);
+        setWinnerItem(it);
+        
+        // Останавливаем анимацию
+        if (animationRef.current) {
+          console.log('Cancelling animation in tween completion');
+          cancelAnimationFrame(animationRef.current);
+          animationRef.current = null;
+        }
+        
+        // Анимация яркости viewport
+        if (viewport) {
+          viewport.animate([
+            {filter:'brightness(1.0)'},
+            {filter:'brightness(1.6)'},
+            {filter:'brightness(1.0)'}
+          ], {duration:500});
+        }
+        
+        console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
+        return;
+      }
+      setX(startX + dist * easeOutCubic(t));
+      requestAnimationFrame(tween);
+    };
+    
+    // Запускаем основную анимацию на короткое время, потом переключаемся на tween
+    let frameCount = 0;
+    const maxFrames = 60; // примерно 1 секунда при 60fps
+    
+    const mainAnimation = () => {
+      frameCount++;
+      
+      if (frameCount >= maxFrames) {
+        // Переключаемся на плавную остановку
+        console.log('Switching to tween animation');
+        requestAnimationFrame(tween);
+        return;
+      }
+      
+      animationRef.current = requestAnimationFrame(mainAnimation);
+      setX(x + v);
+      v *= 0.985;
+      
+      // безопасность — бесконечная лента (за цикл)
+      const totalW = caseItems.length * REPEAT * itemWidth;
+      if (x < -totalW + centerOffset()) setX(x + totalW);
+      if (x > centerOffset()) setX(x - totalW);
+    };
+    
+    console.log('Starting main animation...');
+    mainAnimation();
+  };
+
+  const startSpin = async () => {
     console.log('=== START SPIN START ===');
     console.log('isSpinning state:', isSpinning);
     console.log('showResult state:', showResult);
@@ -304,202 +456,37 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     // Проверяем, что есть предметы для открытия
     if (caseItems.length === 0) {
-      alert('В этом кейсе нет предметов для открытия');
+      console.error('No case items available for spinning');
+      showError('Нет предметов для открытия в этом кейсе');
       return;
     }
 
-    // Определяем победный предмет
-    const winner = calculateWinner();
-    setWinnerItem(winner);
-    
-    // ДОПОЛНИТЕЛЬНАЯ ОТЛАДКА: проверяем, что winner не null
-    if (!winner) {
-      console.error('Winner is null! This should not happen.');
-      alert('Ошибка: не удалось определить победителя');
-      return;
-    }
-    
-    console.log('Starting spin with winner:', winner.name, 'rarity:', winner.rarity);
-    
-    // Анимация вращения как в HTML демо
-    if (stripRef.current) {
-      const strip = stripRef.current;
-      const viewport = strip.parentElement;
+    try {
+      // Увеличиваем глобальный счетчик открытых кейсов
+      console.log('Увеличиваем глобальный счетчик кейсов...');
+      const success = await incrementGlobalCounter();
       
-      console.log('Strip element found, starting animation...');
-      
-      // Базовые параметры
-      const REPEAT = 50; // длинная лента для бесконечных спинов
-      let itemWidth = 0; // вычислим после вставки
-      
-      // Вычисляем ширину карточки
-      const first = strip.querySelector('.item');
-      if (first) {
-        const gap = 10; // gap между предметами
-        itemWidth = first.getBoundingClientRect().width + gap;
-        console.log('Item width calculated:', itemWidth);
+      if (!success) {
+        console.warn('Не удалось увеличить глобальный счетчик, продолжаем с текущим значением');
+      } else {
+        console.log('✅ Глобальный счетчик успешно увеличен');
       }
-      
-      // Функции для работы с позицией
-      let x = 0; // текущая позиция ленты (translateX)
-      let v = 0; // скорость (px/frame)
-      
-      const setX = (val: number) => { 
-        x = val; 
-        strip.style.transform = `translate3d(${val}px,0,0)`; 
-      };
-      
-      const centerOffset = () => {
-        const vpW = viewport!.clientWidth;
-        return vpW/2 - itemWidth/2; // чтобы середина карточки пришла под маркер
-      };
-      
-      const indexToX = (index: number) => {
-        // глобальный индекс по длинной ленте
-        return -(index*itemWidth) + centerOffset();
-      };
-      
-      const nowIndex = () => {
-        // какой индекс примерно под маркером
-        const idx = Math.round((centerOffset() - x) / itemWidth);
-        return ((idx % (caseItems.length*REPEAT)) + (caseItems.length*REPEAT)) % (caseItems.length*REPEAT);
-      };
-      
-      // Анимация
-      const animate = () => {
-        animationRef.current = requestAnimationFrame(animate);
-        setX(x + v);
-        // немного трения
-        v *= 0.985;
-        // безопасность — бесконечная лента (за цикл)
-        const totalW = caseItems.length * REPEAT * itemWidth;
-        if (x < -totalW + centerOffset()) setX(x + totalW);
-        if (x > centerOffset()) setX(x - totalW);
-      };
-      
-      // Запускаем спин
-      const spinToLocalIndex = (localIndex: number) => {
-        console.log('spinToLocalIndex called with index:', localIndex);
-        
-        if (isSpinning) {
-          console.log('Already spinning, cancelling previous animation');
-          if (animationRef.current) {
-            cancelAnimationFrame(animationRef.current);
-          }
-        }
-        
-        // стартовая скорость и разгон
-        v = -40; // влево
-        console.log('Starting animation with velocity:', v);
-        
-        // выберем сегмент, где остановимся (далее по ленте + несколько кругов)
-        const currentGlobal = nowIndex();
-        const loops = 3; // сколько кругов до остановки
-        const stopGlobal = Math.floor(currentGlobal/caseItems.length)*caseItems.length + loops*caseItems.length + localIndex;
-        const targetX = indexToX(stopGlobal);
 
-        console.log('Animation target:', { currentGlobal, loops, stopGlobal, targetX });
-
-        // Плавный довод с помощью встроенного аниматора
-        const startX = x; 
-        const dist = targetX - startX; 
-        const D = 3200; // длительность в мс
-        const startT = performance.now();
-        
-        const easeOutCubic = (t: number) => { 
-          return 1 - Math.pow(1 - t, 3); 
-        };
-
-        const tween = () => {
-          const t = (performance.now() - startT) / D;
-          console.log('Tween called, t:', t, 'target:', targetX, 'startT:', startT, 'D:', D);
-          
-          if (t >= 1){
-            console.log('Tween animation completed, setting result');
-            setX(targetX);
-            
-            // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
-            console.log('Setting isSpinning to false...');
-            setIsSpinning(false);
-            console.log('Setting showResult to true...');
-            setShowResult(true);
-            
-            // Находим правильный предмет для показа
-            const realLocal = stopGlobal % caseItems.length; 
-            const it = caseItems[realLocal];
-            console.log('Setting winnerItem to:', it.name);
-            setWinnerItem(it);
-            
-            // Останавливаем анимацию
-            if (animationRef.current) {
-              console.log('Cancelling animation in tween completion');
-              cancelAnimationFrame(animationRef.current);
-              animationRef.current = null;
-            }
-            
-            // Анимация яркости viewport
-            if (viewport) {
-              viewport.animate([
-                {filter:'brightness(1.0)'},
-                {filter:'brightness(1.6)'},
-                {filter:'brightness(1.0)'}
-              ], {duration:500});
-            }
-            
-            console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
-            return;
-          }
-          setX(startX + dist * easeOutCubic(t));
-          requestAnimationFrame(tween);
-        };
-        
-        // Запускаем основную анимацию на короткое время, потом переключаемся на tween
-        let frameCount = 0;
-        const maxFrames = 60; // примерно 1 секунда при 60fps
-        
-        const mainAnimation = () => {
-          frameCount++;
-          console.log('Main animation frame:', frameCount, 'of', maxFrames);
-          
-          if (frameCount >= maxFrames) {
-            // Переключаемся на плавную остановку
-            console.log('Switching to tween animation');
-            console.log('Final position before tween - x:', x, 'v:', v);
-            requestAnimationFrame(tween);
-            return;
-          }
-          
-          animationRef.current = requestAnimationFrame(mainAnimation);
-          setX(x + v);
-          v *= 0.985;
-          
-          // безопасность — бесконечная лента (за цикл)
-          const totalW = caseItems.length * REPEAT * itemWidth;
-          if (x < -totalW + centerOffset()) setX(x + totalW);
-          if (x > centerOffset()) setX(x - totalW);
-        };
-        
-        console.log('Starting main animation...');
-        mainAnimation();
-      };
+      // Определяем победный предмет
+      const winner = calculateWinner();
+      console.log('Winner calculated:', winner.name);
       
-      // Находим индекс победного предмета
-      const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
-      
-      // ДОПОЛНИТЕЛЬНАЯ ОТЛАДКА: проверяем индекс
-      if (winnerIndex === -1) {
-        console.error('Winner index not found! Winner:', winner, 'Case items:', caseItems);
-        alert('Ошибка: не удалось найти индекс победителя');
-        return;
+      // Запускаем анимацию
+      if (stripRef.current) {
+        spinToLocalIndex(winner);
+        setIsSpinning(true);
+        console.log('=== START SPIN END ===');
+      } else {
+        console.error('Strip element not found!');
       }
-      
-      console.log('Spinning to index:', winnerIndex, 'for winner:', winner.name);
-      spinToLocalIndex(winnerIndex);
-      
-      setIsSpinning(true);
-      console.log('=== START SPIN END ===');
-    } else {
-      console.error('Strip element not found!');
+    } catch (err) {
+      console.error('Ошибка при запуске спина:', err);
+      showError('Ошибка при открытии кейса');
     }
   };
 
@@ -635,8 +622,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
             {/* Отладочная информация */}
             <div className="mb-4 p-3 bg-gray-800/50 rounded-lg text-xs text-gray-400">
               <p>🔍 Отладка открытия кейса:</p>
-              <p>Текущий счетчик кейсов: {parseInt(localStorage.getItem('totalCasesOpened') || '0')}</p>
-              <p>Следующий кейс: {parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1}</p>
+              <p>Текущий счетчик кейсов: {totalCasesOpened}</p>
+              <p>Следующий кейс: {totalCasesOpened + 1}</p>
               <p>Предметы в кейсе: {caseItems.map(item => `${item.name}(${item.drop_after_cases || 1})`).join(', ')}</p>
               <hr className="my-2 border-gray-600" />
               <p>📊 Детальные настройки выпадения:</p>
@@ -791,7 +778,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   <p>🎯 Выпал предмет: {winnerItem?.name || 'N/A'}</p>
                   <p>Редкость: {winnerItem?.rarity || 'N/A'}</p>
                   <p>Настройка выпадения: каждые {winnerItem?.drop_after_cases || 1} кейсов</p>
-                  <p>Текущий кейс: {parseInt(localStorage.getItem('totalCasesOpened') || '0') + 1}</p>
+                  <p>Текущий кейс: {totalCasesOpened + 1}</p>
                 </div>
                 
                 {/* Кнопки действий */}

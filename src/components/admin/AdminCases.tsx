@@ -7,7 +7,7 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Search, Plus, Edit, Trash2, Save, X, Package, Settings, Image as ImageIcon } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Save, X, Package, Settings, Image as ImageIcon, RotateCcw } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
 import { useNotification } from '../../hooks/useNotification';
 import Notification from '../ui/Notification';
@@ -363,6 +363,178 @@ const AdminCases = () => {
     }
   };
 
+  // Функция для создания глобального счетчика кейсов
+  const ensureGlobalCounter = async () => {
+    try {
+      // Проверяем, есть ли запись о глобальном счетчике в admin_logs
+      const { data: counterData, error: fetchError } = await supabase
+        .from('admin_logs')
+        .select('*')
+        .eq('action', 'global_case_counter')
+        .eq('target_type', 'counter')
+        .single();
+
+      if (fetchError || !counterData) {
+        // Создаем начальную запись о глобальном счетчике
+        const { error: insertError } = await supabase
+          .from('admin_logs')
+          .insert({
+            admin_id: 'system',
+            action: 'global_case_counter',
+            target_type: 'counter',
+            target_id: 'main',
+            details: { total_cases_opened: 0, last_reset_at: new Date().toISOString() },
+            created_at: new Date().toISOString()
+          });
+
+        if (insertError) {
+          console.error('Не удалось создать начальную запись счетчика:', insertError);
+          return false;
+        }
+      }
+
+      return true;
+    } catch (err) {
+      console.error('Ошибка при создании глобального счетчика:', err);
+      return false;
+    }
+  };
+
+  // Функция для получения текущего глобального счетчика
+  const getGlobalCounter = async (): Promise<number> => {
+    try {
+      const { data: counterData, error: fetchError } = await supabase
+        .from('admin_logs')
+        .select('details')
+        .eq('action', 'global_case_counter')
+        .eq('target_type', 'counter')
+        .eq('target_id', 'main')
+        .single();
+
+      if (fetchError || !counterData) {
+        return 0;
+      }
+
+      const details = counterData.details as any;
+      return details?.total_cases_opened || 0;
+    } catch (err) {
+      console.error('Ошибка при получении глобального счетчика:', err);
+      return 0;
+    }
+  };
+
+  // Функция для обновления глобального счетчика
+  const updateGlobalCounter = async (newCount: number) => {
+    try {
+      const { error: updateError } = await supabase
+        .from('admin_logs')
+        .update({
+          details: { 
+            total_cases_opened: newCount, 
+            last_reset_at: new Date().toISOString() 
+          }
+        })
+        .eq('action', 'global_case_counter')
+        .eq('target_type', 'counter')
+        .eq('target_id', 'main');
+
+      if (updateError) {
+        console.error('Не удалось обновить глобальный счетчик:', updateError);
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error('Ошибка при обновлении глобального счетчика:', err);
+      return false;
+    }
+  };
+
+  // Функция для обновления интерфейса глобального счетчика
+  const updateCounterUI = async () => {
+    try {
+      const currentCount = await getGlobalCounter();
+      
+      // Обновляем счетчик
+      const counterElement = document.getElementById('global-counter');
+      if (counterElement) {
+        counterElement.textContent = currentCount.toString();
+      }
+      
+      // Обновляем информацию о следующих предметах
+      const nextItemsElement = document.getElementById('next-items');
+      if (nextItemsElement) {
+        const nextCases = [currentCount + 1, currentCount + 2, currentCount + 3];
+        const itemsHtml = nextCases.map(caseNumber => {
+          const eligibleItems = caseItems.filter(item => item.drop_after_cases === caseNumber);
+          if (eligibleItems.length === 0) return null;
+          
+          return `<div class="text-xs text-gray-400 ml-2 mb-1">
+            <span class="text-blue-400">Кейс #${caseNumber}:</span> ${eligibleItems.map(item => item.name).join(', ')}
+          </div>`;
+        }).filter(Boolean).join('');
+        
+        nextItemsElement.innerHTML = itemsHtml || '<div class="text-xs text-gray-500 ml-2">Нет предметов для следующих кейсов</div>';
+      }
+    } catch (err) {
+      console.error('Ошибка при обновлении интерфейса счетчика:', err);
+    }
+  };
+
+  // Обновляем интерфейс счетчика при загрузке
+  useEffect(() => {
+    if (caseItems.length > 0) {
+      updateCounterUI();
+    }
+  }, [caseItems]);
+
+  const handleResetCaseCounter = async () => {
+    if (!confirm('⚠️ ВНИМАНИЕ! Вы уверены, что хотите сбросить глобальный счетчик открытых кейсов?\n\nЭто действие:\n• Сбросит счетчик для ВСЕХ пользователей\n• Предметы с настройкой "выпадает через N кейсов" начнут выпадать заново\n• НЕ затронет любимые кейсы и инвентарь пользователей\n\nПродолжить?')) {
+      return;
+    }
+
+    try {
+      // Создаем глобальный счетчик если его нет
+      await ensureGlobalCounter();
+      
+      // Сбрасываем глобальный счетчик в базе данных
+      const success = await updateGlobalCounter(0);
+      
+      if (!success) {
+        throw new Error('Не удалось обновить глобальный счетчик');
+      }
+
+      // Также сбрасываем localStorage для текущей сессии (опционально)
+      localStorage.setItem('totalCasesOpened', '0');
+      
+      // Записываем действие в лог админки
+      const { error: logError } = await supabase
+        .from('admin_logs')
+        .insert({
+          admin_id: 'admin', // Или ID текущего админа
+          action: 'reset_global_case_counter',
+          target_type: 'global',
+          target_id: 'all_users',
+          details: 'Глобальный счетчик открытых кейсов сброшен на 0',
+          created_at: new Date().toISOString()
+        });
+
+      if (logError) {
+        console.warn('Не удалось записать в лог админки:', logError);
+      }
+
+      showSuccess('✅ Глобальный счетчик открытых кейсов успешно сброшен!\n\nТеперь все предметы будут выпадать заново согласно настройкам из админки.');
+      
+      // Обновляем интерфейс
+      fetchCases();
+      updateCounterUI();
+      
+    } catch (err) {
+      console.error('Error resetting case counter:', err);
+      showError('Ошибка при сбросе счетчика открытых кейсов');
+    }
+  };
+
   const filteredCases = cases.filter(gameCase =>
     gameCase.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     gameCase.game.toLowerCase().includes(searchTerm.toLowerCase())
@@ -380,12 +552,62 @@ const AdminCases = () => {
 
   return (
     <div className="p-3 sm:p-6 bg-gray-900 text-white rounded-xl shadow-xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
-        <h2 className="text-xl sm:text-2xl font-bold">Управление кейсами</h2>
-        <Button onClick={openAddModal} className="bg-purple-600 hover:bg-purple-700 text-sm sm:text-base">
-          <Plus className="w-4 h-4 mr-2" />
-          Добавить кейс
-        </Button>
+      {/* Заголовок и кнопки */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Управление кейсами</h1>
+          <p className="text-gray-400 text-sm sm:text-base">Добавляйте, редактируйте и удаляйте кейсы</p>
+          
+          {/* Информация о глобальном счетчике */}
+          <div className="mt-2 p-3 bg-gray-800/50 rounded-lg text-sm">
+            <p className="text-gray-300">
+              🌐 <strong>Глобальный счетчик открытых кейсов:</strong> <span id="global-counter">Загрузка...</span>
+            </p>
+            <p className="text-gray-400 text-xs mt-1">
+              Этот счетчик влияет на выпадение предметов с настройкой "выпадает через N кейсов"
+            </p>
+            
+            {/* Предметы, которые выпадут в следующих кейсах */}
+            <div className="mt-3 pt-3 border-t border-gray-600">
+              <p className="text-gray-300 text-xs font-medium mb-2">📊 Предметы в следующих кейсах:</p>
+              <div id="next-items">Загрузка...</div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          {/* Кнопка сброса счетчика кейсов */}
+          <Button 
+            onClick={handleResetCaseCounter} 
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm sm:text-base"
+            title="Сбросить счетчик открытых кейсов для всех пользователей"
+          >
+            <RotateCcw className="w-4 h-4 mr-2" />
+            Сбросить счетчик кейсов
+          </Button>
+          
+          {/* Кнопка тестирования (добавляет +1 к счетчику) */}
+          <Button 
+            onClick={() => {
+              const current = parseInt(localStorage.getItem('totalCasesOpened') || '0');
+              localStorage.setItem('totalCasesOpened', (current + 1).toString());
+              showSuccess(`Тест: счетчик увеличен до ${current + 1}`);
+              // Обновляем интерфейс
+              setTimeout(() => window.location.reload(), 1000);
+            }} 
+            className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 text-xs sm:text-sm"
+            title="Тест: добавить +1 к счетчику кейсов"
+          >
+            <Plus className="w-4 h-4 mr-1" />
+            +1
+          </Button>
+          
+          {/* Кнопка добавления кейса */}
+          <Button onClick={openAddModal} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm sm:text-base">
+            <Plus className="w-4 h-4 mr-2" />
+            Добавить кейс
+          </Button>
+        </div>
       </div>
 
       {/* Поиск */}
