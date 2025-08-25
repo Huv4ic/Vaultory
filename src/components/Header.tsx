@@ -39,27 +39,27 @@ const Header = () => {
           {/* Логотип с анимацией */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
             <div className="w-8 h-8 sm:w-10 sm:h-10 relative transform group-hover:scale-110 transition-all duration-500">
-              {/* Новая 3D буква V с неоновым свечением */}
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-2xl shadow-amber-500/50 group-hover:shadow-amber-500/70 transition-all duration-500">
+              {/* Темная премиальная иконка с буквой V */}
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-gray-900 to-black rounded-lg sm:rounded-xl flex items-center justify-center shadow-2xl shadow-purple-900/50 group-hover:shadow-red-900/70 border border-gray-700 group-hover:border-red-500/50 transition-all duration-500">
                 <div className="relative">
                   {/* Основная буква V */}
-                  <div className="text-black font-bold text-lg sm:text-xl tracking-wider transform rotate-12 drop-shadow-[0_0_8px_rgba(255,215,0,0.8)] group-hover:drop-shadow-[0_0_12px_rgba(255,215,0,1)] transition-all duration-500">
+                  <div className="text-red-500 font-bold text-lg sm:text-xl tracking-wider drop-shadow-[0_0_8px_rgba(220,38,38,0.8)] group-hover:drop-shadow-[0_0_12px_rgba(220,38,38,1)] transition-all duration-500">
                     V
                   </div>
-                  {/* Неоновое свечение - золотой верх */}
-                  <div className="absolute inset-0 text-amber-300 font-bold text-lg sm:text-xl tracking-wider transform rotate-12 blur-[1px] opacity-70 group-hover:opacity-100 transition-all duration-500">
+                  {/* Темное свечение - красный верх */}
+                  <div className="absolute inset-0 text-red-400 font-bold text-lg sm:text-xl tracking-wider blur-[1px] opacity-70 group-hover:opacity-100 transition-all duration-500">
                     V
                   </div>
-                  {/* Неоновое свечение - изумрудный низ */}
-                  <div className="absolute inset-0 text-emerald-400 font-bold text-lg sm:text-xl tracking-wider transform rotate-12 blur-[2px] opacity-50 -bottom-0.5 group-hover:opacity-80 transition-all duration-500">
+                  {/* Темное свечение - фиолетовый низ */}
+                  <div className="absolute inset-0 text-purple-500 font-bold text-lg sm:text-xl tracking-wider blur-[2px] opacity-50 -bottom-0.5 group-hover:opacity-80 transition-all duration-500">
                     V
                   </div>
                 </div>
               </div>
-              {/* Анимированное свечение вокруг */}
-              <div className="absolute -inset-1 sm:-inset-2 bg-gradient-to-r from-amber-500 via-emerald-500 to-purple-600 rounded-lg sm:rounded-xl opacity-0 group-hover:opacity-20 blur-xl transition-all duration-700 animate-pulse"></div>
+              {/* Темное анимированное свечение вокруг */}
+              <div className="absolute -inset-1 sm:-inset-2 bg-gradient-to-r from-red-600 via-purple-700 to-slate-800 rounded-lg sm:rounded-xl opacity-0 group-hover:opacity-30 blur-xl transition-all duration-700 animate-pulse"></div>
             </div>
-            <span className="text-lg sm:text-xl md:text-2xl font-bold text-amber-400 group-hover:text-amber-300 transition-all duration-500">
+            <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-red-500 via-purple-400 to-slate-300 bg-clip-text text-transparent group-hover:from-red-400 group-hover:via-purple-300 group-hover:to-white transition-all duration-500 drop-shadow-[0_0_8px_rgba(220,38,38,0.3)]">
               Vaultory
             </span>
           </Link>
