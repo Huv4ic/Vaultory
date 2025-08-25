@@ -101,6 +101,15 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     // Сбрасываем состояние при закрытии
     setSoldOrAdded(false);
+    setShowResult(false);
+    setWinnerItem(null);
+    setIsSpinning(false);
+    
+    // Очищаем анимацию
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
     
     onClose();
   };
@@ -132,11 +141,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   
       if (fetchBalanceError || !currentProfile) {
         console.error('❌ Error fetching current balance:', fetchBalanceError);
-        showNotification('Ошибка при получении баланса!', 'error');
+        showError('Ошибка при получении баланса!');
         return;
       }
   
-      const newBalance = (currentProfile.balance || 0) + item.price;
+      const newBalance = (currentProfile.balance || 0) + (item.price || 0);
       console.log('💰 Обновляем баланс:', { old: currentProfile.balance, new: newBalance });
   
       const { error: balanceError } = await supabase
@@ -148,12 +157,12 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   
       if (balanceError) {
         console.error('❌ Error updating balance:', balanceError);
-        showNotification('Ошибка при обновлении баланса!', 'error');
+        showError('Ошибка при обновлении баланса!');
         return;
       }
   
       console.log('✅ Баланс успешно обновлен');
-      showNotification(`Предмет "${item.name}" продан за ${item.price}₴! Деньги добавлены на баланс.`, 'success');
+      showSuccess(`Предмет "${item.name}" продан за ${item.price || 0}₴! Деньги добавлены на баланс.`);
       
       // Закрываем окно только после успешной продажи
       setTimeout(() => {
@@ -162,7 +171,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       
     } catch (error) {
       console.error('❌ Failed to sell item immediately:', error);
-      showNotification('Ошибка при продаже предмета!', 'error');
+      showError('Ошибка при продаже предмета!');
     }
   };
 
@@ -620,92 +629,105 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           {/* Рулетка */}
           <div className="p-4 sm:p-6 md:p-8">
             
-            {/* Кнопка запуска */}
-            <div className="text-center">
-              <Button
-                onClick={startSpin}
-                disabled={isSpinning}
-                className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSpinning ? (
-                  <>
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black mr-3"></div>
-                    Открытие...
-                  </>
-                ) : (
-                  <>
-                    <Package className="w-6 h-6 sm:w-8 sm:h-8 mr-3" />
-                    Открыть кейс
-                  </>
-                )}
-              </Button>
-            </div>
-
-            {/* Рулетка */}
-            <div className="relative">
-              {/* Контейнер рулетки */}
-              <div className="relative h-32 sm:h-36 md:h-40 bg-gray-800/50 rounded-xl sm:rounded-2xl border border-amber-500/30 overflow-hidden">
-                {/* Центральная линия с анимацией */}
-                <div className={`absolute left-1/2 top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-b from-amber-400 to-yellow-400 transform -translate-x-1/2 z-10 shadow-lg shadow-amber-400/50 ${
-                  isSpinning ? 'animate-pulse' : ''
-                }`}>
-                  {/* Дополнительная подсветка центра */}
-                  <div className="absolute -top-1 -left-1 w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full opacity-50 animate-ping"></div>
-                  <div className="absolute -bottom-1 -left-1 w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full opacity-50 animate-ping" style={{ animationDelay: '0.5s' }}></div>
+            {/* Кнопка запуска рулетки */}
+            {!showResult ? (
+              <div className="space-y-6 sm:space-y-8">
+                {/* Заголовок */}
+                <div className="text-center">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                    Открытие кейса
+                  </h2>
+                  <p className="text-gray-400 text-sm sm:text-base">
+                    Нажмите кнопку ниже, чтобы открыть кейс и получить случайный предмет
+                  </p>
                 </div>
                 
-                {/* Лента с предметами */}
-                <div 
-                  ref={stripRef}
-                  className="flex gap-2.5 items-center p-3 sm:p-4 h-full"
-                  style={{ transform: 'translateX(300px)' }}
-                >
-                  {/* Дублируем предметы для бесконечной прокрутки */}
-                  {Array.from({ length: 50 }, () => caseItems).flat().map((item, index) => (
-                    <div
-                      key={`${item.id}-${index}`}
-                      className={`flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2.5 flex flex-col justify-end relative isolation isolate item ${
-                        getRarityColor(item.rarity)
-                      }`}
-                    >
-                      {/* Блеск */}
-                      <div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-white/15 to-transparent mix-blend-mode-overlay filter-blur-sm"></div>
-                      {/* Свечение */}
-                      <div className="absolute inset-0 rounded-lg sm:rounded-xl shadow-lg opacity-35" style={{ boxShadow: '0 0 40px currentColor' }}></div>
-                      
-                      {/* Название предмета */}
-                      <div className="font-bold text-xs sm:text-sm leading-tight relative z-10">
-                        {item.name}
-                      </div>
-                      
-                      {/* Тег редкости */}
-                      <div className="opacity-80 text-xs relative z-10">
-                        {getRarityTag(item.rarity)}
-                      </div>
-                    </div>
-                  ))}
+                {/* Кнопка запуска */}
+                <div className="text-center">
+                  <Button
+                    onClick={startSpin}
+                    disabled={isSpinning}
+                    className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSpinning ? (
+                      <>
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black mr-3"></div>
+                        Открытие...
+                      </>
+                    ) : (
+                      <>
+                        <Package className="w-6 h-6 sm:w-8 sm:h-8 mr-3" />
+                        Открыть кейс
+                      </>
+                    )}
+                  </Button>
                 </div>
-              </div>
-              
-              {/* Подсказка и счетчик */}
-              <div className="text-center mt-3 sm:mt-4">
-                {isSpinning ? (
-                  <div className="space-y-2">
-                    <p className="text-amber-400 text-xs sm:text-sm font-medium">🎰 Рулетка крутится...</p>
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce"></div>
-                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+
+                {/* Рулетка */}
+                <div className="relative">
+                  {/* Контейнер рулетки */}
+                  <div className="relative h-32 sm:h-36 md:h-40 bg-gray-800/50 rounded-xl sm:rounded-2xl border border-amber-500/30 overflow-hidden">
+                    {/* Центральная линия с анимацией */}
+                    <div className={`absolute left-1/2 top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-b from-amber-400 to-yellow-400 transform -translate-x-1/2 z-10 shadow-lg shadow-amber-400/50 ${
+                      isSpinning ? 'animate-pulse' : ''
+                    }`}>
+                      {/* Дополнительная подсветка центра */}
+                      <div className="absolute -top-1 -left-1 w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full opacity-50 animate-ping"></div>
+                      <div className="absolute -bottom-1 -left-1 w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full opacity-50 animate-ping" style={{ animationDelay: '0.5s' }}></div>
+                    </div>
+                    
+                    {/* Лента с предметами */}
+                    <div 
+                      ref={stripRef}
+                      className="flex gap-2.5 items-center p-3 sm:p-4 h-full"
+                      style={{ transform: 'translateX(300px)' }}
+                    >
+                      {/* Дублируем предметы для бесконечной прокрутки */}
+                      {Array.from({ length: 50 }, () => caseItems).flat().map((item, index) => (
+                        <div
+                          key={`${item.id}-${index}`}
+                          className={`flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2.5 flex flex-col justify-end relative isolation isolate item ${
+                            getRarityColor(item.rarity)
+                          }`}
+                        >
+                          {/* Блеск */}
+                          <div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-white/15 to-transparent mix-blend-mode-overlay filter-blur-sm"></div>
+                          {/* Свечение */}
+                          <div className="absolute inset-0 rounded-lg sm:rounded-xl shadow-lg opacity-35" style={{ boxShadow: '0 0 40px currentColor' }}></div>
+                          
+                          {/* Название предмета */}
+                          <div className="font-bold text-xs sm:text-sm leading-tight relative z-10">
+                            {item.name}
+                          </div>
+                          
+                          {/* Тег редкости */}
+                          <div className="opacity-80 text-xs relative z-10">
+                            {getRarityTag(item.rarity)}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ) : (
-                  <p className="text-gray-400 text-xs sm:text-sm">Нажмите кнопку, чтобы запустить рулетку</p>
-                )}
+                  
+                  {/* Подсказка и счетчик */}
+                  <div className="text-center mt-3 sm:mt-4">
+                    {isSpinning ? (
+                      <div className="space-y-2">
+                        <p className="text-amber-400 text-xs sm:text-sm font-medium">🎰 Рулетка крутится...</p>
+                        <div className="flex items-center justify-center space-x-2">
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce"></div>
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-gray-400 text-xs sm:text-sm">Нажмите кнопку, чтобы запустить рулетку</p>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-
-            {/* Результат */}
-            {showResult && winnerItem && (
+            ) : (
+              /* Результат */
               <div className="text-center space-y-4 sm:space-y-6">
                 <div className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6 animate-bounce">🎉</div>
                 
@@ -713,42 +735,44 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   Поздравляем!
                 </h3>
                 
-                <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-amber-500/30">
-                  <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 rounded-lg sm:rounded-xl border-4 ${getRarityColor(winnerItem.rarity)} bg-gray-700/80 flex items-center justify-center`}>
-                    {winnerItem.image_url ? (
-                      <img
-                        src={winnerItem.image_url}
-                        alt={winnerItem.name}
-                        className="w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 object-cover rounded-lg"
-                      />
-                    ) : (
-                      <Gift className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-amber-400" />
-                    )}
+                {winnerItem && (
+                  <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-amber-500/30">
+                    <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 rounded-lg sm:rounded-xl border-4 ${getRarityColor(winnerItem.rarity)} bg-gray-700/80 flex items-center justify-center`}>
+                      {winnerItem.image_url ? (
+                        <img
+                          src={winnerItem.image_url}
+                          alt={winnerItem.name}
+                          className="w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 object-cover rounded-lg"
+                        />
+                      ) : (
+                        <Gift className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-amber-400" />
+                      )}
+                    </div>
+                    
+                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                      {winnerItem.name}
+                    </h4>
+                    
+                    {/* Отображение цены предмета */}
+                    <div className="text-lg sm:text-xl font-bold text-green-400 mb-3">
+                      Цена: {winnerItem.price || 0}₴
+                    </div>
+                    
+                    <div className={`inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold ${
+                      winnerItem.rarity.toLowerCase() === 'common' ? 'bg-gray-500 text-white' :
+                      winnerItem.rarity.toLowerCase() === 'rare' ? 'bg-blue-500 text-white' :
+                      winnerItem.rarity.toLowerCase() === 'epic' ? 'bg-purple-500 text-white' :
+                      winnerItem.rarity.toLowerCase() === 'legendary' ? 'bg-yellow-500 text-black' :
+                      'bg-gray-500 text-white'
+                    }`}>
+                      {getRarityName(winnerItem.rarity)}
+                    </div>
+                    
+                    <p className="text-gray-300 mt-3 sm:mt-4 text-sm sm:text-base">
+                      Предмет добавлен в ваш инвентарь!
+                    </p>
                   </div>
-                  
-                  <h4 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                    {winnerItem.name}
-                  </h4>
-                  
-                  {/* Отображение цены предмета */}
-                  <div className="text-lg sm:text-xl font-bold text-green-400 mb-3">
-                    Цена: {winnerItem.price || 0}₴
-                  </div>
-                  
-                  <div className={`inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold ${
-                    winnerItem.rarity.toLowerCase() === 'common' ? 'bg-gray-500 text-white' :
-                    winnerItem.rarity.toLowerCase() === 'rare' ? 'bg-blue-500 text-white' :
-                    winnerItem.rarity.toLowerCase() === 'epic' ? 'bg-purple-500 text-white' :
-                    winnerItem.rarity.toLowerCase() === 'legendary' ? 'bg-yellow-500 text-black' :
-                    'bg-gray-500 text-white'
-                  }`}>
-                    {getRarityName(winnerItem.rarity)}
-                  </div>
-                  
-                  <p className="text-gray-300 mt-3 sm:mt-4 text-sm sm:text-base">
-                    Предмет добавлен в ваш инвентарь!
-                  </p>
-                </div>
+                )}
                 
                 {/* Кнопки действий */}
                 <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-4">
@@ -780,6 +804,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                         
                         // Показываем уведомление
                         showSuccess(`Предмет "${winnerItem.name}" добавлен в инвентарь!`);
+                        
+                        // Закрываем окно через некоторое время
+                        setTimeout(() => {
+                          handleClose();
+                        }, 2000);
                       }
                     }}
                     disabled={soldOrAdded}
@@ -794,29 +823,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       if (winnerItem && !soldOrAdded) {
                         console.log('🔄 Нажата кнопка "Продать" для предмета:', winnerItem);
                         
-                        // Создаем объект для добавления в инвентарь
-                        const inventoryItem = {
-                          name: winnerItem.name,
-                          price: winnerItem.price || 0, // Используем цену из CaseItem
-                          rarity: winnerItem.rarity,
-                          type: 'case_item',
-                          caseId: winnerItem.id, // Используем id вместо case_id
-                          case_name: caseName,
-                          image: undefined,
-                          image_url: winnerItem.image_url,
-                          obtained_at: new Date().toISOString()
-                        };
+                        // Продаем предмет сразу
+                        await handleImmediateSell(winnerItem);
                         
-                        console.log('🔄 Добавляем предмет в инвентарь для продажи:', inventoryItem);
-                        
-                        // Добавляем предмет в инвентарь
-                        onCaseOpened(winnerItem);
-                        
-                        // Отмечаем, что предмет добавлен
+                        // Отмечаем, что предмет продан
                         setSoldOrAdded(true);
-                        
-                        // Показываем уведомление
-                        showSuccess(`Предмет "${winnerItem.name}" добавлен в инвентарь!`);
                       }
                     }}
                     disabled={soldOrAdded}
@@ -826,6 +837,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     Продать
                   </Button>
                 </div>
+                
+                {/* Убираем кнопку "Закрыть" - окно закрывается автоматически после действия */}
               </div>
             )}
           </div>
