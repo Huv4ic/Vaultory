@@ -77,7 +77,8 @@ const AdminCases = () => {
           ...item,
           price: typeof item.price === 'number' ? item.price : 0, // Проверяем тип
         }))
-      }));
+      }))
+      .filter(caseData => !caseData.name.startsWith('__')); // Фильтруем системные записи
       
       setCases(formattedCases);
       setLoading(false);
@@ -214,6 +215,37 @@ const AdminCases = () => {
         return;
       }
 
+      // Дополнительная валидация
+      if (currentCase.price <= 0) {
+        setError('Цена должна быть больше 0!');
+        return;
+      }
+
+      if (!currentCase.image_url.startsWith('http')) {
+        setError('URL изображения должен начинаться с http:// или https://');
+        return;
+      }
+
+      console.log('Saving case with data:', currentCase);
+
+      // Проверяем, что таблица существует
+      try {
+        const { error: checkError } = await supabase
+          .from('admin_cases')
+          .select('id')
+          .limit(1);
+        
+        if (checkError) {
+          console.error('Table check error:', checkError);
+          setError(`Ошибка доступа к таблице: ${checkError.message}`);
+          return;
+        }
+      } catch (tableErr) {
+        console.error('Table access error:', tableErr);
+        setError('Не удается получить доступ к таблице кейсов');
+        return;
+      }
+
       if (editMode === 'edit' && editingId) {
         // Обновление существующего кейса
         const { data, error } = await supabase
@@ -223,7 +255,7 @@ const AdminCases = () => {
             game: currentCase.game,
             price: currentCase.price,
             image_url: currentCase.image_url,
-            description: currentCase.description,
+            description: currentCase.description || '',
             updated_at: new Date().toISOString()
           })
           .eq('id', editingId)
@@ -240,7 +272,9 @@ const AdminCases = () => {
             game: currentCase.game,
             price: currentCase.price,
             image_url: currentCase.image_url,
-            description: currentCase.description,
+            description: currentCase.description || '',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
           })
           .select();
 
@@ -253,7 +287,12 @@ const AdminCases = () => {
       
     } catch (err) {
       console.error('Error saving case:', err);
-      setError('Ошибка при сохранении кейса');
+      console.error('Error details:', {
+        message: err instanceof Error ? err.message : 'Unknown error',
+        stack: err instanceof Error ? err.stack : undefined,
+        currentCase: currentCase
+      });
+      setError(`Ошибка при сохранении кейса: ${err instanceof Error ? err.message : 'Неизвестная ошибка'}`);
     }
   };
 
@@ -287,13 +326,18 @@ const AdminCases = () => {
         image_url: currentCaseItem.image_url,
         drop_after_cases: currentCaseItem.drop_after_cases || 0,
         price: Number(currentCaseItem.price) || 0, // Явно преобразуем в число
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       };
 
       if (itemEditMode === 'edit' && editingItemId) {
         // Обновление существующего предмета
         const { error } = await supabase
           .from('admin_case_items')
-          .update(itemData)
+          .update({
+            ...itemData,
+            updated_at: new Date().toISOString()
+          })
           .eq('id', editingItemId);
 
         if (error) throw error;
@@ -366,25 +410,25 @@ const AdminCases = () => {
   // Функция для создания глобального счетчика кейсов
   const ensureGlobalCounter = async () => {
     try {
-      // Проверяем, есть ли запись о глобальном счетчике в admin_logs
+      // Проверяем, есть ли запись о глобальном счетчике в admin_cases
       const { data: counterData, error: fetchError } = await supabase
-        .from('admin_logs')
+        .from('admin_cases')
         .select('*')
-        .eq('action', 'global_case_counter')
-        .eq('target_type', 'counter')
+        .eq('name', '__GLOBAL_COUNTER__')
         .single();
 
       if (fetchError || !counterData) {
         // Создаем начальную запись о глобальном счетчике
         const { error: insertError } = await supabase
-          .from('admin_logs')
+          .from('admin_cases')
           .insert({
-            admin_id: 'system',
-            action: 'global_case_counter',
-            target_type: 'counter',
-            target_id: 'main',
-            details: { total_cases_opened: 0, last_reset_at: new Date().toISOString() },
-            created_at: new Date().toISOString()
+            name: '__GLOBAL_COUNTER__',
+            game: 'system',
+            price: 0,
+            image_url: '',
+            description: JSON.stringify({ total_cases_opened: 0, last_reset_at: new Date().toISOString() }),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
           });
 
         if (insertError) {
@@ -404,19 +448,22 @@ const AdminCases = () => {
   const getGlobalCounter = async (): Promise<number> => {
     try {
       const { data: counterData, error: fetchError } = await supabase
-        .from('admin_logs')
-        .select('details')
-        .eq('action', 'global_case_counter')
-        .eq('target_type', 'counter')
-        .eq('target_id', 'main')
+        .from('admin_cases')
+        .select('description')
+        .eq('name', '__GLOBAL_COUNTER__')
         .single();
 
       if (fetchError || !counterData) {
         return 0;
       }
 
-      const details = counterData.details as any;
-      return details?.total_cases_opened || 0;
+      try {
+        const details = JSON.parse(counterData.description || '{}');
+        return details.total_cases_opened || 0;
+      } catch (parseError) {
+        console.error('Ошибка парсинга описания счетчика:', parseError);
+        return 0;
+      }
     } catch (err) {
       console.error('Ошибка при получении глобального счетчика:', err);
       return 0;
@@ -427,16 +474,15 @@ const AdminCases = () => {
   const updateGlobalCounter = async (newCount: number) => {
     try {
       const { error: updateError } = await supabase
-        .from('admin_logs')
+        .from('admin_cases')
         .update({
-          details: { 
+          description: JSON.stringify({ 
             total_cases_opened: newCount, 
             last_reset_at: new Date().toISOString() 
-          }
+          }),
+          updated_at: new Date().toISOString()
         })
-        .eq('action', 'global_case_counter')
-        .eq('target_type', 'counter')
-        .eq('target_id', 'main');
+        .eq('name', '__GLOBAL_COUNTER__');
 
       if (updateError) {
         console.error('Не удалось обновить глобальный счетчик:', updateError);
@@ -507,20 +553,25 @@ const AdminCases = () => {
       // Также сбрасываем localStorage для текущей сессии (опционально)
       localStorage.setItem('totalCasesOpened', '0');
       
-      // Записываем действие в лог админки
-      const { error: logError } = await supabase
-        .from('admin_logs')
-        .insert({
-          admin_id: 'admin', // Или ID текущего админа
-          action: 'reset_global_case_counter',
-          target_type: 'global',
-          target_id: 'all_users',
-          details: 'Глобальный счетчик открытых кейсов сброшен на 0',
-          created_at: new Date().toISOString()
-        });
+      // Записываем действие в лог админки (опционально)
+      try {
+        const { error: logError } = await supabase
+          .from('admin_cases')
+          .insert({
+            name: '__LOG_RESET__',
+            game: 'system',
+            price: 0,
+            image_url: '',
+            description: `Глобальный счетчик открытых кейсов сброшен на 0 в ${new Date().toLocaleString()}`,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
 
-      if (logError) {
-        console.warn('Не удалось записать в лог админки:', logError);
+        if (logError) {
+          console.warn('Не удалось записать в лог админки:', logError);
+        }
+      } catch (logErr) {
+        console.warn('Не удалось записать в лог админки:', logErr);
       }
 
       showSuccess('✅ Глобальный счетчик открытых кейсов успешно сброшен!\n\nТеперь все предметы будут выпадать заново согласно настройкам из админки.');
@@ -586,20 +637,22 @@ const AdminCases = () => {
             Сбросить счетчик кейсов
           </Button>
           
-          {/* Кнопка тестирования (добавляет +1 к счетчику) */}
+          {/* Кнопка создания счетчика */}
           <Button 
-            onClick={() => {
-              const current = parseInt(localStorage.getItem('totalCasesOpened') || '0');
-              localStorage.setItem('totalCasesOpened', (current + 1).toString());
-              showSuccess(`Тест: счетчик увеличен до ${current + 1}`);
-              // Обновляем интерфейс
-              setTimeout(() => window.location.reload(), 1000);
+            onClick={async () => {
+              const success = await ensureGlobalCounter();
+              if (success) {
+                showSuccess('Глобальный счетчик создан!');
+                updateCounterUI();
+              } else {
+                showError('Не удалось создать счетчик');
+              }
             }} 
-            className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-2 text-xs sm:text-sm"
-            title="Тест: добавить +1 к счетчику кейсов"
+            className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 text-sm sm:text-base"
+            title="Создать глобальный счетчик если его нет"
           >
-            <Plus className="w-4 h-4 mr-1" />
-            +1
+            <Settings className="w-4 h-4 mr-2" />
+            Создать счетчик
           </Button>
           
           {/* Кнопка добавления кейса */}

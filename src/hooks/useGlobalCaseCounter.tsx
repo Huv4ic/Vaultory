@@ -9,19 +9,22 @@ export const useGlobalCaseCounter = () => {
   const getGlobalCounter = async (): Promise<number> => {
     try {
       const { data: counterData, error: fetchError } = await supabase
-        .from('admin_logs')
-        .select('details')
-        .eq('action', 'global_case_counter')
-        .eq('target_type', 'counter')
-        .eq('target_id', 'main')
+        .from('admin_cases')
+        .select('description')
+        .eq('name', '__GLOBAL_COUNTER__')
         .single();
 
       if (fetchError || !counterData) {
         return 0;
       }
 
-      const details = counterData.details as any;
-      return details?.total_cases_opened || 0;
+      try {
+        const details = JSON.parse(counterData.description || '{}');
+        return details.total_cases_opened || 0;
+      } catch (parseError) {
+        console.error('Ошибка парсинга описания счетчика:', parseError);
+        return 0;
+      }
     } catch (err) {
       console.error('Ошибка при получении глобального счетчика:', err);
       return 0;
@@ -35,16 +38,15 @@ export const useGlobalCaseCounter = () => {
       const newCount = currentCount + 1;
 
       const { error: updateError } = await supabase
-        .from('admin_logs')
+        .from('admin_cases')
         .update({
-          details: { 
+          description: JSON.stringify({ 
             total_cases_opened: newCount, 
             last_reset_at: new Date().toISOString() 
-          }
+          }),
+          updated_at: new Date().toISOString()
         })
-        .eq('action', 'global_case_counter')
-        .eq('target_type', 'counter')
-        .eq('target_id', 'main');
+        .eq('name', '__GLOBAL_COUNTER__');
 
       if (updateError) {
         console.error('Не удалось обновить глобальный счетчик:', updateError);
@@ -68,16 +70,15 @@ export const useGlobalCaseCounter = () => {
   const resetGlobalCounter = async (): Promise<boolean> => {
     try {
       const { error: updateError } = await supabase
-        .from('admin_logs')
+        .from('admin_cases')
         .update({
-          details: { 
+          description: JSON.stringify({ 
             total_cases_opened: 0, 
             last_reset_at: new Date().toISOString() 
-          }
+          }),
+          updated_at: new Date().toISOString()
         })
-        .eq('action', 'global_case_counter')
-        .eq('target_type', 'counter')
-        .eq('target_id', 'main');
+        .eq('name', '__GLOBAL_COUNTER__');
 
       if (updateError) {
         console.error('Не удалось сбросить глобальный счетчик:', updateError);
