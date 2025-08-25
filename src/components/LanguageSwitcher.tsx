@@ -37,7 +37,7 @@ const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: LanguageSwitche
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-800/80 hover:bg-gray-700/80 text-emerald-400 hover:text-emerald-300 transition-all duration-200 border border-gray-700/50 hover:border-emerald-500/50"
+        className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-800/80 hover:bg-gray-700/80 text-red-400 hover:text-red-300 transition-all duration-200 border border-gray-700/50 hover:border-red-500/50"
       >
         <span className="text-lg">{currentLang.flag}</span>
         <ChevronDown 
@@ -54,7 +54,7 @@ const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: LanguageSwitche
                 onClick={() => handleLanguageSelect(language.code)}
                 className={`w-full flex items-center justify-center px-4 py-2 hover:bg-gray-700/50 transition-colors duration-150 ${
                   language.code === activeLanguage 
-                    ? 'text-emerald-400 bg-emerald-500/10' 
+                    ? 'text-red-400 bg-red-500/10' 
                     : 'text-gray-300 hover:text-white'
                 }`}
               >

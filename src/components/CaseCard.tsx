@@ -2,6 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Gift } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
+import { useTranslations } from '@/hooks/useTranslations';
 
 interface CaseItem {
   name: string;
@@ -40,6 +42,8 @@ const CaseCard = ({
   onOpen,
   isOpening
 }: CaseCardProps) => {
+  const { t } = useLanguage();
+  const { getCaseTranslation } = useTranslations();
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case 'common': return 'bg-gray-600';
@@ -62,7 +66,7 @@ const CaseCard = ({
               className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700"
             />
           </div>
-          <CardTitle className="text-white text-xl mb-2">{caseData.name}</CardTitle>
+          <CardTitle className="text-white text-xl mb-2">{getCaseTranslation(caseData.id, 'name', caseData.name)}</CardTitle>
           <p className="text-gray-300">{caseData.game}</p>
         </div>
       </CardHeader>
@@ -71,7 +75,7 @@ const CaseCard = ({
         
         {/* Количество кейсов */}
         <div>
-          <label className="block text-sm font-medium mb-2 text-gray-300">Количество</label>
+          <label className="block text-sm font-medium mb-2 text-gray-300">{t('Количество')}</label>
           <div className="flex justify-center space-x-2">
             {[1, 2, 3, 4, 5].map((count) => (
               <Button
@@ -87,8 +91,8 @@ const CaseCard = ({
           </div>
         </div>
 
-        <div className="text-lg font-semibold text-yellow-400">
-          Общая стоимость: {caseData.price * openingCount}₴
+        <div className="text-lg font-semibold text-red-400">
+          {t('Общая стоимость:')}: {caseData.price * openingCount}₴
         </div>
 
         <Button 
@@ -96,7 +100,7 @@ const CaseCard = ({
           disabled={balance < caseData.price * openingCount}
           className={`w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
         >
-          {balance < caseData.price * openingCount ? 'Открывается...' : 'Открыть'}
+          {balance < caseData.price * openingCount ? t('Загрузка товара...') : t('Открыть кейс')}
         </Button>
 
         {/* Возможные предметы */}

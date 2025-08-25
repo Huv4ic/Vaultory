@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Eye, ShoppingCart, Star, Heart } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useFavorites } from '@/hooks/useFavorites';
+import { useTranslations } from '@/hooks/useTranslations';
 
 interface ProductCardProps {
   id: string;
@@ -40,6 +41,7 @@ const ProductCard = ({
   const [isHovered, setIsHovered] = useState(false);
   const { t } = useLanguage();
   const { isFavorite, toggleFavorite, loading } = useFavorites();
+  const { getProductTranslation } = useTranslations();
 
   const handleFavoriteClick = async () => {
     await toggleFavorite(id);
@@ -94,14 +96,14 @@ const ProductCard = ({
       {/* Контент */}
       <div className="p-4 flex flex-col flex-1 min-h-0">
         {/* Название */}
-        <h3 className="text-white font-semibold mb-3 line-clamp-2 group-hover:text-amber-300 transition-colors duration-300 text-sm leading-tight">
-          {name}
+        <h3 className="text-white font-semibold mb-3 line-clamp-2 group-hover:text-red-300 transition-colors duration-300 text-sm leading-tight">
+          {getProductTranslation(id, 'name', name)}
         </h3>
 
         {/* Цена */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-amber-400">
+            <span className="text-xl font-bold text-red-400">
               {price}₴
             </span>
             {original_price && original_price > price && (
@@ -110,8 +112,8 @@ const ProductCard = ({
               </span>
             )}
             {sales && (
-              <span className="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-lg border border-amber-500/30">
-                {sales} продаж
+              <span className="px-2 py-1 bg-red-500/20 text-red-400 text-xs font-medium rounded-lg border border-red-500/30">
+                {sales} {t('продаж')}
               </span>
             )}
           </div>

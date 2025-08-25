@@ -11,6 +11,7 @@ import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/hooks/useCart';
 import { useNotification } from '../hooks/useNotification';
 import Notification from '../components/ui/Notification';
+import { useTranslations } from '@/hooks/useTranslations';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -21,6 +22,7 @@ const Index = () => {
   const { products, categories, loading, error } = useProducts();
   const { items, addItem } = useCart();
   const { showError, notification, hideNotification } = useNotification();
+  const { getCategoryTranslation } = useTranslations();
 
   // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре страницы
   // useEffect(() => {
@@ -59,10 +61,10 @@ const Index = () => {
     return iconMap['default'];
   };
 
-  // Создаем gameCategories из данных БД
+  // Создаем gameCategories из данных БД с переводами
   const gameCategories = categories.map(cat => ({
     id: cat.id,
-    name: cat.name,
+    name: getCategoryTranslation(cat.id, cat.name),
     image: cat.image
   }));
 
