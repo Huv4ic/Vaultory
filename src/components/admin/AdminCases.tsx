@@ -62,6 +62,7 @@ const AdminCases = () => {
   const fetchCases = async () => {
     try {
       setLoading(true);
+      console.log('🔍 Начинаем загрузку кейсов...');
       
       // Загружаем кейсы
       const { data: casesData, error: casesError } = await supabase
@@ -71,13 +72,18 @@ const AdminCases = () => {
 
       if (casesError) throw casesError;
       
+      console.log('📦 Загружены кейсы:', casesData);
+      
       // Фильтруем системные записи
       const filteredCases = (casesData || []).filter(caseData => !caseData.name.startsWith('__'));
+      console.log('🔧 Отфильтрованные кейсы:', filteredCases);
       
       // Для каждого кейса загружаем предметы отдельно
       const casesWithItems = await Promise.all(
         filteredCases.map(async (gameCase) => {
           try {
+            console.log(`🔍 Загружаем предметы для кейса ${gameCase.name} (ID: ${gameCase.id})`);
+            
             const { data: itemsData, error: itemsError } = await supabase
               .from('admin_case_items')
               .select('*')
@@ -85,9 +91,11 @@ const AdminCases = () => {
               .order('created_at', { ascending: false });
 
             if (itemsError) {
-              console.error(`Error fetching items for case ${gameCase.id}:`, itemsError);
+              console.error(`❌ Ошибка загрузки предметов для ${gameCase.name}:`, itemsError);
               return { ...gameCase, items: [] };
             }
+
+            console.log(`✅ Предметы для ${gameCase.name}:`, itemsData);
 
             // Преобразуем данные, добавляя поле price если его нет
             const formattedItems = (itemsData || []).map((item: any) => ({
@@ -97,17 +105,18 @@ const AdminCases = () => {
 
             return { ...gameCase, items: formattedItems };
           } catch (itemErr) {
-            console.error(`Error processing items for case ${gameCase.id}:`, itemErr);
+            console.error(`❌ Ошибка обработки предметов для ${gameCase.name}:`, itemErr);
             return { ...gameCase, items: [] };
           }
         })
       );
       
+      console.log('🎯 Финальный результат:', casesWithItems);
       setCases(casesWithItems);
       setLoading(false);
       
     } catch (err) {
-      console.error('Error fetching cases:', err);
+      console.error('❌ Ошибка загрузки кейсов:', err);
       showError('Ошибка при загрузке кейсов');
       setLoading(false);
     }
@@ -658,7 +667,11 @@ const AdminCases = () => {
                   <div className="flex items-center gap-2">
                     <Package className="w-4 h-4 text-blue-400" />
                     <span className="text-blue-400 font-medium text-xs sm:text-sm">
-                      {gameCase.items?.length || 0}
+                      {(() => {
+                        const itemCount = gameCase.items?.length || 0;
+                        console.log(`🔢 Кейс ${gameCase.name}: items =`, gameCase.items, `count = ${itemCount}`);
+                        return itemCount;
+                      })()}
                     </span>
                   </div>
                 </td>
