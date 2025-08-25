@@ -63,26 +63,16 @@ const AdminCases = () => {
     try {
       setLoading(true);
       
-      // Загружаем кейсы с предметами
+      // Загружаем ТОЛЬКО кейсы без связанных данных
       const { data, error } = await supabase
         .from('admin_cases')
-        .select(`
-          *,
-          items:admin_case_items(*)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       
-      // Преобразуем данные, добавляя поле price в items если его нет
-      const formattedCases = (data || []).map(caseData => ({
-        ...caseData,
-        items: (caseData.items || []).map((item: any) => ({
-          ...item,
-          price: typeof item.price === 'number' ? item.price : 0, // Проверяем тип
-        }))
-      }))
-      .filter(caseData => !caseData.name.startsWith('__')); // Фильтруем системные записи
+      // Фильтруем системные записи
+      const formattedCases = (data || []).filter(caseData => !caseData.name.startsWith('__'));
       
       setCases(formattedCases);
       setLoading(false);
