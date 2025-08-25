@@ -221,7 +221,8 @@ const AdminCases = () => {
         return;
       }
 
-      if (!currentCase.image_url.startsWith('http')) {
+      // Проверяем image_url только для обычных кейсов (не системных)
+      if (!currentCase.name.startsWith('__') && !currentCase.image_url.startsWith('http')) {
         setError('URL изображения должен начинаться с http:// или https://');
         return;
       }
@@ -434,7 +435,7 @@ const AdminCases = () => {
             name: '__GLOBAL_COUNTER__',
             game: 'system',
             price: 0,
-            image_url: '',
+            image_url: 'https://via.placeholder.com/100x100?text=Counter', // Добавляем заглушку
             description: JSON.stringify({ total_cases_opened: 0, last_reset_at: new Date().toISOString() }),
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
@@ -555,7 +556,7 @@ const AdminCases = () => {
             name: '__LOG_RESET__',
             game: 'system',
             price: 0,
-            image_url: '',
+            image_url: 'https://via.placeholder.com/100x100?text=Log', // Добавляем заглушку
             description: `Глобальный счетчик открытых кейсов сброшен на 0 в ${new Date().toLocaleString()}`,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
