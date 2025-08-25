@@ -66,6 +66,7 @@ export interface ProductFormData {
 }
 
 export interface CaseFormData {
+  id?: string; // Добавляем опциональное поле id
   name: string;
   game: string;
   price: number;
@@ -74,6 +75,7 @@ export interface CaseFormData {
 }
 
 export interface CaseItemFormData {
+  id?: string; // Добавляем опциональное поле id
   name: string;
   rarity: string; // Принимаем string для гибкости
   image_url: string;

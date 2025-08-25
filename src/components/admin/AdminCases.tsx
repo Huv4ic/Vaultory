@@ -265,17 +265,22 @@ const AdminCases = () => {
         showSuccess('Кейс успешно обновлен!');
       } else {
         // Добавление нового кейса
+        const caseData = {
+          id: `case_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // Генерируем уникальный ID
+          name: currentCase.name,
+          game: currentCase.game,
+          price: currentCase.price,
+          image_url: currentCase.image_url,
+          description: currentCase.description || '',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+
+        console.log('Creating case with data:', caseData);
+
         const { data, error } = await supabase
           .from('admin_cases')
-          .insert({
-            name: currentCase.name,
-            game: currentCase.game,
-            price: currentCase.price,
-            image_url: currentCase.image_url,
-            description: currentCase.description || '',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          })
+          .insert(caseData)
           .select();
 
         if (error) throw error;
@@ -319,6 +324,7 @@ const AdminCases = () => {
       // }
 
       const itemData = {
+        id: `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // Генерируем уникальный ID
         case_id: currentCaseId,
         name: currentCaseItem.name,
         rarity: currentCaseItem.rarity,
@@ -329,6 +335,8 @@ const AdminCases = () => {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       };
+
+      console.log('Creating case item with data:', itemData);
 
       if (itemEditMode === 'edit' && editingItemId) {
         // Обновление существующего предмета
@@ -422,6 +430,7 @@ const AdminCases = () => {
         const { error: insertError } = await supabase
           .from('admin_cases')
           .insert({
+            id: `counter_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // Генерируем уникальный ID
             name: '__GLOBAL_COUNTER__',
             game: 'system',
             price: 0,
@@ -506,22 +515,6 @@ const AdminCases = () => {
       if (counterElement) {
         counterElement.textContent = currentCount.toString();
       }
-      
-      // Обновляем информацию о следующих предметах
-      const nextItemsElement = document.getElementById('next-items');
-      if (nextItemsElement) {
-        const nextCases = [currentCount + 1, currentCount + 2, currentCount + 3];
-        const itemsHtml = nextCases.map(caseNumber => {
-          const eligibleItems = caseItems.filter(item => item.drop_after_cases === caseNumber);
-          if (eligibleItems.length === 0) return null;
-          
-          return `<div class="text-xs text-gray-400 ml-2 mb-1">
-            <span class="text-blue-400">Кейс #${caseNumber}:</span> ${eligibleItems.map(item => item.name).join(', ')}
-          </div>`;
-        }).filter(Boolean).join('');
-        
-        nextItemsElement.innerHTML = itemsHtml || '<div class="text-xs text-gray-500 ml-2">Нет предметов для следующих кейсов</div>';
-      }
     } catch (err) {
       console.error('Ошибка при обновлении интерфейса счетчика:', err);
     }
@@ -558,6 +551,7 @@ const AdminCases = () => {
         const { error: logError } = await supabase
           .from('admin_cases')
           .insert({
+            id: `log_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // Генерируем уникальный ID
             name: '__LOG_RESET__',
             game: 'system',
             price: 0,
@@ -617,12 +611,6 @@ const AdminCases = () => {
             <p className="text-gray-400 text-xs mt-1">
               Этот счетчик влияет на выпадение предметов с настройкой "выпадает через N кейсов"
             </p>
-            
-            {/* Предметы, которые выпадут в следующих кейсах */}
-            <div className="mt-3 pt-3 border-t border-gray-600">
-              <p className="text-gray-300 text-xs font-medium mb-2">📊 Предметы в следующих кейсах:</p>
-              <div id="next-items">Загрузка...</div>
-            </div>
           </div>
         </div>
         

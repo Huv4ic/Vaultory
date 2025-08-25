@@ -413,65 +413,44 @@ const CasePage = () => {
           </h2>
           
           {caseItems.length > 0 ? (
-            <>
-              {/* Отладочная информация */}
-              <div className="mb-4 p-3 bg-gray-800/50 rounded-lg text-xs text-gray-400">
-                <p>🔍 Отладка сортировки:</p>
-                <p>Исходный порядок: {caseItems.map(item => `${item.name}(${item.rarity})`).join(' → ')}</p>
-                <p>Отсортированный порядок: {sortItemsByRarity(caseItems).map(item => `${item.name}(${item.rarity})`).join(' → ')}</p>
-                <hr className="my-2 border-gray-600" />
-                <p>📊 Настройки выпадения предметов:</p>
-                {caseItems.map(item => (
-                  <p key={item.id} className="ml-2">
-                    • {item.name}: выпадает на {item.drop_after_cases || 1}-м кейсе
-                  </p>
-                ))}
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
-                {sortItemsByRarity(caseItems).map((item, index) => (
-                  <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative">
-                    {/* Номер позиции для отладки */}
-                    <div className="absolute top-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded z-10">
-                      #{index + 1}
-                    </div>
-                    
-                    {/* Изображение предмета */}
-                    <div className="relative mx-auto">
-                      <img
-                        src={item.image_url || '/images/placeholder.jpg'}
-                        alt={item.name}
-                        className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain mx-auto transition-transform duration-300 group-hover:scale-110"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
-                        }}
-                      />
-                      {/* Иконка редкости */}
-                      <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2">
-                        {getRarityIcon(item.rarity)}
-                      </div>
-                    </div>
-
-                    {/* Название предмета */}
-                    <div>
-                      <h3 className="font-semibold text-white text-sm sm:text-base leading-tight px-2">
-                        {item.name}
-                      </h3>
-                    </div>
-
-                    {/* Редкость */}
-                    <div className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium ${
-                      item.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
-                      item.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
-                      item.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
-                      'bg-gray-500/20 text-gray-400 border border-gray-500/30'
-                    }`}>
-                      {getRarityName(item.rarity)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+              {sortItemsByRarity(caseItems).map((item, index) => (
+                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative">
+                  {/* Изображение предмета */}
+                  <div className="relative mx-auto">
+                    <img
+                      src={item.image_url || '/images/placeholder.jpg'}
+                      alt={item.name}
+                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain mx-auto transition-transform duration-300 group-hover:scale-110"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+                      }}
+                    />
+                    {/* Иконка редкости */}
+                    <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2">
+                      {getRarityIcon(item.rarity)}
                     </div>
                   </div>
-                ))}
-              </div>
-            </>
+
+                  {/* Название предмета */}
+                  <div>
+                    <h3 className="font-semibold text-white text-sm sm:text-base leading-tight px-2">
+                      {item.name}
+                    </h3>
+                  </div>
+
+                  {/* Редкость */}
+                  <div className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium ${
+                    item.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                    item.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
+                    item.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+                    'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                  }`}>
+                    {getRarityName(item.rarity)}
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
             <div className="text-center py-8 sm:py-12">
               <Package className="w-16 h-16 sm:w-20 sm:w-24 mx-auto mb-4 text-gray-600" />

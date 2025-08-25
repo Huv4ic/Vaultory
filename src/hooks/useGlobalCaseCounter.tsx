@@ -98,6 +98,44 @@ export const useGlobalCaseCounter = () => {
     }
   };
 
+  // Функция для создания глобального счетчика кейсов
+  const ensureGlobalCounter = async () => {
+    try {
+      // Проверяем, есть ли запись о глобальном счетчике в admin_cases
+      const { data: counterData, error: fetchError } = await supabase
+        .from('admin_cases')
+        .select('*')
+        .eq('name', '__GLOBAL_COUNTER__')
+        .single();
+
+      if (fetchError || !counterData) {
+        // Создаем начальную запись о глобальном счетчике
+        const { error: insertError } = await supabase
+          .from('admin_cases')
+          .insert({
+            id: `counter_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // Генерируем уникальный ID
+            name: '__GLOBAL_COUNTER__',
+            game: 'system',
+            price: 0,
+            image_url: '',
+            description: JSON.stringify({ total_cases_opened: 0, last_reset_at: new Date().toISOString() }),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+
+        if (insertError) {
+          console.error('Не удалось создать начальную запись счетчика:', insertError);
+          return false;
+        }
+      }
+
+      return true;
+    } catch (err) {
+      console.error('Ошибка при создании глобального счетчика:', err);
+      return false;
+    }
+  };
+
   // Загружаем счетчик при инициализации
   useEffect(() => {
     const loadCounter = async () => {
