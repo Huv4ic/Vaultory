@@ -171,13 +171,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Категории игр с новым фоном и анимацией */}
-      <section className="py-16 px-4 relative overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-900">
-        {/* Темный анимированный фон */}
+      {/* Категории игр с контрастным фоном */}
+      <section className="py-16 px-4 relative overflow-hidden bg-gradient-to-br from-slate-800 via-gray-800 to-slate-900">
+        {/* Контрастный анимированный фон */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-64 h-64 bg-red-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-red-500/10 rounded-full animate-spin" style={{animationDuration: '40s'}}></div>
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-red-500/15 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-red-500/15 rounded-full animate-spin" style={{animationDuration: '40s'}}></div>
         </div>
         
         <div className="container mx-auto relative z-10">
