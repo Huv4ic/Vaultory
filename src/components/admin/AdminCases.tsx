@@ -209,6 +209,9 @@ const AdminCases = () => {
     }));
   };
 
+  // Убираем дублирующиеся функции - оставляем только handleSave
+  // const handleSaveCase = async () => { ... }
+  
   const handleSave = async () => {
     try {
       setError(null);
@@ -512,73 +515,6 @@ const AdminCases = () => {
   useEffect(() => {
     loadGlobalCounter();
   }, []);
-
-  // Функция для сохранения кейса
-  const handleSaveCase = async () => {
-    if (!currentCase.name || !currentCase.game || !currentCase.price || !currentCase.image_url) {
-      showError('Пожалуйста, заполните все обязательные поля');
-      return;
-    }
-
-    try {
-      if (editingId) {
-        // Обновляем существующий кейс
-        const { error } = await supabase
-          .from('admin_cases')
-          .update({
-            name: currentCase.name,
-            game: currentCase.game,
-            price: currentCase.price,
-            image_url: currentCase.image_url,
-            description: currentCase.description || '',
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', editingId);
-
-        if (error) {
-          console.error('❌ Error updating case:', error);
-          showError('Ошибка при обновлении кейса');
-          return;
-        }
-
-        showSuccess('Кейс успешно обновлен!');
-      } else {
-        // Создаем новый кейс
-        const caseData = {
-          id: `case_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-          name: currentCase.name,
-          game: currentCase.game,
-          price: currentCase.price,
-          image_url: currentCase.image_url,
-          description: currentCase.description || '',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        };
-        
-        console.log('Creating case with data:', caseData);
-        const { error } = await supabase
-          .from('admin_cases')
-          .insert(caseData);
-
-        if (error) {
-          console.error('❌ Error creating case:', error);
-          showError('Ошибка при создании кейса');
-          return;
-        }
-
-        showSuccess('Кейс успешно создан!');
-      }
-
-      // Закрываем модальное окно и обновляем список
-      setModalOpen(false);
-      setEditingId(null);
-      setCurrentCase(emptyCase);
-      fetchCases();
-    } catch (error) {
-      console.error('❌ Error saving case:', error);
-      showError('Неизвестная ошибка при сохранении кейса');
-    }
-  };
 
   const filteredCases = cases.filter(gameCase =>
     gameCase.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
