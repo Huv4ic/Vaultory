@@ -280,7 +280,7 @@ const ProductPage = () => {
                     <Button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
                       size="sm"
-                      className="w-8 h-8 sm:w-10 sm:h-10 p-0 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-amber-400 hover:text-amber-300 transition-all duration-300"
+                      className="w-8 h-8 sm:w-10 sm:h-10 p-0 bg-gradient-to-r from-red-600 to-purple-700 hover:from-red-700 hover:to-purple-800 border border-red-500/30 text-white hover:text-red-100 transition-all duration-300 rounded-lg shadow-lg shadow-red-500/20 hover:shadow-red-500/40 hover:scale-105"
                     >
                       -
                     </Button>
@@ -288,7 +288,7 @@ const ProductPage = () => {
                     <Button
                       onClick={() => setQuantity(quantity + 1)}
                       size="sm"
-                      className="w-8 h-8 sm:w-10 sm:h-10 p-0 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-amber-400 hover:text-amber-300 transition-all duration-300"
+                      className="w-8 h-8 sm:w-10 sm:h-10 p-0 bg-gradient-to-r from-red-600 to-purple-700 hover:from-red-700 hover:to-purple-800 border border-red-500/30 text-white hover:text-red-100 transition-all duration-300 rounded-lg shadow-lg shadow-red-500/20 hover:shadow-red-500/40 hover:scale-105"
                     >
                       +
                     </Button>
