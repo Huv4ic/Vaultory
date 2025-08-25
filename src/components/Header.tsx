@@ -123,7 +123,7 @@ const Header = () => {
 
             {/* Профиль пользователя */}
             {telegramUser ? (
-              <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="hidden md:flex items-center space-x-2 sm:space-x-3">
                 <BalanceDisplay balance={balance} />
                 <div className="relative group">
                   <button className="flex items-center space-x-1 sm:space-x-2 p-1.5 sm:p-2 rounded-lg bg-gradient-to-r from-amber-500/20 to-emerald-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 border border-amber-500/30 hover:border-amber-500/50 transition-all duration-300 hover:scale-105">
@@ -194,40 +194,64 @@ const Header = () => {
 
         {/* Мобильное меню */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-amber-500/30 animate-slide-down">
+          <div className="md:hidden py-4 border-t border-red-500/30 animate-slide-down">
+            {/* Мобильный профиль и баланс (только для авторизованных пользователей) */}
+            {telegramUser && (
+              <div className="mb-4 pb-4 border-b border-red-500/20">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-3">
+                    {profile?.avatar_url ? (
+                      <img
+                        src={profile.avatar_url}
+                        alt="Avatar"
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-gradient-to-br from-slate-800 via-gray-900 to-black rounded-full flex items-center justify-center border border-gray-700">
+                        <User className="w-4 h-4 text-red-500" />
+                      </div>
+                    )}
+                    <span className="text-white font-medium">{telegramUser.first_name}</span>
+                  </div>
+                </div>
+                <div className="mb-2">
+                  <BalanceDisplay balance={balance} />
+                </div>
+              </div>
+            )}
             <nav className="flex flex-col space-y-3 sm:space-y-4">
               <Link 
                 to="/" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                className="text-gray-300 hover:text-red-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-red-500/10"
               >
                 {t('Главная')}
               </Link>
               <Link 
                 to="/catalog" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                className="text-gray-300 hover:text-red-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-red-500/10"
               >
                 {t('Каталог')}
               </Link>
               <Link 
                 to="/cases" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                className="text-gray-300 hover:text-red-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-red-500/10"
               >
                 {t('Кейсы')}
               </Link>
               <Link 
                 to="/about" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                className="text-gray-300 hover:text-red-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-red-500/10"
               >
                 {t('О нас')}
               </Link>
               <Link 
                 to="/support" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                className="text-gray-300 hover:text-red-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-red-500/10"
               >
                 {t('Поддержка')}
               </Link>
@@ -236,17 +260,29 @@ const Header = () => {
                   <Link 
                     to="/profile" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-red-500/10 flex items-center space-x-2"
                   >
-                    {t('Профиль')}
+                    <Settings className="w-4 h-4" />
+                    <span>{t('Профиль')}</span>
                   </Link>
                   <Link 
                     to="/inventory" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-gray-300 hover:text-amber-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-amber-500/10"
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-red-500/10 flex items-center space-x-2"
                   >
-                    Инвентарь
+                    <Package className="w-4 h-4" />
+                    <span>Инвентарь</span>
                   </Link>
+                  <button 
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="text-red-400 hover:text-red-300 transition-colors duration-200 font-medium text-sm sm:text-base px-2 py-1 rounded-lg hover:bg-red-500/10 flex items-center space-x-2 w-full text-left"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>{t('Выйти')}</span>
+                  </button>
                 </>
               )}
             </nav>
