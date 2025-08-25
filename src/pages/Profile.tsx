@@ -27,6 +27,11 @@ import TopUpModal from '../components/TopUpModal';
 const Profile = () => {
   const navigate = useNavigate();
   const { telegramUser, signOutTelegram, balance, profile, updateProfile } = useAuth();
+
+  // Функция для форматирования числа с разделителями
+  const formatNumber = (amount: number): string => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   const { t } = useLanguage();
   const { getUserStatistics } = useOrders();
   const [loading, setLoading] = useState(true);
@@ -306,7 +311,7 @@ const Profile = () => {
                   <TrendingUp className="w-6 h-6 text-amber-400" />
                 </div>
                 <h3 className="text-white font-semibold mb-1 text-sm">Потрачено</h3>
-                <p className="text-xl font-bold text-amber-400">{stats.totalSpent}₴</p>
+                <p className="text-xl font-bold text-amber-400">{formatNumber(stats.totalSpent)}₴</p>
               </CardContent>
             </Card>
 

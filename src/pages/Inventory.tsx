@@ -30,6 +30,11 @@ interface FavoriteCase {
 const Inventory = () => {
   const { telegramUser, profile } = useAuth();
   const { items: inventoryItems, getTotalValue, casesOpened, refreshItems, sellItem, withdrawItem, getCasesOpened } = useInventory();
+
+  // Функция для форматирования числа с разделителями
+  const formatNumber = (amount: number): string => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   const { favoriteCase, caseStats, loading: statsLoading, error: statsError } = useCaseStats();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -243,7 +248,7 @@ const Inventory = () => {
                 <DollarSign className="w-8 h-8 text-green-400" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Общая стоимость</h3>
-                              <p className="text-3xl font-bold text-green-400">{totalValue.toFixed(2)}₴</p>
+                              <p className="text-3xl font-bold text-green-400">{formatNumber(parseFloat(totalValue.toFixed(2)))}₴</p>
             </CardContent>
           </Card>
 

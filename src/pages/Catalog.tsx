@@ -72,15 +72,21 @@ const Catalog = () => {
 
   // Сортировка
   switch (sortBy) {
-    case 'price-low':
+    case 'price_asc':
       filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price);
       break;
-    case 'price-high':
+    case 'price_desc':
       filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price);
       break;
+    case 'newest':
+      filteredProducts = [...filteredProducts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      break;
+    case 'popular':
+      filteredProducts = [...filteredProducts].sort((a, b) => (b.sales || 0) - (a.sales || 0));
+      break;
     default:
-      // По умолчанию сортируем по названию
-      filteredProducts = [...filteredProducts].sort((a, b) => a.name.localeCompare(b.name));
+      // По умолчанию сортируем по популярности
+      filteredProducts = [...filteredProducts].sort((a, b) => (b.sales || 0) - (a.sales || 0));
   }
 
   const handleAddToCart = (product: any) => {
