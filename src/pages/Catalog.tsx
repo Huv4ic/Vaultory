@@ -98,7 +98,8 @@ const Catalog = () => {
       id: product.id,
       name: product.name,
       price: product.price,
-      image_url: product.image_url
+      image_url: product.image_url,
+      image: (product.images && product.images.length > 0) ? product.images[0] : product.image_url
     });
   };
 

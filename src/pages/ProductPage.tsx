@@ -56,7 +56,8 @@ const ProductPage = () => {
         id: product.id,
         name: product.name,
         price: product.price,
-        image_url: product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'
+        image_url: product.image_url || (product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'),
+        image: product.images && product.images.length > 0 ? product.images[0] : (product.image_url || '/placeholder.svg')
       });
     }
   };

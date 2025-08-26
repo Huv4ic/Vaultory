@@ -13,6 +13,11 @@ const Cart = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { telegramUser, balance } = useAuth();
+
+  // Функция для форматирования числа с разделителями
+  const formatNumber = (amount: number): string => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   const { items, removeItem, clear, updateQuantity } = useCart();
   const { createOrder, isProcessing } = useOrders();
   const { showSuccess, showError, notification, hideNotification } = useNotification();
@@ -145,12 +150,12 @@ const Cart = () => {
             <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
               <div className="text-2xl mb-2">💰</div>
               <p className="text-gray-300 text-sm">Общая стоимость</p>
-              <p className="text-amber-400 font-bold text-lg">{total}₴</p>
+              <p className="text-amber-400 font-bold text-lg">{formatNumber(total)}₴</p>
             </div>
             <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
               <div className="text-2xl mb-2">💳</div>
               <p className="text-gray-300 text-sm">Ваш баланс</p>
-              <p className="text-amber-400 font-bold text-lg">{balance}₴</p>
+              <p className="text-amber-400 font-bold text-lg">{formatNumber(balance)}₴</p>
             </div>
           </div>
         </div>
@@ -176,11 +181,11 @@ const Cart = () => {
               >
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
                   {/* Изображение товара */}
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-lg sm:rounded-xl flex items-center justify-center border border-amber-500/30">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-lg sm:rounded-xl overflow-hidden border border-amber-500/30">
                     <img
                       src={item.image_url || item.image || '/placeholder.svg'}
                       alt={item.name}
-                      className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg"
+                      className="w-full h-full object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = '/placeholder.svg';
@@ -247,7 +252,7 @@ const Cart = () => {
               <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                 <div className="flex justify-between text-sm sm:text-base">
                   <span className="text-gray-300">Товары ({items.length})</span>
-                  <span className="text-white">{total}₴</span>
+                  <span className="text-white">{formatNumber(total)}₴</span>
                 </div>
                 <div className="flex justify-between text-sm sm:text-base">
                   <span className="text-gray-300">Комиссия</span>
@@ -256,7 +261,7 @@ const Cart = () => {
                 <div className="border-t border-amber-500/30 pt-2 sm:pt-3">
                   <div className="flex justify-between text-lg sm:text-xl font-bold">
                     <span className="text-white">Всего к оплате</span>
-                    <span className="text-amber-400">{total}₴</span>
+                    <span className="text-amber-400">{formatNumber(total)}₴</span>
                   </div>
                 </div>
               </div>
