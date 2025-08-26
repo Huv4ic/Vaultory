@@ -37,7 +37,7 @@ const Profile = () => {
   const { t } = useLanguage();
   const { getUserStatistics } = useOrders();
   const { achievements, loading: achievementsLoading, getAchievementStatus, getProgress, formatProgress } = useAchievements();
-  const { clearLocalStorage } = useInventory();
+
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTopUpModal, setShowTopUpModal] = useState(false);
@@ -85,9 +85,9 @@ const Profile = () => {
     };
 
     fetchProfile();
-  }, [telegramUser, getUserStatistics]);
+  }, [telegramUser]);
 
-  // Синхронизация баланса в реальном времени
+  // Синхронизация баланса в реальном времени (упрощенная версия)
   useEffect(() => {
     if (telegramUser) {
       const interval = setInterval(async () => {
@@ -98,20 +98,19 @@ const Profile = () => {
             .eq('telegram_id', telegramUser.id)
             .single();
           
+          // Просто проверяем, но не обновляем состояние автоматически
           if (!error && data?.balance !== undefined) {
-            // Обновляем профиль только если баланс изменился
-            // if (profile?.balance !== data.balance) { // This line is removed as per the new_code
-            //   setProfile(prev => prev ? { ...prev, balance: data.balance } : null); // This line is removed as per the new_code
-            // } // This line is removed as per the new_code
+            // Баланс обновляется через useAuth hook
+            console.log('Баланс синхронизирован:', data.balance);
           }
         } catch (error) {
-          console.error('Ошибка обновления баланса:', error);
+          console.error('Ошибка синхронизации баланса:', error);
         }
-      }, 5000); // Проверяем каждые 5 секунд
+      }, 10000); // Проверяем каждые 10 секунд (реже)
 
       return () => clearInterval(interval);
     }
-  }, [telegramUser, profile?.balance]);
+  }, [telegramUser]);
 
   const handleLogout = () => {
     signOutTelegram();
@@ -202,17 +201,17 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      {/* Плавающие частицы фона */}
+      {/* Плавающие частицы фона - стабильные позиции */}
       <div className="profile-floating-bg">
         {[...Array(8)].map((_, i) => (
           <div
             key={i}
             className="profile-particle"
             style={{
-              left: `${Math.random() * 100}%`,
-              width: `${6 + Math.random() * 12}px`,
-              height: `${6 + Math.random() * 12}px`,
-              animationDelay: `${Math.random() * 20}s`,
+              left: `${(i * 12.5 + 10)}%`, // Фиксированные позиции вместо случайных
+              width: `${8 + (i % 3) * 4}px`,
+              height: `${8 + (i % 3) * 4}px`,
+              animationDelay: `${i * 2.5}s`, // Фиксированные задержки
             }}
           />
         ))}
@@ -220,8 +219,8 @@ const Profile = () => {
 
       {/* Hero Section */}
       <div className="relative z-10 overflow-hidden">
-        {/* Морфирующий фон */}
-        <div className="absolute inset-0 profile-morphing-bg opacity-30"></div>
+        {/* Морфирующий фон - уменьшенная интенсивность */}
+        <div className="absolute inset-0 profile-morphing-bg opacity-10"></div>
         
         {/* Декоративные элементы */}
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-amber-400/15 to-orange-500/15 rounded-full animate-pulse blur-2xl"></div>
@@ -528,18 +527,7 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* ВРЕМЕННАЯ КНОПКА ОТЛАДКИ - УДАЛИТЬ ПОСЛЕ ИСПРАВЛЕНИЯ БАГА */}
-        <div className="text-center mb-4">
-          <Button 
-            onClick={() => {
-              clearLocalStorage();
-              alert('localStorage очищен! Перезагрузите страницу.');
-            }}
-            className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm font-semibold rounded-xl"
-          >
-            🧹 ОТЛАДКА: Очистить localStorage
-          </Button>
-        </div>
+
 
         {/* Кнопки действий */}
         <div className="text-center">
