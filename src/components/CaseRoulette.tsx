@@ -239,15 +239,15 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     Object.keys(itemsByDropRate).forEach(dropRateStr => {
       const dropRate = parseInt(dropRateStr);
       
-      // ПРАВИЛЬНАЯ ЛОГИКА: предмет выпадает только когда номер кейса РАВЕН drop_after_cases
-      // Например: drop_after_cases = 1 означает выпадение на 1-м кейсе
-      // drop_after_cases = 11000 означает выпадение на 11000-м кейсе
-      const isEligible = nextCaseNumber === dropRate;
+      // ПРАВИЛЬНАЯ ЛОГИКА: предмет выпадает периодически через каждые N кейсов
+      // Например: drop_after_cases = 100 означает выпадение на 100-м, 200-м, 300-м кейсе
+      // drop_after_cases = 1000 означает выпадение на 1000-м, 2000-м, 3000-м кейсе
+      const isEligible = dropRate > 0 && (nextCaseNumber % dropRate === 0);
       
-      console.log(`Checking drop rate ${dropRate}: next case ${nextCaseNumber} == ${dropRate}, eligible: ${isEligible}`);
+      console.log(`Checking drop rate ${dropRate}: next case ${nextCaseNumber} % ${dropRate} = ${nextCaseNumber % dropRate}, eligible: ${isEligible}`);
       
       if (isEligible) {
-        // Если текущий кейс РАВЕН drop_after_cases, добавляем все предметы с этим значением
+        // Если текущий кейс кратен drop_after_cases, добавляем все предметы с этим значением
         eligibleItems = eligibleItems.concat(itemsByDropRate[dropRate]);
         console.log(`✅ Added items with drop rate ${dropRate}:`, itemsByDropRate[dropRate].map(item => item.name));
       } else {
@@ -257,10 +257,21 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     console.log('Final eligible items:', eligibleItems.map(item => ({ name: item.name, drop_after_cases: item.drop_after_cases })));
     
-    // Если нет подходящих предметов, берем случайный из всех
+    // Если нет подходящих предметов, берем предметы с drop_after_cases = 1 (базовые предметы)
     if (eligibleItems.length === 0) {
-      console.log('⚠️ No eligible items found for case', nextCaseNumber, ', using all case items');
-      eligibleItems = caseItems;
+      console.log('⚠️ No eligible items found for case', nextCaseNumber, ', looking for items with drop_after_cases = 1');
+      
+      // Ищем предметы с drop_after_cases = 1 (базовые предметы)
+      const baseItems = caseItems.filter(item => (item.drop_after_cases || 1) === 1);
+      
+      if (baseItems.length > 0) {
+        eligibleItems = baseItems;
+        console.log('✅ Found base items with drop_after_cases = 1:', baseItems.map(item => item.name));
+      } else {
+        // Если даже базовых предметов нет, берем все (fallback)
+        console.log('⚠️ No base items found, using all case items as fallback');
+        eligibleItems = caseItems;
+      }
     }
     
     // Выбираем случайный предмет из подходящих
