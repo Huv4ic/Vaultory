@@ -73,17 +73,13 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         withdrawal_status: dbItem.withdrawal_status
       }));
 
-      // Дедупликация по ID (на случай если в БД есть дубли)
+      // Простая дедупликация по ID
       const uniqueItems = convertedItems.filter((item, index, self) => 
         index === self.findIndex(t => t.id === item.id)
       );
 
-      if (uniqueItems.length !== convertedItems.length) {
-        console.log('⚠️ Обнаружены дубликаты в БД:', convertedItems.length - uniqueItems.length, 'дубликатов удалено');
-      }
-
       setItems(uniqueItems);
-      console.log('✅ Загружено', uniqueItems.length, 'уникальных предметов из базы данных');
+      console.log('✅ Загружено', uniqueItems.length, 'предметов из базы данных');
     } catch (error) {
       console.error('❌ Failed to load inventory from database:', error);
     } finally {
@@ -125,8 +121,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     if (telegramId) {
       console.log('Telegram ID found:', telegramId);
       
-      // Принудительно очищаем localStorage при каждой загрузке профиля
-      console.log('🧹 Очищаем localStorage для предотвращения конфликтов...');
+      // Очищаем localStorage для предотвращения конфликтов
       localStorage.removeItem('vaultory_inventory');
       localStorage.removeItem('vaultory_cases_opened');
       localStorage.removeItem('vaultory_spent');
@@ -184,9 +179,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
           console.log('🔄 REAL-TIME: Инвентарь обновлен:', payload);
           
           // Обновляем инвентарь из базы данных
-          setTimeout(() => {
-            loadInventoryFromDatabase(profile.telegram_id);
-          }, 500); // Небольшая задержка для завершения операции в БД
+          loadInventoryFromDatabase(profile.telegram_id);
         }
       )
       .subscribe((status) => {
@@ -221,11 +214,10 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
 
       console.log('Adding item to database with telegramId:', telegramId);
 
-      // Проверяем, нет ли уже такого предмета в локальном состоянии (защита от дублирования)
+      // Простая проверка на дублирование по названию и кейсу
       const existingItem = items.find(existingItem => 
         existingItem.name === item.name && 
-        existingItem.caseId === item.caseId &&
-        Math.abs(new Date(existingItem.obtained_at || '').getTime() - new Date(item.obtained_at || '').getTime()) < 5000 // В пределах 5 секунд
+        existingItem.caseId === item.caseId
       );
       
       if (existingItem) {
@@ -240,7 +232,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         if (newItemId) {
           console.log('Item added successfully to database with ID:', newItemId);
           
-          // Еще раз проверяем дублирование по ID (на случай race condition)
+          // Простая проверка по ID
           const duplicateCheck = items.find(existingItem => existingItem.id === newItemId);
           if (duplicateCheck) {
             console.log('🚫 Предмет с таким ID уже существует, пропускаем добавление в состояние');
@@ -309,11 +301,8 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         
         console.log('✅ Предмет успешно удален из состояния');
         
-        // Принудительно обновляем инвентарь из базы данных через 1 секунду
-        setTimeout(async () => {
-          console.log('🔄 Обновляем инвентарь после продажи...');
-          await refreshItems();
-        }, 1000);
+        // Обновляем инвентарь из базы данных
+        await refreshItems();
         
         return sellPrice;
       } else {
