@@ -219,6 +219,22 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         return;
       }
       
+      // Дополнительная проверка - проверяем в базе данных
+      try {
+        const dbItems = await InventoryService.getUserInventory(telegramId);
+        const dbDuplicate = dbItems.find(dbItem => 
+          dbItem.item_name === item.name && 
+          dbItem.case_id === item.caseId
+        );
+        
+        if (dbDuplicate) {
+          console.log('🚫 Предмет уже существует в базе данных, пропускаем добавление:', dbDuplicate);
+          return;
+        }
+      } catch (error) {
+        console.warn('⚠️ Не удалось проверить дублирование в БД, продолжаем:', error);
+      }
+      
       // Дополнительная проверка - если предмет уже был продан, не добавляем
       if (item.status === 'sold') {
         console.log('🚫 Предмет уже был продан, пропускаем добавление:', item);

@@ -109,8 +109,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         console.log('✅ ПРЕДМЕТ УЖЕ ОБРАБОТАН: Предмет уже продан или добавлен, НЕ добавляем в инвентарь:', winnerItem.name);
         console.log('✅ ПРЕДМЕТ УЖЕ ОБРАБОТАН: Состояния - soldOrAdded:', soldOrAdded, 'itemWasSold:', itemWasSold);
       } else {
-        console.log('🎁 АВТОДОБАВЛЕНИЕ: Пользователь закрыл окно без выбора - автоматически добавляем предмет в инвентарь:', winnerItem.name);
-        onCaseOpened(winnerItem, 'add');
+        console.log('ℹ️ ПРЕДМЕТ НЕ ОБРАБОТАН: Пользователь закрыл окно без выбора, НЕ добавляем автоматически');
+        // УБИРАЕМ АВТОДОБАВЛЕНИЕ - пользователь должен сам выбрать действие
       }
     } else {
       console.log('ℹ️ НЕТ ПРЕДМЕТА: winnerItem отсутствует');
@@ -1091,27 +1091,27 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 
                 {/* Кнопки действий */}
                 <div className="relative z-10 flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mb-4">
-                  <Button
-                    onClick={async () => {
-                      if (winnerItem && !soldOrAdded) {
-                        console.log('💵 Добавляем предмет в инвентарь:', winnerItem.name);
-                        
-                        // Добавляем предмет в инвентарь через callback
-                        onCaseOpened(winnerItem, 'add');
-                        
-                        // Отмечаем, что предмет добавлен
-                        setSoldOrAdded(true);
-                        
-                        // Показываем уведомление
-                        showSuccess(`Предмет "${winnerItem.name}" добавлен в инвентарь!`);
-                        
-                        // Закрываем окно через некоторое время
-                        setTimeout(() => {
-                          handleClose();
-                        }, 2000);
-                      }
-                    }}
-                    disabled={soldOrAdded}
+                                   <Button
+                   onClick={async () => {
+                     if (winnerItem && !soldOrAdded) {
+                       console.log('💵 Добавляем предмет в инвентарь:', winnerItem.name);
+                       
+                       // Добавляем предмет в инвентарь через callback
+                       onCaseOpened(winnerItem, 'add');
+                       
+                       // Отмечаем, что предмет добавлен
+                       setSoldOrAdded(true);
+                       
+                       // Показываем уведомление
+                       showSuccess(`Предмет "${winnerItem.name}" добавлен в инвентарь!`);
+                       
+                       // Закрываем окно через некоторое время
+                       setTimeout(() => {
+                         handleClose();
+                       }, 2000);
+                     }
+                   }}
+                   disabled={soldOrAdded}
                     className="group relative overflow-hidden bg-gradient-to-r from-green-500 via-green-600 to-emerald-600 hover:from-green-600 hover:via-green-700 hover:to-emerald-700 text-white px-8 py-4 text-base font-bold rounded-2xl transition-all duration-500 hover:scale-110 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-green-500/40 hover:shadow-green-500/60 border border-green-400/30"
                   >
                     {/* Анимированный фон */}
