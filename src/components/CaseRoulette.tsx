@@ -171,6 +171,17 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         return;
       }
   
+      // Обновляем статистику проданных предметов
+      const { error: statsError } = await supabase.rpc('increment_user_items_sold', {
+        user_telegram_id: telegramId
+      });
+
+      if (statsError) {
+        console.error('❌ Error updating items sold stats:', statsError);
+      } else {
+        console.log('✅ Статистика проданных предметов обновлена');
+      }
+
       console.log('✅ Баланс успешно обновлен');
       showSuccess(`Предмет "${item.name}" продан за ${item.price || 0}₴! Деньги добавлены на баланс.`);
       
@@ -1066,10 +1077,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       if (winnerItem && !soldOrAdded) {
                         console.log('🔄 Нажата кнопка "Продать" для предмета:', winnerItem);
                         
-                        // Уведомляем родительский компонент о продаже
-                        onCaseOpened(winnerItem, 'sell');
-                        
-                        // Продаем предмет сразу
+                        // Продаем предмет сразу (без добавления в инвентарь)
                         await handleImmediateSell(winnerItem);
                         
                         // Отмечаем, что предмет продан
