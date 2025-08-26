@@ -484,6 +484,97 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     }
 
     try {
+      // Проверяем баланс и списываем стоимость кейса
+      console.log('💰 Проверяем баланс и списываем стоимость кейса:', casePrice);
+      
+      if (!profile?.telegram_id) {
+        showError('Пользователь не авторизован');
+        return;
+      }
+
+      // Получаем текущий баланс
+      const { data: currentProfile, error: fetchBalanceError } = await supabase
+        .from('profiles')
+        .select('balance')
+        .eq('telegram_id', profile.telegram_id)
+        .single();
+
+      if (fetchBalanceError || !currentProfile) {
+        console.error('❌ Error fetching current balance:', fetchBalanceError);
+        showError('Ошибка при получении баланса');
+        return;
+      }
+
+      const currentBalance = currentProfile.balance || 0;
+      console.log('💰 Текущий баланс:', currentBalance, 'Стоимость кейса:', casePrice);
+
+      // Проверяем, достаточно ли средств
+      if (currentBalance < casePrice) {
+        showError(`Недостаточно средств! Нужно: ${casePrice}₴, доступно: ${currentBalance}₴`);
+        return;
+      }
+
+      // Списываем стоимость кейса
+      const newBalance = currentBalance - casePrice;
+      const { error: balanceError } = await supabase
+        .from('profiles')
+        .update({ 
+          balance: newBalance,
+          updated_at: new Date().toISOString()
+        })
+        .eq('telegram_id', profile.telegram_id);
+
+      if (balanceError) {
+        console.error('❌ Error updating balance:', balanceError);
+        showError('Ошибка при списании средств');
+        return;
+      }
+
+      console.log('✅ Средства успешно списаны. Новый баланс:', newBalance);
+      
+      // Создаем транзакцию списания
+      try {
+        const { error: transactionError } = await supabase
+          .from('transactions')
+          .insert({
+            user_id: profile.telegram_id,
+            type: 'case_opening',
+            amount: -casePrice,
+            description: `Открытие кейса "${caseName}"`,
+            created_at: new Date().toISOString()
+          });
+
+        if (transactionError) {
+          console.error('❌ Error creating transaction:', transactionError);
+          // Не прерываем процесс, если транзакция не создалась
+        } else {
+          console.log('✅ Транзакция создана');
+        }
+      } catch (error) {
+        console.error('❌ Failed to create transaction:', error);
+      }
+
+      showInfo(`Списано ${casePrice}₴ за открытие кейса`);
+      
+      // Обновляем статистику трат пользователя (кейсы считаются как покупки)
+      try {
+        const { error: statsError } = await supabase.rpc('update_user_purchase_stats', {
+          user_telegram_id: profile.telegram_id,
+          order_amount: casePrice
+        });
+
+        if (statsError) {
+          console.error('❌ Error updating user purchase stats:', statsError);
+        } else {
+          console.log('✅ Статистика трат пользователя обновлена');
+        }
+      } catch (error) {
+        console.error('❌ Failed to update user purchase stats:', error);
+      }
+
+      // Обновляем профиль в контексте
+      await refreshProfile();
+
       // Увеличиваем глобальный счетчик открытых кейсов
       console.log('Увеличиваем глобальный счетчик кейсов...');
       const success = await incrementGlobalCounter();
