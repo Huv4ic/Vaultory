@@ -98,14 +98,18 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   const handleClose = () => {
     console.log('=== ONCLOSE CALLED ===');
     console.log('Stack trace:', new Error().stack);
-    console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult, 'winnerItem:', winnerItem);
+    console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult, 'winnerItem:', winnerItem?.name);
     console.log('Component props:', { caseItems: caseItems.length, casePrice, onClose: typeof onClose, onCaseOpened: typeof onCaseOpened });
-    console.log('soldOrAdded:', soldOrAdded);
+    console.log('soldOrAdded state:', soldOrAdded);
     
     // Если есть выигрышный предмет и пользователь ничего не выбрал - добавляем в инвентарь
     if (winnerItem && !soldOrAdded) {
-      console.log('🎁 Пользователь закрыл окно без выбора - автоматически добавляем предмет в инвентарь:', winnerItem.name);
+      console.log('🎁 АВТОДОБАВЛЕНИЕ: Пользователь закрыл окно без выбора - автоматически добавляем предмет в инвентарь:', winnerItem.name);
       onCaseOpened(winnerItem, 'add');
+    } else if (winnerItem && soldOrAdded) {
+      console.log('✅ ПРЕДМЕТ УЖЕ ОБРАБОТАН: Предмет уже продан или добавлен, не добавляем в инвентарь:', winnerItem.name);
+    } else if (!winnerItem) {
+      console.log('ℹ️ НЕТ ПРЕДМЕТА: winnerItem отсутствует');
     }
     
     // Сбрасываем состояние при закрытии
@@ -185,10 +189,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       console.log('✅ Баланс успешно обновлен');
       showSuccess(`Предмет "${item.name}" продан за ${item.price || 0}₴! Деньги добавлены на баланс.`);
       
-      // Закрываем окно только после успешной продажи
-      setTimeout(() => {
-        handleClose();
-      }, 2000); // Даем время пользователю увидеть уведомление
+      // НЕ закрываем окно автоматически - пусть пользователь закроет сам
       
     } catch (error) {
       console.error('❌ Failed to sell item immediately:', error);
@@ -1075,13 +1076,17 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   <Button
                     onClick={async () => {
                       if (winnerItem && !soldOrAdded) {
-                        console.log('🔄 Нажата кнопка "Продать" для предмета:', winnerItem);
+                        console.log('🔄 КНОПКА ПРОДАТЬ: Начинаем продажу предмета:', winnerItem.name);
+                        console.log('🔄 КНОПКА ПРОДАТЬ: Текущее состояние soldOrAdded:', soldOrAdded);
                         
                         // Продаем предмет сразу (без добавления в инвентарь)
                         await handleImmediateSell(winnerItem);
                         
                         // Отмечаем, что предмет продан
                         setSoldOrAdded(true);
+                        console.log('🔄 КНОПКА ПРОДАТЬ: Установлен soldOrAdded = true');
+                      } else {
+                        console.log('🔄 КНОПКА ПРОДАТЬ: Кнопка заблокирована, winnerItem:', winnerItem?.name, 'soldOrAdded:', soldOrAdded);
                       }
                     }}
                     disabled={soldOrAdded}
