@@ -442,16 +442,16 @@ const Inventory = () => {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
               {displayItems.map((item, index) => (
                 <div
                   key={item.id || Math.random()}
-                  className={`inventory-card-3d inventory-item-glow relative overflow-hidden rounded-3xl p-6 ${getRarityBg(item.rarity || 'common')} border-2 shadow-2xl transition-all duration-500 group animate-inventory-slide-in`}
+                  className={`inventory-card-3d inventory-item-glow relative overflow-hidden rounded-2xl p-4 ${getRarityBg(item.rarity || 'common')} border-2 shadow-2xl transition-all duration-500 group animate-inventory-slide-in`}
                   style={{animationDelay: `${index * 0.1}s`}}
                 >
                   {/* Изображение предмета */}
-                  <div className="relative mb-6">
-                    <div className="w-full h-48 rounded-2xl overflow-hidden bg-black/30 backdrop-blur-sm border border-white/10 inventory-holographic">
+                  <div className="relative mb-4">
+                    <div className="w-full h-32 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm border border-white/10 inventory-holographic">
                       {item.image_url || item.image ? (
                         <img 
                           src={item.image_url || item.image} 
@@ -473,38 +473,35 @@ const Inventory = () => {
                     </div>
                     
                     {/* Значок редкости */}
-                    <div className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold uppercase backdrop-blur-sm border ${getRarityColor(item.rarity || 'common')} bg-black/50`}>
-                      {item.rarity || 'common'}
+                    <div className={`absolute top-2 right-2 px-2 py-0.5 rounded-full text-xs font-bold uppercase backdrop-blur-sm border ${getRarityColor(item.rarity || 'common')} bg-black/50`}>
+                      {(item.rarity || 'common').slice(0, 3)}
                     </div>
                   </div>
                   
                   {/* Информация о предмете */}
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {/* Название и цена */}
                     <div className="text-center">
-                      <h4 className={`text-lg font-bold ${getRarityColor(item.rarity || 'common')} mb-2 drop-shadow-lg group-hover:scale-105 transition-transform duration-300`}>
+                      <h4 className={`text-sm font-bold ${getRarityColor(item.rarity || 'common')} mb-1 drop-shadow-lg group-hover:scale-105 transition-transform duration-300 line-clamp-2`}>
                         {item.name || 'Неизвестный предмет'}
                       </h4>
-                      <div className="text-2xl font-black text-green-400 mb-1 drop-shadow-lg">
-                        {(item.price || 0).toFixed(2)}₴
+                      <div className="text-lg font-black text-green-400 mb-1 drop-shadow-lg">
+                        {(item.price || 0).toFixed(0)}₴
                       </div>
-                      <p className="text-gray-300 text-sm">{item.type || 'Неизвестно'}</p>
                     </div>
                     
-                    {/* Детали */}
-                    <div className="bg-black/20 rounded-2xl p-4 backdrop-blur-sm border border-white/5">
-                      <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
-                        <span>Из кейса:</span>
+                    {/* Детали - компактно */}
+                    <div className="bg-black/20 rounded-xl p-2 backdrop-blur-sm border border-white/5">
+                      <div className="text-xs text-gray-400 mb-1">
                         <span className="text-white font-medium">{item.case_name || 'Неизвестно'}</span>
                       </div>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>Получен:</span>
-                        <span>{item.obtained_at ? new Date(item.obtained_at).toLocaleDateString('ru-RU') : 'Неизвестно'}</span>
+                      <div className="text-xs text-gray-500">
+                        {item.obtained_at ? new Date(item.obtained_at).toLocaleDateString('ru-RU') : 'Неизвестно'}
                       </div>
                     </div>
                     
-                    {/* Кнопки действий */}
-                    <div className="flex gap-3">
+                    {/* Кнопки действий - компактные */}
+                    <div className="flex gap-2">
                       <button
                         onClick={async () => {
                           // Вывести предмет
@@ -522,9 +519,9 @@ const Inventory = () => {
                             showError('Ошибка при выводе предмета!');
                           }
                         }}
-                        className="inventory-button-shine flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white text-sm font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40"
+                        className="inventory-button-shine flex-1 px-2 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white text-xs font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/25"
                       >
-                        📤 Вывести
+                        📤
                       </button>
                       
                       <button
@@ -534,16 +531,16 @@ const Inventory = () => {
                           setItemToSell(item);
                           setShowConfirmSell(true);
                         }}
-                        className="inventory-button-shine flex-1 px-4 py-3 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white text-sm font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/40"
+                        className="inventory-button-shine flex-1 px-2 py-2 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white text-xs font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-red-500/25"
                       >
-                        💰 Продать
+                        💰
                       </button>
                     </div>
                   </div>
                   
-                  {/* Декоративные элементы */}
-                  <div className="absolute top-2 left-2 w-4 h-4 bg-white/10 rounded-full animate-ping"></div>
-                  <div className="absolute bottom-2 right-2 w-3 h-3 bg-white/5 rounded-full animate-pulse"></div>
+                  {/* Декоративные элементы - уменьшенные */}
+                  <div className="absolute top-1 left-1 w-2 h-2 bg-white/10 rounded-full animate-ping"></div>
+                  <div className="absolute bottom-1 right-1 w-1.5 h-1.5 bg-white/5 rounded-full animate-pulse"></div>
                 </div>
               ))}
             </div>
