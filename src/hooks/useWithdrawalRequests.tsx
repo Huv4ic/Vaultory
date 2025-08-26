@@ -20,6 +20,29 @@ export const useWithdrawalRequests = () => {
   const [loading, setLoading] = useState(false);
   const { showSuccess, showError } = useNotification();
 
+  // Проверяем существование таблицы при инициализации
+  useEffect(() => {
+    const checkTable = async () => {
+      try {
+        console.log('🔍 Проверяем существование таблицы withdrawal_requests...');
+        const { data, error } = await supabase
+          .from('withdrawal_requests')
+          .select('count(*)', { count: 'exact', head: true });
+        
+        if (error) {
+          console.error('❌ Таблица withdrawal_requests не найдена:', error);
+          showError('Таблица withdrawal_requests не создана в базе данных. Выполните SQL скрипт.');
+        } else {
+          console.log('✅ Таблица withdrawal_requests существует');
+        }
+      } catch (err) {
+        console.error('❌ Ошибка при проверке таблицы:', err);
+      }
+    };
+    
+    checkTable();
+  }, []);
+
   // Получить все запросы пользователя
   const fetchUserRequests = async (userId: number) => {
     try {
@@ -84,7 +107,18 @@ export const useWithdrawalRequests = () => {
         telegramUsername: formattedUsername
       });
 
+      // Проверим, существует ли таблица
+      console.log('🔍 Проверяем подключение к Supabase...');
+      
       // Прямая вставка в таблицу
+      console.log('📝 Данные для вставки:', {
+        user_id: userId,
+        item_id: itemId,
+        item_name: itemName,
+        telegram_username: formattedUsername,
+        status: 'pending'
+      });
+
       const { data, error } = await supabase
         .from('withdrawal_requests')
         .insert({
@@ -98,7 +132,13 @@ export const useWithdrawalRequests = () => {
         .single();
 
       if (error) {
-        console.error('Insert Error:', error);
+        console.error('❌ Insert Error:', error);
+        console.error('❌ Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        });
         throw error;
       }
 
