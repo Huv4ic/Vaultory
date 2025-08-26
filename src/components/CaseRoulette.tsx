@@ -113,6 +113,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     setShowResult(false);
     setWinnerItem(null);
     setIsSpinning(false);
+    setRouletteItems([]); // Очищаем рулетку
     
     // Очищаем анимацию
     if (animationRef.current) {
@@ -308,6 +309,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   };
 
   // Функция для анимации рулетки
+  // Состояние для хранения рандомизированных предметов рулетки
+  const [rouletteItems, setRouletteItems] = useState<CaseItem[]>([]);
+
   // Создаем рандомизированный массив предметов для рулетки
   const createRandomizedStrip = (winner: CaseItem) => {
     const TOTAL_ITEMS = 100; // Общее количество предметов в рулетке
@@ -339,44 +343,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Создаем рандомизированную ленту с победным предметом в центре
     const randomizedItems = createRandomizedStrip(winner);
     
-    // Очищаем текущую ленту и заполняем новой
-    strip.innerHTML = '';
-    
-    randomizedItems.forEach((item, index) => {
-      const itemElement = document.createElement('div');
-      itemElement.className = `flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2 flex flex-col relative isolation isolate item ${getRarityColor(item.rarity)} overflow-hidden group`;
-      itemElement.innerHTML = `
-        <!-- Блеск -->
-        <div class="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-white/20 to-transparent opacity-60"></div>
-        <!-- Свечение -->
-        <div class="absolute -inset-1 rounded-lg sm:rounded-xl opacity-30 blur-sm" style="background: ${
-          item.rarity.toLowerCase() === 'legendary' ? 'linear-gradient(45deg, #FFD700, #FFA500)' :
-          item.rarity.toLowerCase() === 'epic' ? 'linear-gradient(45deg, #9B59B6, #8E44AD)' :
-          item.rarity.toLowerCase() === 'rare' ? 'linear-gradient(45deg, #3498DB, #2980B9)' :
-          'linear-gradient(45deg, #95A5A6, #7F8C8D)'
-        }"></div>
-        <!-- Динамический градиент -->
-        <div class="absolute inset-0 rounded-lg sm:rounded-xl opacity-20" style="background: ${
-          item.rarity.toLowerCase() === 'legendary' ? 'radial-gradient(circle at 30% 30%, #FFD700 0%, transparent 70%)' :
-          item.rarity.toLowerCase() === 'epic' ? 'radial-gradient(circle at 30% 30%, #9B59B6 0%, transparent 70%)' :
-          item.rarity.toLowerCase() === 'rare' ? 'radial-gradient(circle at 30% 30%, #3498DB 0%, transparent 70%)' :
-          'radial-gradient(circle at 30% 30%, #95A5A6 0%, transparent 70%)'
-        }"></div>
-        <!-- Изображение -->
-        <div class="flex-1 flex items-center justify-center p-1 relative z-10">
-          ${item.image_url ? 
-            `<img src="${item.image_url}" alt="${item.name}" class="w-full h-full object-contain animate-pulse" />` :
-            '<div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center"><svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path></svg></div>'
-          }
-        </div>
-        <!-- Название и редкость -->
-        <div class="text-center space-y-1 relative z-10">
-          <p class="text-xs font-bold text-white line-clamp-2 leading-tight">${item.name}</p>
-          <div class="inline-flex px-2 py-0.5 rounded-full text-xs font-bold ${getRarityTag(item.rarity)}">${getRarityName(item.rarity)}</div>
-        </div>
-      `;
-      strip.appendChild(itemElement);
-    });
+    // Обновляем состояние React для отображения новых предметов
+    setRouletteItems(randomizedItems);
     
     // Параметры анимации
     const itemWidth = 152; // w-35 = 140px + gap
@@ -804,10 +772,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       className="flex gap-2.5 items-center p-3 sm:p-4 h-full"
                       style={{ transform: 'translateX(0px)' }}
                     >
-                      {/* Предметы добавляются динамически при спине или показываем превью */}
-                      {!isSpinning && caseItems.map((item, index) => (
+                      {/* Показываем рандомизированные предметы при спине или превью */}
+                      {(isSpinning ? rouletteItems : caseItems).map((item, index) => (
                         <div
-                          key={`preview-${item.id}-${index}`}
+                          key={`${isSpinning ? 'roulette' : 'preview'}-${item.id}-${index}`}
                           className={`flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2 flex flex-col relative isolation isolate item ${
                             getRarityColor(item.rarity)
                           } overflow-hidden group`}
