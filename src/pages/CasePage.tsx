@@ -64,9 +64,9 @@ const CasePage = () => {
       setLoading(true);
       setError(null);
 
-      // Загружаем данные кейса
+      // Загружаем данные кейса из админской таблицы
       const { data: caseData, error: caseError } = await supabase
-        .from('cases')
+        .from('admin_cases')
         .select('*')
         .eq('id', id)
         .single();
@@ -76,8 +76,8 @@ const CasePage = () => {
       // Преобразуем данные к правильному формату
       const formattedCase: Case = {
         ...caseData,
-        image_url: caseData.image || '', // Используем поле image из базы
-        game: 'Unknown Game' // Пока используем заглушку, так как в базе нет поля game
+        image_url: caseData.image_url || '', // Используем поле image_url из админской таблицы
+        game: caseData.game || 'Unknown Game' // Используем поле game из админской таблицы
       };
 
       setCaseData(formattedCase);

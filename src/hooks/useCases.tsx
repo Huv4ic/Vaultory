@@ -32,9 +32,9 @@ export const useCases = () => {
 
       console.log('🔄 Загружаем кейсы...');
 
-      // Загружаем кейсы
+      // Загружаем кейсы из админской таблицы
       const { data: casesData, error: casesError } = await supabase
-        .from('cases')
+        .from('admin_cases')
         .select('*')
         .order('name');
 
@@ -46,22 +46,24 @@ export const useCases = () => {
       console.log('📦 Получены кейсы из БД:', casesData);
       console.log('📊 Количество кейсов:', casesData?.length || 0);
       
-      // Приводим данные к правильному формату
-      const formattedCases = (casesData || []).map((caseData: any) => ({
-        id: caseData.id,
-        name: caseData.name,
-        game: caseData.game,
-        price: caseData.price,
-        image_url: caseData.image_url,
-        description: caseData.description || ''
-      }));
+      // Фильтруем системные записи и приводим данные к правильному формату
+      const formattedCases = (casesData || [])
+        .filter(caseData => !caseData.name.startsWith('__'))
+        .map((caseData: any) => ({
+          id: caseData.id,
+          name: caseData.name,
+          game: caseData.game || 'Unknown Game',
+          price: caseData.price,
+          image_url: caseData.image_url,
+          description: caseData.description || ''
+        }));
       
       console.log('✅ Форматированные кейсы:', formattedCases);
       setCases(formattedCases);
 
-      // Загружаем предметы в кейсах
+      // Загружаем предметы в кейсах из админской таблицы
       const { data: itemsData, error: itemsError } = await supabase
-        .from('case_items')
+        .from('admin_case_items')
         .select('*')
         .order('name');
 
