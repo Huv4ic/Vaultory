@@ -1,7 +1,5 @@
 import { useLanguage } from '@/hooks/useLanguage';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { 
   ArrowLeft, 
   Users, 
@@ -9,12 +7,7 @@ import {
   Award, 
   Shield, 
   Zap, 
-  Globe, 
-  Heart,
-  Star,
-  TrendingUp,
-  CheckCircle,
-  Lightbulb
+  Globe
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -53,30 +46,9 @@ const About = () => {
     }
   ];
 
-  const stats = [
-    { number: "1000+", label: "Довольных клиентов", icon: <Heart className="w-6 h-6 text-amber-400" /> },
-    { number: "50+", label: "Успешных сделок", icon: <CheckCircle className="w-6 h-6 text-amber-400" /> },
-    { number: "24/7", label: "Поддержка", icon: <Star className="w-6 h-6 text-amber-400" /> },
-    { number: "99%", label: "Положительных отзывов", icon: <TrendingUp className="w-6 h-6 text-amber-400" /> }
-  ];
 
-  const team = [
-    {
-      name: "Команда разработчиков",
-      role: "Техническая поддержка",
-      description: "Обеспечивает стабильную работу платформы"
-    },
-    {
-      name: "Служба поддержки",
-      role: "Клиентский сервис",
-      description: "Помогает решать любые вопросы клиентов"
-    },
-    {
-      name: "Отдел безопасности",
-      role: "Защита данных",
-      description: "Гарантирует безопасность всех операций"
-    }
-  ];
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
@@ -137,27 +109,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* Статистика */}
-        <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8">
-            Наши достижения
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {stats.map((stat, index) => (
-              <div 
-                key={index}
-                className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center hover:shadow-amber-500/40 transition-all duration-300"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
-                  {stat.icon}
-                </div>
-                <div className="text-2xl sm:text-3xl font-bold text-amber-400 mb-2">{stat.number}</div>
-                <p className="text-xs sm:text-sm text-gray-300">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+
 
         {/* История компании */}
         <div className="mb-8 sm:mb-12">

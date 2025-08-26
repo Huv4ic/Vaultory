@@ -108,32 +108,53 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-12">
-        </div>
-        
-        {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
+    <div className="min-h-screen product-hero-bg relative overflow-hidden">
+      {/* Анимированный фон с частицами */}
+      <div className="floating-particles">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: `${4 + Math.random() * 8}px`,
+              height: `${4 + Math.random() * 8}px`,
+              animationDelay: `${Math.random() * 15}s`,
+            }}
+          />
+        ))}
       </div>
 
-      {/* Основной контент */}
-      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
-        {/* Кнопка назад */}
-        <div className="mb-6 sm:mb-8 mt-16 sm:mt-20 md:mt-24">
-          <Button
-            onClick={() => navigate(-1)}
-            variant="outline"
-            className="px-4 sm:px-6 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
-          >
-            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-            Назад
-          </Button>
-        </div>
+      {/* Hero Section */}
+      <div className="relative z-10 min-h-screen">
+        {/* Декоративные элементы */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-amber-400/10 to-orange-500/10 rounded-full animate-float blur-xl"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-purple-400/10 to-pink-500/10 rounded-full animate-pulse blur-xl"></div>
+        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-gradient-to-r from-blue-400/10 to-cyan-500/10 rounded-full animate-spin-slow blur-xl"></div>
+        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-gradient-to-r from-green-400/10 to-emerald-500/10 rounded-full animate-bounce blur-xl"></div>
+
+        {/* Основной контент */}
+        <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
+          {/* Кнопка назад с анимацией */}
+          <div className="mb-8 sm:mb-12 pt-20 sm:pt-24 md:pt-28 animate-scale-in">
+            <Button
+              onClick={() => navigate(-1)}
+              variant="outline"
+              className="group relative overflow-hidden px-6 sm:px-8 py-3 sm:py-4 bg-black/40 backdrop-blur-xl border border-amber-500/30 text-amber-300 hover:text-white transition-all duration-500 shadow-xl shadow-amber-500/20 rounded-xl text-sm sm:text-base hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/40"
+            >
+              {/* Анимированный фон */}
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              {/* Контент кнопки */}
+              <div className="relative z-10 flex items-center">
+                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
+                <span className="font-medium">Назад</span>
+              </div>
+              
+              {/* Блик */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            </Button>
+          </div>
 
         {loading ? (
           <div className="text-center py-12 sm:py-16">
@@ -366,107 +387,192 @@ const ProductPage = () => {
       </div>
 
       {/* Похожие товары */}
-      <div className="mt-20 max-w-[1920px] mx-auto px-4">
-        <h2 className="text-3xl font-bold text-white text-center mb-12">
-          Похожие товары
-        </h2>
+      <div className="mt-32 max-w-[1920px] mx-auto px-4 relative">
+        {/* Декоративный фон */}
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-purple-500/5 rounded-3xl blur-3xl"></div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Заголовок секции */}
+        <div className="relative z-10 text-center mb-16 animate-scale-in">
+          <div className="inline-flex items-center mb-6">
+            <div className="w-16 h-1 bg-gradient-to-r from-transparent to-amber-400 rounded-full"></div>
+            <div className="mx-6">
+              <h2 className="text-4xl sm:text-5xl font-black text-white relative">
+                <span className="bg-gradient-to-r from-white via-amber-100 to-white bg-clip-text text-transparent">
+                  Похожие товары
+                </span>
+                {/* Подсветка текста */}
+                <div className="absolute inset-0 text-4xl sm:text-5xl font-black text-amber-400/20 blur-sm">
+                  Похожие товары
+                </div>
+              </h2>
+            </div>
+            <div className="w-16 h-1 bg-gradient-to-l from-transparent to-amber-400 rounded-full"></div>
+          </div>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Откройте для себя другие удивительные товары из этой категории
+          </p>
+        </div>
+        
+        {/* Сетка товаров */}
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products
             .filter(p => p.id !== product.id && p.category_id === product.category_id)
             .slice(0, 4)
             .map((similarProduct, index) => (
               <div 
                 key={similarProduct.id}
-                className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105 cursor-pointer"
+                className="group product-info-card product-card-3d rounded-3xl p-6 cursor-pointer animate-scale-in hover:shadow-2xl hover:shadow-amber-500/30 relative overflow-hidden"
                 onClick={() => navigate(`/product/${similarProduct.id}`)}
-                style={{ animationDelay: `${index * 0.1}s` }}
+                style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <div className="w-full h-32 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden">
-                  <img
-                    src={
-                      (similarProduct.images && similarProduct.images.length > 0) 
-                        ? similarProduct.images[0] 
-                        : (similarProduct.image_url || '/placeholder.svg')
-                    }
-                    alt={similarProduct.name}
-                    className="w-full h-full object-contain rounded-lg"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder.svg';
-                    }}
-                  />
+                {/* Декоративные элементы */}
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-amber-400/10 to-transparent rounded-full blur-xl"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full blur-xl"></div>
+                
+                {/* Изображение */}
+                <div className="relative mb-6">
+                  <div className="w-full h-40 bg-gradient-to-br from-amber-400/20 via-orange-500/20 to-purple-600/20 rounded-2xl flex items-center justify-center overflow-hidden border border-amber-500/20 holographic-effect product-image-glow">
+                    {/* Декоративные кольца */}
+                    <div className="absolute inset-2 border border-amber-400/10 rounded-xl animate-spin-slow"></div>
+                    <div className="absolute inset-4 border border-purple-400/10 rounded-xl animate-spin-reverse"></div>
+                    
+                    <img
+                      src={
+                        (similarProduct.images && similarProduct.images.length > 0) 
+                          ? similarProduct.images[0] 
+                          : (similarProduct.image_url || '/placeholder.svg')
+                      }
+                      alt={similarProduct.name}
+                      className="relative z-10 w-full h-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/placeholder.svg';
+                      }}
+                    />
+                    
+                    {/* Магические частицы */}
+                    <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-amber-400 rounded-full sparkle"></div>
+                    <div className="absolute bottom-4 left-4 w-1 h-1 bg-purple-400 rounded-full sparkle-delay-1"></div>
+                  </div>
                 </div>
                 
-                <h4 className="text-white font-semibold mb-2 line-clamp-2 text-sm">
-                  {similarProduct.name}
-                </h4>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-amber-400 font-bold">{similarProduct.price}₴</span>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addItem({
-                        id: similarProduct.id,
-                        name: similarProduct.name,
-                        price: similarProduct.price,
-                        image_url: similarProduct.images && similarProduct.images.length > 0 ? similarProduct.images[0] : '/placeholder.svg'
-                      });
-                    }}
-                  >
-                    <ShoppingCart className="w-4 h-4" />
-                  </Button>
+                {/* Информация о товаре */}
+                <div className="relative z-10">
+                  <h4 className="text-white font-bold mb-3 line-clamp-2 text-base group-hover:text-amber-100 transition-colors duration-300">
+                    {similarProduct.name}
+                  </h4>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+                        {similarProduct.price}₴
+                      </span>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="group/btn w-12 h-12 p-0 bg-black/40 backdrop-blur-sm border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/40 rounded-xl hover:scale-110"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addItem({
+                          id: similarProduct.id,
+                          name: similarProduct.name,
+                          price: similarProduct.price,
+                          image_url: similarProduct.images && similarProduct.images.length > 0 ? similarProduct.images[0] : '/placeholder.svg'
+                        });
+                      }}
+                    >
+                      <ShoppingCart className="w-5 h-5 group-hover/btn:animate-bounce" />
+                    </Button>
+                  </div>
                 </div>
+                
+                {/* Эффект при наведении */}
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
               </div>
             ))}
         </div>
       </div>
 
       {/* Дополнительная информация */}
-      <div className="mt-20 max-w-[1920px] mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-              <Award className="w-8 h-8 text-amber-400" />
+      <div className="mt-32 mb-20 max-w-[1920px] mx-auto px-4">
+        <div className="text-center mb-16 animate-scale-in">
+          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 relative">
+            <span className="bg-gradient-to-r from-white via-amber-100 to-white bg-clip-text text-transparent">
+              Почему выбирают нас
+            </span>
+            {/* Подсветка текста */}
+            <div className="absolute inset-0 text-3xl sm:text-4xl font-black text-amber-400/20 blur-sm">
+              Почему выбирают нас
             </div>
-            <h4 className="text-white font-semibold mb-2">Гарантия качества</h4>
-            <p className="text-gray-300 text-sm">
-              Все товары официальные и лицензированные
-            </p>
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto rounded-full"></div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="group product-info-card rounded-3xl p-8 text-center animate-scale-in hover:shadow-2xl hover:shadow-amber-500/30 relative overflow-hidden" style={{animationDelay: '0.1s'}}>
+            {/* Декоративные элементы */}
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-400/10 to-transparent rounded-full blur-xl"></div>
+            
+            <div className="relative z-10">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-2xl flex items-center justify-center mb-6 border border-amber-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-amber-500/20">
+                <Award className="w-10 h-10 text-amber-400 group-hover:animate-bounce" />
+              </div>
+              <h4 className="text-xl font-bold text-white mb-4 group-hover:text-amber-100 transition-colors duration-300">Гарантия качества</h4>
+              <p className="text-gray-300 leading-relaxed">
+                Все товары официальные и лицензированные. Мы гарантируем подлинность каждого продукта.
+              </p>
+            </div>
+            
+            {/* Эффект при наведении */}
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
           
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-              <Zap className="w-8 h-8 text-amber-400" />
+          <div className="group product-info-card rounded-3xl p-8 text-center animate-scale-in hover:shadow-2xl hover:shadow-green-500/30 relative overflow-hidden" style={{animationDelay: '0.2s'}}>
+            {/* Декоративные элементы */}
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-green-400/10 to-transparent rounded-full blur-xl"></div>
+            
+            <div className="relative z-10">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-green-400/20 to-emerald-600/20 rounded-2xl flex items-center justify-center mb-6 border border-green-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-green-500/20">
+                <Zap className="w-10 h-10 text-green-400 group-hover:animate-bounce" />
+              </div>
+              <h4 className="text-xl font-bold text-white mb-4 group-hover:text-green-100 transition-colors duration-300">Быстрая доставка</h4>
+              <p className="text-gray-300 leading-relaxed">
+                Товары доставляются мгновенно после оплаты. Никаких ожиданий - получайте сразу!
+              </p>
             </div>
-            <h4 className="text-white font-semibold mb-2">Быстрая доставка</h4>
-            <p className="text-gray-300 text-sm">
-              Товары доставляются мгновенно после оплаты
-            </p>
+            
+            {/* Эффект при наведении */}
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
           
-          <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-              <TrendingUp className="w-8 h-8 text-amber-400" />
+          <div className="group product-info-card rounded-3xl p-8 text-center animate-scale-in hover:shadow-2xl hover:shadow-purple-500/30 relative overflow-hidden" style={{animationDelay: '0.3s'}}>
+            {/* Декоративные элементы */}
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-purple-400/10 to-transparent rounded-full blur-xl"></div>
+            
+            <div className="relative z-10">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-purple-500/20">
+                <TrendingUp className="w-10 h-10 text-purple-400 group-hover:animate-bounce" />
+              </div>
+              <h4 className="text-xl font-bold text-white mb-4 group-hover:text-purple-100 transition-colors duration-300">Популярность</h4>
+              <p className="text-gray-300 leading-relaxed">
+                Высокий рейтинг и много положительных отзывов от довольных клиентов по всему миру.
+              </p>
             </div>
-            <h4 className="text-white font-semibold mb-2">Популярность</h4>
-            <p className="text-gray-300 text-sm">
-              Высокий рейтинг и много положительных отзывов
-            </p>
+            
+            {/* Эффект при наведении */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
         </div>
       </div>
 
-      {/* Модальное окно для шаринга */}
-      <ShareModal
-        isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
-        productName={product?.name || ''}
-      />
+        {/* Модальное окно для шаринга */}
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+          productName={product?.name || ''}
+        />
+      </div>
     </div>
   );
 };

@@ -341,19 +341,19 @@ const Cart = () => {
                       
                       {/* Управление количеством с улучшенным дизайном */}
                       <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-3 bg-white/5 rounded-xl p-2 border border-white/10">
+                        <div className="flex items-center space-x-3 bg-gray-800/80 rounded-xl p-3 border border-gray-600/50">
                           <Button
                             onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                             size="sm"
-                            className="w-10 h-10 p-0 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-400 text-red-400 hover:text-red-300 transition-all duration-300 rounded-xl shadow-lg hover:shadow-red-500/20 hover:scale-110"
+                            className="w-10 h-10 p-0 bg-red-600 hover:bg-red-500 border border-red-500 hover:border-red-400 text-white hover:text-red-100 transition-all duration-300 rounded-lg shadow-lg hover:shadow-red-500/40 hover:scale-110 font-bold"
                           >
                             -
                           </Button>
-                          <span className="text-white font-bold text-lg min-w-[3rem] text-center bg-white/10 rounded-lg py-1 px-3">{item.quantity}</span>
+                          <span className="text-white font-bold text-lg min-w-[3rem] text-center bg-gray-700 rounded-lg py-2 px-4 border border-gray-600">{item.quantity}</span>
                           <Button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             size="sm"
-                            className="w-10 h-10 p-0 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 hover:border-green-400 text-green-400 hover:text-green-300 transition-all duration-300 rounded-xl shadow-lg hover:shadow-green-500/20 hover:scale-110"
+                            className="w-10 h-10 p-0 bg-green-600 hover:bg-green-500 border border-green-500 hover:border-green-400 text-white hover:text-green-100 transition-all duration-300 rounded-lg shadow-lg hover:shadow-green-500/40 hover:scale-110 font-bold"
                           >
                             +
                           </Button>
@@ -362,7 +362,7 @@ const Cart = () => {
                         <Button
                           onClick={() => removeItem(item.id)}
                           size="sm"
-                          className="w-12 h-12 p-0 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-400 text-red-400 hover:text-red-300 transition-all duration-300 rounded-xl shadow-lg hover:shadow-red-500/30 hover:scale-110"
+                          className="w-12 h-12 p-0 bg-red-600 hover:bg-red-500 border border-red-500 hover:border-red-400 text-white hover:text-red-100 transition-all duration-300 rounded-lg shadow-lg hover:shadow-red-500/40 hover:scale-110"
                         >
                           <Trash2 className="w-5 h-5" />
                         </Button>
@@ -445,7 +445,7 @@ const Cart = () => {
                 <Button
                   onClick={handleCheckout}
                   disabled={items.length === 0 || !telegramUser || isProcessing}
-                  className="group relative w-full py-4 bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white font-bold text-lg rounded-2xl transition-all duration-500 hover:scale-105 hover:border-green-400/40 hover:bg-white/20 shadow-2xl hover:shadow-green-500/20 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                  className="group relative w-full py-4 bg-green-600 hover:bg-green-500 border-2 border-green-500 hover:border-green-400 text-white font-bold text-lg rounded-2xl transition-all duration-500 hover:scale-105 shadow-2xl shadow-green-500/30 hover:shadow-green-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-600 disabled:border-gray-500 overflow-hidden"
               >
                 {/* Анимированный фон кнопки */}
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

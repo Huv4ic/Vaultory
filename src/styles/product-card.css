@@ -194,3 +194,182 @@
 .animate-fade-in-delayed {
   animation: fade-in-delayed 2s ease-out;
 }
+
+/* Анимации для страницы товара */
+.product-hero-bg {
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(75, 0, 130, 0.3) 0%, transparent 50%),
+    linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+  animation: hero-gradient 8s ease-in-out infinite;
+}
+
+@keyframes hero-gradient {
+  0%, 100% {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(75, 0, 130, 0.3) 0%, transparent 50%),
+      linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+  }
+  50% {
+    background: 
+      radial-gradient(circle at 80% 20%, rgba(139, 69, 19, 0.4) 0%, transparent 50%),
+      radial-gradient(circle at 20% 80%, rgba(75, 0, 130, 0.4) 0%, transparent 50%),
+      linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  }
+}
+
+.floating-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  background: rgba(245, 158, 11, 0.3);
+  border-radius: 50%;
+  animation: float-particles 15s linear infinite;
+}
+
+.particle:nth-child(2n) {
+  background: rgba(139, 69, 19, 0.2);
+  animation-duration: 20s;
+  animation-delay: -5s;
+}
+
+.particle:nth-child(3n) {
+  background: rgba(75, 0, 130, 0.2);
+  animation-duration: 25s;
+  animation-delay: -10s;
+}
+
+@keyframes float-particles {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.product-card-3d {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.product-card-3d:hover {
+  transform: rotateY(5deg) rotateX(5deg);
+}
+
+.holographic-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.holographic-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+  z-index: 10;
+}
+
+.holographic-effect:hover::before {
+  left: 100%;
+}
+
+.product-image-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-image-glow:hover::after {
+  opacity: 1;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s ease-out forwards;
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out forwards;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.6);
+  }
+}
+
+.product-info-card {
+  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  transition: all 0.3s ease;
+}
+
+.product-info-card:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(245, 158, 11, 0.5);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}

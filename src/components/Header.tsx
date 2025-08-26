@@ -108,17 +108,36 @@ const Header = () => {
             {/* Переключатель языка */}
             <LanguageSwitcher />
 
-            {/* Корзина с анимацией */}
+            {/* Корзина с улучшенным дизайном */}
             <Link 
               to="/cart" 
-              className="relative group p-1.5 sm:p-2 rounded-lg bg-gradient-to-r from-amber-500/20 to-emerald-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 border border-amber-500/30 hover:border-amber-500/50 transition-all duration-300 hover:scale-110"
+              className="relative group"
             >
-              <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400 group-hover:text-amber-300 transition-colors duration-300" />
-              {items.length > 0 && (
-                <span className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 bg-gradient-to-r from-emerald-500 to-purple-600 text-white text-xs font-bold rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center animate-pulse shadow-lg shadow-emerald-500/50">
-                  {items.length}
-                </span>
-              )}
+              <div className="relative bg-gray-800/80 backdrop-blur-sm rounded-xl p-3 border border-gray-600/50 hover:border-orange-500/60 transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-orange-500/20">
+                {/* Анимированный фон при hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Иконка корзины */}
+                <div className="relative z-10">
+                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-orange-400 group-hover:text-orange-300 transition-all duration-300 group-hover:scale-110" />
+                </div>
+                
+                {/* Счетчик товаров */}
+                {items.length > 0 && (
+                  <div className="absolute -top-2 -right-2">
+                    <div className="relative">
+                      <span className="bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg border-2 border-gray-800 animate-bounce">
+                        {items.length}
+                      </span>
+                      {/* Пульсирующее кольцо */}
+                      <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-30"></div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Декоративные элементы */}
+                <div className="absolute top-1 right-1 w-1 h-1 bg-orange-400/60 rounded-full animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
             </Link>
 
             {/* Профиль пользователя */}
