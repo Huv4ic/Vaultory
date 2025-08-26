@@ -780,6 +780,7 @@ export interface Database {
           obtained_at: string
           sold_at: string | null
           withdrawn_at: string | null
+          withdrawal_status: string
           created_at: string
           updated_at: string
         }
@@ -798,6 +799,7 @@ export interface Database {
           obtained_at?: string
           sold_at?: string | null
           withdrawn_at?: string | null
+          withdrawal_status?: string
           created_at?: string
           updated_at?: string
         }

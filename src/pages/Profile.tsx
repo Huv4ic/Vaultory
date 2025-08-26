@@ -53,29 +53,42 @@ const Profile = () => {
       if (!telegramUser) return;
       
       try {
-        // Загружаем реальную статистику пользователя
+        // Загружаем индивидуальную статистику пользователя
         const userStats = await getUserStatistics();
         
-        // Загружаем количество проданных предметов из инвентаря
-        const { data: soldItems, error: soldError } = await supabase
-          .from('user_inventory')
-          .select('id')
-          .eq('telegram_id', telegramUser.id)
-          .eq('status', 'sold');
-
-        if (soldError) {
-          console.error('Ошибка получения проданных предметов:', soldError);
-        }
-
-        const itemsSoldCount = soldItems ? soldItems.length : 0;
-        
         if (userStats) {
+          console.log('📊 Загружена индивидуальная статистика пользователя:', userStats);
           setStats({
-            totalPurchases: (userStats as any).total_orders || 0,
-            totalSpent: (userStats as any).total_spent || 0,
-            casesOpened: (userStats as any).cases_opened || 0,
-            itemsSold: itemsSoldCount
+            totalPurchases: userStats.total_orders || 0,
+            totalSpent: userStats.total_spent || 0,
+            casesOpened: userStats.cases_opened || 0,
+            itemsSold: userStats.items_sold || 0
           });
+        } else {
+          // Если статистика не найдена, инициализируем её
+          console.log('📊 Статистика не найдена, инициализируем...');
+          try {
+            const { error: initError } = await supabase.rpc('initialize_user_statistics', {
+              user_telegram_id: telegramUser.id
+            });
+
+            if (initError) {
+              console.error('Ошибка инициализации статистики:', initError);
+            } else {
+              // Повторно загружаем статистику после инициализации
+              const newUserStats = await getUserStatistics();
+              if (newUserStats) {
+                setStats({
+                  totalPurchases: newUserStats.total_orders || 0,
+                  totalSpent: newUserStats.total_spent || 0,
+                  casesOpened: newUserStats.cases_opened || 0,
+                  itemsSold: newUserStats.items_sold || 0
+                });
+              }
+            }
+          } catch (error) {
+            console.error('Ошибка при инициализации статистики:', error);
+          }
         }
       } catch (error) {
         console.error('Ошибка загрузки профиля:', error);

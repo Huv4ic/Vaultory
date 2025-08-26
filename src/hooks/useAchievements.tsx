@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
 import { useInventory } from './useInventory';
+import { supabase } from '../integrations/supabase/client';
 import { Shield, Gift, TrendingUp, Star, Crown, Trophy } from 'lucide-react';
 
 export interface Achievement {
@@ -84,35 +85,94 @@ export const useAchievements = () => {
   const calculateProgress = async (achievement: Omit<Achievement, 'current' | 'completed'>) => {
     let current = 0;
 
+    // Получаем индивидуальную статистику пользователя
+    const getUserStats = async () => {
+      if (!profile?.telegram_id) return null;
+      
+      try {
+        const { data, error } = await supabase
+          .from('user_statistics')
+          .select('*')
+          .eq('telegram_id', profile.telegram_id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching user statistics:', error);
+          return null;
+        }
+
+        return data;
+      } catch (error) {
+        console.error('Error in getUserStats:', error);
+        return null;
+      }
+    };
+
+    const userStats = await getUserStats();
+
     switch (achievement.type) {
       case 'first_purchase':
-        // Проверяем, есть ли у пользователя покупки (total_spent > 0)
-        current = (profile?.total_spent || 0) > 0 ? 1 : 0;
+        // Проверяем, есть ли у пользователя покупки
+        current = (userStats?.total_spent || 0) > 0 ? 1 : 0;
         break;
 
       case 'cases_opened':
-        // Получаем количество открытых кейсов
-        try {
-          current = await getCasesOpened();
-        } catch (error) {
-          console.error('Error getting cases opened:', error);
-          current = profile?.cases_opened || 0;
-        }
+        // Используем индивидуальную статистику кейсов
+        current = userStats?.cases_opened || 0;
         break;
 
       case 'money_spent':
-        // Используем total_spent из профиля
-        current = profile?.total_spent || 0;
+        // Используем индивидуальную статистику трат
+        current = userStats?.total_spent || 0;
         break;
 
       case 'items_collected':
-        // Считаем общее количество предметов в инвентаре
-        current = items.length;
+        // Считаем общее количество предметов в инвентаре (включая проданные)
+        if (profile?.telegram_id) {
+          try {
+            const { data, error } = await supabase
+              .from('user_inventory')
+              .select('id')
+              .eq('telegram_id', profile.telegram_id);
+
+            if (error) {
+              console.error('Error counting user items:', error);
+              current = items.length;
+            } else {
+              current = data?.length || 0;
+            }
+          } catch (error) {
+            console.error('Error in items_collected calculation:', error);
+            current = items.length;
+          }
+        } else {
+          current = items.length;
+        }
         break;
 
       case 'rare_items':
-        // Считаем количество легендарных предметов
-        current = items.filter(item => item.rarity === 'legendary').length;
+        // Считаем количество легендарных предметов в инвентаре
+        if (profile?.telegram_id) {
+          try {
+            const { data, error } = await supabase
+              .from('user_inventory')
+              .select('id')
+              .eq('telegram_id', profile.telegram_id)
+              .eq('item_rarity', 'legendary');
+
+            if (error) {
+              console.error('Error counting rare items:', error);
+              current = items.filter(item => item.rarity === 'legendary').length;
+            } else {
+              current = data?.length || 0;
+            }
+          } catch (error) {
+            console.error('Error in rare_items calculation:', error);
+            current = items.filter(item => item.rarity === 'legendary').length;
+          }
+        } else {
+          current = items.filter(item => item.rarity === 'legendary').length;
+        }
         break;
 
       default:

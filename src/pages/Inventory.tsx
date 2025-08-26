@@ -718,6 +718,9 @@ const Inventory = () => {
                   if (success) {
                     setShowWithdrawModal(false);
                     setShowWithdrawSuccess(true);
+                    
+                    // Обновляем инвентарь, чтобы предмет исчез из списка
+                    await refreshItems();
                   }
                 }}
                 className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -744,7 +747,7 @@ const Inventory = () => {
             
             <div className="space-y-3">
               <button
-                onClick={() => window.open('https://t.me/vaultory_support', '_blank')}
+                onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
                 className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 hover:scale-105 font-medium"
               >
                 📞 Поддержка Telegram

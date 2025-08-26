@@ -155,6 +155,23 @@ export const useWithdrawalRequests = () => {
 
       console.log('✅ Insert Response:', data);
 
+      // Обновляем статус предмета в инвентаре на 'withdrawal_requested'
+      try {
+        console.log('🔄 Обновляем статус предмета в инвентаре...');
+        const { error: updateError } = await supabase
+          .from('user_inventory')
+          .update({ withdrawal_status: 'withdrawal_requested' })
+          .eq('id', itemId);
+
+        if (updateError) {
+          console.warn('⚠️ Could not update inventory status:', updateError);
+        } else {
+          console.log('✅ Статус предмета в инвентаре обновлен на withdrawal_requested');
+        }
+      } catch (updateError) {
+        console.warn('⚠️ Error updating inventory status:', updateError);
+      }
+
       showSuccess('Запрос на вывод создан успешно!');
       return true;
 
@@ -176,6 +193,17 @@ export const useWithdrawalRequests = () => {
     try {
       setLoading(true);
 
+      // Сначала получаем информацию о запросе
+      const { data: requestData, error: fetchError } = await supabase
+        .from('withdrawal_requests')
+        .select('item_id')
+        .eq('id', requestId)
+        .single();
+
+      if (fetchError || !requestData) {
+        throw new Error('Запрос не найден');
+      }
+
       const updateData: any = {
         status,
         updated_at: new Date().toISOString()
@@ -189,12 +217,46 @@ export const useWithdrawalRequests = () => {
         updateData.processed_at = new Date().toISOString();
       }
 
+      // Обновляем статус запроса
       const { error } = await supabase
         .from('withdrawal_requests')
         .update(updateData)
         .eq('id', requestId);
 
       if (error) throw error;
+
+      // Обновляем статус предмета в инвентаре в зависимости от решения админа
+      try {
+        let inventoryStatus: string;
+        
+        if (status === 'rejected') {
+          // Если запрос отклонен - возвращаем предмет в инвентарь
+          inventoryStatus = 'available';
+          console.log('🔄 Возвращаем предмет в инвентарь (запрос отклонен)');
+        } else if (status === 'completed') {
+          // Если запрос выполнен - предмет выведен
+          inventoryStatus = 'withdrawn';
+          console.log('🔄 Предмет выведен из инвентаря (запрос выполнен)');
+        } else {
+          // Для других статусов оставляем как есть
+          console.log('🔄 Статус предмета не изменяется');
+          showSuccess('Статус запроса обновлен');
+          return true;
+        }
+
+        const { error: inventoryError } = await supabase
+          .from('user_inventory')
+          .update({ withdrawal_status: inventoryStatus })
+          .eq('id', requestData.item_id);
+
+        if (inventoryError) {
+          console.warn('⚠️ Could not update inventory status:', inventoryError);
+        } else {
+          console.log(`✅ Статус предмета обновлен на: ${inventoryStatus}`);
+        }
+      } catch (inventoryError) {
+        console.warn('⚠️ Error updating inventory status:', inventoryError);
+      }
 
       showSuccess('Статус запроса обновлен');
       return true;

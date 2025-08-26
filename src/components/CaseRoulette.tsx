@@ -493,26 +493,24 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       } else {
         console.log('✅ Глобальный счетчик успешно увеличен');
         
-        // Обновляем счетчик открытых кейсов в профиле пользователя
+        // Обновляем индивидуальную статистику открытых кейсов пользователя
         if (profile?.telegram_id) {
           try {
-            const currentCasesOpened = profile.cases_opened || 0;
-            const { error: profileError } = await supabase
-              .from('profiles')
-              .update({ 
-                cases_opened: currentCasesOpened + 1 
-              })
-              .eq('telegram_id', profile.telegram_id);
+            console.log('🔄 Обновляем индивидуальную статистику кейсов для пользователя:', profile.telegram_id);
+            
+            const { error: statsError } = await supabase.rpc('increment_user_cases_opened', {
+              user_telegram_id: profile.telegram_id
+            });
 
-            if (profileError) {
-              console.error('❌ Error updating user cases_opened:', profileError);
+            if (statsError) {
+              console.error('❌ Error updating user cases statistics:', statsError);
             } else {
-              console.log('✅ Счетчик кейсов пользователя обновлен:', currentCasesOpened + 1);
+              console.log('✅ Индивидуальная статистика кейсов пользователя обновлена');
               // Обновляем профиль в контексте
               await refreshProfile();
             }
           } catch (error) {
-            console.error('❌ Failed to update user cases_opened:', error);
+            console.error('❌ Failed to update user cases statistics:', error);
           }
         }
       }

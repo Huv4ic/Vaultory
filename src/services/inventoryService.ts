@@ -12,20 +12,24 @@ export interface DatabaseInventoryItem {
   item_image?: string;
   item_image_url?: string;
   status: 'new' | 'sold' | 'withdrawn';
+  withdrawal_status: 'available' | 'withdrawal_requested' | 'withdrawn' | 'withdrawal_rejected';
   obtained_at: string;
   sold_at?: string;
   withdrawn_at?: string;
 }
 
 export class InventoryService {
-  // Получить инвентарь пользователя
+  // Получить инвентарь пользователя (только доступные предметы)
   static async getUserInventory(telegramId: number): Promise<DatabaseInventoryItem[]> {
     try {
+      console.log('🔍 Загружаем инвентарь для пользователя:', telegramId);
+      
       const { data, error } = await supabase
         .from('user_inventory')
         .select('*')
         .eq('telegram_id', telegramId)
         .eq('status', 'new')
+        .in('withdrawal_status', ['available', 'withdrawal_rejected']) // Показываем только доступные предметы и отклоненные запросы
         .order('obtained_at', { ascending: false });
 
       if (error) {
@@ -33,10 +37,14 @@ export class InventoryService {
         throw error;
       }
 
+      console.log('✅ Инвентарь загружен, предметов:', (data || []).length);
+      console.log('📋 Фильтр: status=new, withdrawal_status IN (available, withdrawal_rejected)');
+
       // Приводим типы к правильному формату
       return (data || []).map(item => ({
         ...item,
-        status: item.status as 'new' | 'sold' | 'withdrawn'
+        status: item.status as 'new' | 'sold' | 'withdrawn',
+        withdrawal_status: item.withdrawal_status as 'available' | 'withdrawal_requested' | 'withdrawn' | 'withdrawal_rejected'
       }));
     } catch (error) {
       console.error('Failed to fetch user inventory:', error);
@@ -84,6 +92,7 @@ export class InventoryService {
         item_image: item.image,
         item_image_url: item.image_url,
         status: 'new',
+        withdrawal_status: 'available', // Новые предметы всегда доступны
         obtained_at: new Date().toISOString()
       };
 
@@ -157,6 +166,21 @@ export class InventoryService {
       }
 
       console.log('✅ Статус предмета обновлен на "sold"');
+
+      // Обновляем статистику проданных предметов
+      try {
+        const { error: statsError } = await supabase.rpc('increment_user_items_sold', {
+          user_telegram_id: telegramId
+        });
+
+        if (statsError) {
+          console.error('❌ Error updating items sold statistics:', statsError);
+        } else {
+          console.log('✅ Статистика проданных предметов обновлена');
+        }
+      } catch (error) {
+        console.error('❌ Failed to update items sold statistics:', error);
+      }
 
       // Добавляем деньги на баланс пользователя
       // Сначала получаем текущий баланс
