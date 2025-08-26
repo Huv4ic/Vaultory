@@ -268,7 +268,7 @@ const Profile = () => {
                     Баланс
                   </h3>
                   <div className="text-xl sm:text-2xl font-bold text-amber-400 mb-2 sm:mb-3">
-                    {balance || 0}₴
+                    {formatNumber(balance || 0)}₴
                   </div>
                   <Button
                     onClick={handleTopUp}
