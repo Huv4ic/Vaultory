@@ -185,7 +185,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       } else {
         console.log('✅ Статистика проданных предметов обновлена');
       }
-
+  
       console.log('✅ Баланс успешно обновлен');
       showSuccess(`Предмет "${item.name}" продан за ${item.price || 0}₴! Деньги добавлены на баланс.`);
       
@@ -292,7 +292,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       } else {
         // Если даже базовых предметов нет, берем все (fallback)
         console.log('⚠️ No base items found, using all case items as fallback');
-        eligibleItems = caseItems;
+      eligibleItems = caseItems;
       }
     }
     
@@ -353,7 +353,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     return { items: randomItems, winnerIndex: winnerPosition };
   };
 
-  const spinToLocalIndex = (winner: CaseItem) => {
+  const spinToLocalIndex = async (winner: CaseItem) => {
     if (!stripRef.current) return;
     
     const strip = stripRef.current;
@@ -371,9 +371,33 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Обновляем состояние React для отображения новых предметов
     setRouletteItems(randomizedItems);
     
-    // Параметры анимации - рассчитываем реальную ширину элемента
-    const isDesktop = window.innerWidth >= 640;
-    const itemWidth = isDesktop ? 150 : 128; // 140px + 10px gap на десктопе, 120px + 8px gap на мобильном
+    // Небольшая задержка для обновления DOM
+    await new Promise(resolve => setTimeout(resolve, 50));
+    
+    // Параметры анимации - рассчитываем реальную ширину элемента из DOM
+    const firstItem = strip.querySelector('.item') as HTMLElement;
+    let actualItemWidth = 150; // Значение по умолчанию
+    
+    if (firstItem) {
+      // Получаем реальную ширину элемента включая margin/gap
+      const itemRect = firstItem.getBoundingClientRect();
+      const itemStyle = window.getComputedStyle(firstItem);
+      const marginRight = parseFloat(itemStyle.marginRight) || 0;
+      const gap = parseFloat(window.getComputedStyle(strip).gap) || 0;
+      
+      actualItemWidth = itemRect.width + Math.max(marginRight, gap);
+      
+      console.log('Real item measurements:', {
+        itemWidth: itemRect.width,
+        marginRight,
+        gap,
+        totalWidth: actualItemWidth,
+        screenWidth: window.innerWidth,
+        isTouch: 'ontouchstart' in window
+      });
+    }
+    
+    const itemWidth = actualItemWidth;
     const viewportWidth = viewport.clientWidth;
     const centerOffset = viewportWidth / 2 - itemWidth / 2;
     
@@ -391,7 +415,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     console.log('Animation parameters:', {
       itemWidth,
-      isDesktop,
+      actualItemWidth,
       totalItems: randomizedItems.length,
       winnerIndexInStrip,
       startX,
@@ -399,6 +423,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       distance: targetX - startX,
       centerOffset,
       viewportWidth,
+      screenWidth: window.innerWidth,
       winnerName: winner.name,
       itemAtIndex: randomizedItems[actualWinnerIndex]?.name
     });
@@ -456,16 +481,16 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           // Показываем результат с предметом который реально под красной линией
           setShowResult(true);
           setWinnerItem(actualWinnerItem);
-
-          // Анимация яркости viewport
-          if (viewport) {
-            viewport.animate([
-              {filter:'brightness(1.0)'},
-              {filter:'brightness(1.6)'},
-              {filter:'brightness(1.0)'}
-            ], {duration:500});
-          }
-
+        
+        // Анимация яркости viewport
+        if (viewport) {
+          viewport.animate([
+            {filter:'brightness(1.0)'},
+            {filter:'brightness(1.6)'},
+            {filter:'brightness(1.0)'}
+          ], {duration:500});
+        }
+        
           console.log('Result modal displayed with actual winner:', actualWinnerItem.name);
         }, 1000); // 1 секунда после остановки рулетки
 
@@ -642,7 +667,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       
       // Запускаем анимацию
       if (stripRef.current) {
-        spinToLocalIndex(winner);
+        await spinToLocalIndex(winner);
         setIsSpinning(true);
         console.log('=== START SPIN END ===');
       } else {
@@ -881,14 +906,14 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                           
                           {/* Информация о предмете */}
                           <div className="relative z-10 text-center">
-                            {/* Название предмета */}
+                          {/* Название предмета */}
                             <div className="font-bold text-xs leading-tight mb-1 line-clamp-2">
-                              {item.name}
-                            </div>
-                            
-                            {/* Тег редкости */}
+                            {item.name}
+                          </div>
+                          
+                          {/* Тег редкости */}
                             <div className="opacity-80 text-xs uppercase font-bold">
-                              {getRarityTag(item.rarity)}
+                            {getRarityTag(item.rarity)}
                             </div>
                           </div>
                         </div>
@@ -934,11 +959,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 
                 {/* Заголовок с анимацией */}
                 <div className="relative z-10">
-                  <div className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6 animate-bounce">🎉</div>
-                  
+                <div className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6 animate-bounce">🎉</div>
+                
                   <h3 className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 mb-3 sm:mb-4 animate-pulse">
-                    Поздравляем!
-                  </h3>
+                  Поздравляем!
+                </h3>
                 </div>
                 
                 {winnerItem && (
@@ -995,15 +1020,15 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                                       winnerItem.rarity.toLowerCase() === 'rare' ? '#3498DB' :
                                       '#95A5A6'
                         }}>
-                          {winnerItem.image_url ? (
-                            <img
-                              src={winnerItem.image_url}
-                              alt={winnerItem.name}
+                      {winnerItem.image_url ? (
+                        <img
+                          src={winnerItem.image_url}
+                          alt={winnerItem.name}
                               className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain rounded-xl animate-pulse"
-                            />
-                          ) : (
+                        />
+                      ) : (
                             <Gift className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 text-amber-400 animate-bounce" />
-                          )}
+                      )}
                         </div>
                       </div>
                     </div>
@@ -1011,14 +1036,14 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     {/* Информация о предмете */}
                     <div className="relative z-10 space-y-4">
                       <h4 className="text-2xl sm:text-3xl font-black text-white drop-shadow-lg">
-                        {winnerItem.name}
-                      </h4>
-                      
+                      {winnerItem.name}
+                    </h4>
+                    
                       {/* Цена с анимацией */}
                       <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 animate-pulse">
                         {winnerItem.price || 0}₴
-                      </div>
-                      
+                    </div>
+                    
                       {/* Значок редкости */}
                       <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-black uppercase tracking-wider shadow-lg animate-bounce ${
                         winnerItem.rarity.toLowerCase() === 'legendary' ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-yellow-500/50' :
@@ -1027,11 +1052,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                         'bg-gradient-to-r from-gray-500 to-gray-700 text-white shadow-gray-500/50'
                       }`}>
                         ✨ {getRarityName(winnerItem.rarity)}
-                      </div>
-                      
+                    </div>
+                    
                       <p className="text-gray-300 text-base sm:text-lg font-medium">
-                        Предмет добавлен в ваш инвентарь!
-                      </p>
+                      Предмет добавлен в ваш инвентарь!
+                    </p>
                     </div>
                   </div>
                 )}
@@ -1069,7 +1094,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     
                     <div className="relative z-10 flex items-center justify-center">
                       <Package className="w-5 h-5 mr-3 group-hover:animate-bounce" />
-                      Добавить в инвентарь
+                    Добавить в инвентарь
                     </div>
                   </Button>
                   
@@ -1100,7 +1125,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     
                     <div className="relative z-10 flex items-center justify-center">
                       <DollarSign className="w-5 h-5 mr-3 group-hover:animate-spin" />
-                      Продать
+                    Продать
                     </div>
                   </Button>
                 </div>
