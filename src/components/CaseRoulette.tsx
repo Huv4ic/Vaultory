@@ -314,7 +314,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
 
   // Создаем рандомизированный массив предметов для рулетки
   const createRandomizedStrip = (winner: CaseItem) => {
-    const TOTAL_ITEMS = 100; // Общее количество предметов в рулетке
+    const BASE_ITEMS = 50; // Базовое количество предметов
+    const SPINS = 4; // Количество полных оборотов
+    const TOTAL_ITEMS = BASE_ITEMS + (SPINS * caseItems.length); // Общее количество для красивой анимации
+    
     const randomItems: CaseItem[] = [];
     
     // Заполняем массив случайными предметами
@@ -323,9 +326,16 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       randomItems.push(randomItem);
     }
     
-    // Находим позицию в центре и помещаем туда победный предмет
-    const centerIndex = Math.floor(TOTAL_ITEMS / 2);
-    randomItems[centerIndex] = winner;
+    // Рассчитываем позицию для победного предмета
+    // Он должен оказаться в конце анимации под центральной линией
+    const winnerPosition = BASE_ITEMS + Math.floor((SPINS * caseItems.length) / 2);
+    randomItems[winnerPosition] = winner;
+    
+    console.log('Created strip:', {
+      totalItems: TOTAL_ITEMS,
+      winnerPosition,
+      winnerName: winner.name
+    });
     
     return randomItems;
   };
@@ -340,7 +350,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     console.log('Starting smooth animation for winner:', winner.name);
     
-    // Создаем рандомизированную ленту с победным предметом в центре
+    // Создаем рандомизированную ленту с победным предметом в нужной позиции
     const randomizedItems = createRandomizedStrip(winner);
     
     // Обновляем состояние React для отображения новых предметов
@@ -348,24 +358,32 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     // Параметры анимации
     const itemWidth = 152; // w-35 = 140px + gap
-    const centerIndex = Math.floor(randomizedItems.length / 2);
     const viewportWidth = viewport.clientWidth;
     const centerOffset = viewportWidth / 2 - itemWidth / 2;
     
+    // Находим индекс победного предмета в созданной ленте
+    const BASE_ITEMS = 50;
+    const SPINS = 4;
+    const winnerIndexInStrip = BASE_ITEMS + Math.floor((SPINS * caseItems.length) / 2);
+    
     // Начальная позиция - показываем начало ленты
     const startX = centerOffset;
-    // Конечная позиция - победный предмет в центре
-    const targetX = -(centerIndex * itemWidth) + centerOffset;
+    
+    // Конечная позиция - победный предмет точно в центре красной линии
+    const targetX = -(winnerIndexInStrip * itemWidth) + centerOffset;
     
     // Устанавливаем начальную позицию
     strip.style.transform = `translate3d(${startX}px, 0, 0)`;
     
     console.log('Animation parameters:', {
       itemWidth,
-      centerIndex,
+      totalItems: randomizedItems.length,
+      winnerIndexInStrip,
       startX,
       targetX,
-      distance: targetX - startX
+      distance: targetX - startX,
+      centerOffset,
+      winnerName: winner.name
     });
     
     // Гладкая анимация с использованием CSS transition
