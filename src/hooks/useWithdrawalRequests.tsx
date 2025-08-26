@@ -62,7 +62,7 @@ export const useWithdrawalRequests = () => {
     }
   };
 
-  // Создать запрос на вывод
+  // Создать запрос на вывод (упрощенная версия)
   const createWithdrawalRequest = async (
     userId: number,
     itemId: string,
@@ -84,23 +84,34 @@ export const useWithdrawalRequests = () => {
         telegramUsername: formattedUsername
       });
 
-      // Используем RPC функцию для создания запроса
-      const { data, error } = await supabase.rpc('create_withdrawal_request', {
-        p_user_id: userId,
-        p_item_id: itemId,
-        p_item_name: itemName,
-        p_telegram_username: formattedUsername
-      });
+      // Прямая вставка в таблицу
+      const { data, error } = await supabase
+        .from('withdrawal_requests')
+        .insert({
+          user_id: userId,
+          item_id: itemId,
+          item_name: itemName,
+          telegram_username: formattedUsername,
+          status: 'pending'
+        })
+        .select()
+        .single();
 
       if (error) {
-        console.error('RPC Error:', error);
+        console.error('Insert Error:', error);
         throw error;
       }
 
-      console.log('RPC Response:', data);
+      console.log('Insert Response:', data);
 
-      if (!data.success) {
-        throw new Error(data.error || 'Не удалось создать запрос на вывод');
+      // Обновляем статус предмета в инвентаре (опционально)
+      try {
+        await supabase
+          .from('user_inventory')
+          .update({ status: 'withdrawal_requested' })
+          .eq('id', itemId);
+      } catch (updateError) {
+        console.warn('Could not update inventory status:', updateError);
       }
 
       showSuccess('Запрос на вывод создан успешно!');

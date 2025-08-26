@@ -65,6 +65,14 @@ const Inventory = () => {
     setDisplayItems(inventoryItems);
   }, []);
 
+  // Отладка состояний модального окна
+  useEffect(() => {
+    console.log('🔍 Отладка модального окна:', { showWithdrawModal, itemToWithdraw });
+    if (showWithdrawModal) {
+      console.log('🎯 Модальное окно должно отображаться!');
+    }
+  }, [showWithdrawModal, itemToWithdraw]);
+
   // Загружаем общую стоимость
   useEffect(() => {
     const loadTotalValue = async () => {
@@ -514,14 +522,30 @@ const Inventory = () => {
                     {/* Кнопки действий - компактные */}
                     <div className="flex gap-2">
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          
                           // Открываем модальное окно для вывода
+                          console.log('🔄 Нажата кнопка "Вывести" для предмета:', item);
+                          console.log('📋 Текущие состояния до изменения:', { showWithdrawModal, itemToWithdraw });
+                          
                           setItemToWithdraw(item);
                           setWithdrawalForm({
                             itemName: item.name || '',
                             telegramUsername: ''
                           });
                           setShowWithdrawModal(true);
+                          
+                          console.log('✅ Состояние обновлено, модальное окно должно появиться');
+                          
+                          // Проверяем через небольшую задержку
+                          setTimeout(() => {
+                            console.log('📋 Состояния после изменения:', { 
+                              showWithdrawModal: true, // должно быть true
+                              itemToWithdraw: item 
+                            });
+                          }, 100);
                         }}
                         className="inventory-button-shine flex-1 px-2 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white text-xs font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/25"
                       >
@@ -598,7 +622,7 @@ const Inventory = () => {
       )}
 
       {/* Модальное окно для вывода предмета */}
-      {showWithdrawModal && itemToWithdraw && (
+      {showWithdrawModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-2xl p-6 max-w-md w-full border border-blue-500/30 shadow-2xl shadow-blue-500/20">
             <h3 className="text-xl font-bold text-white mb-4 text-center">
@@ -606,25 +630,31 @@ const Inventory = () => {
             </h3>
             
             {/* Информация о предмете */}
-            <div className="bg-gray-800/50 rounded-xl p-4 mb-4 border border-gray-600/30">
-              <div className="flex items-center space-x-3">
-                {itemToWithdraw.image_url || itemToWithdraw.image ? (
-                  <img 
-                    src={itemToWithdraw.image_url || itemToWithdraw.image} 
-                    alt={itemToWithdraw.name}
-                    className="w-12 h-12 object-contain rounded-lg"
-                  />
-                ) : (
-                  <div className="w-12 h-12 bg-gray-700/50 rounded-lg flex items-center justify-center">
-                    <Package className="w-6 h-6 text-gray-400" />
+            {itemToWithdraw ? (
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4 border border-gray-600/30">
+                <div className="flex items-center space-x-3">
+                  {itemToWithdraw.image_url || itemToWithdraw.image ? (
+                    <img 
+                      src={itemToWithdraw.image_url || itemToWithdraw.image} 
+                      alt={itemToWithdraw.name}
+                      className="w-12 h-12 object-contain rounded-lg"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 bg-gray-700/50 rounded-lg flex items-center justify-center">
+                      <Package className="w-6 h-6 text-gray-400" />
+                    </div>
+                  )}
+                  <div>
+                    <h4 className="text-white font-semibold">{itemToWithdraw.name}</h4>
+                    <p className="text-green-400 text-sm">{itemToWithdraw.price}₴</p>
                   </div>
-                )}
-                <div>
-                  <h4 className="text-white font-semibold">{itemToWithdraw.name}</h4>
-                  <p className="text-green-400 text-sm">{itemToWithdraw.price}₴</p>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="bg-gray-800/50 rounded-xl p-4 mb-4 border border-gray-600/30 text-center">
+                <p className="text-gray-400">Предмет не выбран</p>
+              </div>
+            )}
             
             {/* Форма */}
             <div className="space-y-4">
