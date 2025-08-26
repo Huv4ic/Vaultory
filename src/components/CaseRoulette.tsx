@@ -763,13 +763,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                           {/* Информация о предмете */}
                           <div className="relative z-10 text-center">
                             {/* Название предмета */}
-                            <div className="font-bold text-xs leading-tight mb-0.5 line-clamp-2">
+                            <div className="font-bold text-xs leading-tight mb-1 line-clamp-2">
                               {item.name}
-                            </div>
-                            
-                            {/* Цена */}
-                            <div className="text-green-400 text-xs font-semibold mb-0.5">
-                              {item.price ? `${item.price}₴` : '0₴'}
                             </div>
                             
                             {/* Тег редкости */}
