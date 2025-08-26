@@ -883,6 +883,60 @@ export interface Database {
         }
         Relationships: []
       }
+      withdrawal_requests: {
+        Row: {
+          id: string
+          user_id: number
+          item_id: string
+          item_name: string
+          telegram_username: string
+          status: string
+          created_at: string
+          updated_at: string
+          processed_at: string | null
+          admin_notes: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: number
+          item_id: string
+          item_name: string
+          telegram_username: string
+          status?: string
+          created_at?: string
+          updated_at?: string
+          processed_at?: string | null
+          admin_notes?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: number
+          item_id?: string
+          item_name?: string
+          telegram_username?: string
+          status?: string
+          created_at?: string
+          updated_at?: string
+          processed_at?: string | null
+          admin_notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "withdrawal_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["telegram_id"]
+          },
+          {
+            foreignKeyName: "withdrawal_requests_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "user_inventory"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Functions: {
       is_admin: {

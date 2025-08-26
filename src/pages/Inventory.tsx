@@ -5,6 +5,7 @@ import { useCaseStats } from '@/hooks/useCaseStats';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
 import { useNotification } from '@/hooks/useNotification';
+import { useWithdrawalRequests } from '@/hooks/useWithdrawalRequests';
 import Notification from '@/components/ui/Notification';
 import { 
   Package, 
@@ -39,6 +40,7 @@ const Inventory = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { showSuccess, showError, showWarning, notification, hideNotification } = useNotification();
+  const { createWithdrawalRequest, loading: withdrawalLoading } = useWithdrawalRequests();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalCasesOpened, setTotalCasesOpened] = useState(0);
@@ -48,6 +50,15 @@ const Inventory = () => {
   const [displayItems, setDisplayItems] = useState<InventoryItem[]>([]);
   const [showConfirmSell, setShowConfirmSell] = useState(false);
   const [itemToSell, setItemToSell] = useState<InventoryItem | null>(null);
+  
+  // Состояния для модального окна вывода
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [showWithdrawSuccess, setShowWithdrawSuccess] = useState(false);
+  const [itemToWithdraw, setItemToWithdraw] = useState<InventoryItem | null>(null);
+  const [withdrawalForm, setWithdrawalForm] = useState({
+    itemName: '',
+    telegramUsername: ''
+  });
 
   // Инициализируем displayItems при загрузке
   useEffect(() => {
@@ -503,21 +514,14 @@ const Inventory = () => {
                     {/* Кнопки действий - компактные */}
                     <div className="flex gap-2">
                       <button
-                        onClick={async () => {
-                          // Вывести предмет
-                          try {
-                            const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
-                            if (itemIndex !== -1) {
-                              await withdrawItem(itemIndex);
-                              showSuccess(`Предмет "${item.name}" выведен из инвентаря!`);
-                              console.log('Предмет выведен:', item.name);
-                            } else {
-                              showError('Предмет не найден в инвентаре!');
-                            }
-                          } catch (error) {
-                            console.error('Error withdrawing item:', error);
-                            showError('Ошибка при выводе предмета!');
-                          }
+                        onClick={() => {
+                          // Открываем модальное окно для вывода
+                          setItemToWithdraw(item);
+                          setWithdrawalForm({
+                            itemName: item.name || '',
+                            telegramUsername: ''
+                          });
+                          setShowWithdrawModal(true);
                         }}
                         className="inventory-button-shine flex-1 px-2 py-2 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white text-xs font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/25"
                       >
@@ -588,6 +592,144 @@ const Inventory = () => {
                   Продать
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно для вывода предмета */}
+      {showWithdrawModal && itemToWithdraw && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-2xl p-6 max-w-md w-full border border-blue-500/30 shadow-2xl shadow-blue-500/20">
+            <h3 className="text-xl font-bold text-white mb-4 text-center">
+              📤 Запрос на вывод предмета
+            </h3>
+            
+            {/* Информация о предмете */}
+            <div className="bg-gray-800/50 rounded-xl p-4 mb-4 border border-gray-600/30">
+              <div className="flex items-center space-x-3">
+                {itemToWithdraw.image_url || itemToWithdraw.image ? (
+                  <img 
+                    src={itemToWithdraw.image_url || itemToWithdraw.image} 
+                    alt={itemToWithdraw.name}
+                    className="w-12 h-12 object-contain rounded-lg"
+                  />
+                ) : (
+                  <div className="w-12 h-12 bg-gray-700/50 rounded-lg flex items-center justify-center">
+                    <Package className="w-6 h-6 text-gray-400" />
+                  </div>
+                )}
+                <div>
+                  <h4 className="text-white font-semibold">{itemToWithdraw.name}</h4>
+                  <p className="text-green-400 text-sm">{itemToWithdraw.price}₴</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Форма */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Название предмета
+                </label>
+                <input
+                  type="text"
+                  value={withdrawalForm.itemName}
+                  onChange={(e) => setWithdrawalForm(prev => ({ ...prev, itemName: e.target.value }))}
+                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50"
+                  placeholder="Введите название предмета"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-gray-300 text-sm font-medium mb-2">
+                  Telegram username
+                </label>
+                <input
+                  type="text"
+                  value={withdrawalForm.telegramUsername}
+                  onChange={(e) => setWithdrawalForm(prev => ({ ...prev, telegramUsername: e.target.value }))}
+                  className="w-full px-3 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50"
+                  placeholder="@username"
+                />
+                <p className="text-gray-400 text-xs mt-1">Укажите ваш Telegram для связи</p>
+              </div>
+            </div>
+            
+            {/* Кнопки */}
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowWithdrawModal(false);
+                  setItemToWithdraw(null);
+                  setWithdrawalForm({ itemName: '', telegramUsername: '' });
+                }}
+                className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                disabled={withdrawalLoading}
+              >
+                Отмена
+              </button>
+              <button
+                onClick={async () => {
+                  if (!profile?.telegram_id || !itemToWithdraw?.id) return;
+                  
+                  if (!withdrawalForm.itemName.trim() || !withdrawalForm.telegramUsername.trim()) {
+                    showError('Пожалуйста, заполните все поля');
+                    return;
+                  }
+                  
+                  const success = await createWithdrawalRequest(
+                    profile.telegram_id,
+                    itemToWithdraw.id,
+                    withdrawalForm.itemName.trim(),
+                    withdrawalForm.telegramUsername.trim()
+                  );
+                  
+                  if (success) {
+                    setShowWithdrawModal(false);
+                    setShowWithdrawSuccess(true);
+                  }
+                }}
+                className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={withdrawalLoading}
+              >
+                {withdrawalLoading ? 'Создание...' : 'Создать запрос'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно успешного создания запроса */}
+      {showWithdrawSuccess && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-2xl p-6 max-w-md w-full border border-green-500/30 shadow-2xl shadow-green-500/20 text-center">
+            <div className="text-6xl mb-4">✅</div>
+            <h3 className="text-xl font-bold text-white mb-4">
+              Запрос создан!
+            </h3>
+            <p className="text-gray-300 mb-6 leading-relaxed">
+              Ваш запрос на вывод предмета принят. Вы получите ответ в течение <strong className="text-green-400">72 часов</strong> с момента создания запроса.
+            </p>
+            
+            <div className="space-y-3">
+              <button
+                onClick={() => window.open('https://t.me/vaultory_support', '_blank')}
+                className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 hover:scale-105 font-medium"
+              >
+                📞 Поддержка Telegram
+              </button>
+              
+              <button
+                onClick={() => {
+                  setShowWithdrawSuccess(false);
+                  setItemToWithdraw(null);
+                  setWithdrawalForm({ itemName: '', telegramUsername: '' });
+                }}
+                className="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+              >
+                Закрыть
+              </button>
             </div>
           </div>
         </div>

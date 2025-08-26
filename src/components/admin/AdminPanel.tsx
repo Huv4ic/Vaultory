@@ -9,6 +9,7 @@ import { Separator } from '../ui/separator';
 import { Loader2, Users, DollarSign, Calendar, Shield } from 'lucide-react';
 import AdminProducts from './AdminProducts';
 import AdminCases from './AdminCases';
+import AdminWithdrawalRequests from './AdminWithdrawalRequests';
 import UserRoleManagement from './UserRoleManagement';
 
 interface User {
@@ -33,7 +34,7 @@ export default function AdminPanel() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases' | 'roles'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases' | 'withdrawals' | 'roles'>('users');
 
 
   useEffect(() => {
@@ -440,6 +441,12 @@ export default function AdminPanel() {
             Кейсы
           </button>
           <button
+            className={`px-3 sm:px-6 py-2 rounded-lg font-semibold transition-all duration-200 border-b-2 text-xs sm:text-sm whitespace-nowrap ${activeTab === 'withdrawals' ? 'border-orange-500 text-orange-400 bg-gray-800' : 'border-transparent text-gray-400 hover:text-white hover:bg-gray-800'}`}
+            onClick={() => setActiveTab('withdrawals')}
+          >
+            Запросы на вывод
+          </button>
+          <button
             className={`px-3 sm:px-6 py-2 rounded-lg font-semibold transition-all duration-200 border-b-2 text-xs sm:text-sm whitespace-nowrap ${activeTab === 'roles' ? 'border-amber-500 text-amber-400 bg-gray-800' : 'border-transparent text-gray-400 hover:text-white hover:bg-gray-800'}`}
             onClick={() => setActiveTab('roles')}
           >
@@ -454,6 +461,7 @@ export default function AdminPanel() {
         {activeTab === 'users' && usersTab}
         {activeTab === 'products' && <AdminProducts />}
         {activeTab === 'cases' && <AdminCases />}
+        {activeTab === 'withdrawals' && <AdminWithdrawalRequests />}
         {activeTab === 'roles' && <UserRoleManagement />}
       </div>
     </div>
