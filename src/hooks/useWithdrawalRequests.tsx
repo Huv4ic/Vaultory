@@ -47,13 +47,20 @@ export const useWithdrawalRequests = () => {
   const fetchUserRequests = async (userId: number) => {
     try {
       setLoading(true);
+      console.log('🔍 Загружаем запросы для пользователя:', userId);
+      
       const { data, error } = await supabase
         .from('withdrawal_requests')
         .select('*')
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Error fetching requests:', error);
+        throw error;
+      }
+      
+      console.log('✅ Запросы загружены:', data);
       setRequests(data || []);
     } catch (error) {
       console.error('Error fetching withdrawal requests:', error);
@@ -67,15 +74,19 @@ export const useWithdrawalRequests = () => {
   const fetchAllRequests = async () => {
     try {
       setLoading(true);
+      console.log('🔍 Загружаем все запросы (админ)...');
+      
       const { data, error } = await supabase
         .from('withdrawal_requests')
-        .select(`
-          *,
-          profiles!withdrawal_requests_user_id_fkey(username, telegram_id)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Error fetching all requests:', error);
+        throw error;
+      }
+      
+      console.log('✅ Все запросы загружены:', data);
       setRequests(data || []);
     } catch (error) {
       console.error('Error fetching all withdrawal requests:', error);
@@ -142,17 +153,7 @@ export const useWithdrawalRequests = () => {
         throw error;
       }
 
-      console.log('Insert Response:', data);
-
-      // Обновляем статус предмета в инвентаре (опционально)
-      try {
-        await supabase
-          .from('user_inventory')
-          .update({ status: 'withdrawal_requested' })
-          .eq('id', itemId);
-      } catch (updateError) {
-        console.warn('Could not update inventory status:', updateError);
-      }
+      console.log('✅ Insert Response:', data);
 
       showSuccess('Запрос на вывод создан успешно!');
       return true;
