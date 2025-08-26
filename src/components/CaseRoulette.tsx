@@ -334,10 +334,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('Created strip:', {
       totalItems: TOTAL_ITEMS,
       winnerPosition,
-      winnerName: winner.name
+      winnerName: winner.name,
+      itemAtWinnerPosition: randomItems[winnerPosition].name
     });
     
-    return randomItems;
+    return { items: randomItems, winnerIndex: winnerPosition };
   };
 
   const spinToLocalIndex = (winner: CaseItem) => {
@@ -351,7 +352,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('Starting smooth animation for winner:', winner.name);
     
     // Создаем рандомизированную ленту с победным предметом в нужной позиции
-    const randomizedItems = createRandomizedStrip(winner);
+    const stripData = createRandomizedStrip(winner);
+    const randomizedItems = stripData.items;
+    const actualWinnerIndex = stripData.winnerIndex;
     
     // Обновляем состояние React для отображения новых предметов
     setRouletteItems(randomizedItems);
@@ -361,10 +364,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     const viewportWidth = viewport.clientWidth;
     const centerOffset = viewportWidth / 2 - itemWidth / 2;
     
-    // Находим индекс победного предмета в созданной ленте
-    const BASE_ITEMS = 50;
-    const SPINS = 4;
-    const winnerIndexInStrip = BASE_ITEMS + Math.floor((SPINS * caseItems.length) / 2);
+    // Используем фактический индекс победного предмета из созданной ленты
+    const winnerIndexInStrip = actualWinnerIndex;
     
     // Начальная позиция - показываем начало ленты
     const startX = centerOffset;
@@ -408,9 +409,19 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         setTimeout(() => {
           console.log('Now showing the result modal');
           
-          // Показываем результат
+          // Получаем предмет который реально находится под красной линией
+          const actualWinnerItem = randomizedItems[actualWinnerIndex];
+          
+          console.log('Item under red line:', {
+            index: actualWinnerIndex,
+            name: actualWinnerItem.name,
+            originalWinner: winner.name,
+            match: actualWinnerItem.name === winner.name
+          });
+          
+          // Показываем результат с предметом который реально под красной линией
           setShowResult(true);
-          setWinnerItem(winner);
+          setWinnerItem(actualWinnerItem);
 
           // Анимация яркости viewport
           if (viewport) {
@@ -421,7 +432,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
             ], {duration:500});
           }
 
-          console.log('Result modal displayed with winner:', winner.name);
+          console.log('Result modal displayed with actual winner:', actualWinnerItem.name);
         }, 1000); // 1 секунда после остановки рулетки
 
         // Очищаем анимацию
