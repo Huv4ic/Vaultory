@@ -359,8 +359,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     // Обновляем состояние React для отображения новых предметов
     setRouletteItems(randomizedItems);
     
-    // Параметры анимации
-    const itemWidth = 152; // w-35 = 140px + gap
+    // Параметры анимации - рассчитываем реальную ширину элемента
+    const isDesktop = window.innerWidth >= 640;
+    const itemWidth = isDesktop ? 150 : 128; // 140px + 10px gap на десктопе, 120px + 8px gap на мобильном
     const viewportWidth = viewport.clientWidth;
     const centerOffset = viewportWidth / 2 - itemWidth / 2;
     
@@ -378,13 +379,16 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     console.log('Animation parameters:', {
       itemWidth,
+      isDesktop,
       totalItems: randomizedItems.length,
       winnerIndexInStrip,
       startX,
       targetX,
       distance: targetX - startX,
       centerOffset,
-      winnerName: winner.name
+      viewportWidth,
+      winnerName: winner.name,
+      itemAtIndex: randomizedItems[actualWinnerIndex]?.name
     });
     
     // Гладкая анимация с использованием CSS transition
@@ -409,11 +413,29 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         setTimeout(() => {
           console.log('Now showing the result modal');
           
-          // Получаем предмет который реально находится под красной линией
-          const actualWinnerItem = randomizedItems[actualWinnerIndex];
+          // Проверяем какой предмет реально находится под красной линией
+          // Рассчитываем индекс на основе финальной позиции
+          const currentTransform = strip.style.transform;
+          const translateX = parseFloat(currentTransform.match(/translate3d\(([^,]+)/)?.[1] || '0');
+          const calculatedIndex = Math.round((-translateX + centerOffset) / itemWidth);
+          
+          console.log('Final position check:', {
+            currentTransform,
+            translateX,
+            centerOffset,
+            itemWidth,
+            calculatedIndex,
+            expectedIndex: actualWinnerIndex,
+            itemAtCalculatedIndex: randomizedItems[calculatedIndex]?.name,
+            itemAtExpectedIndex: randomizedItems[actualWinnerIndex]?.name
+          });
+          
+          // Используем рассчитанный индекс для более точного результата
+          const finalIndex = calculatedIndex >= 0 && calculatedIndex < randomizedItems.length ? calculatedIndex : actualWinnerIndex;
+          const actualWinnerItem = randomizedItems[finalIndex];
           
           console.log('Item under red line:', {
-            index: actualWinnerIndex,
+            finalIndex,
             name: actualWinnerItem.name,
             originalWinner: winner.name,
             match: actualWinnerItem.name === winner.name
