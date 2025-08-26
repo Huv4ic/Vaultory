@@ -40,7 +40,7 @@ interface CaseRouletteProps {
   caseName: string; // Добавляем название кейса
   telegramId: number; // Добавляем telegram_id для продажи
   onClose: () => void;
-  onCaseOpened: (item: CaseItem) => void;
+  onCaseOpened: (item: CaseItem, action: 'add' | 'sell') => void; // Добавляем тип действия
 }
 
 const CaseRoulette: React.FC<CaseRouletteProps> = ({ 
@@ -100,6 +100,13 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('Stack trace:', new Error().stack);
     console.log('Current state - isSpinning:', isSpinning, 'showResult:', showResult, 'winnerItem:', winnerItem);
     console.log('Component props:', { caseItems: caseItems.length, casePrice, onClose: typeof onClose, onCaseOpened: typeof onCaseOpened });
+    console.log('soldOrAdded:', soldOrAdded);
+    
+    // Если есть выигрышный предмет и пользователь ничего не выбрал - добавляем в инвентарь
+    if (winnerItem && !soldOrAdded) {
+      console.log('🎁 Пользователь закрыл окно без выбора - автоматически добавляем предмет в инвентарь:', winnerItem.name);
+      onCaseOpened(winnerItem, 'add');
+    }
     
     // Сбрасываем состояние при закрытии
     setSoldOrAdded(false);
@@ -301,6 +308,24 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   };
 
   // Функция для анимации рулетки
+  // Создаем рандомизированный массив предметов для рулетки
+  const createRandomizedStrip = (winner: CaseItem) => {
+    const TOTAL_ITEMS = 100; // Общее количество предметов в рулетке
+    const randomItems: CaseItem[] = [];
+    
+    // Заполняем массив случайными предметами
+    for (let i = 0; i < TOTAL_ITEMS; i++) {
+      const randomItem = caseItems[Math.floor(Math.random() * caseItems.length)];
+      randomItems.push(randomItem);
+    }
+    
+    // Находим позицию в центре и помещаем туда победный предмет
+    const centerIndex = Math.floor(TOTAL_ITEMS / 2);
+    randomItems[centerIndex] = winner;
+    
+    return randomItems;
+  };
+
   const spinToLocalIndex = (winner: CaseItem) => {
     if (!stripRef.current) return;
     
@@ -309,102 +334,85 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     if (!viewport) return;
     
-    console.log('Starting animation for winner:', winner.name);
+    console.log('Starting smooth animation for winner:', winner.name);
     
-    // Базовые параметры
-    const REPEAT = 50; // длинная лента для бесконечных спинов
-    let itemWidth = 0; // вычислим после вставки
+    // Создаем рандомизированную ленту с победным предметом в центре
+    const randomizedItems = createRandomizedStrip(winner);
     
-    // Вычисляем ширину карточки
-    const first = strip.querySelector('.item');
-    if (first) {
-      const gap = 10; // gap между предметами
-      itemWidth = first.getBoundingClientRect().width + gap;
-      console.log('Item width calculated:', itemWidth);
-    }
+    // Очищаем текущую ленту и заполняем новой
+    strip.innerHTML = '';
     
-    // Функции для работы с позицией
-    let x = 0; // текущая позиция ленты (translateX)
-    let v = 0; // скорость (px/frame)
+    randomizedItems.forEach((item, index) => {
+      const itemElement = document.createElement('div');
+      itemElement.className = `flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2 flex flex-col relative isolation isolate item ${getRarityColor(item.rarity)} overflow-hidden group`;
+      itemElement.innerHTML = `
+        <!-- Блеск -->
+        <div class="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-white/20 to-transparent opacity-60"></div>
+        <!-- Свечение -->
+        <div class="absolute -inset-1 rounded-lg sm:rounded-xl opacity-30 blur-sm" style="background: ${
+          item.rarity.toLowerCase() === 'legendary' ? 'linear-gradient(45deg, #FFD700, #FFA500)' :
+          item.rarity.toLowerCase() === 'epic' ? 'linear-gradient(45deg, #9B59B6, #8E44AD)' :
+          item.rarity.toLowerCase() === 'rare' ? 'linear-gradient(45deg, #3498DB, #2980B9)' :
+          'linear-gradient(45deg, #95A5A6, #7F8C8D)'
+        }"></div>
+        <!-- Динамический градиент -->
+        <div class="absolute inset-0 rounded-lg sm:rounded-xl opacity-20" style="background: ${
+          item.rarity.toLowerCase() === 'legendary' ? 'radial-gradient(circle at 30% 30%, #FFD700 0%, transparent 70%)' :
+          item.rarity.toLowerCase() === 'epic' ? 'radial-gradient(circle at 30% 30%, #9B59B6 0%, transparent 70%)' :
+          item.rarity.toLowerCase() === 'rare' ? 'radial-gradient(circle at 30% 30%, #3498DB 0%, transparent 70%)' :
+          'radial-gradient(circle at 30% 30%, #95A5A6 0%, transparent 70%)'
+        }"></div>
+        <!-- Изображение -->
+        <div class="flex-1 flex items-center justify-center p-1 relative z-10">
+          ${item.image_url ? 
+            `<img src="${item.image_url}" alt="${item.name}" class="w-full h-full object-contain animate-pulse" />` :
+            '<div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center"><svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path></svg></div>'
+          }
+        </div>
+        <!-- Название и редкость -->
+        <div class="text-center space-y-1 relative z-10">
+          <p class="text-xs font-bold text-white line-clamp-2 leading-tight">${item.name}</p>
+          <div class="inline-flex px-2 py-0.5 rounded-full text-xs font-bold ${getRarityTag(item.rarity)}">${getRarityName(item.rarity)}</div>
+        </div>
+      `;
+      strip.appendChild(itemElement);
+    });
     
-    const setX = (val: number) => { 
-      x = val; 
-      strip.style.transform = `translate3d(${val}px,0,0)`; 
-    };
+    // Параметры анимации
+    const itemWidth = 152; // w-35 = 140px + gap
+    const centerIndex = Math.floor(randomizedItems.length / 2);
+    const viewportWidth = viewport.clientWidth;
+    const centerOffset = viewportWidth / 2 - itemWidth / 2;
     
-    const centerOffset = () => {
-      const vpW = viewport.clientWidth;
-      return vpW/2 - itemWidth/2; // чтобы середина карточки пришла под маркер
-    };
+    // Начальная позиция - показываем начало ленты
+    const startX = centerOffset;
+    // Конечная позиция - победный предмет в центре
+    const targetX = -(centerIndex * itemWidth) + centerOffset;
     
-    const indexToX = (index: number) => {
-      // глобальный индекс по длинной ленте
-      return -(index*itemWidth) + centerOffset();
-    };
+    // Устанавливаем начальную позицию
+    strip.style.transform = `translate3d(${startX}px, 0, 0)`;
     
-    const nowIndex = () => {
-      // какой индекс примерно под маркером
-      const idx = Math.round((centerOffset() - x) / itemWidth);
-      return ((idx % (caseItems.length*REPEAT)) + (caseItems.length*REPEAT)) % (caseItems.length*REPEAT);
-    };
+    console.log('Animation parameters:', {
+      itemWidth,
+      centerIndex,
+      startX,
+      targetX,
+      distance: targetX - startX
+    });
     
-    // Находим индекс победного предмета
-    const winnerIndex = caseItems.findIndex(item => item.id === winner.id);
-    
-    if (winnerIndex === -1) {
-      console.error('Winner index not found! Winner:', winner, 'Case items:', caseItems);
-      return;
-    }
-    
-    console.log('Spinning to index:', winnerIndex, 'for winner:', winner.name);
-    
-    // стартовая скорость и разгон
-    v = -40; // влево
-    console.log('Starting animation with velocity:', v);
-    
-    // выберем сегмент, где остановимся (далее по ленте + несколько кругов)
-    const currentGlobal = nowIndex();
-    const loops = 3; // сколько кругов до остановки
-    const stopGlobal = Math.floor(currentGlobal/caseItems.length)*caseItems.length + loops*caseItems.length + winnerIndex;
-    const targetX = indexToX(stopGlobal);
-
-    console.log('Animation target:', { currentGlobal, loops, stopGlobal, targetX });
-
-    // Плавный довод с помощью встроенного аниматора
-    const startX = x; 
-    const dist = targetX - startX; 
-    const D = 3200; // длительность в мс
-    const startT = performance.now();
-    
-    const easeOutCubic = (t: number) => { 
-      return 1 - Math.pow(1 - t, 3); 
-    };
-
-    const tween = () => {
-      const t = (performance.now() - startT) / D;
+    // Гладкая анимация с использованием CSS transition
+    setTimeout(() => {
+      strip.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      strip.style.transform = `translate3d(${targetX}px, 0, 0)`;
       
-      if (t >= 1){
-        console.log('Tween animation completed, setting result');
-        setX(targetX);
+      // Когда анимация завершена
+      setTimeout(() => {
+        console.log('Animation completed, setting result');
         
-        // ОБЯЗАТЕЛЬНО обновляем состояния в правильном порядке
-        console.log('Setting isSpinning to false...');
+        // Обновляем состояния
         setIsSpinning(false);
-        console.log('Setting showResult to true...');
         setShowResult(true);
-        
-        // Находим правильный предмет для показа
-        const realLocal = stopGlobal % caseItems.length; 
-        const it = caseItems[realLocal];
-        console.log('Setting winnerItem to:', it.name);
-        setWinnerItem(it);
-        
-        // Останавливаем анимацию
-        if (animationRef.current) {
-          console.log('Cancelling animation in tween completion');
-          cancelAnimationFrame(animationRef.current);
-          animationRef.current = null;
-        }
+        setWinnerItem(winner);
         
         // Анимация яркости viewport
         if (viewport) {
@@ -415,39 +423,19 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           ], {duration:500});
         }
         
+        // Очищаем анимацию и сбрасываем transition
+        if (animationRef.current) {
+          cancelAnimationFrame(animationRef.current);
+          animationRef.current = null;
+        }
+        
+        // Сбрасываем transition для следующих спинов
+        strip.style.transition = '';
+        
         console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
-        return;
-      }
-      setX(startX + dist * easeOutCubic(t));
-      requestAnimationFrame(tween);
-    };
-    
-    // Запускаем основную анимацию на короткое время, потом переключаемся на tween
-    let frameCount = 0;
-    const maxFrames = 60; // примерно 1 секунда при 60fps
-    
-    const mainAnimation = () => {
-      frameCount++;
+      }, 4000); // 4 секунды анимации
       
-      if (frameCount >= maxFrames) {
-        // Переключаемся на плавную остановку
-        console.log('Switching to tween animation');
-        requestAnimationFrame(tween);
-        return;
-      }
-      
-      animationRef.current = requestAnimationFrame(mainAnimation);
-      setX(x + v);
-      v *= 0.985;
-      
-      // безопасность — бесконечная лента (за цикл)
-      const totalW = caseItems.length * REPEAT * itemWidth;
-      if (x < -totalW + centerOffset()) setX(x + totalW);
-      if (x > centerOffset()) setX(x - totalW);
-    };
-    
-    console.log('Starting main animation...');
-    mainAnimation();
+    }, 100); // Небольшая задержка для применения начальной позиции
   };
 
   const startSpin = async () => {
@@ -814,12 +802,12 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     <div 
                       ref={stripRef}
                       className="flex gap-2.5 items-center p-3 sm:p-4 h-full"
-                      style={{ transform: 'translateX(300px)' }}
+                      style={{ transform: 'translateX(0px)' }}
                     >
-                      {/* Дублируем предметы для бесконечной прокрутки */}
-                      {Array.from({ length: 50 }, () => caseItems).flat().map((item, index) => (
+                      {/* Предметы добавляются динамически при спине или показываем превью */}
+                      {!isSpinning && caseItems.map((item, index) => (
                         <div
-                          key={`${item.id}-${index}`}
+                          key={`preview-${item.id}-${index}`}
                           className={`flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2 flex flex-col relative isolation isolate item ${
                             getRarityColor(item.rarity)
                           } overflow-hidden group`}
@@ -1014,7 +1002,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                         console.log('💵 Добавляем предмет в инвентарь:', winnerItem.name);
                         
                         // Добавляем предмет в инвентарь через callback
-                        onCaseOpened(winnerItem);
+                        onCaseOpened(winnerItem, 'add');
                         
                         // Отмечаем, что предмет добавлен
                         setSoldOrAdded(true);
@@ -1047,6 +1035,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     onClick={async () => {
                       if (winnerItem && !soldOrAdded) {
                         console.log('🔄 Нажата кнопка "Продать" для предмета:', winnerItem);
+                        
+                        // Уведомляем родительский компонент о продаже
+                        onCaseOpened(winnerItem, 'sell');
                         
                         // Продаем предмет сразу
                         await handleImmediateSell(winnerItem);
