@@ -36,6 +36,7 @@ export interface AdminCaseItem {
   drop_after_cases?: number; // Временно опциональное поле
   price: number; // Цена предмета
   created_at: string;
+  updated_at: string;
 }
 
 export interface AdminUser {

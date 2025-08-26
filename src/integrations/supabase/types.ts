@@ -198,6 +198,8 @@ export interface Database {
           image_url: string
           rarity: string
           drop_chance: number
+          price: number
+          drop_after_cases: number
           created_at: string
           updated_at: string
         }
@@ -208,6 +210,8 @@ export interface Database {
           image_url: string
           rarity: string
           drop_chance: number
+          price: number
+          drop_after_cases: number
           created_at?: string
           updated_at?: string
         }
@@ -218,6 +222,8 @@ export interface Database {
           image_url?: string
           rarity?: string
           drop_chance?: number
+          price?: number
+          drop_after_cases?: number
           created_at?: string
           updated_at?: string
         }
@@ -240,6 +246,8 @@ export interface Database {
           name: string
           price: number
           rarity: Database["public"]["Enums"]["item_rarity"]
+          image_url: string | null
+          drop_after_cases: number | null
         }
         Insert: {
           case_id?: string | null
@@ -249,6 +257,8 @@ export interface Database {
           name: string
           price: number
           rarity: Database["public"]["Enums"]["item_rarity"]
+          image_url?: string | null
+          drop_after_cases?: number | null
         }
         Update: {
           case_id?: string | null
@@ -258,6 +268,8 @@ export interface Database {
           name?: string
           price?: number
           rarity?: Database["public"]["Enums"]["item_rarity"]
+          image_url?: string | null
+          drop_after_cases?: number | null
         }
         Relationships: [
           {
