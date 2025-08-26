@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { InventoryService, DatabaseInventoryItem } from '../services/inventoryService';
 import { useAuth } from './useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface InventoryItem {
   id?: string;
@@ -51,7 +52,10 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
   const loadInventoryFromDatabase = async (telegramId: number) => {
     try {
       setLoading(true);
+      console.log('🔄 Загружаем инвентарь из базы данных для telegram_id:', telegramId);
+      
       const dbItems = await InventoryService.getUserInventory(telegramId);
+      console.log('📦 Получено предметов из БД:', dbItems.length);
       
       // Конвертируем DatabaseInventoryItem в InventoryItem
       const convertedItems: InventoryItem[] = dbItems.map(dbItem => ({
@@ -65,12 +69,23 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         image: dbItem.item_image,
         image_url: dbItem.item_image_url,
         status: dbItem.status,
-        obtained_at: dbItem.obtained_at
+        obtained_at: dbItem.obtained_at,
+        withdrawal_status: dbItem.withdrawal_status
       }));
 
-      setItems(convertedItems);
+      // Дедупликация по ID (на случай если в БД есть дубли)
+      const uniqueItems = convertedItems.filter((item, index, self) => 
+        index === self.findIndex(t => t.id === item.id)
+      );
+
+      if (uniqueItems.length !== convertedItems.length) {
+        console.log('⚠️ Обнаружены дубликаты в БД:', convertedItems.length - uniqueItems.length, 'дубликатов удалено');
+      }
+
+      setItems(uniqueItems);
+      console.log('✅ Загружено', uniqueItems.length, 'уникальных предметов из базы данных');
     } catch (error) {
-      console.error('Failed to load inventory from database:', error);
+      console.error('❌ Failed to load inventory from database:', error);
     } finally {
       setLoading(false);
     }
@@ -110,6 +125,13 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     if (telegramId) {
       console.log('Telegram ID found:', telegramId);
       
+      // Принудительно очищаем localStorage при каждой загрузке профиля
+      console.log('🧹 Очищаем localStorage для предотвращения конфликтов...');
+      localStorage.removeItem('vaultory_inventory');
+      localStorage.removeItem('vaultory_cases_opened');
+      localStorage.removeItem('vaultory_spent');
+      localStorage.removeItem('vaultory_purchased');
+      
       // Загружаем данные из базы данных
       console.log('Loading from database...');
       loadInventoryFromDatabase(telegramId);
@@ -142,6 +164,41 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     }
   }, [profile]);
 
+  // Real-time обновление инвентаря
+  useEffect(() => {
+    if (!profile?.telegram_id) return;
+
+    console.log('🔄 Устанавливаем real-time подписку на инвентарь для telegram_id:', profile.telegram_id);
+
+    const subscription = supabase
+      .channel('inventory_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_inventory',
+          filter: `telegram_id=eq.${profile.telegram_id}`
+        },
+        (payload) => {
+          console.log('🔄 REAL-TIME: Инвентарь обновлен:', payload);
+          
+          // Обновляем инвентарь из базы данных
+          setTimeout(() => {
+            loadInventoryFromDatabase(profile.telegram_id);
+          }, 500); // Небольшая задержка для завершения операции в БД
+        }
+      )
+      .subscribe((status) => {
+        console.log('🔄 Real-time inventory subscription status:', status);
+      });
+
+    return () => {
+      console.log('🔄 Отключаем real-time подписку на инвентарь');
+      subscription.unsubscribe();
+    };
+  }, [profile?.telegram_id]);
+
   // Данные теперь хранятся только в базе данных, localStorage не используется
 
   const addItem = async (item: InventoryItem & { spent?: number; purchased?: boolean }) => {
@@ -164,25 +221,44 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
 
       console.log('Adding item to database with telegramId:', telegramId);
 
+      // Проверяем, нет ли уже такого предмета в локальном состоянии (защита от дублирования)
+      const existingItem = items.find(existingItem => 
+        existingItem.name === item.name && 
+        existingItem.caseId === item.caseId &&
+        Math.abs(new Date(existingItem.obtained_at || '').getTime() - new Date(item.obtained_at || '').getTime()) < 5000 // В пределах 5 секунд
+      );
+      
+      if (existingItem) {
+        console.log('🚫 Предмет уже существует в инвентаре, пропускаем добавление:', existingItem);
+        return;
+      }
+
       try {
         // Пытаемся добавить предмет в базу данных
         const newItemId = await InventoryService.addItemToInventory(telegramId, item);
         
         if (newItemId) {
           console.log('Item added successfully to database with ID:', newItemId);
+          
+          // Еще раз проверяем дублирование по ID (на случай race condition)
+          const duplicateCheck = items.find(existingItem => existingItem.id === newItemId);
+          if (duplicateCheck) {
+            console.log('🚫 Предмет с таким ID уже существует, пропускаем добавление в состояние');
+            return;
+          }
+          
           // Обновляем локальное состояние инвентаря
           const newItem = { ...item, id: newItemId, status: 'new' as const };
           setItems(prev => [...prev, newItem]);
           
-          // Статистика обновляется через профиль в базе данных, локальные счетчики не используются
-          console.log('Item added to inventory, statistics will be updated via profile');
+          console.log('✅ Предмет добавлен в инвентарь:', newItem.name);
         } else {
           console.error('Failed to get new item ID from database');
           throw new Error('Database operation failed');
         }
       } catch (dbError) {
         console.error('Database error - item not added:', dbError);
-        throw dbError; // Пробрасываем ошибку, fallback на localStorage больше не используется
+        throw dbError;
       }
     } catch (error) {
       console.error('Failed to add item:', error);
@@ -232,6 +308,13 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         });
         
         console.log('✅ Предмет успешно удален из состояния');
+        
+        // Принудительно обновляем инвентарь из базы данных через 1 секунду
+        setTimeout(async () => {
+          console.log('🔄 Обновляем инвентарь после продажи...');
+          await refreshItems();
+        }, 1000);
+        
         return sellPrice;
       } else {
         console.error('❌ Не удалось продать предмет, цена:', sellPrice);
