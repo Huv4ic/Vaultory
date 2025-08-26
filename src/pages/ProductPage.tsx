@@ -390,7 +390,7 @@ const ProductPage = () => {
                         : (similarProduct.image_url || '/placeholder.svg')
                     }
                     alt={similarProduct.name}
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-contain rounded-lg"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = '/placeholder.svg';

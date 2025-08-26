@@ -815,24 +815,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   <Button
                     onClick={async () => {
                       if (winnerItem && !soldOrAdded) {
-                        console.log('💵 Цена предмета из админки:', winnerItem.price);
+                        console.log('💵 Добавляем предмет в инвентарь:', winnerItem.name);
                         
-                        // Создаем объект для добавления в инвентарь
-                        const inventoryItem = {
-                          name: winnerItem.name,
-                          price: winnerItem.price || 0, // Используем цену из админки
-                          rarity: winnerItem.rarity,
-                          type: 'case_item',
-                          caseId: winnerItem.id,
-                          case_name: caseName,
-                          image: undefined,
-                          image_url: winnerItem.image_url,
-                          obtained_at: new Date().toISOString()
-                        };
-                        
-                        console.log('🔄 Добавляем предмет в инвентарь:', inventoryItem);
-                        
-                        // Добавляем предмет в инвентарь
+                        // Добавляем предмет в инвентарь через callback
                         onCaseOpened(winnerItem);
                         
                         // Отмечаем, что предмет добавлен

@@ -54,12 +54,25 @@ const Profile = () => {
         // Загружаем реальную статистику пользователя
         const userStats = await getUserStatistics();
         
+        // Загружаем количество проданных предметов из инвентаря
+        const { data: soldItems, error: soldError } = await supabase
+          .from('user_inventory')
+          .select('id')
+          .eq('telegram_id', telegramUser.id)
+          .eq('status', 'sold');
+
+        if (soldError) {
+          console.error('Ошибка получения проданных предметов:', soldError);
+        }
+
+        const itemsSoldCount = soldItems ? soldItems.length : 0;
+        
         if (userStats) {
           setStats({
             totalPurchases: (userStats as any).total_orders || 0,
             totalSpent: (userStats as any).total_spent || 0,
             casesOpened: (userStats as any).cases_opened || 0,
-            itemsSold: (userStats as any).purchases_count || 0
+            itemsSold: itemsSoldCount
           });
         }
       } catch (error) {
