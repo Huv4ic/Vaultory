@@ -382,11 +382,15 @@ const ProductPage = () => {
                 onClick={() => navigate(`/product/${similarProduct.id}`)}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="w-full h-32 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-xl mb-3 flex items-center justify-center">
+                <div className="w-full h-32 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-xl mb-3 flex items-center justify-center overflow-hidden">
                   <img
-                    src={similarProduct.images && similarProduct.images.length > 0 ? similarProduct.images[0] : '/placeholder.svg'}
+                    src={
+                      (similarProduct.images && similarProduct.images.length > 0) 
+                        ? similarProduct.images[0] 
+                        : (similarProduct.image_url || '/placeholder.svg')
+                    }
                     alt={similarProduct.name}
-                    className="w-24 h-24 object-cover rounded-lg"
+                    className="w-full h-full object-cover rounded-lg"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = '/placeholder.svg';

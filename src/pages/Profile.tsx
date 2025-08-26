@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useOrders } from '../hooks/useOrders';
+import { useAchievements } from '../hooks/useAchievements';
 import EditProfileModal from '../components/EditProfileModal';
 import TopUpModal from '../components/TopUpModal';
 
@@ -34,6 +35,7 @@ const Profile = () => {
   };
   const { t } = useLanguage();
   const { getUserStatistics } = useOrders();
+  const { achievements, loading: achievementsLoading, getAchievementStatus, getProgress, formatProgress } = useAchievements();
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTopUpModal, setShowTopUpModal] = useState(false);
@@ -348,43 +350,57 @@ const Profile = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
-                        <Shield className="w-4 h-4 text-amber-400" />
-                      </div>
-                      <span className="text-gray-300">Первая покупка</span>
-                    </div>
-                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                      Получено
-                    </Badge>
+                {achievementsLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-amber-400 border-t-transparent"></div>
                   </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
-                        <Gift className="w-4 h-4 text-amber-400" />
-                      </div>
-                      <span className="text-gray-300">Открыть 10 кейсов</span>
-                    </div>
-                    <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
-                      В процессе
-                    </Badge>
+                ) : (
+                  <div className="space-y-4">
+                    {achievements.map((achievement) => {
+                      const status = getAchievementStatus(achievement);
+                      const progress = getProgress(achievement);
+                      
+                      return (
+                        <div key={achievement.id} className="p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
+                                {achievement.icon}
+                              </div>
+                              <div>
+                                <span className="text-gray-300 font-medium">{achievement.title}</span>
+                                <p className="text-gray-500 text-xs">{achievement.description}</p>
+                              </div>
+                            </div>
+                            <Badge className={status.className}>
+                              {status.label}
+                            </Badge>
+                          </div>
+                          
+                          {/* Прогресс бар */}
+                          <div className="mt-2">
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="text-xs text-gray-400">{formatProgress(achievement)}</span>
+                              <span className="text-xs text-gray-400">{progress.toFixed(0)}%</span>
+                            </div>
+                            <div className="w-full bg-gray-700 rounded-full h-2">
+                              <div 
+                                className={`h-2 rounded-full transition-all duration-500 ${
+                                  achievement.completed 
+                                    ? 'bg-green-500' 
+                                    : achievement.current > 0 
+                                      ? 'bg-amber-500' 
+                                      : 'bg-gray-600'
+                                }`}
+                                style={{ width: `${progress}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-amber-400" />
-                      </div>
-                      <span className="text-gray-300">Потратить 1000₴</span>
-                    </div>
-                    <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">
-                      Заблокировано
-                    </Badge>
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
 

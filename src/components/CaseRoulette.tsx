@@ -4,6 +4,7 @@ import { Package, X, Gift, DollarSign } from 'lucide-react';
 import { supabase } from '../integrations/supabase/client';
 import { useNotification } from '../hooks/useNotification';
 import { useGlobalCaseCounter } from '../hooks/useGlobalCaseCounter';
+import { useAuth } from '../hooks/useAuth';
 import Notification from './ui/Notification';
 
 // CSS стили для анимаций уведомлений
@@ -61,6 +62,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
   // Используем новый хук для уведомлений
   const { showSuccess, showError, showWarning, showInfo, notification, hideNotification } = useNotification();
   const { totalCasesOpened, incrementGlobalCounter } = useGlobalCaseCounter();
+  const { profile, refreshProfile } = useAuth();
 
   // Отладка изменений состояний
   useEffect(() => {
@@ -490,6 +492,29 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         console.warn('Не удалось увеличить глобальный счетчик, продолжаем с текущим значением');
       } else {
         console.log('✅ Глобальный счетчик успешно увеличен');
+        
+        // Обновляем счетчик открытых кейсов в профиле пользователя
+        if (profile?.telegram_id) {
+          try {
+            const currentCasesOpened = profile.cases_opened || 0;
+            const { error: profileError } = await supabase
+              .from('profiles')
+              .update({ 
+                cases_opened: currentCasesOpened + 1 
+              })
+              .eq('telegram_id', profile.telegram_id);
+
+            if (profileError) {
+              console.error('❌ Error updating user cases_opened:', profileError);
+            } else {
+              console.log('✅ Счетчик кейсов пользователя обновлен:', currentCasesOpened + 1);
+              // Обновляем профиль в контексте
+              await refreshProfile();
+            }
+          } catch (error) {
+            console.error('❌ Failed to update user cases_opened:', error);
+          }
+        }
       }
 
       // Определяем победный предмет
