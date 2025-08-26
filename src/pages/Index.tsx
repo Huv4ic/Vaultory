@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { CheckCircle, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts, Product } from '@/hooks/useProducts';
 import { useCart } from '@/hooks/useCart';
 import { useNotification } from '../hooks/useNotification';
 import Notification from '../components/ui/Notification';
@@ -75,7 +75,33 @@ const Index = () => {
         return productCategory && productCategory.id === selectedCategory;
       });
 
-  const displayedProducts = filteredProducts.slice(0, visibleProducts);
+  // Группируем товары по играм
+  const groupedProducts = filteredProducts.reduce((groups, product) => {
+    const game = product.game || 'Товары'; // Если нет игры, относим к "Товары"
+    if (!groups[game]) {
+      groups[game] = [];
+    }
+    groups[game].push(product);
+    return groups;
+  }, {} as Record<string, Product[]>);
+
+  // Получаем список игр с товарами (ограничиваем видимыми товарами)
+  const gameNames = Object.keys(groupedProducts);
+  const displayedGroupedProducts: Record<string, Product[]> = {};
+  let totalDisplayed = 0;
+
+  for (const gameName of gameNames) {
+    if (totalDisplayed >= visibleProducts) break;
+    
+    const remainingSlots = visibleProducts - totalDisplayed;
+    const gameProducts = groupedProducts[gameName];
+    const productsToShow = gameProducts.slice(0, remainingSlots);
+    
+    if (productsToShow.length > 0) {
+      displayedGroupedProducts[gameName] = productsToShow;
+      totalDisplayed += productsToShow.length;
+    }
+  }
 
   const loadMore = () => {
     setVisibleProducts(prev => prev + 15);
@@ -215,36 +241,51 @@ const Index = () => {
             ))}
           </div>
 
-          {/* Товары */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12 items-stretch">
-            {displayedProducts.map((product, index) => (
-              <div 
-                key={product.id} 
-                className="animate-fade-in"
-                style={{animationDelay: `${index * 0.1}s`}}
-              >
-                <ProductCard
-                  id={product.id}
-                  name={product.name}
-                  price={product.price}
-                  original_price={product.original_price}
-                  images={product.images}
-                  image_url={product.image_url}
-                  category_id={product.category_id}
-                  game={product.game}
-                  rating={product.rating}
-                  sales={product.sales}
-                  description={product.description}
-                  isInCart={items.some((item) => item.id === product.id)}
-                  onAddToCart={() => handleAddToCart(product)}
-                  onDetails={() => handleProductDetails(product.id)}
-                />
+          {/* Товары по играм */}
+          <div className="space-y-12">
+            {Object.entries(displayedGroupedProducts).map(([gameName, gameProducts], gameIndex) => (
+              <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
+                {/* Заголовок игры */}
+                <div className="mb-8">
+                  <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-400 via-purple-400 to-slate-300 bg-clip-text text-transparent text-center md:text-left">
+                    {gameName.toUpperCase()}
+                  </h3>
+                  <div className="w-full h-px bg-gradient-to-r from-transparent via-red-500/50 to-transparent mt-3"></div>
+                </div>
+                
+                {/* Товары этой игры */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                  {gameProducts.map((product, index) => (
+                    <div 
+                      key={product.id} 
+                      className="animate-fade-in"
+                      style={{animationDelay: `${(gameIndex * 5 + index) * 0.1}s`}}
+                    >
+                      <ProductCard
+                        id={product.id}
+                        name={product.name}
+                        price={product.price}
+                        original_price={product.original_price}
+                        images={product.images}
+                        image_url={product.image_url}
+                        category_id={product.category_id}
+                        game={product.game}
+                        rating={product.rating}
+                        sales={product.sales}
+                        description={product.description}
+                        isInCart={items.some((item) => item.id === product.id)}
+                        onAddToCart={() => handleAddToCart(product)}
+                        onDetails={() => handleProductDetails(product.id)}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
 
-          {visibleProducts < filteredProducts.length && (
-            <div className="text-center">
+          {totalDisplayed < filteredProducts.length && (
+            <div className="text-center mt-12">
               <Button
                 onClick={loadMore}
                 size="lg"
