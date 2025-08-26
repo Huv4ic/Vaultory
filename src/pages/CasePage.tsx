@@ -129,8 +129,17 @@ const CasePage = () => {
 
   const handleCaseOpened = async (item: CaseItem) => {
     // Здесь можно добавить логику для добавления предмета в инвентарь
-    console.log('🎉 Кейс открыт! Выпад предмет:', item);
+    console.log('🎉 Кейс открыт! Выпал предмет:', item);
     console.log('📦 Данные кейса:', caseData);
+    console.log('🔍 ДЕТАЛЬНАЯ ОТЛАДКА - Полученный предмет:', {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      rarity: item.rarity,
+      case_id: item.case_id,
+      image_url: item.image_url,
+      drop_after_cases: item.drop_after_cases
+    });
     
     // ДОБАВЛЯЕМ ПРЕДМЕТ В ИНВЕНТАРЬ
     // ВАЖНО: Эта функция вызывается только при нажатии "Добавить в инвентарь"
@@ -149,7 +158,8 @@ const CasePage = () => {
       };
       
       console.log('🎁 Создаем предмет для инвентаря:', inventoryItem);
-      console.log('🔧 Вызываем addItem...');
+      console.log('🔧 Вызываем addItem с предметом:', inventoryItem.name);
+      console.log('💰 Цена предмета:', inventoryItem.price);
       await addItem(inventoryItem);
       console.log('✅ Предмет успешно добавлен в инвентарь!');
     } catch (error) {

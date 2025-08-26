@@ -50,32 +50,51 @@ export class InventoryService {
     item: InventoryItem
   ): Promise<string | null> {
     try {
+      console.log('🔍 InventoryService.addItemToInventory вызван с данными:', {
+        telegramId,
+        item: {
+          name: item.name,
+          price: item.price,
+          rarity: item.rarity,
+          type: item.type,
+          caseId: item.caseId,
+          case_name: item.case_name,
+          image: item.image,
+          image_url: item.image_url
+        }
+      });
+
+      const insertData = {
+        telegram_id: telegramId,
+        item_name: item.name,
+        item_price: item.price,
+        item_rarity: item.rarity,
+        item_type: item.type,
+        case_id: item.caseId,
+        case_name: item.case_name,
+        item_image: item.image,
+        item_image_url: item.image_url,
+        status: 'new',
+        obtained_at: new Date().toISOString()
+      };
+
+      console.log('📤 Отправляем данные в БД:', insertData);
+
       const { data, error } = await supabase
         .from('user_inventory')
-        .insert({
-          telegram_id: telegramId,
-          item_name: item.name,
-          item_price: item.price,
-          item_rarity: item.rarity,
-          item_type: item.type,
-          case_id: item.caseId,
-          case_name: item.case_name,
-          item_image: item.image,
-          item_image_url: item.image_url,
-          status: 'new',
-          obtained_at: new Date().toISOString()
-        })
+        .insert(insertData)
         .select('id')
         .single();
 
       if (error) {
-        console.error('Error adding item to inventory:', error);
+        console.error('❌ Error adding item to inventory:', error);
         throw error;
       }
 
+      console.log('✅ Предмет добавлен в БД с ID:', data?.id);
       return data?.id || null;
     } catch (error) {
-      console.error('Failed to add item to inventory:', error);
+      console.error('❌ Failed to add item to inventory:', error);
       return null;
     }
   }

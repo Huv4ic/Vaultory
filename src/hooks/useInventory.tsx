@@ -30,6 +30,7 @@ interface InventoryContextType {
   spent: number;
   purchased: number;
   syncInventory: () => Promise<void>;
+  clearLocalStorage: () => void;
   loading: boolean;
 }
 
@@ -333,6 +334,22 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     setCasesOpened(0);
     setSpent(0);
     setPurchased(0);
+    
+    // Также очищаем localStorage
+    localStorage.removeItem('vaultory_inventory');
+    localStorage.removeItem('vaultory_cases_opened');
+    localStorage.removeItem('vaultory_spent');
+    localStorage.removeItem('vaultory_purchased');
+  };
+
+  // Функция для принудительной очистки localStorage (для отладки)
+  const clearLocalStorage = () => {
+    console.log('🧹 Принудительная очистка localStorage...');
+    localStorage.removeItem('vaultory_inventory');
+    localStorage.removeItem('vaultory_cases_opened');
+    localStorage.removeItem('vaultory_spent');
+    localStorage.removeItem('vaultory_purchased');
+    console.log('✅ localStorage очищен');
   };
 
   return (
@@ -350,7 +367,8 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       spent, 
       purchased,
       syncInventory,
-      loading
+      loading,
+      clearLocalStorage
     }}>
       {children}
     </InventoryContext.Provider>

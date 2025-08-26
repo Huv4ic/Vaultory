@@ -22,6 +22,7 @@ import {
 import { useLanguage } from '../hooks/useLanguage';
 import { useOrders } from '../hooks/useOrders';
 import { useAchievements } from '../hooks/useAchievements';
+import { useInventory } from '../hooks/useInventory';
 import EditProfileModal from '../components/EditProfileModal';
 import TopUpModal from '../components/TopUpModal';
 
@@ -36,6 +37,7 @@ const Profile = () => {
   const { t } = useLanguage();
   const { getUserStatistics } = useOrders();
   const { achievements, loading: achievementsLoading, getAchievementStatus, getProgress, formatProgress } = useAchievements();
+  const { clearLocalStorage } = useInventory();
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showTopUpModal, setShowTopUpModal] = useState(false);
@@ -447,6 +449,19 @@ const Profile = () => {
               </CardContent>
             </Card>
           </div>
+        </div>
+
+        {/* ВРЕМЕННАЯ КНОПКА ОТЛАДКИ - УДАЛИТЬ ПОСЛЕ ИСПРАВЛЕНИЯ БАГА */}
+        <div className="text-center mb-4">
+          <Button 
+            onClick={() => {
+              clearLocalStorage();
+              alert('localStorage очищен! Перезагрузите страницу.');
+            }}
+            className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm font-semibold rounded-xl"
+          >
+            🧹 ОТЛАДКА: Очистить localStorage
+          </Button>
         </div>
 
         {/* Кнопки действий */}
