@@ -111,12 +111,12 @@ const Inventory = () => {
 
   const getRarityBg = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'bg-gray-500/20 border-gray-500/30';
-      case 'uncommon': return 'bg-green-500/20 border-green-500/30';
-      case 'rare': return 'bg-blue-500/20 border-blue-500/30';
-      case 'epic': return 'bg-purple-500/20 border-purple-500/30';
-      case 'legendary': return 'bg-amber-500/20 border-amber-500/30';
-      default: return 'bg-gray-500/20 border-gray-500/30';
+      case 'common': return 'inventory-rarity-common';
+      case 'uncommon': return 'inventory-rarity-common';
+      case 'rare': return 'inventory-rarity-rare';
+      case 'epic': return 'inventory-rarity-epic';
+      case 'legendary': return 'inventory-rarity-legendary';
+      default: return 'inventory-rarity-common';
     }
   };
 
@@ -211,28 +211,87 @@ const Inventory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
+      {/* Плавающие частицы инвентаря */}
+      <div className="inventory-floating-bg">
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={i}
+            className="inventory-particle"
+            style={{
+              left: `${(i * 10 + 5)}%`, // Фиксированные позиции
+              width: `${8 + (i % 4) * 3}px`,
+              height: `${8 + (i % 4) * 3}px`,
+              animationDelay: `${i * 3}s`, // Фиксированные задержки
+            }}
+          />
+        ))}
+      </div>
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-12">
-          {/* Кнопка "Назад" - перемещена влево и ниже */}
-          <div className="mb-6">
+      <div className="relative z-10 overflow-hidden">
+        {/* Морфирующий фон */}
+        <div className="absolute inset-0 inventory-morphing-bg opacity-20"></div>
+        
+        {/* Декоративные элементы */}
+        <div className="absolute top-20 left-10 w-40 h-40 bg-gradient-to-r from-green-400/15 to-emerald-500/15 rounded-full animate-pulse blur-3xl"></div>
+        <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-r from-blue-400/15 to-cyan-500/15 rounded-full animate-bounce blur-3xl"></div>
+        <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-gradient-to-r from-purple-400/15 to-pink-500/15 rounded-full animate-spin blur-3xl"></div>
+        <div className="absolute top-1/2 right-1/3 w-20 h-20 bg-gradient-to-r from-yellow-400/15 to-orange-500/15 rounded-full animate-float blur-3xl"></div>
+        
+        <div className="relative z-10 container mx-auto px-4 py-16">
+          {/* Кнопка "Назад" с красивыми эффектами */}
+          <div className="mb-8 animate-inventory-slide-in">
             <Button
               onClick={() => navigate(-1)}
               variant="outline"
-              className="bg-black/20 border-white/20 text-white hover:bg-white/10"
+              className="group relative overflow-hidden px-6 py-3 bg-black/40 backdrop-blur-xl border border-green-500/30 text-green-300 hover:text-white transition-all duration-500 shadow-xl shadow-green-500/20 rounded-xl text-sm font-medium hover:scale-105 hover:shadow-2xl hover:shadow-green-500/40"
             >
-              ← Назад
+              {/* Анимированный фон */}
+              <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              {/* Контент кнопки */}
+              <div className="relative z-10 flex items-center">
+                <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
+                <span>Назад</span>
+              </div>
+              
+              {/* Блик */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             </Button>
           </div>
           
-          {/* Заголовок по центру */}
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-white">Инвентарь</h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Ваши предметы, полученные из кейсов
+          {/* Заголовок с анимациями */}
+          <div className="text-center animate-inventory-fade-in" style={{animationDelay: '0.2s'}}>
+            <div className="inline-flex items-center justify-center mb-6">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-ping mr-4"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent rounded-full"></div>
+              <div className="mx-8 relative">
+                <h1 className="text-5xl md:text-6xl font-black text-white relative z-10 drop-shadow-lg">
+                  <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 bg-clip-text text-transparent">
+                    📦 Инвентарь
+                  </span>
+                </h1>
+                {/* Подсветка заголовка */}
+                <div className="absolute inset-0 text-5xl md:text-6xl font-black text-green-400/20 blur-sm">
+                  📦 Инвентарь
+                </div>
+              </div>
+              <div className="w-24 h-1 bg-gradient-to-l from-transparent via-green-400 to-transparent rounded-full"></div>
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-ping ml-4"></div>
+            </div>
+            
+            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90 mb-8">
+              Ваши <span className="text-green-400 font-semibold">уникальные предметы</span>, полученные из кейсов. 
+              Продавайте или выводите их для получения прибыли!
             </p>
+            
+            {/* Декоративная линия */}
+            <div className="flex items-center justify-center">
+              <div className="w-32 h-0.5 bg-gradient-to-r from-transparent to-green-400 rounded-full"></div>
+              <div className="w-3 h-3 bg-green-400 rounded-full mx-4 animate-pulse"></div>
+              <div className="w-32 h-0.5 bg-gradient-to-l from-transparent to-green-400 rounded-full"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -240,40 +299,59 @@ const Inventory = () => {
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-12">
         {/* Статистика */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 animate-inventory-fade-in" style={{animationDelay: '0.4s'}}>
           {/* Общая стоимость */}
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="p-6 text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-400/20 to-green-600/20 rounded-full flex items-center justify-center mb-4 border border-green-500/30">
-                <DollarSign className="w-8 h-8 text-green-400" />
+          <div className="inventory-card-3d bg-black/20 backdrop-blur-2xl rounded-3xl p-8 text-center relative overflow-hidden group border border-green-500/20 hover:border-green-500/40 transition-all duration-500">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-green-400/10 to-transparent rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-green-400/20 to-emerald-600/20 rounded-2xl flex items-center justify-center mb-6 border border-green-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-green-500/20">
+                <DollarSign className="w-10 h-10 text-green-400 group-hover:animate-bounce" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Общая стоимость</h3>
-                              <p className="text-3xl font-bold text-green-400">{formatNumber(parseFloat(totalValue.toFixed(2)))}₴</p>
-            </CardContent>
-          </Card>
+              <h3 className="text-xl font-bold text-white mb-4">Общая стоимость</h3>
+              <div className="text-3xl sm:text-4xl font-black text-green-400 inventory-stats-counter mb-2 drop-shadow-lg">
+                {formatNumber(parseFloat(totalValue.toFixed(2)))}₴
+              </div>
+              <div className="text-sm text-gray-400">Стоимость всех предметов</div>
+            </div>
+            
+            {/* Эффект при наведении */}
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+          </div>
 
           {/* Количество предметов */}
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="p-6 text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-full flex items-center justify-center mb-4 border border-blue-500/30">
-                <Package className="w-8 h-8 text-blue-400" />
+          <div className="inventory-card-3d bg-black/20 backdrop-blur-2xl rounded-3xl p-8 text-center relative overflow-hidden group border border-blue-500/20 hover:border-blue-500/40 transition-all duration-500">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-400/10 to-transparent rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-400/20 to-cyan-600/20 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-blue-500/20">
+                <Package className="w-10 h-10 text-blue-400 group-hover:animate-bounce" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Предметов</h3>
-              <p className="text-3xl font-bold text-blue-400">{displayItems.length}</p>
-            </CardContent>
-          </Card>
+              <h3 className="text-xl font-bold text-white mb-4">Предметов</h3>
+              <div className="text-3xl sm:text-4xl font-black text-blue-400 inventory-stats-counter mb-2 drop-shadow-lg">
+                {displayItems.length}
+              </div>
+              <div className="text-sm text-gray-400">Уникальных предметов</div>
+            </div>
+            
+            {/* Эффект при наведении */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+          </div>
 
           {/* Любимый кейс */}
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="p-6 text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-4 border border-amber-500/30">
-                <Crown className="w-8 h-8 text-amber-400" />
+          <div className="inventory-card-3d bg-black/20 backdrop-blur-2xl rounded-3xl p-8 text-center relative overflow-hidden group border border-yellow-500/20 hover:border-yellow-500/40 transition-all duration-500">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-yellow-400/10 to-transparent rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-yellow-400/20 to-orange-600/20 rounded-2xl flex items-center justify-center mb-6 border border-yellow-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-yellow-500/20">
+                <Crown className="w-10 h-10 text-yellow-400 group-hover:animate-bounce" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Любимый кейс</h3>
-              {favoriteCase && (
+              <h3 className="text-xl font-bold text-white mb-4">Любимый кейс</h3>
+              
+              {favoriteCase ? (
                 <>
-                  {/* Фото кейса */}
-                  <div className="w-20 h-20 mx-auto mb-3 rounded-lg overflow-hidden bg-gray-800">
+                  {/* Фото кейса с эффектами */}
+                  <div className="w-24 h-24 mx-auto mb-4 rounded-2xl overflow-hidden bg-gray-800 border border-yellow-500/30 inventory-holographic group-hover:scale-105 transition-transform duration-300">
                     {favoriteCase.case_image_url ? (
                       <img 
                         src={favoriteCase.case_image_url} 
@@ -281,103 +359,191 @@ const Inventory = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <Trophy className="w-8 h-8" />
+                      <div className="w-full h-full flex items-center justify-center text-yellow-400">
+                        <Trophy className="w-10 h-10" />
                       </div>
                     )}
                   </div>
-                  <p className="text-lg font-bold text-amber-400 mb-1">{favoriteCase.case_name}</p>
-                  <p className="text-sm text-gray-300">Открыто {favoriteCase.opened_count} раз</p>
+                  <div className="text-lg font-bold text-yellow-400 mb-2 drop-shadow-lg">{favoriteCase.case_name}</div>
+                  <div className="text-sm text-gray-400">Открыто {favoriteCase.opened_count} раз</div>
                 </>
+              ) : (
+                <div className="text-gray-400 font-medium">Нет данных</div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+            
+            {/* Эффект при наведении */}
+            <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+          </div>
         </div>
 
         {/* Сетка предметов инвентаря */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <Package className="w-6 h-6 text-white" />
-            <h3 className="text-xl font-semibold text-white">
-              Предметы в инвентаре ({displayItems.length})
-            </h3>
+        <div className="space-y-8 animate-inventory-fade-in" style={{animationDelay: '0.6s'}}>
+          {/* Красивый заголовок секции */}
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center mb-4">
+              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent to-blue-400 rounded-full"></div>
+              <div className="mx-6 relative">
+                <h3 className="text-2xl md:text-3xl font-bold text-white relative z-10">
+                  <span className="bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
+                    🎒 Предметы в инвентаре
+                  </span>
+                </h3>
+                {/* Подсветка */}
+                <div className="absolute inset-0 text-2xl md:text-3xl font-bold text-blue-400/20 blur-sm">
+                  🎒 Предметы в инвентаре
+                </div>
+              </div>
+              <div className="w-16 h-0.5 bg-gradient-to-l from-transparent to-blue-400 rounded-full"></div>
+            </div>
+            <div className="text-blue-300 font-medium">
+              Найдено предметов: <span className="text-white font-bold">{displayItems.length}</span>
+            </div>
           </div>
           
           {displayItems.length === 0 ? (
-            <div className="text-center py-12 bg-black/20 rounded-xl border border-gray-700">
-              <Package className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-              <p className="text-gray-400 text-lg">Инвентарь пуст</p>
-              <p className="text-gray-500">Откройте кейсы, чтобы получить предметы</p>
+            <div className="text-center py-16 inventory-card-3d bg-black/20 backdrop-blur-2xl rounded-3xl border border-gray-600/30 relative overflow-hidden group">
+              {/* Анимированный фон */}
+              <div className="absolute inset-0 inventory-morphing-bg opacity-10"></div>
+              
+              {/* Плавающие частицы */}
+              <div className="absolute inset-0">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute w-2 h-2 bg-gray-400/20 rounded-full animate-float"
+                    style={{
+                      left: `${20 + i * 12}%`,
+                      top: `${30 + (i % 3) * 20}%`,
+                      animationDelay: `${i * 0.8}s`,
+                      animationDuration: `${4 + i * 0.5}s`
+                    }}
+                  />
+                ))}
+              </div>
+              
+              {/* Контент */}
+              <div className="relative z-10">
+                <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-gray-600/20 to-gray-800/20 rounded-2xl flex items-center justify-center border border-gray-500/30 group-hover:scale-110 transition-all duration-500">
+                  <Package className="w-12 h-12 text-gray-400 group-hover:text-blue-400 transition-colors duration-300" />
+                </div>
+                <h4 className="text-2xl font-bold text-white mb-3">Инвентарь пуст</h4>
+                <p className="text-gray-400 text-lg mb-6 max-w-md mx-auto leading-relaxed">
+                  Откройте кейсы, чтобы получить уникальные предметы и начать свою коллекцию!
+                </p>
+                
+                {/* Кнопка */}
+                <button
+                  onClick={() => navigate('/cases')}
+                  className="inventory-button-shine px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-semibold rounded-2xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/40"
+                >
+                  🎁 Открыть кейсы
+                </button>
+              </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-              {displayItems.map((item) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {displayItems.map((item, index) => (
                 <div
                   key={item.id || Math.random()}
-                  className={`p-4 rounded-xl border ${getRarityBg(item.rarity || 'common')} hover:scale-105 transition-all duration-300`}
+                  className={`inventory-card-3d inventory-item-glow relative overflow-hidden rounded-3xl p-6 ${getRarityBg(item.rarity || 'common')} border-2 shadow-2xl transition-all duration-500 group animate-inventory-slide-in`}
+                  style={{animationDelay: `${index * 0.1}s`}}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <h4 className={`font-semibold ${getRarityColor(item.rarity || 'common')} mb-1`}>
-                        {item.name || 'Неизвестный предмет'}
-                      </h4>
-                      <p className="text-gray-400 text-sm mb-2">{item.type || 'Неизвестно'}</p>
-                      <p className="text-gray-500 text-xs">Из кейса: {item.case_name || 'Неизвестно'}</p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-green-400">{(item.price || 0).toFixed(2)}₴</div>
-                      <div className={`text-xs font-medium ${getRarityColor(item.rarity || 'common')} capitalize`}>
-                        {item.rarity || 'common'}
+                  {/* Изображение предмета */}
+                  <div className="relative mb-6">
+                    <div className="w-full h-48 rounded-2xl overflow-hidden bg-black/30 backdrop-blur-sm border border-white/10 inventory-holographic">
+                      {item.image_url || item.image ? (
+                        <img 
+                          src={item.image_url || item.image} 
+                          alt={item.name}
+                          className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                          onError={(e) => {
+                            // Fallback если изображение не загрузилось
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            target.nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                      ) : null}
+                      
+                      {/* Fallback иконка если нет изображения */}
+                      <div className={`w-full h-full flex items-center justify-center ${item.image_url || item.image ? 'hidden' : ''}`}>
+                        <Package className={`w-16 h-16 ${getRarityColor(item.rarity || 'common')}`} />
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
-                    <span>Получен: {item.obtained_at ? new Date(item.obtained_at).toLocaleDateString('ru-RU') : 'Неизвестно'}</span>
-                    <div className="flex items-center space-x-1">
-                      <Trophy className="w-3 h-3" />
-                      <span>Кейс</span>
+                    
+                    {/* Значок редкости */}
+                    <div className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold uppercase backdrop-blur-sm border ${getRarityColor(item.rarity || 'common')} bg-black/50`}>
+                      {item.rarity || 'common'}
                     </div>
                   </div>
                   
-                  {/* Кнопки действий */}
-                  <div className="flex gap-2 mt-3">
-                    <button
-                      onClick={async () => {
-                        // Вывести предмет
-                        try {
-                          const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
-                          if (itemIndex !== -1) {
-                            await withdrawItem(itemIndex);
-                            
-                            showSuccess(`Предмет "${item.name}" выведен из инвентаря!`);
-                            console.log('Предмет выведен:', item.name);
-                                                     } else {
-                             showError('Предмет не найден в инвентаре!');
-                           }
-                        } catch (error) {
-                          console.error('Error withdrawing item:', error);
-                                                     showError('Ошибка при выводе предмета!');
-                        }
-                      }}
-                      className="flex-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
-                    >
-                      📤 Вывести
-                    </button>
+                  {/* Информация о предмете */}
+                  <div className="space-y-4">
+                    {/* Название и цена */}
+                    <div className="text-center">
+                      <h4 className={`text-lg font-bold ${getRarityColor(item.rarity || 'common')} mb-2 drop-shadow-lg group-hover:scale-105 transition-transform duration-300`}>
+                        {item.name || 'Неизвестный предмет'}
+                      </h4>
+                      <div className="text-2xl font-black text-green-400 mb-1 drop-shadow-lg">
+                        {(item.price || 0).toFixed(2)}₴
+                      </div>
+                      <p className="text-gray-300 text-sm">{item.type || 'Неизвестно'}</p>
+                    </div>
                     
-                    <button
-                      onClick={async () => {
-                        // Продать предмет
-                        console.log('🔄 Нажата кнопка "Продать" для предмета:', item);
-                        
-                        setItemToSell(item);
-                        setShowConfirmSell(true);
-                      }}
-                      className="flex-1 px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white text-xs font-medium rounded-lg transition-all duration-200 hover:scale-105"
-                    >
-                      💰 Продать
-                    </button>
+                    {/* Детали */}
+                    <div className="bg-black/20 rounded-2xl p-4 backdrop-blur-sm border border-white/5">
+                      <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
+                        <span>Из кейса:</span>
+                        <span className="text-white font-medium">{item.case_name || 'Неизвестно'}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span>Получен:</span>
+                        <span>{item.obtained_at ? new Date(item.obtained_at).toLocaleDateString('ru-RU') : 'Неизвестно'}</span>
+                      </div>
+                    </div>
+                    
+                    {/* Кнопки действий */}
+                    <div className="flex gap-3">
+                      <button
+                        onClick={async () => {
+                          // Вывести предмет
+                          try {
+                            const itemIndex = inventoryItems.findIndex(invItem => invItem.id === item.id);
+                            if (itemIndex !== -1) {
+                              await withdrawItem(itemIndex);
+                              showSuccess(`Предмет "${item.name}" выведен из инвентаря!`);
+                              console.log('Предмет выведен:', item.name);
+                            } else {
+                              showError('Предмет не найден в инвентаре!');
+                            }
+                          } catch (error) {
+                            console.error('Error withdrawing item:', error);
+                            showError('Ошибка при выводе предмета!');
+                          }
+                        }}
+                        className="inventory-button-shine flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white text-sm font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40"
+                      >
+                        📤 Вывести
+                      </button>
+                      
+                      <button
+                        onClick={async () => {
+                          // Продать предмет
+                          console.log('🔄 Нажата кнопка "Продать" для предмета:', item);
+                          setItemToSell(item);
+                          setShowConfirmSell(true);
+                        }}
+                        className="inventory-button-shine flex-1 px-4 py-3 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white text-sm font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/40"
+                      >
+                        💰 Продать
+                      </button>
+                    </div>
                   </div>
+                  
+                  {/* Декоративные элементы */}
+                  <div className="absolute top-2 left-2 w-4 h-4 bg-white/10 rounded-full animate-ping"></div>
+                  <div className="absolute bottom-2 right-2 w-3 h-3 bg-white/5 rounded-full animate-pulse"></div>
                 </div>
               ))}
             </div>
