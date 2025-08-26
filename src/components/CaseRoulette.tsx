@@ -702,14 +702,23 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 {/* Рулетка */}
                 <div className="relative">
                   {/* Контейнер рулетки */}
-                  <div className="relative h-32 sm:h-36 md:h-40 bg-gray-800/50 rounded-xl sm:rounded-2xl border border-amber-500/30 overflow-hidden">
+                  <div className="relative h-36 sm:h-40 md:h-44 bg-gradient-to-br from-gray-900/90 to-gray-800/80 rounded-2xl border-2 border-amber-500/50 overflow-hidden shadow-2xl shadow-amber-500/20 backdrop-blur-xl">
+                    {/* Анимированный фон */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-yellow-500/10 to-amber-500/5 opacity-50" style={{
+                      backgroundSize: '200% 100%',
+                      animation: 'gradient-shift 3s ease-in-out infinite'
+                    }}></div>
+                    
                     {/* Центральная линия с анимацией */}
-                    <div className={`absolute left-1/2 top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-b from-amber-400 to-yellow-400 transform -translate-x-1/2 z-10 shadow-lg shadow-amber-400/50 ${
+                    <div className={`absolute left-1/2 top-0 bottom-0 w-1 sm:w-1.5 bg-gradient-to-b from-amber-300 via-yellow-400 to-amber-300 transform -translate-x-1/2 z-20 shadow-2xl shadow-amber-400/80 rounded-full ${
                       isSpinning ? 'animate-pulse' : ''
                     }`}>
-                      {/* Дополнительная подсветка центра */}
-                      <div className="absolute -top-1 -left-1 w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full opacity-50 animate-ping"></div>
-                      <div className="absolute -bottom-1 -left-1 w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full opacity-50 animate-ping" style={{ animationDelay: '0.5s' }}></div>
+                      {/* Светящиеся точки */}
+                      <div className="absolute -top-2 -left-1.5 w-4 h-4 bg-amber-400 rounded-full opacity-80 animate-ping shadow-lg shadow-amber-400/60"></div>
+                      <div className="absolute -bottom-2 -left-1.5 w-4 h-4 bg-amber-400 rounded-full opacity-80 animate-ping shadow-lg shadow-amber-400/60" style={{ animationDelay: '0.5s' }}></div>
+                      
+                      {/* Центральный индикатор */}
+                      <div className="absolute top-1/2 -left-2 w-5 h-5 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full transform -translate-y-1/2 animate-pulse shadow-xl shadow-amber-400/80 border-2 border-white/20"></div>
                     </div>
                     
                     {/* Лента с предметами */}
@@ -722,23 +731,51 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       {Array.from({ length: 50 }, () => caseItems).flat().map((item, index) => (
                         <div
                           key={`${item.id}-${index}`}
-                          className={`flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2.5 flex flex-col justify-end relative isolation isolate item ${
+                          className={`flex-shrink-0 w-35 h-30 rounded-lg sm:rounded-xl p-2 flex flex-col relative isolation isolate item ${
                             getRarityColor(item.rarity)
-                          }`}
+                          } overflow-hidden group`}
                         >
                           {/* Блеск */}
-                          <div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-white/15 to-transparent mix-blend-mode-overlay filter-blur-sm"></div>
+                          <div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-br from-white/20 to-transparent opacity-60"></div>
                           {/* Свечение */}
-                          <div className="absolute inset-0 rounded-lg sm:rounded-xl shadow-lg opacity-35" style={{ boxShadow: '0 0 40px currentColor' }}></div>
+                          <div className="absolute -inset-1 rounded-lg sm:rounded-xl opacity-30 blur-sm" style={{ 
+                            background: item.rarity.toLowerCase() === 'legendary' ? 'linear-gradient(45deg, #FFD700, #FFA500)' :
+                                      item.rarity.toLowerCase() === 'epic' ? 'linear-gradient(45deg, #9B59B6, #8E44AD)' :
+                                      item.rarity.toLowerCase() === 'rare' ? 'linear-gradient(45deg, #3498DB, #2980B9)' :
+                                      'linear-gradient(45deg, #95A5A6, #7F8C8D)'
+                          }}></div>
                           
-                          {/* Название предмета */}
-                          <div className="font-bold text-xs sm:text-sm leading-tight relative z-10">
-                            {item.name}
+                          {/* Изображение предмета */}
+                          <div className="flex-1 flex items-center justify-center relative z-10 mb-1">
+                            {item.image_url ? (
+                              <img
+                                src={item.image_url}
+                                alt={item.name}
+                                className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-md group-hover:scale-110 transition-transform duration-300"
+                              />
+                            ) : (
+                              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-700/50 rounded-md flex items-center justify-center">
+                                <Gift className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
+                              </div>
+                            )}
                           </div>
                           
-                          {/* Тег редкости */}
-                          <div className="opacity-80 text-xs relative z-10">
-                            {getRarityTag(item.rarity)}
+                          {/* Информация о предмете */}
+                          <div className="relative z-10 text-center">
+                            {/* Название предмета */}
+                            <div className="font-bold text-xs leading-tight mb-0.5 line-clamp-2">
+                              {item.name}
+                            </div>
+                            
+                            {/* Цена */}
+                            <div className="text-green-400 text-xs font-semibold mb-0.5">
+                              {item.price ? `${item.price}₴` : '0₴'}
+                            </div>
+                            
+                            {/* Тег редкости */}
+                            <div className="opacity-80 text-xs uppercase font-bold">
+                              {getRarityTag(item.rarity)}
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -764,54 +801,129 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
               </div>
             ) : (
               /* Результат */
-              <div className="text-center space-y-4 sm:space-y-6">
-                <div className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6 animate-bounce">🎉</div>
+              <div className="text-center space-y-4 sm:space-y-6 relative">
+                {/* Фоновые анимированные частицы */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  {Array.from({ length: 20 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full opacity-60 animate-ping"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animationDelay: `${Math.random() * 3}s`,
+                        animationDuration: `${2 + Math.random() * 2}s`
+                      }}
+                    />
+                  ))}
+                </div>
                 
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
-                  Поздравляем!
-                </h3>
+                {/* Заголовок с анимацией */}
+                <div className="relative z-10">
+                  <div className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6 animate-bounce">🎉</div>
+                  
+                  <h3 className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 mb-3 sm:mb-4 animate-pulse">
+                    Поздравляем!
+                  </h3>
+                </div>
                 
                 {winnerItem && (
-                  <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-amber-500/30">
-                    <div className={`w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-3 sm:mb-4 rounded-lg sm:rounded-xl border-4 ${getRarityColor(winnerItem.rarity)} bg-gray-700/80 flex items-center justify-center`}>
-                      {winnerItem.image_url ? (
-                        <img
-                          src={winnerItem.image_url}
-                          alt={winnerItem.name}
-                          className="w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 object-cover rounded-lg"
-                        />
-                      ) : (
-                        <Gift className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-amber-400" />
-                      )}
+                  <div className="relative z-10 bg-gradient-to-br from-gray-900/90 via-gray-800/80 to-gray-900/90 rounded-2xl sm:rounded-3xl p-6 sm:p-8 border-2 shadow-2xl backdrop-blur-xl overflow-hidden" style={{
+                    borderColor: winnerItem.rarity.toLowerCase() === 'legendary' ? '#FFD700' :
+                                winnerItem.rarity.toLowerCase() === 'epic' ? '#9B59B6' :
+                                winnerItem.rarity.toLowerCase() === 'rare' ? '#3498DB' :
+                                '#95A5A6',
+                    boxShadow: `0 0 60px ${
+                      winnerItem.rarity.toLowerCase() === 'legendary' ? '#FFD700' :
+                      winnerItem.rarity.toLowerCase() === 'epic' ? '#9B59B6' :
+                      winnerItem.rarity.toLowerCase() === 'rare' ? '#3498DB' :
+                      '#95A5A6'
+                    }40`
+                  }}>
+                    {/* Анимированный фон */}
+                    <div className="absolute inset-0 opacity-10" style={{
+                      background: `linear-gradient(45deg, ${
+                        winnerItem.rarity.toLowerCase() === 'legendary' ? '#FFD700, #FFA500' :
+                        winnerItem.rarity.toLowerCase() === 'epic' ? '#9B59B6, #8E44AD' :
+                        winnerItem.rarity.toLowerCase() === 'rare' ? '#3498DB, #2980B9' :
+                        '#95A5A6, #7F8C8D'
+                      })`,
+                      backgroundSize: '400% 400%',
+                      animation: 'gradient-shift 4s ease-in-out infinite'
+                    }}></div>
+                    
+                    {/* Изображение предмета с эффектами */}
+                    <div className="relative mb-6">
+                      <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 mx-auto relative">
+                        {/* Светящийся фон */}
+                        <div className="absolute inset-0 rounded-2xl opacity-30 blur-xl animate-pulse" style={{
+                          background: `radial-gradient(circle, ${
+                            winnerItem.rarity.toLowerCase() === 'legendary' ? '#FFD700' :
+                            winnerItem.rarity.toLowerCase() === 'epic' ? '#9B59B6' :
+                            winnerItem.rarity.toLowerCase() === 'rare' ? '#3498DB' :
+                            '#95A5A6'
+                          }, transparent)`
+                        }}></div>
+                        
+                        {/* Вращающееся кольцо */}
+                        <div className="absolute inset-0 border-4 border-transparent rounded-2xl animate-spin" style={{
+                          borderTopColor: winnerItem.rarity.toLowerCase() === 'legendary' ? '#FFD700' :
+                                        winnerItem.rarity.toLowerCase() === 'epic' ? '#9B59B6' :
+                                        winnerItem.rarity.toLowerCase() === 'rare' ? '#3498DB' :
+                                        '#95A5A6',
+                          animationDuration: '3s'
+                        }}></div>
+                        
+                        {/* Изображение */}
+                        <div className="relative z-10 w-full h-full bg-gray-800/60 rounded-2xl border-2 flex items-center justify-center backdrop-blur-sm" style={{
+                          borderColor: winnerItem.rarity.toLowerCase() === 'legendary' ? '#FFD700' :
+                                      winnerItem.rarity.toLowerCase() === 'epic' ? '#9B59B6' :
+                                      winnerItem.rarity.toLowerCase() === 'rare' ? '#3498DB' :
+                                      '#95A5A6'
+                        }}>
+                          {winnerItem.image_url ? (
+                            <img
+                              src={winnerItem.image_url}
+                              alt={winnerItem.name}
+                              className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain rounded-xl animate-pulse"
+                            />
+                          ) : (
+                            <Gift className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 text-amber-400 animate-bounce" />
+                          )}
+                        </div>
+                      </div>
                     </div>
                     
-                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                      {winnerItem.name}
-                    </h4>
-                    
-                    {/* Отображение цены предмета */}
-                    <div className="text-lg sm:text-xl font-bold text-green-400 mb-3">
-                      Цена: {winnerItem.price || 0}₴
+                    {/* Информация о предмете */}
+                    <div className="relative z-10 space-y-4">
+                      <h4 className="text-2xl sm:text-3xl font-black text-white drop-shadow-lg">
+                        {winnerItem.name}
+                      </h4>
+                      
+                      {/* Цена с анимацией */}
+                      <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 animate-pulse">
+                        {winnerItem.price || 0}₴
+                      </div>
+                      
+                      {/* Значок редкости */}
+                      <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-black uppercase tracking-wider shadow-lg animate-bounce ${
+                        winnerItem.rarity.toLowerCase() === 'legendary' ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-yellow-500/50' :
+                        winnerItem.rarity.toLowerCase() === 'epic' ? 'bg-gradient-to-r from-purple-500 to-purple-700 text-white shadow-purple-500/50' :
+                        winnerItem.rarity.toLowerCase() === 'rare' ? 'bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-blue-500/50' :
+                        'bg-gradient-to-r from-gray-500 to-gray-700 text-white shadow-gray-500/50'
+                      }`}>
+                        ✨ {getRarityName(winnerItem.rarity)}
+                      </div>
+                      
+                      <p className="text-gray-300 text-base sm:text-lg font-medium">
+                        Предмет добавлен в ваш инвентарь!
+                      </p>
                     </div>
-                    
-                    <div className={`inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold ${
-                      winnerItem.rarity.toLowerCase() === 'common' ? 'bg-gray-500 text-white' :
-                      winnerItem.rarity.toLowerCase() === 'rare' ? 'bg-blue-500 text-white' :
-                      winnerItem.rarity.toLowerCase() === 'epic' ? 'bg-purple-500 text-white' :
-                      winnerItem.rarity.toLowerCase() === 'legendary' ? 'bg-yellow-500 text-black' :
-                      'bg-gray-500 text-white'
-                    }`}>
-                      {getRarityName(winnerItem.rarity)}
-                    </div>
-                    
-                    <p className="text-gray-300 mt-3 sm:mt-4 text-sm sm:text-base">
-                      Предмет добавлен в ваш инвентарь!
-                    </p>
                   </div>
                 )}
                 
                 {/* Кнопки действий */}
-                <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-4">
+                <div className="relative z-10 flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mb-4">
                   <Button
                     onClick={async () => {
                       if (winnerItem && !soldOrAdded) {
@@ -833,10 +945,18 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       }
                     }}
                     disabled={soldOrAdded}
-                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-green-500/30"
+                    className="group relative overflow-hidden bg-gradient-to-r from-green-500 via-green-600 to-emerald-600 hover:from-green-600 hover:via-green-700 hover:to-emerald-700 text-white px-8 py-4 text-base font-bold rounded-2xl transition-all duration-500 hover:scale-110 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-green-500/40 hover:shadow-green-500/60 border border-green-400/30"
                   >
-                    <Package className="w-4 h-4 mr-2" />
-                    Добавить в инвентарь
+                    {/* Анимированный фон */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    {/* Блеск */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    
+                    <div className="relative z-10 flex items-center justify-center">
+                      <Package className="w-5 h-5 mr-3 group-hover:animate-bounce" />
+                      Добавить в инвентарь
+                    </div>
                   </Button>
                   
                   <Button
@@ -852,10 +972,18 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                       }
                     }}
                     disabled={soldOrAdded}
-                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/30"
+                    className="group relative overflow-hidden bg-gradient-to-r from-red-500 via-red-600 to-pink-600 hover:from-red-600 hover:via-red-700 hover:to-pink-700 text-white px-8 py-4 text-base font-bold rounded-2xl transition-all duration-500 hover:scale-110 hover:-rotate-1 disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-red-500/40 hover:shadow-red-500/60 border border-red-400/30"
                   >
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    Продать
+                    {/* Анимированный фон */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    {/* Блеск */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    
+                    <div className="relative z-10 flex items-center justify-center">
+                      <DollarSign className="w-5 h-5 mr-3 group-hover:animate-spin" />
+                      Продать
+                    </div>
                   </Button>
                 </div>
                 
