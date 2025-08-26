@@ -201,156 +201,233 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
+      {/* Плавающие частицы фона */}
+      <div className="profile-floating-bg">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="profile-particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: `${6 + Math.random() * 12}px`,
+              height: `${6 + Math.random() * 12}px`,
+              animationDelay: `${Math.random() * 20}s`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-12 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
-            👤 {t('Профиль')}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Добро пожаловать в ваш личный кабинет! Здесь вы можете управлять аккаунтом, 
-            просматривать статистику и совершать покупки.
-          </p>
-        </div>
+      <div className="relative z-10 overflow-hidden">
+        {/* Морфирующий фон */}
+        <div className="absolute inset-0 profile-morphing-bg opacity-30"></div>
         
-        {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-16 h-16 bg-amber-400/10 rounded-full animate-bounce"></div>
-        <div className="absolute top-32 right-20 w-12 h-12 bg-amber-500/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-8 h-8 bg-amber-400/10 rounded-full animate-spin"></div>
+        {/* Декоративные элементы */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-amber-400/15 to-orange-500/15 rounded-full animate-pulse blur-2xl"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-purple-400/15 to-pink-500/15 rounded-full animate-bounce blur-2xl"></div>
+        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-gradient-to-r from-blue-400/15 to-cyan-500/15 rounded-full animate-spin blur-2xl"></div>
+        <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-gradient-to-r from-green-400/15 to-emerald-500/15 rounded-full animate-float blur-2xl"></div>
+        
+        <div className="relative z-10 container mx-auto px-4 py-16 text-center">
+          {/* Анимированный заголовок */}
+          <div className="mb-8 animate-profile-fade-in">
+            <div className="inline-flex items-center justify-center mb-6">
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-ping mr-4"></div>
+              <div className="w-20 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent rounded-full"></div>
+              <div className="mx-6 relative">
+                <h1 className="text-5xl md:text-6xl font-black profile-text-glow bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
+                  👤 {t('Профиль')}
+                </h1>
+                {/* Подсветка заголовка */}
+                <div className="absolute inset-0 text-5xl md:text-6xl font-black text-amber-400/20 blur-sm">
+                  👤 {t('Профиль')}
+                </div>
+              </div>
+              <div className="w-20 h-1 bg-gradient-to-l from-transparent via-amber-400 to-transparent rounded-full"></div>
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-ping ml-4"></div>
+            </div>
+            
+            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90">
+              Добро пожаловать в ваш <span className="text-amber-400 font-semibold">личный кабинет</span>! 
+              Здесь вы можете управлять аккаунтом, просматривать статистику и совершать покупки.
+            </p>
+          </div>
+          
+          {/* Декоративная линия */}
+          <div className="flex items-center justify-center mb-8">
+            <div className="w-32 h-0.5 bg-gradient-to-r from-transparent to-amber-400 rounded-full"></div>
+            <div className="w-3 h-3 bg-amber-400 rounded-full mx-4 animate-pulse"></div>
+            <div className="w-32 h-0.5 bg-gradient-to-l from-transparent to-amber-400 rounded-full"></div>
+          </div>
+        </div>
       </div>
 
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Основная информация профиля */}
-        <div className="mb-6 sm:mb-8">
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-            <CardContent className="p-4 sm:p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-                {/* Аватар и основная информация */}
-                <div className="text-center lg:text-left">
-                  <div className="mx-auto lg:mx-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-3 sm:mb-4 shadow-2xl shadow-amber-500/30 overflow-hidden">
-                    {profile?.avatar_url ? (
-                      <img
-                        src={profile.avatar_url}
-                        alt="Avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <User className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-                    )}
+        <div className="mb-8 sm:mb-12 animate-profile-slide-in">
+          <div className="profile-glass-effect profile-card-hover rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+            {/* Декоративные элементы */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-amber-400/10 to-transparent rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+              {/* Аватар и основная информация */}
+              <div className="text-center lg:text-left animate-profile-fade-in" style={{animationDelay: '0.1s'}}>
+                <div className="relative mx-auto lg:mx-0 w-24 h-24 sm:w-28 sm:h-28 mb-6">
+                  <div className="profile-avatar-glow w-full h-full rounded-full overflow-hidden shadow-2xl shadow-amber-500/40">
+                    <div className="w-full h-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
+                      {profile?.avatar_url ? (
+                        <img
+                          src={profile.avatar_url}
+                          alt="Avatar"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <User className="w-12 h-12 sm:w-14 sm:h-14 text-white" />
+                      )}
+                    </div>
                   </div>
-                  <h2 className="text-lg sm:text-xl font-bold text-white mb-2">
+                  {/* Статус индикатор */}
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-gray-900 animate-pulse shadow-lg shadow-green-500/50"></div>
+                </div>
+                
+                <div className="space-y-3">
+                  <h2 className="text-2xl sm:text-3xl font-black text-white profile-text-glow">
                     {profile?.username || telegramUser.first_name}
                   </h2>
-                  <p className="text-gray-300 mb-2 sm:mb-3 text-xs sm:text-sm">@{telegramUser.username || 'user'}</p>
+                  <p className="text-gray-400 text-sm sm:text-base font-medium">@{telegramUser.username || 'user'}</p>
                   
-                  {/* Роль пользователя */}
-                  {profile?.role === 'admin' && (
-                    <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 mb-2 sm:mb-3 text-xs">
-                      <Shield className="w-3 h-3 mr-1" />
-                      Администратор
+                  {/* Роли и статус */}
+                  <div className="flex flex-col items-center lg:items-start space-y-2">
+                    {profile?.role === 'admin' && (
+                      <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 px-4 py-2 text-sm font-bold rounded-xl shadow-lg shadow-amber-500/30 hover:scale-105 transition-transform duration-300">
+                        <Shield className="w-4 h-4 mr-2" />
+                        Администратор
+                      </Badge>
+                    )}
+                    
+                    <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border border-green-500/30 px-4 py-2 text-sm font-bold rounded-xl hover:scale-105 transition-transform duration-300">
+                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                      Активен
                     </Badge>
-                  )}
-                  
-                  {/* Статус */}
-                  <Badge variant="secondary" className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                    <Shield className="w-3 h-3 mr-1" />
-                    Активен
-                  </Badge>
-                </div>
-
-                {/* Баланс */}
-                <div className="text-center lg:text-left">
-                  <h3 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3 flex items-center justify-center lg:justify-start">
-                    <Wallet className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-amber-400" />
-                    Баланс
-                  </h3>
-                  <div className="text-xl sm:text-2xl font-bold text-amber-400 mb-2 sm:mb-3">
-                    {formatNumber(balance || 0)}₴
                   </div>
+                </div>
+              </div>
+
+              {/* Баланс */}
+              <div className="text-center lg:text-left animate-profile-fade-in" style={{animationDelay: '0.2s'}}>
+                <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300 profile-card-hover">
+                  <div className="flex items-center justify-center lg:justify-start mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-r from-amber-400/20 to-amber-600/20 rounded-xl flex items-center justify-center mr-3 border border-amber-500/30">
+                      <Wallet className="w-5 h-5 text-amber-400 animate-pulse" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white profile-text-glow">Баланс</h3>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <div className="text-3xl sm:text-4xl font-black text-amber-400 profile-stat-counter profile-text-glow">
+                      {formatNumber(balance || 0)}₴
+                    </div>
+                    <div className="text-sm text-gray-400 mt-1">Доступно для покупок</div>
+                  </div>
+                  
                   <Button
                     onClick={handleTopUp}
-                    className="w-full lg:w-auto px-4 sm:px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-xs sm:text-sm"
+                    className="profile-button-ripple w-full px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm"
                   >
-                    <CreditCard className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                    пополнить
+                    <CreditCard className="w-4 h-4 mr-2" />
+                    Пополнить баланс
                   </Button>
                 </div>
+              </div>
 
-                {/* Быстрые действия */}
-                <div className="text-center lg:text-left">
-                  <h3 className="text-base sm:text-lg font-bold text-white mb-2 sm:mb-3">Быстрые действия</h3>
-                  <div className="space-y-2">
+              {/* Быстрые действия */}
+              <div className="text-center lg:text-left animate-profile-fade-in" style={{animationDelay: '0.3s'}}>
+                <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
+                  <h3 className="text-xl font-bold text-white mb-6 profile-text-glow">Быстрые действия</h3>
+                  <div className="space-y-4">
                     <Button
                       onClick={() => navigate('/catalog')}
                       variant="outline"
-                      className="w-full py-2 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg text-xs sm:text-sm"
+                      className="profile-button-ripple w-full py-3 bg-black/40 backdrop-blur-sm border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl text-sm font-medium hover:scale-105"
                     >
-                      <ShoppingBag className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                      Каталог
+                      <ShoppingBag className="w-4 h-4 mr-2" />
+                      Каталог товаров
                     </Button>
                     <Button
                       onClick={() => navigate('/cases')}
                       variant="outline"
-                      className="w-full py-2 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg text-xs sm:text-sm"
+                      className="profile-button-ripple w-full py-3 bg-black/40 backdrop-blur-sm border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/20 rounded-xl text-sm font-medium hover:scale-105"
                     >
-                      <Gift className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                      Кейсы
+                      <Gift className="w-4 h-4 mr-2" />
+                      Открыть кейсы
                     </Button>
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* Статистика */}
-        <div className="mb-6 sm:mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-4 sm:mb-6">
-            Ваша статистика
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-3 sm:p-4 text-center">
-                <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-2 sm:mb-3 border border-amber-500/30">
-                  <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+        <div className="mb-12 sm:mb-16 animate-profile-fade-in" style={{animationDelay: '0.4s'}}>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl sm:text-4xl font-black text-white profile-text-glow mb-4">
+              Ваша статистика
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto rounded-full"></div>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {/* Покупки */}
+            <div className="profile-glass-effect profile-card-hover rounded-2xl p-6 text-center relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-amber-400/10 to-transparent rounded-full blur-2xl"></div>
+              <div className="relative z-10">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-2xl flex items-center justify-center mb-4 border border-amber-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-amber-500/20">
+                  <ShoppingBag className="w-8 h-8 text-amber-400 group-hover:animate-bounce" />
                 </div>
-                <h3 className="text-white font-semibold mb-1 text-xs sm:text-sm">Покупки</h3>
-                <p className="text-lg sm:text-xl font-bold text-amber-400">{stats.totalPurchases}</p>
-              </CardContent>
-            </Card>
+                <div className="text-2xl sm:text-3xl font-black text-amber-400 profile-stat-counter profile-text-glow mb-2">{stats.totalPurchases}</div>
+                <p className="text-sm text-gray-300 font-medium">Покупки</p>
+              </div>
+            </div>
 
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-4 text-center">
-                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 border border-amber-500/30">
-                  <TrendingUp className="w-6 h-6 text-amber-400" />
+            {/* Потрачено */}
+            <div className="profile-glass-effect profile-card-hover rounded-2xl p-6 text-center relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-green-400/10 to-transparent rounded-full blur-2xl"></div>
+              <div className="relative z-10">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-400/20 to-emerald-600/20 rounded-2xl flex items-center justify-center mb-4 border border-green-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-green-500/20">
+                  <TrendingUp className="w-8 h-8 text-green-400 group-hover:animate-bounce" />
                 </div>
-                <h3 className="text-white font-semibold mb-1 text-sm">Потрачено</h3>
-                <p className="text-xl font-bold text-amber-400">{formatNumber(stats.totalSpent)}₴</p>
-              </CardContent>
-            </Card>
+                <div className="text-2xl sm:text-3xl font-black text-green-400 profile-stat-counter profile-text-glow mb-2">{formatNumber(stats.totalSpent)}₴</div>
+                <p className="text-sm text-gray-300 font-medium">Потрачено</p>
+              </div>
+            </div>
 
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-4 text-center">
-                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 border border-amber-500/30">
-                  <Gift className="w-6 h-6 text-amber-400" />
+            {/* Кейсы открыто */}
+            <div className="profile-glass-effect profile-card-hover rounded-2xl p-6 text-center relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-400/10 to-transparent rounded-full blur-2xl"></div>
+              <div className="relative z-10">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-2xl flex items-center justify-center mb-4 border border-purple-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-purple-500/20">
+                  <Gift className="w-8 h-8 text-purple-400 group-hover:animate-bounce" />
                 </div>
-                <h3 className="text-white font-semibold mb-1 text-sm">Кейсы открыто</h3>
-                <p className="text-xl font-bold text-amber-400">{stats.casesOpened}</p>
-              </CardContent>
-            </Card>
+                <div className="text-2xl sm:text-3xl font-black text-purple-400 profile-stat-counter profile-text-glow mb-2">{stats.casesOpened}</div>
+                <p className="text-sm text-gray-300 font-medium">Кейсы открыто</p>
+              </div>
+            </div>
 
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
-              <CardContent className="p-4 text-center">
-                <div className="mx-auto w-12 h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 border border-amber-500/30">
-                  <Star className="w-6 h-6 text-amber-400" />
+            {/* Предметы продано */}
+            <div className="profile-glass-effect profile-card-hover rounded-2xl p-6 text-center relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-400/10 to-transparent rounded-full blur-2xl"></div>
+              <div className="relative z-10">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-400/20 to-cyan-600/20 rounded-2xl flex items-center justify-center mb-4 border border-blue-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-blue-500/20">
+                  <Star className="w-8 h-8 text-blue-400 group-hover:animate-bounce" />
                 </div>
-                <h3 className="text-white font-semibold mb-1 text-sm">Предметы продано</h3>
-                <p className="text-xl font-bold text-amber-400">{stats.itemsSold}</p>
-              </CardContent>
-            </Card>
+                <div className="text-2xl sm:text-3xl font-black text-blue-400 profile-stat-counter profile-text-glow mb-2">{stats.itemsSold}</div>
+                <p className="text-sm text-gray-300 font-medium">Предметы продано</p>
+              </div>
+            </div>
           </div>
         </div>
 
