@@ -388,22 +388,30 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     
     // Гладкая анимация с использованием CSS transition
     setTimeout(() => {
-      strip.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      console.log('Starting CSS animation...');
+      strip.style.transition = 'transform 5s cubic-bezier(0.23, 1, 0.32, 1)';
       strip.style.transform = `translate3d(${targetX}px, 0, 0)`;
-      
-      // Ждем полного завершения анимации + небольшая пауза для визуального эффекта
+
+      // Ждем ПОЛНОГО завершения CSS анимации
       setTimeout(() => {
-        console.log('Animation fully completed, showing result');
-        
-        // Сначала останавливаем спин
+        console.log('CSS animation completed - 5 seconds passed');
+
+        // Убираем состояние спина - рулетка остановлена
         setIsSpinning(false);
         
-        // Небольшая задержка перед показом результата для лучшего эффекта
+        // Сбрасываем transition для следующих спинов
+        strip.style.transition = '';
+
+        console.log('Roulette is now completely stopped');
+
+        // БОЛЬШАЯ задержка чтобы пользователь увидел что рулетка остановилась
         setTimeout(() => {
+          console.log('Now showing the result modal');
+          
           // Показываем результат
           setShowResult(true);
           setWinnerItem(winner);
-          
+
           // Анимация яркости viewport
           if (viewport) {
             viewport.animate([
@@ -412,22 +420,19 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
               {filter:'brightness(1.0)'}
             ], {duration:500});
           }
-          
-          console.log('Result displayed: winnerItem set to:', winner.name);
-        }, 300); // 300ms задержка перед показом результата
-        
-        // Очищаем анимацию и сбрасываем transition
+
+          console.log('Result modal displayed with winner:', winner.name);
+        }, 1000); // 1 секунда после остановки рулетки
+
+        // Очищаем анимацию
         if (animationRef.current) {
           cancelAnimationFrame(animationRef.current);
           animationRef.current = null;
         }
-        
-        // Сбрасываем transition для следующих спинов
-        strip.style.transition = '';
-        
-      }, 4100); // 4.1 секунды - чуть больше времени анимации для гарантии
-      
-    }, 100); // Небольшая задержка для применения начальной позиции
+
+      }, 5000); // Точно 5 секунд - время CSS анимации
+
+    }, 200); // Небольшая задержка для применения начальной позиции
   };
 
   const startSpin = async () => {
