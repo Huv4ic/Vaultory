@@ -64,6 +64,15 @@ export class InventoryService {
         }
       });
 
+      // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА ДАННЫХ
+      console.log('🔍 ПРОВЕРКА ВХОДНЫХ ДАННЫХ:');
+      console.log('- Telegram ID:', telegramId, typeof telegramId);
+      console.log('- Название предмета:', item.name, typeof item.name, 'Длина:', item.name?.length);
+      console.log('- Цена:', item.price, typeof item.price);
+      console.log('- Редкость:', item.rarity, typeof item.rarity);
+      console.log('- Case ID:', item.caseId, typeof item.caseId, 'Длина:', item.caseId?.length);
+      console.log('- Case Name:', item.case_name, typeof item.case_name);
+
       const insertData = {
         telegram_id: telegramId,
         item_name: item.name,
@@ -78,7 +87,7 @@ export class InventoryService {
         obtained_at: new Date().toISOString()
       };
 
-      console.log('📤 Отправляем данные в БД:', insertData);
+      console.log('📤 ФИНАЛЬНЫЕ ДАННЫЕ ДЛЯ БД:', insertData);
 
       const { data, error } = await supabase
         .from('user_inventory')
@@ -87,14 +96,21 @@ export class InventoryService {
         .single();
 
       if (error) {
-        console.error('❌ Error adding item to inventory:', error);
+        console.error('❌ ОШИБКА ПРИ ДОБАВЛЕНИИ В БД:', error);
+        console.error('❌ Код ошибки:', error.code);
+        console.error('❌ Сообщение:', error.message);
+        console.error('❌ Детали:', error.details);
+        console.error('❌ Подсказка:', error.hint);
         throw error;
       }
 
-      console.log('✅ Предмет добавлен в БД с ID:', data?.id);
+      console.log('✅ УСПЕШНО ДОБАВЛЕН В БД с ID:', data?.id);
+      console.log('✅ Полные данные ответа:', data);
       return data?.id || null;
     } catch (error) {
-      console.error('❌ Failed to add item to inventory:', error);
+      console.error('❌ КРИТИЧЕСКАЯ ОШИБКА в addItemToInventory:', error);
+      console.error('❌ Тип ошибки:', typeof error);
+      console.error('❌ Стек ошибки:', error instanceof Error ? error.stack : 'Нет стека');
       return null;
     }
   }

@@ -141,29 +141,45 @@ const CasePage = () => {
       drop_after_cases: item.drop_after_cases
     });
     
+    // ПРОВЕРЯЕМ ОБЯЗАТЕЛЬНЫЕ ПОЛЯ
+    console.log('🔍 ПРОВЕРКА ПОЛЕЙ:');
+    console.log('- Название предмета:', item.name ? '✅' : '❌', item.name);
+    console.log('- Цена предмета:', (typeof item.price === 'number' && item.price >= 0) ? '✅' : '❌', item.price);
+    console.log('- Редкость:', item.rarity ? '✅' : '❌', item.rarity);
+    console.log('- ID кейса:', item.case_id ? '✅' : '❌', item.case_id);
+    console.log('- Название кейса:', caseData?.name ? '✅' : '❌', caseData?.name);
+    console.log('- URL изображения:', item.image_url ? '✅' : '❌', item.image_url);
+    
     // ДОБАВЛЯЕМ ПРЕДМЕТ В ИНВЕНТАРЬ
     // ВАЖНО: Эта функция вызывается только при нажатии "Добавить в инвентарь"
     // При нажатии "Продать" она НЕ вызывается
     try {
       const inventoryItem = {
-        name: item.name,
-        price: item.price, // Используем цену из CaseItem
-        rarity: item.rarity,
+        name: item.name || 'Неизвестный предмет',
+        price: typeof item.price === 'number' ? item.price : 0, // Проверяем тип цены
+        rarity: item.rarity || 'common',
         type: 'case_item', // Используем фиксированное значение
-        caseId: item.case_id,
+        caseId: item.case_id || id || '', // Используем case_id из предмета или ID кейса
         case_name: caseData?.name || 'Неизвестный кейс',
         image: undefined, // У CaseItem нет поля image
-        image_url: item.image_url,
+        image_url: item.image_url || '',
         obtained_at: new Date().toISOString()
       };
       
       console.log('🎁 Создаем предмет для инвентаря:', inventoryItem);
       console.log('🔧 Вызываем addItem с предметом:', inventoryItem.name);
       console.log('💰 Цена предмета:', inventoryItem.price);
+      console.log('🆔 Case ID:', inventoryItem.caseId);
+      console.log('📦 Case Name:', inventoryItem.case_name);
+      
       await addItem(inventoryItem);
       console.log('✅ Предмет успешно добавлен в инвентарь!');
     } catch (error) {
       console.error('❌ Ошибка при добавлении предмета в инвентарь:', error);
+      console.error('❌ Детали ошибки:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
     }
     
     // Увеличиваем счетчик открытий кейса для статистики
