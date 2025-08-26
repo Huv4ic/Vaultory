@@ -306,33 +306,58 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Подписываемся на изменения профиля для real-time обновления баланса
   useEffect(() => {
-    if (!user?.id) return;
+    if (!telegramUser?.id) return;
+
+    console.log('🔄 Устанавливаем real-time подписку на баланс для telegram_id:', telegramUser.id);
 
     const subscription = supabase
-      .channel('profile_changes')
+      .channel('profile_balance_sync')
       .on(
         'postgres_changes',
         {
           event: 'UPDATE',
           schema: 'public',
           table: 'profiles',
-          filter: `id=eq.${user.id}`
+          filter: `telegram_id=eq.${telegramUser.id}`
         },
         (payload) => {
-          console.log('Profile updated:', payload);
+          console.log('🔄 REAL-TIME: Профиль обновлен:', payload);
           const newProfile = payload.new as any;
-          setProfile(newProfile);
-          if (newProfile?.balance !== undefined) {
+          
+          if (newProfile?.balance !== undefined && newProfile.balance !== balance) {
+            console.log('💰 REAL-TIME: Обновляем баланс:', { old: balance, new: newProfile.balance });
             setBalance(newProfile.balance);
+            setProfile(prev => prev ? { ...prev, balance: newProfile.balance } : newProfile);
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('🔄 Real-time subscription status:', status);
+      });
 
     return () => {
+      console.log('🔄 Отключаем real-time подписку на баланс');
       subscription.unsubscribe();
     };
-  }, [user?.id]);
+  }, [telegramUser?.id]);
+
+  // Периодическая синхронизация баланса каждые 30 секунд
+  useEffect(() => {
+    if (!telegramUser?.id) return;
+
+    const interval = setInterval(async () => {
+      try {
+        console.log('🔄 Периодическая синхронизация баланса...');
+        await refreshBalance();
+      } catch (error) {
+        console.error('❌ Ошибка периодической синхронизации баланса:', error);
+      }
+    }, 30000); // 30 секунд
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [telegramUser?.id, refreshBalance]);
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
