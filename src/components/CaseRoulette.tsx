@@ -103,21 +103,22 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
     console.log('Component props:', { caseItems: caseItems.length, casePrice, onClose: typeof onClose, onCaseOpened: typeof onCaseOpened });
     console.log('soldOrAdded state:', soldOrAdded);
     
-    // Если есть выигрышный предмет и он НЕ был продан - добавляем в инвентарь
-    if (winnerItem && !soldOrAdded && !itemWasSold) {
-      console.log('🎁 АВТОДОБАВЛЕНИЕ: Пользователь закрыл окно без выбора - автоматически добавляем предмет в инвентарь:', winnerItem.name);
-      console.log('🎁 АВТОДОБАВЛЕНИЕ: Состояния - soldOrAdded:', soldOrAdded, 'itemWasSold:', itemWasSold);
-      onCaseOpened(winnerItem, 'add');
-    } else if (winnerItem && (soldOrAdded || itemWasSold)) {
-      console.log('✅ ПРЕДМЕТ УЖЕ ОБРАБОТАН: Предмет уже продан или добавлен, НЕ добавляем в инвентарь:', winnerItem.name);
-      console.log('✅ ПРЕДМЕТ УЖЕ ОБРАБОТАН: Состояния - soldOrAdded:', soldOrAdded, 'itemWasSold:', itemWasSold);
-    } else if (!winnerItem) {
+    // Проверяем состояние предмета ПЕРЕД сбросом состояний
+    if (winnerItem) {
+      if (soldOrAdded || itemWasSold) {
+        console.log('✅ ПРЕДМЕТ УЖЕ ОБРАБОТАН: Предмет уже продан или добавлен, НЕ добавляем в инвентарь:', winnerItem.name);
+        console.log('✅ ПРЕДМЕТ УЖЕ ОБРАБОТАН: Состояния - soldOrAdded:', soldOrAdded, 'itemWasSold:', itemWasSold);
+      } else {
+        console.log('🎁 АВТОДОБАВЛЕНИЕ: Пользователь закрыл окно без выбора - автоматически добавляем предмет в инвентарь:', winnerItem.name);
+        onCaseOpened(winnerItem, 'add');
+      }
+    } else {
       console.log('ℹ️ НЕТ ПРЕДМЕТА: winnerItem отсутствует');
     }
     
     // Сбрасываем состояние при закрытии
     setSoldOrAdded(false);
-    setItemWasSold(false); // Сбрасываем состояние продажи
+    setItemWasSold(false);
     setShowResult(false);
     setWinnerItem(null);
     setIsSpinning(false);

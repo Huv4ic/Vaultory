@@ -80,6 +80,12 @@ export class InventoryService {
       console.log('- Редкость:', item.rarity, typeof item.rarity);
       console.log('- Case ID:', item.caseId, typeof item.caseId, 'Длина:', item.caseId?.length);
       console.log('- Case Name:', item.case_name, typeof item.case_name);
+      
+      // Проверяем, не был ли предмет уже продан
+      if (item.status === 'sold') {
+        console.log('🚫 Предмет уже был продан, пропускаем добавление в БД');
+        return null;
+      }
 
       const insertData = {
         telegram_id: telegramId,

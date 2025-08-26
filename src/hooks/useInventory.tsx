@@ -31,7 +31,6 @@ interface InventoryContextType {
   spent: number;
   purchased: number;
   syncInventory: () => Promise<void>;
-  clearLocalStorage: () => void;
   loading: boolean;
 }
 
@@ -45,7 +44,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
   const [purchased, setPurchased] = useState(0);
   const [loading, setLoading] = useState(false);
   
-  // Очередь для предметов, если профиль не загружен
+  // Очередь для предметов, если профиль не загружен (временно)
   const [pendingItems, setPendingItems] = useState<InventoryItem[]>([]);
 
   // Функция для загрузки инвентаря из базы данных
@@ -121,11 +120,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     if (telegramId) {
       console.log('Telegram ID found:', telegramId);
       
-      // Очищаем localStorage для предотвращения конфликтов
-      localStorage.removeItem('vaultory_inventory');
-      localStorage.removeItem('vaultory_cases_opened');
-      localStorage.removeItem('vaultory_spent');
-      localStorage.removeItem('vaultory_purchased');
+      // localStorage больше не используется - все данные на сервере
       
       // Загружаем данные из базы данных
       console.log('Loading from database...');
@@ -139,7 +134,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         setSpent(profile.total_spent);
       }
       
-      // Обрабатываем очередь предметов, если они есть
+      // Обрабатываем очередь предметов, если они есть (временно)
       if (pendingItems.length > 0) {
         console.log('Processing pending items:', pendingItems);
         pendingItems.forEach(async (pendingItem) => {
@@ -203,18 +198,17 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       const telegramId = profile?.telegram_id;
       if (!telegramId) {
         console.error('Telegram ID not found in profile, profile:', profile);
-        // Если профиль еще не загружен, добавляем в очередь
-        if (!profile) {
-          console.log('Profile not loaded yet, adding to queue...');
-          setPendingItems(prev => [...prev, item]);
-          return;
-        }
+              // Если профиль еще не загружен, ждем загрузки
+      if (!profile) {
+        console.log('Profile not loaded yet, waiting...');
+        return;
+      }
         return;
       }
 
       console.log('Adding item to database with telegramId:', telegramId);
 
-      // Простая проверка на дублирование по названию и кейсу
+      // Проверка на дублирование по названию и кейсу
       const existingItem = items.find(existingItem => 
         existingItem.name === item.name && 
         existingItem.caseId === item.caseId
@@ -222,6 +216,12 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       
       if (existingItem) {
         console.log('🚫 Предмет уже существует в инвентаре, пропускаем добавление:', existingItem);
+        return;
+      }
+      
+      // Дополнительная проверка - если предмет уже был продан, не добавляем
+      if (item.status === 'sold') {
+        console.log('🚫 Предмет уже был продан, пропускаем добавление:', item);
         return;
       }
 
@@ -382,15 +382,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     console.log('Inventory cleared (database-only mode)');
   };
 
-  // Функция для принудительной очистки localStorage (для отладки)
-  const clearLocalStorage = () => {
-    console.log('🧹 Принудительная очистка localStorage...');
-    localStorage.removeItem('vaultory_inventory');
-    localStorage.removeItem('vaultory_cases_opened');
-    localStorage.removeItem('vaultory_spent');
-    localStorage.removeItem('vaultory_purchased');
-    console.log('✅ localStorage очищен');
-  };
+  // localStorage больше не используется
 
   return (
     <InventoryContext.Provider value={{ 
@@ -407,8 +399,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       spent, 
       purchased,
       syncInventory,
-      loading,
-      clearLocalStorage
+      loading
     }}>
       {children}
     </InventoryContext.Provider>
