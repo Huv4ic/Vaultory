@@ -108,53 +108,28 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="min-h-screen product-hero-bg relative overflow-hidden">
-      {/* Анимированный фон с частицами */}
-      <div className="floating-particles">
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            className="particle"
-            style={{
-              left: `${Math.random() * 100}%`,
-              width: `${4 + Math.random() * 8}px`,
-              height: `${4 + Math.random() * 8}px`,
-              animationDelay: `${Math.random() * 15}s`,
-            }}
-          />
-        ))}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
+      {/* Декоративные элементы фона */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-amber-400/10 to-orange-500/10 rounded-full animate-pulse blur-xl"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-purple-400/10 to-pink-500/10 rounded-full animate-bounce blur-xl"></div>
+        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-gradient-to-r from-blue-400/10 to-cyan-500/10 rounded-full animate-spin blur-xl"></div>
+        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-gradient-to-r from-green-400/10 to-emerald-500/10 rounded-full animate-pulse blur-xl"></div>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative z-10 min-h-screen">
-        {/* Декоративные элементы */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-amber-400/10 to-orange-500/10 rounded-full animate-float blur-xl"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-purple-400/10 to-pink-500/10 rounded-full animate-pulse blur-xl"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-gradient-to-r from-blue-400/10 to-cyan-500/10 rounded-full animate-spin-slow blur-xl"></div>
-        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-gradient-to-r from-green-400/10 to-emerald-500/10 rounded-full animate-bounce blur-xl"></div>
-
-        {/* Основной контент */}
-        <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
-          {/* Кнопка назад с анимацией */}
-          <div className="mb-8 sm:mb-12 pt-20 sm:pt-24 md:pt-28 animate-scale-in">
-            <Button
-              onClick={() => navigate(-1)}
-              variant="outline"
-              className="group relative overflow-hidden px-6 sm:px-8 py-3 sm:py-4 bg-black/40 backdrop-blur-xl border border-amber-500/30 text-amber-300 hover:text-white transition-all duration-500 shadow-xl shadow-amber-500/20 rounded-xl text-sm sm:text-base hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/40"
-            >
-              {/* Анимированный фон */}
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Контент кнопки */}
-              <div className="relative z-10 flex items-center">
-                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
-                <span className="font-medium">Назад</span>
-              </div>
-              
-              {/* Блик */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-            </Button>
-          </div>
+      {/* Основной контент */}
+      <div className="relative z-10 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
+        {/* Кнопка назад */}
+        <div className="mb-6 sm:mb-8 pt-20 sm:pt-24 md:pt-28">
+          <Button
+            onClick={() => navigate(-1)}
+            variant="outline"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
+          >
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+            Назад
+          </Button>
+        </div>
 
         {loading ? (
           <div className="text-center py-12 sm:py-16">
@@ -566,13 +541,12 @@ const ProductPage = () => {
         </div>
       </div>
 
-        {/* Модальное окно для шаринга */}
-        <ShareModal
-          isOpen={isShareModalOpen}
-          onClose={() => setIsShareModalOpen(false)}
-          productName={product?.name || ''}
-        />
-      </div>
+      {/* Модальное окно для шаринга */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        productName={product?.name || ''}
+      />
     </div>
   );
 };
