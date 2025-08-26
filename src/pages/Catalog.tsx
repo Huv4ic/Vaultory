@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts, Product } from '@/hooks/useProducts';
 import { Search, Filter, SlidersHorizontal, ArrowLeft, Package, Star, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -19,7 +19,6 @@ const Catalog = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
-  const [visibleProducts, setVisibleProducts] = useState(15);
 
   // Функция для получения эмодзи иконки по названию
   const getCategoryIcon = (categoryName: string) => {
@@ -88,6 +87,16 @@ const Catalog = () => {
       // По умолчанию сортируем по популярности
       filteredProducts = [...filteredProducts].sort((a, b) => (b.sales || 0) - (a.sales || 0));
   }
+
+  // Группируем товары по играм - показываем все сразу
+  const groupedProducts = filteredProducts.reduce((groups, product) => {
+    const game = product.game || 'Товары'; // Если нет игры, относим к "Товары"
+    if (!groups[game]) {
+      groups[game] = [];
+    }
+    groups[game].push(product);
+    return groups;
+  }, {} as Record<string, Product[]>);
 
   const handleAddToCart = (product: any) => {
     if (!telegramUser) {
@@ -276,41 +285,47 @@ const Catalog = () => {
                 </p>
               </div>
 
-              {/* Сетка товаров */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
-                {filteredProducts.slice(0, visibleProducts).map((product, index) => (
-                  <div key={product.id} style={{ animationDelay: `${index * 0.05}s` }}>
-                    <ProductCard
-                      id={product.id}
-                      name={product.name}
-                      price={product.price}
-                      original_price={product.original_price}
-                      images={product.images}
-                      image_url={product.image_url}
-                      category_id={product.category_id}
-                      game={product.game}
-                      rating={product.rating}
-                      sales={product.sales}
-                      description={product.description}
-                      isInCart={items.some(item => item.id === product.id)}
-                      onAddToCart={() => handleAddToCart(product)}
-                      onDetails={() => navigate(`/product/${product.id}`)}
-                    />
+              {/* Товары по играм */}
+              <div className="space-y-12">
+                {Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => (
+                  <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
+                    {/* Заголовок игры */}
+                    <div className="mb-8">
+                      <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-300 bg-clip-text text-transparent text-center md:text-left">
+                        {gameName.toUpperCase()}
+                      </h3>
+                      <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent mt-3"></div>
+                    </div>
+                    
+                    {/* Товары этой игры */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+                      {gameProducts.map((product, index) => (
+                        <div 
+                          key={product.id} 
+                          style={{ animationDelay: `${(gameIndex * 5 + index) * 0.05}s` }}
+                        >
+                          <ProductCard
+                            id={product.id}
+                            name={product.name}
+                            price={product.price}
+                            original_price={product.original_price}
+                            images={product.images}
+                            image_url={product.image_url}
+                            category_id={product.category_id}
+                            game={product.game}
+                            rating={product.rating}
+                            sales={product.sales}
+                            description={product.description}
+                            isInCart={items.some(item => item.id === product.id)}
+                            onAddToCart={() => handleAddToCart(product)}
+                            onDetails={() => navigate(`/product/${product.id}`)}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
-
-              {/* Кнопка "Показать еще" */}
-              {visibleProducts < filteredProducts.length && (
-                <div className="text-center mt-8 sm:mt-12">
-                  <Button
-                    onClick={() => setVisibleProducts(prev => Math.min(prev + 15, filteredProducts.length))}
-                    className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm sm:text-base"
-                  >
-                    Показать еще
-                  </Button>
-                </div>
-              )}
             </>
           )}
         </div>

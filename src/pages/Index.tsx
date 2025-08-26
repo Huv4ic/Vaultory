@@ -15,7 +15,6 @@ import { useTranslations } from '@/hooks/useTranslations';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [visibleProducts, setVisibleProducts] = useState(15);
   const navigate = useNavigate();
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
@@ -75,7 +74,7 @@ const Index = () => {
         return productCategory && productCategory.id === selectedCategory;
       });
 
-  // Группируем товары по играм
+  // Группируем товары по играм - показываем все сразу
   const groupedProducts = filteredProducts.reduce((groups, product) => {
     const game = product.game || 'Товары'; // Если нет игры, относим к "Товары"
     if (!groups[game]) {
@@ -84,28 +83,6 @@ const Index = () => {
     groups[game].push(product);
     return groups;
   }, {} as Record<string, Product[]>);
-
-  // Получаем список игр с товарами (ограничиваем видимыми товарами)
-  const gameNames = Object.keys(groupedProducts);
-  const displayedGroupedProducts: Record<string, Product[]> = {};
-  let totalDisplayed = 0;
-
-  for (const gameName of gameNames) {
-    if (totalDisplayed >= visibleProducts) break;
-    
-    const remainingSlots = visibleProducts - totalDisplayed;
-    const gameProducts = groupedProducts[gameName];
-    const productsToShow = gameProducts.slice(0, remainingSlots);
-    
-    if (productsToShow.length > 0) {
-      displayedGroupedProducts[gameName] = productsToShow;
-      totalDisplayed += productsToShow.length;
-    }
-  }
-
-  const loadMore = () => {
-    setVisibleProducts(prev => prev + 15);
-  };
 
   const faqItems = [
     { 
@@ -243,7 +220,7 @@ const Index = () => {
 
           {/* Товары по играм */}
           <div className="space-y-12">
-            {Object.entries(displayedGroupedProducts).map(([gameName, gameProducts], gameIndex) => (
+            {Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => (
               <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
                 {/* Заголовок игры */}
                 <div className="mb-8">
@@ -283,18 +260,6 @@ const Index = () => {
               </div>
             ))}
           </div>
-
-          {totalDisplayed < filteredProducts.length && (
-            <div className="text-center mt-12">
-              <Button
-                onClick={loadMore}
-                size="lg"
-                className="bg-gradient-to-r from-red-600 to-purple-700 hover:from-red-700 hover:to-purple-800 border-none px-8 py-6 rounded-xl transform hover:scale-105 transition-all duration-500 shadow-2xl shadow-red-500/30 hover:shadow-red-500/50"
-              >
-                {t('Показать еще товары')}
-              </Button>
-            </div>
-          )}
         </div>
       </section>
 
