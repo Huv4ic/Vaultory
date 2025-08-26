@@ -373,23 +373,30 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       strip.style.transition = 'transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
       strip.style.transform = `translate3d(${targetX}px, 0, 0)`;
       
-      // Когда анимация завершена
+      // Ждем полного завершения анимации + небольшая пауза для визуального эффекта
       setTimeout(() => {
-        console.log('Animation completed, setting result');
+        console.log('Animation fully completed, showing result');
         
-        // Обновляем состояния
+        // Сначала останавливаем спин
         setIsSpinning(false);
-        setShowResult(true);
-        setWinnerItem(winner);
         
-        // Анимация яркости viewport
-        if (viewport) {
-          viewport.animate([
-            {filter:'brightness(1.0)'},
-            {filter:'brightness(1.6)'},
-            {filter:'brightness(1.0)'}
-          ], {duration:500});
-        }
+        // Небольшая задержка перед показом результата для лучшего эффекта
+        setTimeout(() => {
+          // Показываем результат
+          setShowResult(true);
+          setWinnerItem(winner);
+          
+          // Анимация яркости viewport
+          if (viewport) {
+            viewport.animate([
+              {filter:'brightness(1.0)'},
+              {filter:'brightness(1.6)'},
+              {filter:'brightness(1.0)'}
+            ], {duration:500});
+          }
+          
+          console.log('Result displayed: winnerItem set to:', winner.name);
+        }, 300); // 300ms задержка перед показом результата
         
         // Очищаем анимацию и сбрасываем transition
         if (animationRef.current) {
@@ -400,8 +407,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         // Сбрасываем transition для следующих спинов
         strip.style.transition = '';
         
-        console.log('States updated: isSpinning=false, showResult=true, winnerItem set');
-      }, 4000); // 4 секунды анимации
+      }, 4100); // 4.1 секунды - чуть больше времени анимации для гарантии
       
     }, 100); // Небольшая задержка для применения начальной позиции
   };
