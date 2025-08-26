@@ -290,11 +290,23 @@ const Catalog = () => {
                 {Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => (
                   <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
                     {/* Заголовок игры */}
-                    <div className="mb-8">
-                      <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-300 bg-clip-text text-transparent text-center md:text-left">
-                        {gameName.toUpperCase()}
-                      </h3>
-                      <div className="w-full h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent mt-3"></div>
+                    <div className="mb-8 relative">
+                      <div className="flex items-center justify-center md:justify-start mb-4">
+                        <div className="relative">
+                          <h3 className="text-3xl md:text-4xl font-black text-white tracking-wider text-center md:text-left relative z-10 drop-shadow-lg">
+                            {gameName.toUpperCase()}
+                          </h3>
+                          {/* Подсветка текста */}
+                          <div className="absolute inset-0 text-3xl md:text-4xl font-black text-amber-400/30 tracking-wider blur-sm">
+                            {gameName.toUpperCase()}
+                          </div>
+                        </div>
+                      </div>
+                      {/* Декоративная линия */}
+                      <div className="flex items-center justify-center md:justify-start">
+                        <div className="h-1 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full w-24 shadow-lg shadow-amber-500/30"></div>
+                        <div className="h-0.5 bg-gradient-to-r from-orange-600/50 to-transparent rounded-full w-32 ml-2"></div>
+                      </div>
                     </div>
                     
                     {/* Товары этой игры */}

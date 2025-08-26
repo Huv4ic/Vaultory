@@ -108,19 +108,96 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
-        <div className="text-center bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
-          <div className="text-6xl mb-6">🛒</div>
-          <h1 className="text-3xl font-bold text-white mb-4">{t('Корзина пуста')}</h1>
-          <p className="text-gray-300 mb-6 max-w-md">
-            {t('Добавьте товары из каталога, чтобы начать покупки')}
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center relative overflow-hidden">
+        {/* Анимированный фон с частицами */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400/40 rounded-full animate-bounce"></div>
+          <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-purple-400/40 rounded-full animate-bounce delay-300"></div>
+          <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-pink-400/40 rounded-full animate-bounce delay-700"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-cyan-400/30 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/3 right-1/2 w-1 h-1 bg-yellow-400/30 rounded-full animate-pulse delay-500"></div>
+        </div>
+
+        <div className="relative z-10 text-center max-w-lg mx-auto px-6">
+          {/* Главный контейнер с анимацией появления */}
+          <div className="bg-black/60 backdrop-blur-2xl rounded-3xl p-12 border border-white/10 shadow-2xl animate-fade-in-up relative overflow-hidden">
+            
+            {/* Декоративные элементы */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+            
+            {/* Анимированная иконка корзины */}
+            <div className="relative mb-8">
+              <div className="relative inline-block">
+                {/* Основная иконка */}
+                <div className="text-8xl mb-4 transform transition-all duration-500 hover:scale-110 animate-float">
+                  🛒
+                </div>
+                {/* Светящийся эффект за иконкой */}
+                <div className="absolute inset-0 text-8xl mb-4 blur-xl opacity-30 animate-pulse">
+                  🛒
+                </div>
+              </div>
+              
+              {/* Декоративные кольца вокруг иконки */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 border-2 border-white/10 rounded-full animate-spin-slow"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-white/5 rounded-full animate-spin-reverse"></div>
+            </div>
+
+            {/* Заголовок с анимированным текстом */}
+            <div className="mb-6">
+              <h1 className="text-4xl font-black text-white mb-2 tracking-wide relative">
+                <span className="relative z-10">{t('Корзина пуста')}</span>
+                {/* Подсветка текста */}
+                <div className="absolute inset-0 text-4xl font-black text-blue-400/20 blur-sm animate-pulse">
+                  {t('Корзина пуста')}
+                </div>
+              </h1>
+              
+              {/* Декоративная линия под заголовком */}
+              <div className="flex justify-center mt-4">
+                <div className="h-1 w-16 bg-white/20 rounded-full relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-slide-right"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Описание */}
+            <p className="text-gray-300 mb-8 text-lg leading-relaxed max-w-sm mx-auto">
+              {t('Добавьте товары из каталога, чтобы начать покупки')}
+            </p>
+
+            {/* Кнопка с улучшенным дизайном */}
+            <div className="relative">
+              <Button
+                onClick={() => navigate('/catalog')}
+                className="group relative px-10 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/20 text-white font-bold text-lg rounded-2xl transition-all duration-500 hover:scale-105 hover:border-white/40 hover:bg-white/20 shadow-2xl hover:shadow-white/10 overflow-hidden"
+              >
+                {/* Анимированный фон кнопки */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                {/* Светящийся эффект при hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform -skew-x-12 group-hover:translate-x-full"></div>
+                
+                <span className="relative z-10 flex items-center justify-center">
+                  <ShoppingBag className="w-5 h-5 mr-3 transition-transform duration-300 group-hover:scale-110" />
+                  {t('Перейти в каталог')}
+                </span>
+              </Button>
+              
+              {/* Дополнительное свечение под кнопкой */}
+              <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent blur-sm"></div>
+            </div>
+
+            {/* Дополнительные декоративные элементы */}
+            <div className="absolute top-6 right-6 w-3 h-3 bg-blue-400/30 rounded-full animate-ping"></div>
+            <div className="absolute bottom-6 left-6 w-2 h-2 bg-purple-400/30 rounded-full animate-ping delay-1000"></div>
+          </div>
+
+          {/* Текст подсказки снизу */}
+          <p className="text-gray-500 text-sm mt-6 animate-fade-in-delayed">
+            💡 Откройте каталог и найдите что-то интересное для себя
           </p>
-          <Button
-            onClick={() => navigate('/catalog')}
-            className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
-          >
-            {t('Перейти в каталог')}
-          </Button>
         </div>
       </div>
     );
