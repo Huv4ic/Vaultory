@@ -45,8 +45,6 @@ export const useGlobalCaseCounter = () => {
 
       if (data && data.length > 0) {
         setTotalCasesOpened(data[0].total_cases_opened);
-        // Синхронизируем с localStorage для совместимости
-        localStorage.setItem('totalCasesOpened', data[0].total_cases_opened.toString());
         return true;
       }
 
@@ -76,8 +74,6 @@ export const useGlobalCaseCounter = () => {
 
       if (data && data.length > 0) {
         setTotalCasesOpened(0);
-        // Синхронизируем с localStorage для совместимости
-        localStorage.setItem('totalCasesOpened', '0');
         return true;
       }
 
@@ -139,11 +135,7 @@ export const useGlobalCaseCounter = () => {
         await ensureGlobalCounter();
       } catch (err) {
         console.error('❌ Failed to load global counter:', err);
-        // Fallback к localStorage
-        const localCount = localStorage.getItem('totalCasesOpened');
-        if (localCount) {
-          setTotalCasesOpened(parseInt(localCount, 10));
-        }
+        // Fallback больше не используется - только база данных
       } finally {
         setIsLoading(false);
       }

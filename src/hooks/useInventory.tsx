@@ -39,18 +39,9 @@ const InventoryContext = createContext<InventoryContextType | undefined>(undefin
 export const InventoryProvider = ({ children }: { children: React.ReactNode }) => {
   const { profile } = useAuth();
   const [items, setItems] = useState<InventoryItem[]>([]);
-  const [casesOpened, setCasesOpened] = useState(() => {
-    const saved = localStorage.getItem('vaultory_cases_opened');
-    return saved ? Number(saved) : 0;
-  });
-  const [spent, setSpent] = useState(() => {
-    const saved = localStorage.getItem('vaultory_spent');
-    return saved ? Number(saved) : 0;
-  });
-  const [purchased, setPurchased] = useState(() => {
-    const saved = localStorage.getItem('vaultory_purchased');
-    return saved ? Number(saved) : 0;
-  });
+  const [casesOpened, setCasesOpened] = useState(0);
+  const [spent, setSpent] = useState(0);
+  const [purchased, setPurchased] = useState(0);
   const [loading, setLoading] = useState(false);
   
   // Очередь для предметов, если профиль не загружен
@@ -118,14 +109,17 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     const telegramId = profile?.telegram_id;
     if (telegramId) {
       console.log('Telegram ID found:', telegramId);
-      // Проверяем, есть ли данные в localStorage для миграции
-      const localInventory = localStorage.getItem('vaultory_inventory');
-      if (localInventory) {
-        console.log('Found local inventory, migrating...');
-        migrateLocalStorage(telegramId);
-      } else {
-        console.log('No local inventory, loading from database...');
-        loadInventoryFromDatabase(telegramId);
+      
+      // Загружаем данные из базы данных
+      console.log('Loading from database...');
+      loadInventoryFromDatabase(telegramId);
+      
+      // Загружаем статистику из профиля
+      if (profile.cases_opened !== undefined) {
+        setCasesOpened(profile.cases_opened);
+      }
+      if (profile.total_spent !== undefined) {
+        setSpent(profile.total_spent);
       }
       
       // Обрабатываем очередь предметов, если они есть
@@ -148,21 +142,7 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     }
   }, [profile]);
 
-  // Сохраняем данные в localStorage при изменении
-  useEffect(() => {
-    localStorage.setItem('vaultory_inventory', JSON.stringify(items));
-  }, [items]);
-
-  // Сохраняем остальные данные в localStorage
-  useEffect(() => {
-    localStorage.setItem('vaultory_cases_opened', String(casesOpened));
-  }, [casesOpened]);
-  useEffect(() => {
-    localStorage.setItem('vaultory_spent', String(spent));
-  }, [spent]);
-  useEffect(() => {
-    localStorage.setItem('vaultory_purchased', String(purchased));
-  }, [purchased]);
+  // Данные теперь хранятся только в базе данных, localStorage не используется
 
   const addItem = async (item: InventoryItem & { spent?: number; purchased?: boolean }) => {
     try {
@@ -190,28 +170,19 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         
         if (newItemId) {
           console.log('Item added successfully to database with ID:', newItemId);
-          // Обновляем локальное состояние
+          // Обновляем локальное состояние инвентаря
           const newItem = { ...item, id: newItemId, status: 'new' as const };
           setItems(prev => [...prev, newItem]);
-          setCasesOpened(prev => prev + 1);
-          if (item.spent) setSpent(prev => prev + item.spent);
-          if (item.purchased) setPurchased(prev => prev + 1);
+          
+          // Статистика обновляется через профиль в базе данных, локальные счетчики не используются
+          console.log('Item added to inventory, statistics will be updated via profile');
         } else {
           console.error('Failed to get new item ID from database');
           throw new Error('Database operation failed');
         }
       } catch (dbError) {
-        console.error('Database error, falling back to localStorage:', dbError);
-        // Fallback на localStorage
-        const newItem = {
-          ...item,
-          status: 'new' as const,
-          id: Date.now().toString() + Math.random().toString(36).substr(2, 9)
-        };
-        setItems(prev => [...prev, newItem]);
-        setCasesOpened(prev => prev + 1);
-        if (item.spent) setSpent(prev => prev + item.spent);
-        if (item.purchased) setPurchased(prev => prev + 1);
+        console.error('Database error - item not added:', dbError);
+        throw dbError; // Пробрасываем ошибку, fallback на localStorage больше не используется
       }
     } catch (error) {
       console.error('Failed to add item:', error);
@@ -335,11 +306,8 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
     setSpent(0);
     setPurchased(0);
     
-    // Также очищаем localStorage
-    localStorage.removeItem('vaultory_inventory');
-    localStorage.removeItem('vaultory_cases_opened');
-    localStorage.removeItem('vaultory_spent');
-    localStorage.removeItem('vaultory_purchased');
+    // Данные теперь хранятся только в базе данных
+    console.log('Inventory cleared (database-only mode)');
   };
 
   // Функция для принудительной очистки localStorage (для отладки)
