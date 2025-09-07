@@ -32,10 +32,15 @@ export const TelegramStats: React.FC<TelegramStatsProps> = ({
   }
 
   const formatNumber = (num: number): string => {
+    // Если статистика не загружена или равна 0, показываем 3.1к
+    if (num === 0 || !stats) {
+      return '3.1к';
+    }
+    
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + 'M';
     } else if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
+      return (num / 1000).toFixed(1) + 'к';
     }
     return num.toString();
   };

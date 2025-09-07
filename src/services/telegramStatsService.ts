@@ -37,8 +37,8 @@ export class TelegramStatsService {
   ): Promise<boolean> {
     try {
       const { error } = await supabase.rpc('update_telegram_stats', {
-        channel_username: channelUsername,
-        subscribers_count: subscribersCount
+        p_channel_username: channelUsername,
+        p_subscribers_count: subscribersCount
       });
 
       if (error) {
@@ -57,7 +57,7 @@ export class TelegramStatsService {
   static async getStatsViaRPC(channelUsername: string): Promise<{subscribers_count: number, last_updated: string} | null> {
     try {
       const { data, error } = await supabase.rpc('get_telegram_stats', {
-        channel_username: channelUsername
+        p_channel_username: channelUsername
       });
 
       if (error) {
