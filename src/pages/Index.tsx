@@ -176,74 +176,99 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Telegram канал - красивое окно */}
-      <section className="py-16 px-4 relative overflow-hidden bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
-        {/* Анимированный фон */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-cyan-500/20 rounded-full animate-spin" style={{animationDuration: '30s'}}></div>
-        </div>
-        
-        <div className="container mx-auto relative z-10">
-          <div className="max-w-4xl mx-auto">
+      {/* Telegram канал - современное окно */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="max-w-5xl mx-auto">
             {/* Основное окно */}
-            <div className="bg-gradient-to-br from-slate-800/90 via-gray-800/90 to-slate-900/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-8 md:p-12 relative overflow-hidden">
-              {/* Декоративные элементы */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-full blur-2xl"></div>
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-pink-500/10 to-transparent rounded-full blur-2xl"></div>
-              
-              <div className="relative z-10">
-                {/* Заголовок */}
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent animate-fade-in">
-                    /// ПРИСОЕДИНЯЙСЯ К НАШЕМУ СООБЩЕСТВУ \\\
-                  </h2>
-                  <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                    Получай эксклюзивные предложения, участвуй в розыгрышах и будь в курсе всех новинок
-                  </p>
-                </div>
-
-                {/* Статистика канала */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="text-center p-4 bg-white/5 rounded-2xl border border-cyan-500/20 backdrop-blur-sm">
-                    <div className="text-2xl font-bold text-cyan-400 mb-1">3,101</div>
-                    <div className="text-sm text-gray-400">подписчиков</div>
+            <div className="relative group">
+              {/* Главная карточка */}
+              <div className="bg-gradient-to-br from-gray-900/95 via-slate-900/95 to-black/95 backdrop-blur-2xl rounded-3xl border border-gray-700/50 shadow-2xl p-8 md:p-12 relative overflow-hidden">
+                {/* Световые эффекты */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-purple-500/5 rounded-3xl"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-t-3xl"></div>
+                
+                <div className="relative z-10">
+                  {/* Заголовок */}
+                  <div className="text-center mb-10">
+                    <div className="inline-flex items-center space-x-2 mb-4">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                      <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse delay-100"></div>
+                      <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse delay-200"></div>
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">
+                      ПРИСОЕДИНЯЙСЯ К СООБЩЕСТВУ
+                    </h2>
+                    <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed font-medium">
+                      Эксклюзивные предложения, розыгрыши и первыми узнавай о новинках
+                    </p>
                   </div>
-                  <div className="text-center p-4 bg-white/5 rounded-2xl border border-pink-500/20 backdrop-blur-sm">
-                    <div className="text-2xl font-bold text-pink-400 mb-1">24/7</div>
-                    <div className="text-sm text-gray-400">поддержка</div>
-                  </div>
-                  <div className="text-center p-4 bg-white/5 rounded-2xl border border-purple-500/20 backdrop-blur-sm">
-                    <div className="text-2xl font-bold text-purple-400 mb-1">100%</div>
-                    <div className="text-sm text-gray-400">гарантия</div>
-                  </div>
-                </div>
 
-                {/* Кнопка перехода */}
-                <div className="text-center">
-                  <a
-                    href="https://t.me/vaultorysell"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center space-x-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl shadow-cyan-500/30 hover:shadow-cyan-400/40 transition-all duration-300 hover:scale-105 transform"
-                  >
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                    </svg>
-                    <span>Перейти в Telegram</span>
-                  </a>
-                </div>
+                  {/* Статистика канала */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div className="group/stat relative">
+                      <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 rounded-2xl p-6 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300 hover:scale-105">
+                        <div className="text-center">
+                          <div className="text-4xl font-black text-blue-400 mb-2 group-hover/stat:scale-110 transition-transform duration-300">3,101</div>
+                          <div className="text-sm font-medium text-gray-400 uppercase tracking-wider">подписчиков</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="group/stat relative">
+                      <div className="bg-gradient-to-br from-pink-500/10 to-pink-600/5 rounded-2xl p-6 border border-pink-500/20 hover:border-pink-400/40 transition-all duration-300 hover:scale-105">
+                        <div className="text-center">
+                          <div className="text-4xl font-black text-pink-400 mb-2 group-hover/stat:scale-110 transition-transform duration-300">24/7</div>
+                          <div className="text-sm font-medium text-gray-400 uppercase tracking-wider">поддержка</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="group/stat relative">
+                      <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 rounded-2xl p-6 border border-purple-500/20 hover:border-purple-400/40 transition-all duration-300 hover:scale-105">
+                        <div className="text-center">
+                          <div className="text-4xl font-black text-purple-400 mb-2 group-hover/stat:scale-110 transition-transform duration-300">100%</div>
+                          <div className="text-sm font-medium text-gray-400 uppercase tracking-wider">гарантия</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                {/* Дополнительная информация */}
-                <div className="mt-8 text-center">
-                  <p className="text-sm text-gray-400 mb-4">
-                    🔥 Эксклюзивные скидки только для подписчиков
-                  </p>
-                  <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-500">
-                    <span>✅ Проверенные товары</span>
-                    <span>✅ Мгновенная доставка</span>
-                    <span>✅ Гарантия качества</span>
+                  {/* Кнопка перехода */}
+                  <div className="text-center mb-8">
+                    <a
+                      href="https://t.me/vaultorysell"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/btn inline-flex items-center space-x-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-500 hover:via-purple-500 hover:to-pink-500 text-white font-bold px-10 py-5 rounded-2xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 transform relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></div>
+                      <svg className="w-7 h-7 relative z-10" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                      </svg>
+                      <span className="text-lg relative z-10">Перейти в Telegram</span>
+                    </a>
+                  </div>
+
+                  {/* Дополнительная информация */}
+                  <div className="text-center">
+                    <div className="inline-flex items-center space-x-2 mb-6">
+                      <div className="w-1 h-1 bg-yellow-400 rounded-full"></div>
+                      <span className="text-yellow-400 font-semibold text-sm uppercase tracking-wider">Эксклюзивные скидки только для подписчиков</span>
+                      <div className="w-1 h-1 bg-yellow-400 rounded-full"></div>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-6 text-sm">
+                      <div className="flex items-center space-x-2 text-gray-400">
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <span>Проверенные товары</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-gray-400">
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <span>Мгновенная доставка</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-gray-400">
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <span>Гарантия качества</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
