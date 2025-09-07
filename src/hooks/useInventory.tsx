@@ -14,6 +14,7 @@ export interface InventoryItem {
   image?: string;
   image_url?: string;
   status?: 'new' | 'sold' | 'withdrawn';
+  withdrawal_status?: 'available' | 'withdrawal_requested' | 'withdrawn' | 'withdrawal_rejected';
   obtained_at?: string;
 }
 
@@ -55,14 +56,21 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       
       // Инициализируем статистику пользователя если её нет
       try {
-        await supabase.rpc('initialize_user_statistics', { user_telegram_id: telegramId });
-        console.log('✅ Статистика пользователя инициализирована');
+        console.log('🔧 Инициализируем статистику пользователя...');
+        const { data: statsData, error: statsError } = await supabase.rpc('initialize_user_statistics', { user_telegram_id: telegramId });
+        if (statsError) {
+          console.warn('⚠️ Ошибка инициализации статистики:', statsError);
+        } else {
+          console.log('✅ Статистика пользователя инициализирована:', statsData);
+        }
       } catch (statsError) {
         console.warn('⚠️ Не удалось инициализировать статистику:', statsError);
       }
       
+      console.log('🔍 Загружаем предметы из инвентаря...');
       const dbItems = await InventoryService.getUserInventory(telegramId);
       console.log('📦 Получено предметов из БД:', dbItems.length);
+      console.log('📋 Детали предметов:', dbItems);
       
       // Конвертируем DatabaseInventoryItem в InventoryItem
       const convertedItems: InventoryItem[] = dbItems.map(dbItem => ({
@@ -80,15 +88,24 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
         withdrawal_status: dbItem.withdrawal_status
       }));
 
+      console.log('🔄 Конвертированные предметы:', convertedItems);
+
       // Простая дедупликация по ID
       const uniqueItems = convertedItems.filter((item, index, self) => 
         index === self.findIndex(t => t.id === item.id)
       );
 
+      console.log('🔄 Уникальные предметы после дедупликации:', uniqueItems);
       setItems(uniqueItems);
       console.log('✅ Загружено', uniqueItems.length, 'предметов из базы данных');
     } catch (error) {
       console.error('❌ Failed to load inventory from database:', error);
+      console.error('❌ Детали ошибки:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint
+      });
       // Если ошибка, устанавливаем пустой массив для новых пользователей
       setItems([]);
     } finally {
