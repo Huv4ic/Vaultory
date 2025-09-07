@@ -65,10 +65,10 @@ export const TelegramStats: React.FC<TelegramStatsProps> = ({
 
   return (
     <div className={`flex flex-col items-center ${className}`}>
-      <div className="text-2xl font-bold text-cyan-400">
+      <div className="text-2xl sm:text-3xl md:text-4xl font-black text-cyan-400 mb-1 sm:mb-2">
         {formatNumber(subscribersCount)}
       </div>
-      <div className="text-sm text-gray-300">
+      <div className="text-xs sm:text-sm font-medium text-gray-400 uppercase tracking-wider">
         ПОДПИСЧИКОВ
       </div>
       {showLastUpdated && lastUpdated && (
