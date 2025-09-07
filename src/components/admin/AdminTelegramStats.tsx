@@ -30,13 +30,17 @@ export const AdminTelegramStats: React.FC = () => {
     try {
       setLoading(true);
       
+      console.log('🔄 Получаем статистику из Telegram API...');
+      
       // Получаем актуальную статистику из Telegram
       const channelInfo = await TelegramBotAPI.getChannelInfo();
       
       if (!channelInfo) {
-        showError('Не удалось получить статистику из Telegram');
+        showError('Не удалось получить статистику из Telegram. Проверьте настройки бота.');
         return;
       }
+
+      console.log('📊 Получена статистика:', channelInfo.members_count, 'подписчиков');
 
       // Обновляем в базе данных
       const success = await TelegramStatsService.updateChannelStats(
@@ -45,14 +49,14 @@ export const AdminTelegramStats: React.FC = () => {
       );
 
       if (success) {
-        showSuccess('Статистика успешно обновлена!');
+        showSuccess(`Статистика успешно обновлена! Подписчиков: ${channelInfo.members_count}`);
         await loadStats(); // Перезагружаем статистику
       } else {
         showError('Не удалось обновить статистику в базе данных');
       }
     } catch (error) {
       console.error('Ошибка обновления статистики:', error);
-      showError('Ошибка при обновлении статистики');
+      showError(`Ошибка при обновлении статистики: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -89,7 +93,7 @@ export const AdminTelegramStats: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Кнопки управления */}
-          <div className="flex space-x-4">
+          <div className="flex flex-wrap gap-4">
             <Button 
               onClick={loadStats}
               disabled={loading}
@@ -107,6 +111,30 @@ export const AdminTelegramStats: React.FC = () => {
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               <span>Обновить из Telegram</span>
+            </Button>
+
+            <Button 
+              onClick={async () => {
+                try {
+                  setLoading(true);
+                  const channelInfo = await TelegramBotAPI.getChannelInfo();
+                  if (channelInfo) {
+                    showSuccess(`API работает! Подписчиков: ${channelInfo.members_count}`);
+                  } else {
+                    showError('API не работает. Проверьте настройки бота.');
+                  }
+                } catch (error) {
+                  showError(`Ошибка API: ${error.message}`);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+              variant="secondary"
+              className="flex items-center space-x-2"
+            >
+              <CheckCircle className="w-4 h-4" />
+              <span>Тест API</span>
             </Button>
           </div>
 

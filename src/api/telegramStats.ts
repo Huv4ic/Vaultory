@@ -15,7 +15,7 @@ export interface TelegramBotResponse {
 }
 
 export class TelegramBotAPI {
-  private static readonly BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN;
+  private static readonly BOT_TOKEN = process.env.REACT_APP_TELEGRAM_BOT_TOKEN || '8079495251:AAF5h2-x5SHUzy5TUFvTrdc5-gTBaAO1i8U';
   private static readonly CHANNEL_USERNAME = 'vaultorysell';
 
   // Получить информацию о канале через Telegram Bot API
