@@ -30,13 +30,14 @@ export const useWithdrawalRequests = () => {
           .select('count(*)', { count: 'exact', head: true });
         
         if (error) {
-          console.error('❌ Таблица withdrawal_requests не найдена:', error);
-          showError('Таблица withdrawal_requests не создана в базе данных. Выполните SQL скрипт.');
+          console.warn('⚠️ Таблица withdrawal_requests не найдена, пропускаем проверку:', error);
+          // Временно не показываем ошибку пользователю
+          // showError('Таблица withdrawal_requests не создана в базе данных. Выполните SQL скрипт.');
         } else {
           console.log('✅ Таблица withdrawal_requests существует');
         }
       } catch (err) {
-        console.error('❌ Ошибка при проверке таблицы:', err);
+        console.warn('⚠️ Ошибка при проверке таблицы, пропускаем:', err);
       }
     };
     
