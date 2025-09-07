@@ -282,34 +282,34 @@ const Inventory = () => {
           
           {/* Заголовок с анимациями */}
           <div className="text-center animate-inventory-fade-in" style={{animationDelay: '0.2s'}}>
-            <div className="inline-flex items-center justify-center mb-6">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-ping mr-4"></div>
-              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent rounded-full"></div>
-              <div className="mx-8 relative">
-                <h1 className="text-5xl md:text-6xl font-black text-white relative z-10 drop-shadow-lg">
+            <div className="inline-flex items-center justify-center mb-4 sm:mb-6">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-ping mr-2 sm:mr-4"></div>
+              <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent rounded-full"></div>
+              <div className="mx-4 sm:mx-6 md:mx-8 relative">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white relative z-10 drop-shadow-lg">
                   <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 bg-clip-text text-transparent">
                     📦 Инвентарь
                   </span>
                 </h1>
                 {/* Подсветка заголовка */}
-                <div className="absolute inset-0 text-5xl md:text-6xl font-black text-green-400/20 blur-sm">
+                <div className="absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-green-400/20 blur-sm">
                   📦 Инвентарь
                 </div>
               </div>
-              <div className="w-24 h-1 bg-gradient-to-l from-transparent via-green-400 to-transparent rounded-full"></div>
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-ping ml-4"></div>
+              <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-l from-transparent via-green-400 to-transparent rounded-full"></div>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-ping ml-2 sm:ml-4"></div>
             </div>
             
-            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90 mb-8">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90 mb-8 text-center px-4">
               Ваши <span className="text-green-400 font-semibold">уникальные предметы</span>, полученные из кейсов. 
               Продавайте или выводите их для получения прибыли!
             </p>
             
             {/* Декоративная линия */}
             <div className="flex items-center justify-center">
-              <div className="w-32 h-0.5 bg-gradient-to-r from-transparent to-green-400 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-400 rounded-full mx-4 animate-pulse"></div>
-              <div className="w-32 h-0.5 bg-gradient-to-l from-transparent to-green-400 rounded-full"></div>
+              <div className="w-20 sm:w-24 md:w-32 h-0.5 bg-gradient-to-r from-transparent to-green-400 rounded-full"></div>
+              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full mx-2 sm:mx-4 animate-pulse"></div>
+              <div className="w-20 sm:w-24 md:w-32 h-0.5 bg-gradient-to-l from-transparent to-green-400 rounded-full"></div>
             </div>
           </div>
         </div>

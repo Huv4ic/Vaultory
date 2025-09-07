@@ -244,33 +244,33 @@ const Profile = () => {
         <div className="relative z-10 container mx-auto px-4 py-16 text-center">
           {/* Анимированный заголовок */}
           <div className="mb-8 animate-profile-fade-in">
-            <div className="inline-flex items-center justify-center mb-6">
-              <div className="w-2 h-2 bg-amber-400 rounded-full animate-ping mr-4"></div>
-              <div className="w-20 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent rounded-full"></div>
-              <div className="mx-6 relative">
-                <h1 className="text-5xl md:text-6xl font-black profile-text-glow bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
+            <div className="inline-flex items-center justify-center mb-4 sm:mb-6">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-ping mr-2 sm:mr-4"></div>
+              <div className="w-16 sm:w-20 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent rounded-full"></div>
+              <div className="mx-4 sm:mx-6 relative">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black profile-text-glow bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
                   👤 {t('Профиль')}
                 </h1>
                 {/* Подсветка заголовка */}
-                <div className="absolute inset-0 text-5xl md:text-6xl font-black text-amber-400/20 blur-sm">
+                <div className="absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-amber-400/20 blur-sm">
                   👤 {t('Профиль')}
                 </div>
               </div>
-              <div className="w-20 h-1 bg-gradient-to-l from-transparent via-amber-400 to-transparent rounded-full"></div>
-              <div className="w-2 h-2 bg-amber-400 rounded-full animate-ping ml-4"></div>
+              <div className="w-16 sm:w-20 h-1 bg-gradient-to-l from-transparent via-amber-400 to-transparent rounded-full"></div>
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-ping ml-2 sm:ml-4"></div>
             </div>
             
-            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90 text-center px-4">
               Добро пожаловать в ваш <span className="text-amber-400 font-semibold">личный кабинет</span>! 
               Здесь вы можете управлять аккаунтом, просматривать статистику и совершать покупки.
             </p>
           </div>
           
           {/* Декоративная линия */}
-          <div className="flex items-center justify-center mb-8">
-            <div className="w-32 h-0.5 bg-gradient-to-r from-transparent to-amber-400 rounded-full"></div>
-            <div className="w-3 h-3 bg-amber-400 rounded-full mx-4 animate-pulse"></div>
-            <div className="w-32 h-0.5 bg-gradient-to-l from-transparent to-amber-400 rounded-full"></div>
+          <div className="flex items-center justify-center mb-6 sm:mb-8">
+            <div className="w-20 sm:w-24 md:w-32 h-0.5 bg-gradient-to-r from-transparent to-amber-400 rounded-full"></div>
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full mx-2 sm:mx-4 animate-pulse"></div>
+            <div className="w-20 sm:w-24 md:w-32 h-0.5 bg-gradient-to-l from-transparent to-amber-400 rounded-full"></div>
           </div>
         </div>
       </div>
