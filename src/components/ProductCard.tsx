@@ -79,10 +79,10 @@ const ProductCard = ({
           {/* Голографический эффект */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform skew-x-12 group-hover:translate-x-full"></div>
 
-          {/* Скидочный бейдж */}
+          {/* Скидочный бейдж - маленький сверху */}
           {original_price && original_price > price && (
-            <div className="absolute top-3 left-3 z-20">
-              <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg shadow-green-500/50 animate-pulse">
+            <div className="absolute top-2 left-2 z-20">
+              <div className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg animate-pulse">
                 -{Math.round(((original_price - price) / original_price) * 100)}%
               </div>
             </div>
@@ -94,74 +94,71 @@ const ProductCard = ({
             disabled={loading}
             size="sm"
             variant="ghost"
-            className="absolute top-3 right-3 z-20 bg-black/50 backdrop-blur-md hover:bg-black/70 transition-all duration-300 p-2 h-10 w-10 rounded-full border border-gray-500/30 hover:border-gray-400 hover:shadow-lg hover:shadow-gray-500/50"
+            className="absolute top-2 right-2 z-20 bg-black/50 backdrop-blur-md hover:bg-black/70 transition-all duration-300 p-1.5 h-8 w-8 rounded-full border border-gray-500/30 hover:border-gray-400 hover:shadow-lg hover:shadow-gray-500/50"
           >
             <Heart 
-              className={`w-5 h-5 transition-all duration-300 ${
+              className={`w-4 h-4 transition-all duration-300 ${
                 isFavorite(id) 
                   ? 'text-red-500 fill-current drop-shadow-lg' 
                   : 'text-white hover:text-red-400 hover:drop-shadow-lg'
               }`} 
             />
           </Button>
-
-          {/* Светящаяся рамка снизу */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-60 group-hover:opacity-100 transition-opacity duration-700"></div>
         </div>
 
-        {/* Контент */}
-        <div className="p-5 flex flex-col flex-1 min-h-0 relative z-10">
-          {/* Название с эффектом свечения */}
-          <h3 className="text-white font-bold mb-4 line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:via-purple-400 group-hover:to-pink-400 transition-all duration-500 text-base leading-tight drop-shadow-sm">
-            {getProductTranslation(id, 'name', name)}
-          </h3>
-
-          {/* Цена с неоновым эффектом */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex flex-col space-y-1">
-              <div className="flex items-center space-x-2">
-                <span className="text-2xl font-black bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg">
-                  {price}₴
-                </span>
-                {original_price && original_price > price && (
-                  <span className="text-gray-500 line-through text-sm font-medium">
-                    {original_price}₴
+        {/* Нижняя часть в стиле GGFort */}
+        <div className="relative flex-1 flex flex-col">
+          {/* Неоновый бар с информацией */}
+          <div className="relative bg-gradient-to-r from-purple-600/90 via-pink-600/90 to-blue-600/90 backdrop-blur-xl rounded-b-2xl p-4 flex-1 flex flex-col justify-center group-hover:from-purple-500/90 group-hover:via-pink-500/90 group-hover:to-blue-500/90 transition-all duration-500">
+            {/* Светящиеся эффекты */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 rounded-b-2xl border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <div className="relative z-10 text-center">
+              {/* Название товара */}
+              <h3 className="text-white font-bold text-sm mb-2 line-clamp-2 drop-shadow-lg">
+                {getProductTranslation(id, 'name', name)}
+              </h3>
+              
+              {/* Цены встроенные в дизайн */}
+              <div className="flex items-center justify-center space-x-2 mb-2">
+                {original_price && original_price > price ? (
+                  <>
+                    <span className="text-gray-300 line-through text-xs font-medium">
+                      {original_price}₴
+                    </span>
+                    <span className="text-white font-black text-lg drop-shadow-lg">
+                      {price}₴
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-white font-black text-lg drop-shadow-lg">
+                    {price}₴
                   </span>
                 )}
               </div>
+              
+              {/* Статистика продаж */}
               {sales && (
-                <div className="flex items-center">
-                  <div className="px-3 py-1 bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 text-xs font-bold rounded-full border border-purple-500/30 backdrop-blur-sm">
+                <div className="flex items-center justify-center">
+                  <div className="px-2 py-1 bg-white/20 text-white/90 text-xs font-medium rounded-full border border-white/30 backdrop-blur-sm">
                     <Star className="w-3 h-3 inline mr-1" />
                     {sales} {t('продаж')}
                   </div>
                 </div>
               )}
             </div>
-          </div>
-        </div>
-
-        {/* Кнопки */}
-        <div className="p-5 pt-0 mt-auto relative z-10">
-          <div className="flex flex-col space-y-3 w-full">
-            <Button
-              onClick={onDetails}
-              variant="outline"
-              size="sm"
-              className="w-full border-2 border-purple-500/40 text-purple-300 hover:bg-purple-500/10 hover:border-purple-400 hover:text-purple-200 transition-all duration-300 hover:scale-105 h-12 text-sm font-bold rounded-xl backdrop-blur-sm hover:shadow-lg hover:shadow-purple-500/30"
-            >
-              <Eye className="w-4 h-4 mr-2" />
-              {t('Подробнее')}
-            </Button>
-
-            <Button
+            
+            {/* Интерактивная область - вся нижняя часть кликабельна */}
+            <div 
+              className="absolute inset-0 rounded-b-2xl cursor-pointer"
               onClick={onAddToCart}
-              size="sm"
-              className="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-700 hover:via-pink-700 hover:to-blue-700 text-white shadow-xl shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105 h-12 text-sm font-bold rounded-xl border border-purple-500/30 hover:border-purple-400 backdrop-blur-sm"
-            >
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              {isInCart ? t('В корзине') : t('В корзину')}
-            </Button>
+              onDoubleClick={onDetails}
+              title={`${isInCart ? t('В корзине') : t('В корзину')} | ${t('Двойной клик для подробностей')}`}
+            ></div>
+            
+            {/* Hover эффект для всей области */}
+            <div className="absolute inset-0 bg-white/10 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
         </div>
 
