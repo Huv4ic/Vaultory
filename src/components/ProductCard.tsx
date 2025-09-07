@@ -56,8 +56,8 @@ const ProductCard = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Основная карточка с красивым дизайном */}
-      <div className="relative bg-gradient-to-br from-gray-900/95 via-slate-800/95 to-gray-900/95 backdrop-blur-xl rounded-2xl border border-gray-700/50 hover:border-gray-600/70 transition-all duration-500 transform hover:scale-[1.03] hover:-translate-y-3 group overflow-hidden h-full flex flex-col shadow-2xl hover:shadow-gray-500/20">
+      {/* Основная карточка в стиле GGFort */}
+      <div className="relative bg-gradient-to-br from-slate-900/95 via-gray-800/95 to-slate-900/95 backdrop-blur-xl rounded-2xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-2 group overflow-hidden h-full flex flex-col shadow-2xl hover:shadow-purple-500/30">
         
         {/* Анимированный фон с частицами */}
         <div className="absolute inset-0 overflow-hidden rounded-2xl">
@@ -67,9 +67,13 @@ const ProductCard = ({
           <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-pink-400/40 rounded-full animate-bounce delay-700"></div>
         </div>
 
-        {/* Изображение с эффектами */}
-        <div className="relative h-48 overflow-hidden flex-shrink-0 rounded-t-2xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-purple-600/10 z-10"></div>
+        {/* Изображение с эффектами в стиле GGFort */}
+        <div className="relative h-48 overflow-hidden flex-shrink-0 rounded-t-2xl bg-gradient-to-br from-gray-800 to-gray-900">
+          {/* Пьедестал как в GGFort */}
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-8 bg-gradient-to-t from-gray-700 to-gray-600 rounded-full shadow-lg"></div>
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-6 bg-gradient-to-t from-purple-600/30 to-purple-500/20 rounded-full blur-sm"></div>
+          
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-transparent to-pink-600/10 z-10"></div>
           <img
             src={image}
             alt={name}
@@ -78,6 +82,9 @@ const ProductCard = ({
           
           {/* Голографический эффект */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform skew-x-12 group-hover:translate-x-full"></div>
+          
+          {/* Светящаяся рамка снизу */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 opacity-60 group-hover:opacity-100 transition-opacity duration-700"></div>
 
           {/* Скидочный бейдж - маленький сверху */}
           {original_price && original_price > price && (
@@ -109,10 +116,10 @@ const ProductCard = ({
         {/* Нижняя часть в стиле GGFort */}
         <div className="relative flex-1 flex flex-col">
           {/* Неоновый бар с информацией */}
-          <div className="relative bg-gradient-to-r from-purple-600/90 via-pink-600/90 to-blue-600/90 backdrop-blur-xl rounded-b-2xl p-4 flex-1 flex flex-col justify-center group-hover:from-purple-500/90 group-hover:via-pink-500/90 group-hover:to-blue-500/90 transition-all duration-500">
+          <div className="relative bg-gradient-to-r from-purple-600/95 via-pink-600/95 to-blue-600/95 backdrop-blur-xl rounded-b-2xl p-3 flex-1 flex flex-col justify-center group-hover:from-purple-500/95 group-hover:via-pink-500/95 group-hover:to-blue-500/95 transition-all duration-500">
             {/* Светящиеся эффекты */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute inset-0 rounded-b-2xl border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-pink-500/30 to-blue-500/30 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 rounded-b-2xl border-2 border-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-lg shadow-purple-500/50"></div>
             
             <div className="relative z-10 text-center">
               {/* Название товара */}
@@ -149,16 +156,30 @@ const ProductCard = ({
               )}
             </div>
             
-            {/* Интерактивная область - вся нижняя часть кликабельна */}
+            {/* Интерактивная область - вся нижняя часть кликабельна для открытия товара */}
             <div 
               className="absolute inset-0 rounded-b-2xl cursor-pointer"
-              onClick={onAddToCart}
-              onDoubleClick={onDetails}
-              title={`${isInCart ? t('В корзине') : t('В корзину')} | ${t('Двойной клик для подробностей')}`}
+              onClick={onDetails}
+              title={t('Нажмите для просмотра товара')}
             ></div>
             
             {/* Hover эффект для всей области */}
-            <div className="absolute inset-0 bg-white/10 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-white/15 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            
+            {/* Кнопка добавления в корзину - отдельная */}
+            <div className="absolute bottom-2 right-2 z-20">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAddToCart();
+                }}
+                size="sm"
+                className="h-8 w-8 p-0 bg-white/20 hover:bg-white/30 border border-white/30 hover:border-white/50 rounded-full transition-all duration-300 hover:scale-110"
+                title={isInCart ? t('В корзине') : t('Добавить в корзину')}
+              >
+                <ShoppingCart className="w-4 h-4 text-white" />
+              </Button>
+            </div>
           </div>
         </div>
 
