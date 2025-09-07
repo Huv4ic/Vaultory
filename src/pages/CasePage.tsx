@@ -82,12 +82,12 @@ const CasePage = () => {
 
       setCaseData(formattedCase);
 
-      // Загружаем предметы кейса
-      const { data, error: itemsError } = await supabase
-        .from('admin_case_items') // Используем admin_case_items вместо case_items
-        .select('*')
-        .eq('case_id', id)
-        .order('name');
+                    // Загружаем предметы кейса
+       const { data, error: itemsError } = await supabase
+         .from('admin_case_items') // Используем admin_case_items вместо case_items
+         .select('*')
+         .eq('case_id', id)
+         .order('name');
 
       if (itemsError) throw itemsError;
 
