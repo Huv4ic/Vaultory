@@ -18,7 +18,13 @@ import {
   Tag,
   Zap,
   Award,
-  TrendingUp
+  TrendingUp,
+  Crown,
+  Flame,
+  Target,
+  Rocket,
+  Sparkles,
+  Gem
 } from 'lucide-react';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/hooks/useCart';
@@ -108,26 +114,41 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      {/* Декоративные элементы фона */}
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Анимированный фон */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-amber-400/10 to-orange-500/10 rounded-full animate-pulse blur-xl"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-purple-400/10 to-pink-500/10 rounded-full animate-bounce blur-xl"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-gradient-to-r from-blue-400/10 to-cyan-500/10 rounded-full animate-spin blur-xl"></div>
-        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-gradient-to-r from-green-400/10 to-emerald-500/10 rounded-full animate-pulse blur-xl"></div>
+        {/* Плавающие частицы */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full opacity-80"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400 rounded-full animate-bounce opacity-40"></div>
+        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-green-400 rounded-full opacity-90"></div>
+        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-orange-400 rounded-full animate-bounce opacity-50"></div>
+        
+        {/* Светящиеся линии */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+        
+        {/* Большие светящиеся элементы */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full blur-xl"></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-xl"></div>
+        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-gradient-to-r from-pink-500/10 to-yellow-500/10 rounded-full blur-xl"></div>
+        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-full blur-xl"></div>
       </div>
 
       {/* Основной контент */}
       <div className="relative z-10 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Кнопка назад */}
-        <div className="mb-6 sm:mb-8 pt-20 sm:pt-24 md:pt-28">
+        <div className="mb-8 pt-20">
           <Button
             onClick={() => navigate(-1)}
-            variant="outline"
-            className="px-4 sm:px-6 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="group relative px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25"
           >
-            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-            Назад
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+            <div className="relative flex items-center gap-3">
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+              <span>Назад</span>
+            </div>
           </Button>
         </div>
 
@@ -148,199 +169,245 @@ const ProductPage = () => {
             </Button>
           </div>
         ) : product ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Левая колонка - изображения */}
-            <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-6">
               {/* Главное изображение */}
-              <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6">
-                <div className="aspect-square rounded-lg sm:rounded-xl overflow-hidden bg-gradient-to-br from-amber-400/20 to-amber-600/20 border border-amber-500/30">
-                  <img
-                    src={selectedImage}
-                    alt={product.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-6 hover:border-cyan-400/50 transition-all duration-500">
+                  <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-cyan-400/20 to-purple-600/20 border border-cyan-500/30 relative">
+                    {/* Декоративные кольца */}
+                    <div className="absolute inset-2 border border-cyan-400/20 rounded-xl animate-spin-slow"></div>
+                    <div className="absolute inset-4 border border-purple-400/20 rounded-xl animate-spin-reverse"></div>
+                    
+                    <img
+                      src={selectedImage}
+                      alt={product.name}
+                      className="relative z-10 w-full h-full object-contain hover:scale-110 transition-transform duration-500"
+                    />
+                    
+                    {/* Магические частицы */}
+                    <div className="absolute top-4 right-4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
+                    <div className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-purple-400 rounded-full animate-ping opacity-80"></div>
+                    <div className="absolute top-1/2 left-2 w-1 h-1 bg-pink-400 rounded-full animate-bounce opacity-70"></div>
+                  </div>
                 </div>
               </div>
 
               {/* Миниатюры */}
               {product.images && product.images.length > 1 && (
-                <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6">
-                  <h3 className="text-sm sm:text-base font-semibold text-white mb-3 sm:mb-4">Другие изображения</h3>
-                  <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3">
-                    {product.images.map((image, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedImage(image)}
-                        className={`aspect-square rounded-lg overflow-hidden border-2 transition-all duration-300 hover:scale-105 ${
-                          selectedImage === image
-                            ? 'border-amber-400 shadow-lg shadow-amber-500/30'
-                            : 'border-amber-500/30 hover:border-amber-400/50'
-                        }`}
-                      >
-                        <img
-                          src={image}
-                          alt={`${product.name} ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </button>
-                    ))}
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                  <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-6 hover:border-purple-400/50 transition-all duration-500">
+                    <h3 className="text-lg font-black text-white mb-4 flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-purple-400" />
+                      Другие изображения
+                    </h3>
+                    <div className="grid grid-cols-4 gap-3">
+                      {product.images.map((image, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setSelectedImage(image)}
+                          className={`group/thumb aspect-square rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-110 relative ${
+                            selectedImage === image
+                              ? 'border-cyan-400 shadow-lg shadow-cyan-500/30'
+                              : 'border-purple-500/30 hover:border-purple-400/50'
+                          }`}
+                        >
+                          <img
+                            src={image}
+                            alt={`${product.name} ${index + 1}`}
+                            className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-300"
+                          />
+                          {selectedImage === image && (
+                            <div className="absolute inset-0 bg-cyan-400/20 flex items-center justify-center">
+                              <CheckCircle className="w-6 h-6 text-cyan-400" />
+                            </div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Правая колонка - информация */}
-            <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-6">
               {/* Основная информация */}
-              <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6">
-                <div className="flex items-start justify-between mb-3 sm:mb-4">
-                  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">{product.name}</h1>
-                  <div className="flex items-center space-x-2 sm:space-x-3">
-                    <Button
-                      onClick={handleShare}
-                      size="sm"
-                      variant="outline"
-                      className="w-8 h-8 sm:w-10 sm:h-10 p-0 border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-300 transition-all duration-300"
-                    >
-                      <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </Button>
-                    <Button
-                      onClick={() => toggleFavorite(product.id)}
-                      size="sm"
-                      variant="outline"
-                      disabled={favoritesLoading}
-                      className={`w-8 h-8 sm:w-10 sm:h-10 p-0 transition-all duration-300 ${
-                        isFavorite(product.id)
-                          ? 'border-red-500/30 text-red-400 hover:bg-red-500/20 hover:border-red-400 hover:text-red-300'
-                          : 'border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-300'
-                      }`}
-                    >
-                      <Heart className={`w-3 h-3 sm:w-4 sm:h-4 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
-                    </Button>
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-pink-500/30 p-8 hover:border-pink-400/50 transition-all duration-500">
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex-1">
+                      <h1 className="text-3xl md:text-4xl font-black text-white mb-2 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                        {product.name}
+                      </h1>
+                      <div className="flex items-center gap-2">
+                        <Gem className="w-5 h-5 text-pink-400" />
+                        <span className="text-gray-400 text-sm">Премиум товар</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Button
+                        onClick={handleShare}
+                        size="sm"
+                        className="w-12 h-12 p-0 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl transition-all duration-300 hover:scale-110 shadow-lg shadow-cyan-500/25"
+                      >
+                        <Share2 className="w-5 h-5" />
+                      </Button>
+                      <Button
+                        onClick={() => toggleFavorite(product.id)}
+                        size="sm"
+                        disabled={favoritesLoading}
+                        className={`w-12 h-12 p-0 rounded-xl transition-all duration-300 hover:scale-110 ${
+                          isFavorite(product.id)
+                            ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white shadow-lg shadow-red-500/25'
+                            : 'bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white shadow-lg shadow-purple-500/25'
+                        }`}
+                      >
+                        <Heart className={`w-5 h-5 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
+                      </Button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Цена */}
-                <div className="mb-3 sm:mb-4">
-                  <div className="flex items-center space-x-3 sm:space-x-4">
-                    <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-400">{product.price}₴</span>
+                  {/* Цена */}
+                  <div className="mb-6">
+                    <div className="flex items-center space-x-4 mb-3">
+                      <span className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                        {product.price}₴
+                      </span>
+                      {product.original_price && product.original_price > product.price && (
+                        <span className="text-xl text-gray-400 line-through">{product.original_price}₴</span>
+                      )}
+                    </div>
                     {product.original_price && product.original_price > product.price && (
-                      <span className="text-lg sm:text-xl text-gray-400 line-through">{product.original_price}₴</span>
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl border border-green-500/30">
+                        <Target className="w-4 h-4 text-green-400" />
+                        <span className="text-green-400 font-bold">
+                          Скидка {Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
+                        </span>
+                      </div>
                     )}
                   </div>
-                  {product.original_price && product.original_price > product.price && (
-                    <div className="mt-2">
-                      <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs sm:text-sm">
-                        Скидка {Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
-                      </Badge>
-                    </div>
-                  )}
-                </div>
 
-                {/* Рейтинг и продажи */}
-                <div className="flex items-center space-x-4 sm:space-x-6 mb-3 sm:mb-4">
-                  {product.rating && (
-                    <div className="flex items-center space-x-1 sm:space-x-2">
-                      <Star className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 fill-current" />
-                      <span className="text-sm sm:text-base text-white font-medium">{product.rating}</span>
-                    </div>
-                  )}
-                  {product.sales && (
-                    <div className="flex items-center space-x-1 sm:space-x-2">
-                      <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
-                      <span className="text-sm sm:text-base text-gray-300">{product.sales} продаж</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Игра */}
-                {product.game && (
-                  <div className="mb-3 sm:mb-4">
-                    <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs sm:text-sm">
-                      {product.game}
-                    </Badge>
-                  </div>
-                )}
-
-                {/* Описание */}
-                {product.description && (
-                  <div className="mb-4 sm:mb-6">
-                    <h3 className="text-sm sm:text-base font-semibold text-white mb-2">Описание</h3>
-                    <p className="text-sm sm:text-base text-gray-300 leading-relaxed">{product.description}</p>
-                  </div>
-                )}
-
-                {/* Количество */}
-                <div className="mb-4 sm:mb-6">
-                  <label className="block text-sm sm:text-base font-medium text-white mb-2">Количество</label>
-                  <div className="flex items-center space-x-3 sm:space-x-4">
-                    <Button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      size="sm"
-                      className="w-8 h-8 sm:w-10 sm:h-10 p-0 bg-gradient-to-r from-red-600 to-purple-700 hover:from-red-700 hover:to-purple-800 border border-red-500/30 text-white hover:text-red-100 transition-all duration-300 rounded-lg shadow-lg shadow-red-500/20 hover:shadow-red-500/40 hover:scale-105"
-                    >
-                      -
-                    </Button>
-                    <span className="text-lg sm:text-xl font-bold text-white min-w-[3rem] text-center">{quantity}</span>
-                    <Button
-                      onClick={() => setQuantity(quantity + 1)}
-                      size="sm"
-                      className="w-8 h-8 sm:w-10 sm:h-10 p-0 bg-gradient-to-r from-red-600 to-purple-700 hover:from-red-700 hover:to-purple-800 border border-red-500/30 text-white hover:text-red-100 transition-all duration-300 rounded-lg shadow-lg shadow-red-500/20 hover:shadow-red-500/40 hover:scale-105"
-                    >
-                      +
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Кнопки действий */}
-                <div className="space-y-3 sm:space-y-4">
-                  <Button
-                    onClick={handleAddToCart}
-                    disabled={isInCart}
-                    className="w-full py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isInCart ? (
-                      <>
-                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                        Уже в корзине
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                        Добавить в корзину
-                      </>
+                  {/* Рейтинг и продажи */}
+                  <div className="flex items-center space-x-6 mb-6">
+                    {product.rating && (
+                      <div className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl border border-yellow-500/30">
+                        <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                        <span className="text-white font-bold">{product.rating}</span>
+                      </div>
                     )}
-                  </Button>
-                  
-                  <Button
-                    onClick={() => navigate('/cart')}
-                    variant="outline"
-                    className="w-full py-3 sm:py-4 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
-                  >
-                    <Eye className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                    Перейти в корзину
-                  </Button>
+                    {product.sales && (
+                      <div className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl border border-green-500/30">
+                        <TrendingUp className="w-5 h-5 text-green-400" />
+                        <span className="text-gray-300 font-medium">{product.sales} продаж</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Игра */}
+                  {product.game && (
+                    <div className="mb-6">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl border border-blue-500/30">
+                        <Crown className="w-4 h-4 text-blue-400" />
+                        <span className="text-blue-400 font-bold">{product.game}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Описание */}
+                  {product.description && (
+                    <div className="mb-6">
+                      <h3 className="text-lg font-black text-white mb-3 flex items-center gap-2">
+                        <Flame className="w-5 h-5 text-orange-400" />
+                        Описание
+                      </h3>
+                      <p className="text-gray-300 leading-relaxed">{product.description}</p>
+                    </div>
+                  )}
+
+                  {/* Количество */}
+                  <div className="mb-6">
+                    <label className="block text-lg font-black text-white mb-3 flex items-center gap-2">
+                      <Target className="w-5 h-5 text-cyan-400" />
+                      Количество
+                    </label>
+                    <div className="flex items-center space-x-4">
+                      <Button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        size="sm"
+                        className="w-12 h-12 p-0 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white rounded-xl transition-all duration-300 hover:scale-110 shadow-lg shadow-red-500/25"
+                      >
+                        -
+                      </Button>
+                      <span className="text-2xl font-black text-white min-w-[4rem] text-center bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                        {quantity}
+                      </span>
+                      <Button
+                        onClick={() => setQuantity(quantity + 1)}
+                        size="sm"
+                        className="w-12 h-12 p-0 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white rounded-xl transition-all duration-300 hover:scale-110 shadow-lg shadow-green-500/25"
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Кнопки действий */}
+                  <div className="space-y-4">
+                    <Button
+                      onClick={handleAddToCart}
+                      disabled={isInCart}
+                      className="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isInCart ? (
+                        <>
+                          <CheckCircle className="w-6 h-6 mr-3" />
+                          Уже в корзине
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="w-6 h-6 mr-3" />
+                          Добавить в корзину
+                        </>
+                      )}
+                    </Button>
+                    
+                    <Button
+                      onClick={() => navigate('/cart')}
+                      className="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-purple-500/25"
+                    >
+                      <Eye className="w-6 h-6 mr-3" />
+                      Перейти в корзину
+                    </Button>
+                  </div>
                 </div>
               </div>
 
               {/* Информация о доставке */}
-              <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 flex items-center">
-                  <Truck className="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-amber-400" />
-                  Доставка и гарантия
-                </h3>
-                <div className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-300">
-                  <div className="flex items-center space-x-2 sm:space-x-3">
-                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
-                    <span>Мгновенная доставка</span>
-                  </div>
-                  <div className="flex items-center space-x-2 sm:space-x-3">
-                    <Shield className="w-4 h-4 sm:w-5 sm:w-5 text-blue-400" />
-                    <span>Гарантия качества</span>
-                  </div>
-                  <div className="flex items-center space-x-2 sm:space-x-3">
-                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
-                    <span>Официальный товар</span>
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-green-500/30 p-8 hover:border-green-400/50 transition-all duration-500">
+                  <h3 className="text-2xl font-black text-white mb-6 flex items-center gap-3">
+                    <Rocket className="w-6 h-6 text-green-400" />
+                    Доставка и гарантия
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3 p-3 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl border border-green-500/20">
+                      <Clock className="w-5 h-5 text-green-400" />
+                      <span className="text-white font-medium">Мгновенная доставка</span>
+                    </div>
+                    <div className="flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/20">
+                      <Shield className="w-5 h-5 text-blue-400" />
+                      <span className="text-white font-medium">Гарантия качества</span>
+                    </div>
+                    <div className="flex items-center space-x-3 p-3 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl border border-yellow-500/20">
+                      <CheckCircle className="w-5 h-5 text-yellow-400" />
+                      <span className="text-white font-medium">Официальный товар</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -363,107 +430,87 @@ const ProductPage = () => {
 
       {/* Похожие товары */}
       <div className="mt-32 max-w-[1920px] mx-auto px-4 relative">
-        {/* Декоративный фон */}
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-purple-500/5 rounded-3xl blur-3xl"></div>
-        
         {/* Заголовок секции */}
-        <div className="relative z-10 text-center mb-16 animate-scale-in">
-          <div className="inline-flex items-center mb-6">
-            <div className="w-16 h-1 bg-gradient-to-r from-transparent to-amber-400 rounded-full"></div>
-            <div className="mx-6">
-              <h2 className="text-4xl sm:text-5xl font-black text-white relative">
-                <span className="bg-gradient-to-r from-white via-amber-100 to-white bg-clip-text text-transparent">
-                  Похожие товары
-                </span>
-                {/* Подсветка текста */}
-                <div className="absolute inset-0 text-4xl sm:text-5xl font-black text-amber-400/20 blur-sm">
-                  Похожие товары
-                </div>
-              </h2>
-            </div>
-            <div className="w-16 h-1 bg-gradient-to-l from-transparent to-amber-400 rounded-full"></div>
-          </div>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            ПОХОЖИЕ ТОВАРЫ
+          </h2>
+          <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full mb-6"></div>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Откройте для себя другие удивительные товары из этой категории
+            Откройте для себя другие <span className="text-cyan-400 font-bold">удивительные товары</span> из этой категории
           </p>
         </div>
         
         {/* Сетка товаров */}
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products
             .filter(p => p.id !== product.id && p.category_id === product.category_id)
             .slice(0, 4)
             .map((similarProduct, index) => (
               <div 
                 key={similarProduct.id}
-                className="group product-info-card product-card-3d rounded-3xl p-6 cursor-pointer animate-scale-in hover:shadow-2xl hover:shadow-amber-500/30 relative overflow-hidden"
+                className="group relative cursor-pointer"
                 onClick={() => navigate(`/product/${similarProduct.id}`)}
-                style={{ animationDelay: `${index * 0.15}s` }}
               >
-                {/* Декоративные элементы */}
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-amber-400/10 to-transparent rounded-full blur-xl"></div>
-                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full blur-xl"></div>
-                
-                {/* Изображение */}
-                <div className="relative mb-6">
-                  <div className="w-full h-40 bg-gradient-to-br from-amber-400/20 via-orange-500/20 to-purple-600/20 rounded-2xl flex items-center justify-center overflow-hidden border border-amber-500/20 holographic-effect product-image-glow">
-                    {/* Декоративные кольца */}
-                    <div className="absolute inset-2 border border-amber-400/10 rounded-xl animate-spin-slow"></div>
-                    <div className="absolute inset-4 border border-purple-400/10 rounded-xl animate-spin-reverse"></div>
-                    
-                    <img
-                      src={
-                        (similarProduct.images && similarProduct.images.length > 0) 
-                          ? similarProduct.images[0] 
-                          : (similarProduct.image_url || '/placeholder.svg')
-                      }
-                      alt={similarProduct.name}
-                      className="relative z-10 w-full h-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-500"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = '/placeholder.svg';
-                      }}
-                    />
-                    
-                    {/* Магические частицы */}
-                    <div className="absolute top-3 right-3 w-1.5 h-1.5 bg-amber-400 rounded-full sparkle"></div>
-                    <div className="absolute bottom-4 left-4 w-1 h-1 bg-purple-400 rounded-full sparkle-delay-1"></div>
-                  </div>
-                </div>
-                
-                {/* Информация о товаре */}
-                <div className="relative z-10">
-                  <h4 className="text-white font-bold mb-3 line-clamp-2 text-base group-hover:text-amber-100 transition-colors duration-300">
-                    {similarProduct.name}
-                  </h4>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <span className="text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-                        {similarProduct.price}₴
-                      </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
+                  {/* Изображение */}
+                  <div className="relative mb-6">
+                    <div className="w-full h-40 bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-2xl flex items-center justify-center overflow-hidden border border-cyan-500/30 relative">
+                      {/* Декоративные кольца */}
+                      <div className="absolute inset-2 border border-cyan-400/20 rounded-xl animate-spin-slow"></div>
+                      <div className="absolute inset-4 border border-purple-400/20 rounded-xl animate-spin-reverse"></div>
+                      
+                      <img
+                        src={
+                          (similarProduct.images && similarProduct.images.length > 0) 
+                            ? similarProduct.images[0] 
+                            : (similarProduct.image_url || '/placeholder.svg')
+                        }
+                        alt={similarProduct.name}
+                        className="relative z-10 w-full h-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-500"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/placeholder.svg';
+                        }}
+                      />
+                      
+                      {/* Магические частицы */}
+                      <div className="absolute top-3 right-3 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
+                      <div className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-purple-400 rounded-full animate-ping opacity-80"></div>
                     </div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="group/btn w-12 h-12 p-0 bg-black/40 backdrop-blur-sm border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/40 rounded-xl hover:scale-110"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addItem({
-                          id: similarProduct.id,
-                          name: similarProduct.name,
-                          price: similarProduct.price,
-                          image_url: similarProduct.images && similarProduct.images.length > 0 ? similarProduct.images[0] : '/placeholder.svg'
-                        });
-                      }}
-                    >
-                      <ShoppingCart className="w-5 h-5 group-hover/btn:animate-bounce" />
-                    </Button>
+                  </div>
+                  
+                  {/* Информация о товаре */}
+                  <div className="relative z-10">
+                    <h4 className="text-white font-black mb-3 line-clamp-2 text-lg group-hover:text-cyan-100 transition-colors duration-300">
+                      {similarProduct.name}
+                    </h4>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <span className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                          {similarProduct.price}₴
+                        </span>
+                      </div>
+                      <Button
+                        size="sm"
+                        className="w-12 h-12 p-0 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white rounded-xl transition-all duration-300 hover:scale-110 shadow-lg shadow-cyan-500/25"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addItem({
+                            id: similarProduct.id,
+                            name: similarProduct.name,
+                            price: similarProduct.price,
+                            image_url: similarProduct.images && similarProduct.images.length > 0 ? similarProduct.images[0] : '/placeholder.svg'
+                          });
+                        }}
+                      >
+                        <ShoppingCart className="w-5 h-5" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
-                
-                {/* Эффект при наведении */}
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
               </div>
             ))}
         </div>
@@ -471,72 +518,51 @@ const ProductPage = () => {
 
       {/* Дополнительная информация */}
       <div className="mt-32 mb-20 max-w-[1920px] mx-auto px-4">
-        <div className="text-center mb-16 animate-scale-in">
-          <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 relative">
-            <span className="bg-gradient-to-r from-white via-amber-100 to-white bg-clip-text text-transparent">
-              Почему выбирают нас
-            </span>
-            {/* Подсветка текста */}
-            <div className="absolute inset-0 text-3xl sm:text-4xl font-black text-amber-400/20 blur-sm">
-              Почему выбирают нас
-            </div>
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            ПОЧЕМУ ВЫБИРАЮТ НАС
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto rounded-full"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="group product-info-card rounded-3xl p-8 text-center animate-scale-in hover:shadow-2xl hover:shadow-amber-500/30 relative overflow-hidden" style={{animationDelay: '0.1s'}}>
-            {/* Декоративные элементы */}
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-400/10 to-transparent rounded-full blur-xl"></div>
-            
-            <div className="relative z-10">
-              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-2xl flex items-center justify-center mb-6 border border-amber-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-amber-500/20">
-                <Award className="w-10 h-10 text-amber-400 group-hover:animate-bounce" />
+          <div className="group relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105 text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-xl shadow-cyan-500/20">
+                <Award className="w-10 h-10 text-white" />
               </div>
-              <h4 className="text-xl font-bold text-white mb-4 group-hover:text-amber-100 transition-colors duration-300">Гарантия качества</h4>
+              <h4 className="text-2xl font-black text-white mb-4 group-hover:text-cyan-100 transition-colors duration-300">Гарантия качества</h4>
               <p className="text-gray-300 leading-relaxed">
-                Все товары официальные и лицензированные. Мы гарантируем подлинность каждого продукта.
+                Все товары <span className="text-cyan-400 font-bold">официальные</span> и лицензированные. Мы гарантируем подлинность каждого продукта.
               </p>
             </div>
-            
-            {/* Эффект при наведении */}
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
           
-          <div className="group product-info-card rounded-3xl p-8 text-center animate-scale-in hover:shadow-2xl hover:shadow-green-500/30 relative overflow-hidden" style={{animationDelay: '0.2s'}}>
-            {/* Декоративные элементы */}
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-green-400/10 to-transparent rounded-full blur-xl"></div>
-            
-            <div className="relative z-10">
-              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-green-400/20 to-emerald-600/20 rounded-2xl flex items-center justify-center mb-6 border border-green-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-green-500/20">
-                <Zap className="w-10 h-10 text-green-400 group-hover:animate-bounce" />
+          <div className="group relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-green-500/30 p-8 hover:border-green-400/50 transition-all duration-500 hover:scale-105 text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-xl shadow-green-500/20">
+                <Zap className="w-10 h-10 text-white" />
               </div>
-              <h4 className="text-xl font-bold text-white mb-4 group-hover:text-green-100 transition-colors duration-300">Быстрая доставка</h4>
+              <h4 className="text-2xl font-black text-white mb-4 group-hover:text-green-100 transition-colors duration-300">Быстрая доставка</h4>
               <p className="text-gray-300 leading-relaxed">
-                Товары доставляются мгновенно после оплаты. Никаких ожиданий - получайте сразу!
+                Товары доставляются <span className="text-green-400 font-bold">мгновенно</span> после оплаты. Никаких ожиданий - получайте сразу!
               </p>
             </div>
-            
-            {/* Эффект при наведении */}
-            <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
           
-          <div className="group product-info-card rounded-3xl p-8 text-center animate-scale-in hover:shadow-2xl hover:shadow-purple-500/30 relative overflow-hidden" style={{animationDelay: '0.3s'}}>
-            {/* Декоративные элементы */}
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-purple-400/10 to-transparent rounded-full blur-xl"></div>
-            
-            <div className="relative z-10">
-              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-2xl flex items-center justify-center mb-6 border border-purple-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-purple-500/20">
-                <TrendingUp className="w-10 h-10 text-purple-400 group-hover:animate-bounce" />
+          <div className="group relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-8 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-xl shadow-purple-500/20">
+                <TrendingUp className="w-10 h-10 text-white" />
               </div>
-              <h4 className="text-xl font-bold text-white mb-4 group-hover:text-purple-100 transition-colors duration-300">Популярность</h4>
+              <h4 className="text-2xl font-black text-white mb-4 group-hover:text-purple-100 transition-colors duration-300">Популярность</h4>
               <p className="text-gray-300 leading-relaxed">
-                Высокий рейтинг и много положительных отзывов от довольных клиентов по всему миру.
+                Высокий рейтинг и много <span className="text-purple-400 font-bold">положительных отзывов</span> от довольных клиентов по всему миру.
               </p>
             </div>
-            
-            {/* Эффект при наведении */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
         </div>
       </div>
