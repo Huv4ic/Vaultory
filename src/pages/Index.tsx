@@ -258,17 +258,17 @@ const Index = () => {
         </div>
         
         <div className="container mx-auto relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-red-400 via-purple-400 to-slate-300 bg-clip-text text-transparent animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-white animate-fade-in">
             {t('Популярные игры')}
           </h2>
           
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
             <button
               onClick={() => setSelectedCategory('all')}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-500 transform hover:scale-105 flex items-center space-x-3 ${
+              className={`px-6 py-3 rounded-2xl font-medium transition-all duration-300 transform hover:scale-[1.02] flex items-center space-x-3 ${
                 selectedCategory === 'all'
-                  ? 'bg-gradient-to-r from-red-600 to-purple-700 text-white shadow-2xl shadow-red-500/30'
-                  : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-red-500/20 hover:text-red-300 border border-gray-700/50 hover:border-red-500/30'
+                  ? 'bg-white text-black shadow-lg'
+                  : 'bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 border border-white/20 hover:border-white/30'
               }`}
             >
               <span className="text-lg">🎮</span>
@@ -278,10 +278,10 @@ const Index = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-3 rounded-xl font-medium transition-all duration-500 transform hover:scale-105 flex items-center space-x-3 ${
+                className={`px-6 py-3 rounded-2xl font-medium transition-all duration-300 transform hover:scale-[1.02] flex items-center space-x-3 ${
                   selectedCategory === category.id
-                    ? 'bg-gradient-to-r from-red-600 to-purple-700 text-white shadow-2xl shadow-red-500/30'
-                    : 'bg-gray-800/50 backdrop-blur-sm text-gray-300 hover:bg-red-500/20 hover:text-red-300 border border-gray-700/50 hover:border-red-500/30'
+                    ? 'bg-white text-black shadow-lg'
+                    : 'bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 border border-white/20 hover:border-white/30'
                 }`}
               >
                 <span className="text-lg">{getCategoryIcon(category.name)}</span>
@@ -297,20 +297,14 @@ const Index = () => {
                 {/* Заголовок игры */}
                 <div className="mb-8 relative">
                   <div className="flex items-center justify-center md:justify-start mb-4">
-                    <div className="relative">
-                      <h3 className="text-3xl md:text-4xl font-black text-white tracking-wider text-center md:text-left relative z-10 drop-shadow-lg">
-                        {gameName.toUpperCase()}
-                      </h3>
-                      {/* Подсветка текста */}
-                      <div className="absolute inset-0 text-3xl md:text-4xl font-black text-red-400/30 tracking-wider blur-sm">
-                        {gameName.toUpperCase()}
-                      </div>
-                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold text-white tracking-wide text-center md:text-left">
+                      {gameName.toUpperCase()}
+                    </h3>
                   </div>
                   {/* Декоративная линия */}
                   <div className="flex items-center justify-center md:justify-start">
-                    <div className="h-1 bg-gradient-to-r from-red-500 to-purple-600 rounded-full w-24 shadow-lg shadow-red-500/30"></div>
-                    <div className="h-0.5 bg-gradient-to-r from-purple-600/50 to-transparent rounded-full w-32 ml-2"></div>
+                    <div className="h-px bg-white/30 w-16"></div>
+                    <div className="h-px bg-white/10 w-24 ml-2"></div>
                   </div>
                 </div>
                 
