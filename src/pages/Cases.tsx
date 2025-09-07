@@ -148,16 +148,16 @@ const Cases = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-700 opacity-0 group-hover:opacity-100"></div>
               
               {/* Основная карточка */}
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-gray-800/50 p-6 hover:border-cyan-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2">
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-gray-800/50 p-4 hover:border-cyan-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2">
                 
                 {/* Изображение кейса */}
-                <div className="relative mb-6">
+                <div className="relative mb-4">
                   {caseData.image_url ? (
-                    <div className="relative w-full h-48 rounded-2xl overflow-hidden">
+                    <div className="relative w-full h-64 rounded-2xl overflow-hidden">
                       <img 
                         src={caseData.image_url} 
                         alt={caseData.name}
-                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                        className="w-full h-full object-contain transition-all duration-700 group-hover:scale-110"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.style.display = 'none';
@@ -172,7 +172,7 @@ const Cases = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="w-full h-48 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center">
+                    <div className="w-full h-64 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center">
                       <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl shadow-cyan-500/30">
                         <Gift className="w-8 h-8 text-white" />
                       </div>
@@ -185,37 +185,29 @@ const Cases = () => {
                 </div>
                 
                 {/* Информация о кейсе */}
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {/* Название */}
-                  <h3 className="text-xl font-black text-white group-hover:text-cyan-400 transition-colors duration-300">
+                  <h3 className="text-lg font-black text-white group-hover:text-cyan-400 transition-colors duration-300 text-center">
                     {caseData.name}
                   </h3>
                   
-                  {/* Игра */}
-                  <div className="flex items-center gap-2 text-gray-400">
-                    <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
-                      <Package className="w-3 h-3 text-white" />
-                    </div>
-                    <span className="text-sm font-medium">{caseData.game}</span>
-                  </div>
-                  
-                  {/* Цена */}
+                  {/* Игра и цена в одной строке */}
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center">
-                        <Sparkles className="w-3 h-3 text-white" />
+                    <div className="flex items-center gap-2 text-gray-400">
+                      <div className="w-5 h-5 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
+                        <Package className="w-2.5 h-2.5 text-white" />
                       </div>
-                      <span className="text-gray-400 text-sm">Цена</span>
+                      <span className="text-xs font-medium">{caseData.game}</span>
                     </div>
-                    <span className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                    <span className="text-xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                       {caseData.price}₴
                     </span>
                   </div>
                   
                   {/* Кнопка открыть */}
-                  <div className="pt-4">
-                    <div className="w-full h-12 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:from-cyan-400 group-hover:to-purple-500 transition-all duration-300 shadow-lg shadow-cyan-500/25">
-                      <span className="text-white font-bold text-sm">ОТКРЫТЬ КЕЙС</span>
+                  <div className="pt-1">
+                    <div className="w-full h-10 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:from-cyan-400 group-hover:to-purple-500 transition-all duration-300 shadow-lg shadow-cyan-500/25">
+                      <span className="text-white font-bold text-xs">ОТКРЫТЬ КЕЙС</span>
                     </div>
                   </div>
                 </div>
