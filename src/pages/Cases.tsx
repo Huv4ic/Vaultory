@@ -56,14 +56,14 @@ const Cases = () => {
       <div className="absolute inset-0">
         {/* Плавающие частицы */}
         <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse opacity-80"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full opacity-80"></div>
         <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400 rounded-full animate-bounce opacity-40"></div>
         <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-green-400 rounded-full animate-pulse opacity-90"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-green-400 rounded-full opacity-90"></div>
         
         {/* Светящиеся линии */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent animate-pulse"></div>
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
       </div>
 
       {/* Hero Section */}
@@ -74,10 +74,10 @@ const Cases = () => {
             <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full mb-6 animate-spin-slow shadow-2xl shadow-cyan-500/30">
               <Crown className="w-10 h-10 md:w-12 md:h-12 text-white" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-glow">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               ИГРОВЫЕ КЕЙСЫ
             </h1>
-            <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full animate-pulse"></div>
+            <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
@@ -181,7 +181,7 @@ const Cases = () => {
                   
                   {/* Светящиеся углы */}
                   <div className="absolute top-2 right-2 w-3 h-3 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-                  <div className="absolute bottom-2 left-2 w-2 h-2 bg-purple-400 rounded-full animate-pulse opacity-80"></div>
+                  <div className="absolute bottom-2 left-2 w-2 h-2 bg-purple-400 rounded-full opacity-80"></div>
                 </div>
                 
                 {/* Информация о кейсе */}
