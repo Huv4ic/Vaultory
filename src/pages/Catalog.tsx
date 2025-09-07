@@ -7,7 +7,7 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useProducts, Product } from '@/hooks/useProducts';
-import { Search, Filter, SlidersHorizontal, ArrowLeft, Package, Star, TrendingUp } from 'lucide-react';
+import { Search, Filter, SlidersHorizontal, ArrowLeft, Package, Star, TrendingUp, Crown, Flame, Shield, Zap, Target, Rocket } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const Catalog = () => {
@@ -152,102 +152,144 @@ const Catalog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Анимированный фон */}
+      <div className="absolute inset-0">
+        {/* Плавающие частицы */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse opacity-80"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400 rounded-full animate-bounce opacity-40"></div>
+        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-green-400 rounded-full animate-pulse opacity-90"></div>
+        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-orange-400 rounded-full animate-bounce opacity-50"></div>
+        
+        {/* Светящиеся линии */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent animate-pulse"></div>
+      </div>
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
-            🛍️ {t('Каталог товаров')}
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Откройте для себя огромный выбор качественных игровых товаров. 
-            От редких скинов до эксклюзивных предметов - у нас есть все для настоящих геймеров.
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-16 md:py-24 text-center">
+          {/* Главный заголовок с анимацией */}
+          <div className="mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full mb-6 animate-spin-slow shadow-2xl shadow-cyan-500/30">
+              <Crown className="w-10 h-10 md:w-12 md:h-12 text-white" />
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-glow">
+              КАТАЛОГ ТОВАРОВ
+            </h1>
+            <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full animate-pulse"></div>
+          </div>
+          
+          {/* Описание */}
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Откройте для себя <span className="text-cyan-400 font-bold">огромный выбор</span> качественных игровых товаров. 
+            От <span className="text-purple-400 font-bold">редких скинов</span> до <span className="text-pink-400 font-bold">эксклюзивных предметов</span> - у нас есть все для настоящих геймеров.
           </p>
           
-          {/* Статистика каталога */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
-              <div className="text-2xl mb-2">📦</div>
-              <p className="text-gray-300 text-sm">Всего товаров</p>
-              <p className="text-amber-400 font-bold text-lg">{products.length}</p>
+          {/* Статистика каталога с крутыми анимациями */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+                  <Package className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-400 text-sm mb-2">Всего товаров</p>
+                <p className="text-3xl font-black text-cyan-400">{products.length}</p>
+              </div>
             </div>
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
-              <div className="text-2xl mb-2">🏷️</div>
-              <p className="text-gray-300 text-sm">Категорий</p>
-              <p className="text-amber-400 font-bold text-lg">{categories.length}</p>
+            
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 hover:border-purple-400/50 transition-all duration-500 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+                  <Star className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-400 text-sm mb-2">Категорий</p>
+                <p className="text-3xl font-black text-purple-400">{categories.length}</p>
+              </div>
             </div>
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
-              <div className="text-2xl mb-2">⭐</div>
-              <p className="text-gray-300 text-sm">Средний рейтинг</p>
-              <p className="text-amber-400 font-bold text-lg">4.8</p>
+            
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-yellow-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-pink-500/30 p-6 hover:border-pink-400/50 transition-all duration-500 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-yellow-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+                  <Flame className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-400 text-sm mb-2">Средний рейтинг</p>
+                <p className="text-3xl font-black text-pink-400">4.8</p>
+              </div>
             </div>
           </div>
         </div>
-        
-        {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-bounce"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-500/10 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-amber-400/10 rounded-full animate-spin"></div>
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
-        {/* Заголовок и поиск */}
-        <div className="mb-6 sm:mb-8">
-          <div className="text-center mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
-              Каталог товаров
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-              Найдите лучшие игровые товары по выгодным ценам
-            </p>
-          </div>
+      <div className="relative z-20 container mx-auto px-4 pb-20">
+        {/* Заголовок секции */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            ПОИСК ТОВАРОВ
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+        </div>
 
-          {/* Поиск и фильтры */}
-          <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+        {/* Поиск и фильтры с крутым дизайном */}
+        <div className="max-w-4xl mx-auto mb-16">
+          <div className="space-y-6">
             {/* Поиск */}
-            <div className="relative">
-              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Поиск товаров..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 bg-black/40 backdrop-blur-xl border border-amber-500/30 text-white placeholder-gray-400 rounded-xl sm:rounded-2xl focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all duration-300 text-sm sm:text-base"
-              />
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" />
+                <Input
+                  type="text"
+                  placeholder="Поиск товаров..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 bg-black/80 backdrop-blur-xl border border-cyan-500/30 text-white placeholder-gray-400 rounded-2xl focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 text-lg hover:border-cyan-400/50"
+                />
+              </div>
             </div>
 
             {/* Фильтры */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Категории */}
-              <div className="flex-1">
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-black/40 backdrop-blur-xl border border-amber-500/30 text-white rounded-lg sm:rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all duration-300 text-sm sm:text-base"
-                >
-                  <option value="all">Все категории</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative">
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-full px-4 py-4 bg-black/80 backdrop-blur-xl border border-purple-500/30 text-white rounded-2xl focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 text-lg hover:border-purple-400/50"
+                  >
+                    <option value="all">Все категории</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               {/* Сортировка */}
-              <div className="flex-1">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-black/40 backdrop-blur-xl border border-amber-500/30 text-white rounded-lg sm:rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all duration-300 text-sm sm:text-base"
-                >
-                  <option value="popular">По популярности</option>
-                  <option value="price_asc">По цене (возрастание)</option>
-                  <option value="price_desc">По цене (убывание)</option>
-                  <option value="newest">По дате</option>
-                </select>
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-yellow-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full px-4 py-4 bg-black/80 backdrop-blur-xl border border-pink-500/30 text-white rounded-2xl focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 text-lg hover:border-pink-400/50"
+                  >
+                    <option value="popular">По популярности</option>
+                    <option value="price_asc">По цене (возрастание)</option>
+                    <option value="price_desc">По цене (убывание)</option>
+                    <option value="newest">По дате</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -279,10 +321,13 @@ const Catalog = () => {
           ) : (
             <>
               {/* Счетчик результатов */}
-              <div className="mb-6 sm:mb-8 text-center">
-                <p className="text-gray-300 text-sm sm:text-base">
-                  Найдено товаров: <span className="text-amber-400 font-bold">{filteredProducts.length}</span>
-                </p>
+              <div className="mb-12 text-center">
+                <div className="inline-flex items-center gap-3 px-6 py-3 bg-black/80 backdrop-blur-xl rounded-2xl border border-cyan-500/30">
+                  <Target className="w-5 h-5 text-cyan-400" />
+                  <p className="text-gray-300 text-lg">
+                    Найдено товаров: <span className="text-cyan-400 font-black text-xl">{filteredProducts.length}</span>
+                  </p>
+                </div>
               </div>
 
               {/* Товары по играм */}
@@ -290,22 +335,22 @@ const Catalog = () => {
                 {Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => (
                   <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
                     {/* Заголовок игры */}
-                    <div className="mb-8 relative">
-                      <div className="flex items-center justify-center md:justify-start mb-4">
-                        <div className="relative">
-                          <h3 className="text-3xl md:text-4xl font-black text-white tracking-wider text-center md:text-left relative z-10 drop-shadow-lg">
+                    <div className="mb-12 relative">
+                      <div className="text-center mb-6">
+                        <div className="relative inline-block">
+                          <h3 className="text-4xl md:text-5xl font-black text-white tracking-wider relative z-10 drop-shadow-lg">
                             {gameName.toUpperCase()}
                           </h3>
-                          {/* Подсветка текста */}
-                          <div className="absolute inset-0 text-3xl md:text-4xl font-black text-amber-400/30 tracking-wider blur-sm">
+                          {/* Светящийся эффект */}
+                          <div className="absolute inset-0 text-4xl md:text-5xl font-black text-cyan-400/40 tracking-wider blur-sm">
                             {gameName.toUpperCase()}
                           </div>
                         </div>
                       </div>
                       {/* Декоративная линия */}
-                      <div className="flex items-center justify-center md:justify-start">
-                        <div className="h-1 bg-gradient-to-r from-amber-500 to-orange-600 rounded-full w-24 shadow-lg shadow-amber-500/30"></div>
-                        <div className="h-0.5 bg-gradient-to-r from-orange-600/50 to-transparent rounded-full w-32 ml-2"></div>
+                      <div className="flex items-center justify-center">
+                        <div className="h-1 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full w-32 shadow-lg shadow-cyan-500/30"></div>
+                        <div className="h-0.5 bg-gradient-to-r from-purple-500/50 to-transparent rounded-full w-24 ml-2"></div>
                       </div>
                     </div>
                     
@@ -343,45 +388,88 @@ const Catalog = () => {
         </div>
 
         {/* Информационные блоки */}
-        <div className="mt-12 sm:mt-16 md:mt-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center">
-                <Star className="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-amber-400" />
-                Качество товаров
-              </h3>
-              <div className="space-y-2 sm:space-y-3 text-gray-300 text-sm sm:text-base">
-                <p>• Все товары официальные и лицензированные</p>
-                <p>• Гарантия качества и работоспособности</p>
-                <p>• Мгновенная доставка после оплаты</p>
-                <p>• Поддержка 24/7 по любым вопросам</p>
+        <div className="mt-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              ИНФОРМАЦИЯ
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mr-4 group-hover:rotate-12 transition-transform duration-500">
+                    <Shield className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white">Качество товаров</h3>
+                </div>
+                <div className="space-y-4 text-gray-300">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Все товары <span className="text-cyan-400 font-bold">официальные</span> и лицензированные</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Гарантия <span className="text-purple-400 font-bold">качества</span> и работоспособности</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-pink-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p><span className="text-pink-400 font-bold">Мгновенная</span> доставка после оплаты</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Поддержка <span className="text-yellow-400 font-bold">24/7</span> по любым вопросам</p>
+                  </div>
+                </div>
               </div>
             </div>
             
-            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center">
-                <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 mr-3 text-amber-400" />
-                Популярные категории
-              </h3>
-              <div className="space-y-2 sm:space-y-3 text-gray-300 text-sm sm:text-base">
-                <p>• Скины для популярных игр</p>
-                <p>• Эксклюзивные предметы</p>
-                <p>• Коллекционные вещи</p>
-                <p>• Новинки и редкие находки</p>
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-8 hover:border-purple-400/50 transition-all duration-500">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mr-4 group-hover:rotate-12 transition-transform duration-500">
+                    <Rocket className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white">Популярные категории</h3>
+                </div>
+                <div className="space-y-4 text-gray-300">
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Скины для <span className="text-green-400 font-bold">популярных игр</span></p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p><span className="text-orange-400 font-bold">Эксклюзивные</span> предметы</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p><span className="text-red-400 font-bold">Коллекционные</span> вещи</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p><span className="text-blue-400 font-bold">Новинки</span> и редкие находки</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Кнопка назад */}
-        <div className="text-center mt-12 sm:mt-16">
+        <div className="text-center mt-16">
           <Button
             onClick={() => navigate('/')}
-            variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Вернуться на главную
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+            <div className="relative flex items-center gap-3">
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+              <span>Вернуться на главную</span>
+            </div>
           </Button>
         </div>
       </div>
