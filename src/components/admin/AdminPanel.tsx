@@ -11,6 +11,7 @@ import AdminProducts from './AdminProducts';
 import AdminCases from './AdminCases';
 import AdminWithdrawalRequests from './AdminWithdrawalRequests';
 import UserRoleManagement from './UserRoleManagement';
+import AdminTelegramStats from './AdminTelegramStats';
 
 interface User {
   id: string;
@@ -34,7 +35,7 @@ export default function AdminPanel() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases' | 'withdrawals' | 'roles'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases' | 'withdrawals' | 'roles' | 'telegram'>('users');
 
 
   useEffect(() => {
@@ -453,6 +454,13 @@ export default function AdminPanel() {
             <Shield className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 inline" />
             Роли
           </button>
+          <button
+            className={`px-3 sm:px-6 py-2 rounded-lg font-semibold transition-all duration-200 border-b-2 text-xs sm:text-sm whitespace-nowrap ${activeTab === 'telegram' ? 'border-blue-500 text-blue-400 bg-gray-800' : 'border-transparent text-gray-400 hover:text-white hover:bg-gray-800'}`}
+            onClick={() => setActiveTab('telegram')}
+          >
+            <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 inline" />
+            Telegram
+          </button>
         </div>
       </div>
 
@@ -463,6 +471,7 @@ export default function AdminPanel() {
         {activeTab === 'cases' && <AdminCases />}
         {activeTab === 'withdrawals' && <AdminWithdrawalRequests />}
         {activeTab === 'roles' && <UserRoleManagement />}
+        {activeTab === 'telegram' && <AdminTelegramStats />}
       </div>
     </div>
   );

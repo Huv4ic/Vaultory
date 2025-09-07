@@ -11,6 +11,7 @@ import { useCart } from '@/hooks/useCart';
 import { useNotification } from '../hooks/useNotification';
 import Notification from '../components/ui/Notification';
 import { useTranslations } from '@/hooks/useTranslations';
+import TelegramStats from '@/components/TelegramStats';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -180,8 +181,10 @@ const Index = () => {
                     <div className="group/stat relative">
                       <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300 hover:scale-105">
                         <div className="text-center">
-                          <div className="text-2xl sm:text-3xl md:text-4xl font-black text-blue-400 mb-1 sm:mb-2 group-hover/stat:scale-110 transition-transform duration-300">3,101</div>
-                          <div className="text-xs sm:text-sm font-medium text-gray-400 uppercase tracking-wider">подписчиков</div>
+                          <TelegramStats 
+                            channelUsername="vaultorysell"
+                            className="group-hover/stat:scale-110 transition-transform duration-300"
+                          />
                         </div>
                       </div>
                     </div>
