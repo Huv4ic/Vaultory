@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import HeroSection from '@/components/HeroSection';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -142,42 +141,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
-      <section className="relative py-24 px-4 bg-gradient-to-br from-slate-800 via-gray-900 to-black text-white overflow-hidden animate-fade-in">
-        {/* Темный анимированный фон */}
+      {/* Telegram канал - современное окно с анимированным фоном */}
+      <section className="relative py-24 px-4 overflow-hidden">
+        {/* Анимированный фон как на главной странице */}
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-red-500/20 rounded-full animate-spin" style={{animationDuration: '30s'}}></div>
         </div>
-        
-        <div className="container mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-red-100 to-purple-100 bg-clip-text text-transparent animate-fade-in">
-            {t('Vaultory — магазин игровых кейсов и товаров')}
-          </h1>
-          <p className="text-2xl mb-8 max-w-2xl mx-auto animate-slide-up text-gray-200">
-            {t('Открывай уникальные кейсы, покупай топовые товары, пополняй баланс и выигрывай крутые призы!')}
-          </p>
-          <a
-            href="/cases"
-            className="inline-block bg-gradient-to-r from-red-600 to-purple-700 hover:from-red-700 hover:to-purple-800 text-white font-bold text-xl px-10 py-4 rounded-xl shadow-2xl shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-500 mb-4 transform hover:scale-105 hover:-translate-y-1"
-          >
-            {t('Открыть кейсы')}
-          </a>
-          <div className="mt-6">
-            <a
-              href="https://t.me/Vaultory_manager"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-white/10 backdrop-blur-sm text-white font-bold px-6 py-2 rounded-xl border border-red-400/30 shadow-lg hover:bg-white/20 hover:border-red-400/50 transition-all duration-300 hover:scale-105"
-            >
-              {t('Telegram поддержка')}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Telegram канал - современное окно */}
-      <section className="py-20 px-4">
         <div className="container mx-auto">
           <div className="max-w-5xl mx-auto">
             {/* Основное окно */}
