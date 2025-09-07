@@ -181,6 +181,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log('New profile created:', newProfile);
         setProfile(newProfile);
         setBalance(0);
+        
+        // Инициализируем статистику для нового пользователя
+        try {
+          await supabase.rpc('initialize_user_statistics', { user_telegram_id: tgUser.id });
+          console.log('✅ Статистика нового пользователя инициализирована');
+        } catch (statsError) {
+          console.warn('⚠️ Не удалось инициализировать статистику для нового пользователя:', statsError);
+        }
       } else {
         console.log('Profile already exists:', data);
         
@@ -197,6 +205,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (data?.balance) setBalance(data.balance);
         // Проверяем блокировку после загрузки профиля
         checkUserBlock();
+        
+        // Инициализируем статистику если её нет
+        try {
+          await supabase.rpc('initialize_user_statistics', { user_telegram_id: tgUser.id });
+          console.log('✅ Статистика пользователя проверена/инициализирована');
+        } catch (statsError) {
+          console.warn('⚠️ Не удалось инициализировать статистику:', statsError);
+        }
       }
       
       console.log('Telegram user set successfully');

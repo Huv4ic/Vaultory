@@ -53,6 +53,14 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       setLoading(true);
       console.log('🔄 Загружаем инвентарь из базы данных для telegram_id:', telegramId);
       
+      // Инициализируем статистику пользователя если её нет
+      try {
+        await supabase.rpc('initialize_user_statistics', { user_telegram_id: telegramId });
+        console.log('✅ Статистика пользователя инициализирована');
+      } catch (statsError) {
+        console.warn('⚠️ Не удалось инициализировать статистику:', statsError);
+      }
+      
       const dbItems = await InventoryService.getUserInventory(telegramId);
       console.log('📦 Получено предметов из БД:', dbItems.length);
       
@@ -81,6 +89,8 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
       console.log('✅ Загружено', uniqueItems.length, 'предметов из базы данных');
     } catch (error) {
       console.error('❌ Failed to load inventory from database:', error);
+      // Если ошибка, устанавливаем пустой массив для новых пользователей
+      setItems([]);
     } finally {
       setLoading(false);
     }
