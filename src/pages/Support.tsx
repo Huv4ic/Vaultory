@@ -140,8 +140,8 @@ const Support = () => {
             <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-green-500/30 shadow-2xl shadow-green-500/30">
               <HelpCircle className="w-10 h-10 md:w-12 md:h-12 text-green-400" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white">
-              🆘 ПОДДЕРЖКА
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
+              ПОДДЕРЖКА
             </h1>
             <div className="w-32 h-1 bg-green-500 mx-auto rounded-full"></div>
           </div>
