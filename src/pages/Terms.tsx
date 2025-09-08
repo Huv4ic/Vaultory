@@ -130,39 +130,40 @@ const Terms = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      {/* Красивые анимированные фоновые элементы */}
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Анимированный фон */}
       <div className="absolute inset-0">
-        {/* Основные световые эффекты */}
-        <div className="absolute top-20 left-10 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-cyan-400/20 rounded-full blur-2xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        {/* Плавающие частицы */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full opacity-80"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-40"></div>
+        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-70"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-red-400 rounded-full opacity-90"></div>
+        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-50"></div>
         
-        {/* Дополнительные декоративные элементы */}
-        <div className="absolute top-1/3 right-1/3 w-24 h-24 bg-cyan-300/10 rounded-full blur-xl animate-bounce delay-700"></div>
-        <div className="absolute bottom-1/3 left-1/3 w-20 h-20 bg-purple-400/10 rounded-full blur-lg animate-ping delay-300"></div>
-        
-        {/* Сетка из точек */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400/30 rounded-full animate-pulse"></div>
-          <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-purple-400/40 rounded-full animate-pulse delay-500"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-blue-400/30 rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute bottom-1/3 right-1/3 w-2 h-2 bg-cyan-300/20 rounded-full animate-pulse delay-700"></div>
-        </div>
+        {/* Светящиеся линии */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
       </div>
 
       {/* Hero Section */}
-      <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
-        <div className="relative">
-          {/* Декоративная полоса слева от заголовка */}
-          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-16 sm:h-20 md:h-24 bg-gradient-to-b from-cyan-400 to-cyan-600 rounded-full shadow-lg shadow-cyan-400/50 animate-pulse"></div>
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-16 md:py-24 text-center">
+          {/* Главный заголовок с анимацией */}
+          <div className="mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-cyan-500/30 shadow-2xl shadow-cyan-500/30">
+              <FileText className="w-10 h-10 md:w-12 md:h-12 text-cyan-400" />
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
+              УСЛОВИЯ ИСПОЛЬЗОВАНИЯ
+            </h1>
+            <div className="w-32 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+          </div>
           
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-cyan-400 via-cyan-300 to-cyan-500 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(34,211,238,0.5)] animate-pulse">
-            📋 {t('Условия использования')}
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4 hover:text-gray-200 transition-colors duration-300">
-            Ознакомьтесь с правилами использования платформы Vaultory. 
-            Мы стремимся обеспечить прозрачные и справедливые условия для всех пользователей.
+          {/* Описание */}
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Ознакомьтесь с <span className="text-cyan-400 font-bold">правилами использования</span> платформы Vaultory. 
+            Мы стремимся обеспечить <span className="text-blue-400 font-bold">прозрачные и справедливые</span> условия для всех пользователей.
           </p>
         </div>
       </div>
@@ -170,59 +171,62 @@ const Terms = () => {
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Основные разделы */}
-        <div className="mb-8 sm:mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+              ОСНОВНЫЕ РАЗДЕЛЫ
+            </h2>
+            <div className="w-32 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {termsSections.map((section, index) => (
-              <Card 
+              <div 
                 key={index}
-                className="bg-gradient-to-br from-gray-800/80 via-gray-900/60 to-black/80 backdrop-blur-xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-500 hover:scale-105 group relative overflow-hidden"
+                className="group relative"
               >
-                {/* Декоративный градиентный фон */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <CardHeader className="relative z-10">
-                  <CardTitle className="text-white flex items-center text-lg sm:text-xl group-hover:text-cyan-400 transition-colors duration-300">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-cyan-500/20 to-cyan-600/30 backdrop-blur-xl rounded-lg flex items-center justify-center border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-400/40">
+                <div className="absolute inset-0 bg-cyan-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
+                  <div className="flex items-center mb-6">
+                    <div className="w-16 h-16 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mr-4 border border-cyan-500/30 shadow-xl shadow-cyan-500/20 group-hover:rotate-12 transition-transform duration-500">
                       {section.icon}
                     </div>
-                    <span className="ml-3">{section.title}</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="relative z-10">
-                  <div className="space-y-2 sm:space-y-3">
+                    <h3 className="text-xl font-black text-white">{section.title}</h3>
+                  </div>
+                  <div className="space-y-3">
                     {section.content.map((item, itemIndex) => (
-                      <div key={itemIndex} className="flex items-start space-x-2 sm:space-x-3">
-                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 mt-0.5 flex-shrink-0 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)] animate-pulse" />
-                        <span className="text-sm sm:text-base text-gray-300 leading-relaxed hover:text-gray-200 transition-colors duration-300">{item}</span>
+                      <div key={itemIndex} className="flex items-start space-x-3">
+                        <CheckCircle className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-gray-300 leading-relaxed">{item}</span>
                       </div>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Важные примечания */}
-        <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8 hover:text-cyan-400 transition-colors duration-300">
-            Важные примечания
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+              ВАЖНЫЕ ПРИМЕЧАНИЯ
+            </h2>
+            <div className="w-32 h-1 bg-blue-500 mx-auto rounded-full"></div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {importantNotes.map((note, index) => (
               <div 
                 key={index}
-                className="bg-gradient-to-br from-gray-800/80 via-gray-900/60 to-black/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-4 sm:p-6 text-center hover:shadow-cyan-500/40 transition-all duration-500 hover:scale-105 group relative overflow-hidden"
+                className="group relative"
               >
-                {/* Декоративный градиентный фон */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div className="relative z-10">
-                  <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-cyan-500/20 to-cyan-600/30 backdrop-blur-xl rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-400/40">
+                <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-blue-500/30 p-6 hover:border-blue-400/50 transition-all duration-500 hover:scale-105 text-center">
+                  <div className="mx-auto w-16 h-16 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-blue-500/30 shadow-xl shadow-blue-500/20 group-hover:rotate-12 transition-transform duration-500">
                     {note.icon}
                   </div>
-                  <h3 className="text-sm sm:text-base font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-300">{note.title}</h3>
-                  <p className="text-xs sm:text-sm text-gray-300 hover:text-gray-200 transition-colors duration-300">{note.description}</p>
+                  <h3 className="text-lg font-black text-white mb-3">{note.title}</h3>
+                  <p className="text-sm text-gray-300">{note.description}</p>
                 </div>
               </div>
             ))}
@@ -231,23 +235,21 @@ const Terms = () => {
 
         {/* Контактная информация */}
         <div className="text-center">
-          <div className="bg-gradient-to-br from-gray-800/80 via-gray-900/60 to-black/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-6 sm:p-8 max-w-2xl mx-auto hover:shadow-cyan-500/40 transition-all duration-500 relative overflow-hidden group">
-            {/* Декоративный градиентный фон */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            <div className="relative z-10">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 hover:text-cyan-400 transition-colors duration-300">
+          <div className="group relative max-w-2xl mx-auto">
+            <div className="absolute inset-0 bg-cyan-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
+              <h3 className="text-2xl font-black text-white mb-4">
                 Вопросы по условиям?
               </h3>
-              <p className="text-sm sm:text-base text-gray-300 mb-6 hover:text-gray-200 transition-colors duration-300">
+              <p className="text-lg text-gray-300 mb-6">
                 Если у вас есть вопросы по нашим условиям использования, 
                 не стесняйтесь обращаться к нам.
               </p>
               <Button
                 onClick={openGmail}
-                className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-cyan-500/20 to-cyan-600/30 backdrop-blur-xl border border-cyan-500/30 hover:border-cyan-400/50 text-cyan-400 hover:text-cyan-300 font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-cyan-500/30 text-sm sm:text-base"
+                className="w-full bg-cyan-500 hover:bg-cyan-400 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25 py-4"
               >
-                <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                <HelpCircle className="w-5 h-5 mr-2" />
                 Связаться с нами
               </Button>
             </div>
@@ -255,13 +257,13 @@ const Terms = () => {
         </div>
 
         {/* Кнопка назад */}
-        <div className="text-center mt-8 sm:mt-12">
+        <div className="text-center mt-12">
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-gray-800/60 to-gray-900/60 backdrop-blur-xl border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base hover:scale-105 shadow-lg shadow-cyan-500/20"
+            className="px-8 py-3 bg-black/80 backdrop-blur-xl border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 transition-all duration-300 rounded-2xl text-lg hover:scale-105 shadow-lg shadow-cyan-500/20"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-5 h-5 mr-2" />
             Вернуться на главную
           </Button>
         </div>
