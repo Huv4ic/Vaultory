@@ -11,13 +11,16 @@ const BalanceDisplay = ({ balance }: BalanceDisplayProps) => {
   };
 
   return (
-    <div className="flex items-center bg-gradient-to-r from-red-600 to-purple-700 text-white font-bold text-lg px-4 py-2 rounded-xl shadow-2xl shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-500 hover:scale-105 border border-red-400/30 hover:border-red-400/50 group">
-      <div className="w-6 h-6 mr-2 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
-        <DollarSign className="w-4 h-4 text-red-200 group-hover:text-red-100 transition-colors duration-300" />
+    <div className="group relative">
+      <div className="absolute inset-0 bg-yellow-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+      <div className="relative flex items-center bg-black/90 backdrop-blur-xl text-white font-black text-lg px-6 py-3 rounded-2xl border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105 shadow-2xl shadow-yellow-500/25">
+        <div className="w-8 h-8 mr-3 bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center border border-yellow-500/30 shadow-lg shadow-yellow-500/20 group-hover:rotate-12 transition-transform duration-500">
+          <DollarSign className="w-5 h-5 text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300" />
+        </div>
+        <span className="text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300 font-black">
+          {formatBalance(balance)}₴
+        </span>
       </div>
-      <span className="text-red-100 group-hover:text-white transition-colors duration-300">
-        {formatBalance(balance)}₴
-      </span>
     </div>
   );
 };
