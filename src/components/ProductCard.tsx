@@ -66,7 +66,7 @@ const ProductCard = ({
         <div className="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl blur-xl pointer-events-none"></div>
         
         {/* Изображение с пьедесталом */}
-        <div className="relative h-48 overflow-hidden flex-shrink-0 rounded-t-3xl bg-gray-800">
+        <div className="relative h-56 overflow-hidden flex-shrink-0 rounded-t-3xl bg-gray-800">
           {/* Пьедестал с свечением */}
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-10 bg-gray-700 rounded-full shadow-2xl"></div>
           <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-8 bg-cyan-500/30 rounded-full blur-md shadow-cyan-500/50"></div>
@@ -75,7 +75,7 @@ const ProductCard = ({
           <img
             src={image}
             alt={name}
-            className="w-full h-full object-contain transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
           />
           
           {/* Светящийся эффект при наведении */}
@@ -112,28 +112,26 @@ const ProductCard = ({
         </div>
 
         {/* Нижняя часть с информацией */}
-        <div className="relative flex-1 flex flex-col bg-gray-800 rounded-b-3xl p-4">
-          <div className="flex-1 flex flex-col justify-between">
+        <div className="relative flex-1 flex flex-col bg-gray-800 rounded-b-3xl p-5">
+          <div className="flex-1 flex flex-col justify-center text-center">
             {/* Название товара - красивый стильный текст */}
-            <div className="text-center mb-3">
-              <h3 className="text-white font-bold text-lg mb-2 line-clamp-2 tracking-wide drop-shadow-lg leading-tight">
-                {getProductTranslation(id, 'name', name)}
-              </h3>
-            </div>
+            <h3 className="text-white font-bold text-xl mb-4 line-clamp-2 tracking-wide drop-shadow-lg">
+              {getProductTranslation(id, 'name', name)}
+            </h3>
             
             {/* Цены - стильные и яркие */}
-            <div className="flex items-center justify-center space-x-3 mb-3">
+            <div className="flex items-center justify-center space-x-4 mb-4">
               {original_price && original_price > price ? (
                 <>
-                  <span className="text-gray-400 line-through text-sm font-medium">
+                  <span className="text-gray-400 line-through text-base font-medium">
                     {original_price}₴
                   </span>
-                  <span className="text-cyan-400 font-black text-xl drop-shadow-lg shadow-cyan-500/50">
+                  <span className="text-cyan-400 font-black text-2xl drop-shadow-lg shadow-cyan-500/50">
                     {price}₴
                   </span>
                 </>
               ) : (
-                <span className="text-cyan-400 font-black text-xl drop-shadow-lg shadow-cyan-500/50">
+                <span className="text-cyan-400 font-black text-2xl drop-shadow-lg shadow-cyan-500/50">
                   {price}₴
                 </span>
               )}
@@ -141,9 +139,9 @@ const ProductCard = ({
             
             {/* Статистика продаж - стилизованная */}
             {sales && (
-              <div className="flex items-center justify-center mb-3">
-                <div className="px-3 py-1.5 bg-gray-700/50 text-cyan-300 text-xs font-medium rounded-full border border-cyan-400/30 backdrop-blur-sm shadow-lg">
-                  <Star className="w-3 h-3 inline mr-1.5 text-cyan-400" />
+              <div className="flex items-center justify-center mb-4">
+                <div className="px-4 py-2 bg-gray-700/50 text-cyan-300 text-sm font-medium rounded-full border border-cyan-400/30 backdrop-blur-sm shadow-lg">
+                  <Star className="w-4 h-4 inline mr-2 text-cyan-400" />
                   {sales} {t('продаж')}
                 </div>
               </div>
@@ -158,7 +156,7 @@ const ProductCard = ({
                 onAddToCart();
               }}
               size="sm"
-              className={`group relative h-10 w-10 p-0 rounded-full transition-all duration-300 hover:scale-110 ${
+              className={`group relative h-12 w-12 p-0 rounded-full transition-all duration-300 hover:scale-110 ${
                 isInCart 
                   ? 'bg-green-500 hover:bg-green-400 text-white shadow-lg shadow-green-500/50 hover:shadow-green-400/70' 
                   : 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white shadow-lg shadow-cyan-500/50 hover:shadow-cyan-400/70'
@@ -169,7 +167,7 @@ const ProductCard = ({
               <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse pointer-events-none"></div>
               
               {/* Иконка корзины */}
-              <ShoppingCart className={`w-5 h-5 relative z-10 transition-all duration-300 ${
+              <ShoppingCart className={`w-6 h-6 relative z-10 transition-all duration-300 ${
                 isInCart ? 'animate-bounce' : 'group-hover:scale-110'
               }`} />
               
