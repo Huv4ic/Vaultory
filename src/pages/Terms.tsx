@@ -130,24 +130,28 @@ const Terms = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-black/90 backdrop-blur-xl relative overflow-hidden">
+      {/* Анимированные световые эффекты */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-cyan-500/10 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/10 rounded-full blur-2xl sm:blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+      </div>
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
+      <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
+        <div className="relative">
+          {/* Декоративная полоса слева от заголовка */}
+          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-16 sm:h-20 md:h-24 bg-cyan-400/80 rounded-full shadow-lg shadow-cyan-400/50"></div>
+          
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.5)] animate-pulse">
             📋 {t('Условия использования')}
           </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4 hover:text-gray-200 transition-colors duration-300">
             Ознакомьтесь с правилами использования платформы Vaultory. 
             Мы стремимся обеспечить прозрачные и справедливые условия для всех пользователей.
           </p>
         </div>
-        
-        {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-amber-400/10 rounded-full animate-bounce hidden md:block"></div>
-        <div className="absolute top-40 right-20 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-full animate-pulse hidden md:block"></div>
-        <div className="absolute bottom-20 left-1/4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-amber-400/10 rounded-full animate-spin hidden md:block"></div>
       </div>
 
       {/* Основной контент */}
@@ -158,11 +162,13 @@ const Terms = () => {
             {termsSections.map((section, index) => (
               <Card 
                 key={index}
-                className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300"
+                className="bg-black/80 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 group"
               >
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center text-lg sm:text-xl">
-                    {section.icon}
+                  <CardTitle className="text-white flex items-center text-lg sm:text-xl group-hover:text-cyan-400 transition-colors duration-300">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-black/80 backdrop-blur-xl rounded-lg flex items-center justify-center border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20">
+                      {section.icon}
+                    </div>
                     <span className="ml-3">{section.title}</span>
                   </CardTitle>
                 </CardHeader>
@@ -170,8 +176,8 @@ const Terms = () => {
                   <div className="space-y-2 sm:space-y-3">
                     {section.content.map((item, itemIndex) => (
                       <div key={itemIndex} className="flex items-start space-x-2 sm:space-x-3">
-                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm sm:text-base text-gray-300 leading-relaxed">{item}</span>
+                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 mt-0.5 flex-shrink-0 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
+                        <span className="text-sm sm:text-base text-gray-300 leading-relaxed hover:text-gray-200 transition-colors duration-300">{item}</span>
                       </div>
                     ))}
                   </div>
@@ -183,20 +189,20 @@ const Terms = () => {
 
         {/* Важные примечания */}
         <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8 hover:text-cyan-400 transition-colors duration-300">
             Важные примечания
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {importantNotes.map((note, index) => (
               <div 
                 key={index}
-                className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center hover:shadow-amber-500/40 transition-all duration-300"
+                className="bg-black/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-4 sm:p-6 text-center hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 group"
               >
-                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
+                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20">
                   {note.icon}
                 </div>
-                <h3 className="text-sm sm:text-base font-semibold text-white mb-2">{note.title}</h3>
-                <p className="text-xs sm:text-sm text-gray-300">{note.description}</p>
+                <h3 className="text-sm sm:text-base font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-300">{note.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-300 hover:text-gray-200 transition-colors duration-300">{note.description}</p>
               </div>
             ))}
           </div>
@@ -204,17 +210,17 @@ const Terms = () => {
 
         {/* Контактная информация */}
         <div className="text-center">
-          <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-6 sm:p-8 max-w-2xl mx-auto">
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">
+          <div className="bg-black/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-6 sm:p-8 max-w-2xl mx-auto hover:shadow-cyan-500/40 transition-all duration-300">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 hover:text-cyan-400 transition-colors duration-300">
               Вопросы по условиям?
             </h3>
-            <p className="text-sm sm:text-base text-gray-300 mb-6">
+            <p className="text-sm sm:text-base text-gray-300 mb-6 hover:text-gray-200 transition-colors duration-300">
               Если у вас есть вопросы по нашим условиям использования, 
               не стесняйтесь обращаться к нам.
             </p>
             <Button
               onClick={openGmail}
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-black/80 backdrop-blur-xl border border-cyan-500/30 hover:border-cyan-400/50 text-cyan-400 hover:text-cyan-300 font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-cyan-500/30 text-sm sm:text-base"
             >
               <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Связаться с нами
@@ -227,7 +233,7 @@ const Terms = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="px-6 sm:px-8 py-2 sm:py-3 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную
