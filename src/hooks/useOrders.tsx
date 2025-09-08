@@ -69,7 +69,10 @@ export const useOrders = () => {
       console.log('👤 TelegramUser:', telegramUser);
       
       const botToken = '8017714761:AAH9xTX_9fNUPGKuLaxqJWf85W7AixO2rEU';
-      const chatId = '5931400368';
+      const chatId = '5931400368'; // Попробуйте также: '@vaultorysell' или '-1001234567890'
+      
+      console.log('🤖 Bot Token:', botToken);
+      console.log('💬 Chat ID:', chatId);
 
       const itemsList = items.map(item => 
         `• ${item.name} x${item.quantity} - ${item.price * item.quantity}₴`
@@ -85,6 +88,15 @@ export const useOrders = () => {
 
       console.log('📝 Сообщение для отправки:', message);
       console.log('🔗 URL:', `https://api.telegram.org/bot${botToken}/sendMessage`);
+      
+      // Тестируем бота перед отправкой
+      try {
+        const testResponse = await fetch(`https://api.telegram.org/bot${botToken}/getMe`);
+        const testData = await testResponse.json();
+        console.log('🤖 Тест бота:', testData);
+      } catch (testError) {
+        console.error('❌ Ошибка тестирования бота:', testError);
+      }
 
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: 'POST',
@@ -104,7 +116,16 @@ export const useOrders = () => {
         const errorText = await response.text();
         console.error('❌ ОШИБКА ОТПРАВКИ УВЕДОМЛЕНИЯ:', response.statusText, errorText);
       } else {
-        console.log('✅ УВЕДОМЛЕНИЕ УСПЕШНО ОТПРАВЛЕНО В TELEGRAM!');
+        const responseData = await response.json();
+        console.log('📄 Полный ответ от Telegram API:', responseData);
+        
+        if (responseData.ok) {
+          console.log('✅ УВЕДОМЛЕНИЕ УСПЕШНО ОТПРАВЛЕНО В TELEGRAM!');
+          console.log('📨 Message ID:', responseData.result?.message_id);
+          console.log('💬 Chat ID:', responseData.result?.chat?.id);
+        } else {
+          console.error('❌ TELEGRAM API ВЕРНУЛ ОШИБКУ:', responseData.description);
+        }
       }
     } catch (error) {
       console.error('❌ ОШИБКА ПРИ ОТПРАВКЕ УВЕДОМЛЕНИЯ:', error);
