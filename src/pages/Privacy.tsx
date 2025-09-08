@@ -141,12 +141,12 @@ const Privacy = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black/90 backdrop-blur-xl relative overflow-hidden">
-      {/* Анимированные световые эффекты */}
+    <div className="min-h-screen bg-gray-900/95 backdrop-blur-xl relative overflow-hidden">
+      {/* Тонкие световые эффекты */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-cyan-500/10 rounded-full blur-2xl sm:blur-3xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/10 rounded-full blur-2xl sm:blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute top-20 left-10 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-cyan-500/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-40 right-20 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-blue-500/3 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
       {/* Hero Section */}
@@ -169,10 +169,10 @@ const Privacy = () => {
       <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Краткая информация */}
         <div className="mb-12">
-          <Card className="bg-black/80 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300">
+          <Card className="bg-gray-800/60 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300">
             <CardContent className="pt-8">
               <div className="text-center">
-                <div className="mx-auto w-20 h-20 bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center mb-6 border border-cyan-500/30 shadow-lg shadow-cyan-500/20">
+                <div className="mx-auto w-20 h-20 bg-gray-800/60 backdrop-blur-xl rounded-full flex items-center justify-center mb-6 border border-cyan-500/30 shadow-lg shadow-cyan-500/20">
                   <Shield className="w-10 h-10 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4 hover:text-cyan-400 transition-colors duration-300">
@@ -196,11 +196,11 @@ const Privacy = () => {
             {dataTypes.map((type, index) => (
               <Card 
                 key={index}
-                className="bg-black/80 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 group"
+                className="bg-gray-800/60 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 group"
               >
                 <CardHeader>
                   <CardTitle className="text-white flex items-center group-hover:text-cyan-400 transition-colors duration-300">
-                    <div className="w-8 h-8 bg-black/80 backdrop-blur-xl rounded-lg flex items-center justify-center border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20">
+                    <div className="w-8 h-8 bg-gray-800/60 backdrop-blur-xl rounded-lg flex items-center justify-center border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20">
                       {type.icon}
                     </div>
                     <span className="ml-3">{type.category}</span>
@@ -227,11 +227,11 @@ const Privacy = () => {
             {privacySections.map((section, index) => (
               <Card 
                 key={index}
-                className="bg-black/80 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 group"
+                className="bg-gray-800/60 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 group"
               >
                 <CardHeader>
                   <CardTitle className="text-white flex items-center text-lg sm:text-xl group-hover:text-cyan-400 transition-colors duration-300">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-black/80 backdrop-blur-xl rounded-lg flex items-center justify-center border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800/60 backdrop-blur-xl rounded-lg flex items-center justify-center border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20">
                       {section.icon}
                     </div>
                     <span className="ml-3">{section.title}</span>
@@ -254,9 +254,9 @@ const Privacy = () => {
             {securityMeasures.map((measure, index) => (
               <div 
                 key={index}
-                className="bg-black/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-4 sm:p-6 text-center hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 group"
+                className="bg-gray-800/60 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-4 sm:p-6 text-center hover:shadow-cyan-500/40 transition-all duration-300 hover:scale-105 group"
               >
-                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20">
+                <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gray-800/60 backdrop-blur-xl rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-300 shadow-lg shadow-cyan-500/20">
                   {measure.icon}
                 </div>
                 <h3 className="text-sm sm:text-base font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-300">{measure.title}</h3>
@@ -268,7 +268,7 @@ const Privacy = () => {
 
         {/* Права пользователей */}
         <div className="mb-16">
-          <Card className="bg-black/80 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300">
+          <Card className="bg-gray-800/60 backdrop-blur-xl border-cyan-500/30 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300">
             <CardHeader>
               <CardTitle className="text-white text-center hover:text-cyan-400 transition-colors duration-300">Ваши права</CardTitle>
             </CardHeader>
@@ -321,7 +321,7 @@ const Privacy = () => {
 
         {/* Контактная информация */}
         <div className="text-center">
-          <div className="bg-black/80 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-6 sm:p-8 max-w-2xl mx-auto hover:shadow-cyan-500/40 transition-all duration-300">
+          <div className="bg-gray-800/60 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-cyan-500/30 shadow-2xl shadow-cyan-500/20 p-6 sm:p-8 max-w-2xl mx-auto hover:shadow-cyan-500/40 transition-all duration-300">
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 hover:text-cyan-400 transition-colors duration-300">
               Вопросы по конфиденциальности?
             </h3>
@@ -331,7 +331,7 @@ const Privacy = () => {
             </p>
             <Button
               onClick={openGmail}
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-black/80 backdrop-blur-xl border border-cyan-500/30 hover:border-cyan-400/50 text-cyan-400 hover:text-cyan-300 font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-cyan-500/30 text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-gray-800/60 backdrop-blur-xl border border-cyan-500/30 hover:border-cyan-400/50 text-cyan-400 hover:text-cyan-300 font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-cyan-500/30 text-sm sm:text-base"
             >
               <Mail className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Связаться с нами
