@@ -47,6 +47,47 @@ export interface Database {
           }
         ];
       };
+      user_statistics: {
+        Row: {
+          id: string;
+          telegram_id: number; // BIGINT в базе, но number в TypeScript
+          total_orders: number;
+          total_spent: number;
+          cases_opened: number;
+          items_sold: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          telegram_id: number;
+          total_orders?: number;
+          total_spent?: number;
+          cases_opened?: number;
+          items_sold?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          telegram_id?: number;
+          total_orders?: number;
+          total_spent?: number;
+          cases_opened?: number;
+          items_sold?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_statistics_telegram_id_fkey";
+            columns: ["telegram_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["telegram_id"];
+          }
+        ];
+      };
       // Другие существующие таблицы...
       cases: {
         Row: {
