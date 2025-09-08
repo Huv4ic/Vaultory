@@ -27,7 +27,13 @@ export const useOrders = () => {
 
   // Оформление заказа
   const createOrder = async (items: OrderItem[], totalAmount: number): Promise<{ success: boolean; orderId?: string; error?: string }> => {
+    console.log('🚀 НАЧИНАЕМ СОЗДАНИЕ ЗАКАЗА');
+    console.log('👤 TelegramUser:', telegramUser);
+    console.log('📋 Items:', items);
+    console.log('💰 TotalAmount:', totalAmount);
+    
     if (!telegramUser?.id) {
+      console.log('❌ Пользователь не авторизован');
       return { success: false, error: 'Пользователь не авторизован' };
     }
 
@@ -36,13 +42,17 @@ export const useOrders = () => {
     try {
       // Генерируем ID заказа
       const orderId = crypto.randomUUID();
+      console.log('🆔 Сгенерирован OrderId:', orderId);
 
       // Отправляем уведомление в Telegram бота
+      console.log('🔔 Вызываем sendOrderNotification...');
       await sendOrderNotification(items, totalAmount, orderId);
+      console.log('✅ sendOrderNotification завершена');
 
+      console.log('🎉 ЗАКАЗ УСПЕШНО СОЗДАН!');
       return { success: true, orderId };
     } catch (error) {
-      console.error('Ошибка при оформлении заказа:', error);
+      console.error('❌ ОШИБКА ПРИ ОФОРМЛЕНИИ ЗАКАЗА:', error);
       return { success: false, error: 'Неожиданная ошибка' };
     } finally {
       setIsProcessing(false);
@@ -52,6 +62,12 @@ export const useOrders = () => {
   // Отправка уведомления в бота
   const sendOrderNotification = async (items: OrderItem[], totalAmount: number, orderId: string) => {
     try {
+      console.log('🔔 НАЧИНАЕМ ОТПРАВКУ УВЕДОМЛЕНИЯ В TELEGRAM');
+      console.log('📦 OrderId:', orderId);
+      console.log('💰 TotalAmount:', totalAmount);
+      console.log('📋 Items:', items);
+      console.log('👤 TelegramUser:', telegramUser);
+      
       const botToken = '8017714761:AAH9xTX_9fNUPGKuLaxqJWf85W7AixO2rEU';
       const chatId = '5931400368';
 
@@ -67,6 +83,9 @@ export const useOrders = () => {
         `📋 Товары:\n${itemsList}\n\n` +
         `⚠️ *Свяжитесь с пользователем для передачи товаров!*`;
 
+      console.log('📝 Сообщение для отправки:', message);
+      console.log('🔗 URL:', `https://api.telegram.org/bot${botToken}/sendMessage`);
+
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: 'POST',
         headers: {
@@ -79,11 +98,16 @@ export const useOrders = () => {
         })
       });
 
+      console.log('📡 Ответ от Telegram API:', response.status, response.statusText);
+
       if (!response.ok) {
-        console.error('Ошибка отправки уведомления о заказе:', response.statusText);
+        const errorText = await response.text();
+        console.error('❌ ОШИБКА ОТПРАВКИ УВЕДОМЛЕНИЯ:', response.statusText, errorText);
+      } else {
+        console.log('✅ УВЕДОМЛЕНИЕ УСПЕШНО ОТПРАВЛЕНО В TELEGRAM!');
       }
     } catch (error) {
-      console.error('Ошибка при отправке уведомления о заказе:', error);
+      console.error('❌ ОШИБКА ПРИ ОТПРАВКЕ УВЕДОМЛЕНИЯ:', error);
     }
   };
 
