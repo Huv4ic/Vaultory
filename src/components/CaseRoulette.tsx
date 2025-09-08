@@ -165,8 +165,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       }
   
       // Обновляем статистику проданных предметов
-      const { error: statsError } = await supabase.rpc('increment_user_items_sold', {
-        user_telegram_id: telegramId
+      const { error: statsError } = await supabase.rpc('update_items_sold_statistics', {
+        user_id: telegramId,
+        items_sold_increment: 1
       });
 
       if (statsError) {
@@ -654,8 +655,9 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           try {
             console.log('🔄 Обновляем индивидуальную статистику кейсов для пользователя:', profile.telegram_id);
             
-            const { error: statsError } = await supabase.rpc('increment_user_cases_opened', {
-              user_telegram_id: profile.telegram_id
+            const { error: statsError } = await supabase.rpc('update_case_statistics', {
+              user_id: profile.telegram_id,
+              cases_opened_increment: 1
             });
 
             if (statsError) {

@@ -175,8 +175,9 @@ export class InventoryService {
 
       // Обновляем статистику проданных предметов
       try {
-        const { error: statsError } = await supabase.rpc('increment_user_items_sold', {
-          user_telegram_id: telegramId
+        const { error: statsError } = await supabase.rpc('update_items_sold_statistics', {
+          user_id: telegramId,
+          items_sold_increment: 1
         });
 
         if (statsError) {
