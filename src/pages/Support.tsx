@@ -17,7 +17,12 @@ import {
   Info,
   Star,
   Users,
-  Globe
+  Globe,
+  Crown,
+  Sparkles,
+  Rocket,
+  Gem,
+  Flame
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,7 +32,7 @@ const Support = () => {
 
   const contactMethods = [
     {
-      icon: <MessageCircle className="w-8 h-8 text-amber-400" />,
+      icon: <MessageCircle className="w-8 h-8 text-blue-400" />,
       title: "Telegram",
       description: "Быстрая поддержка через Telegram",
       action: "Написать в Telegram",
@@ -35,7 +40,7 @@ const Support = () => {
       color: "from-blue-500 to-blue-600"
     },
     {
-      icon: <Mail className="w-8 h-8 text-amber-400" />,
+      icon: <Mail className="w-8 h-8 text-blue-400" />,
       title: "Email поддержка",
       description: "Подробные вопросы и документация",
       action: "Отправить Email",
@@ -111,45 +116,67 @@ const Support = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Анимированный фон */}
+      <div className="absolute inset-0">
+        {/* Плавающие частицы */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-green-400 rounded-full animate-ping opacity-60"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full opacity-80"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-40"></div>
+        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-70"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-red-400 rounded-full opacity-90"></div>
+        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-50"></div>
+        
+        {/* Светящиеся линии */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+      </div>
+
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
-            🆘 {t('Поддержка')}
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4">
-            Мы всегда готовы помочь! Свяжитесь с нашей службой поддержки любым удобным способом 
-            и получите быстрый ответ на все ваши вопросы.
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-16 md:py-24 text-center">
+          {/* Главный заголовок с анимацией */}
+          <div className="mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-green-500/30 shadow-2xl shadow-green-500/30">
+              <HelpCircle className="w-10 h-10 md:w-12 md:h-12 text-green-400" />
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white">
+              🆘 ПОДДЕРЖКА
+            </h1>
+            <div className="w-32 h-1 bg-green-500 mx-auto rounded-full"></div>
+          </div>
+          
+          {/* Описание */}
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Мы всегда <span className="text-green-400 font-bold">готовы помочь</span>! Свяжитесь с нашей службой поддержки любым удобным способом 
+            и получите <span className="text-blue-400 font-bold">быстрый ответ</span> на все ваши вопросы.
           </p>
         </div>
-        
-        {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-amber-400/10 rounded-full animate-bounce hidden md:block"></div>
-        <div className="absolute top-40 right-20 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-full animate-pulse hidden md:block"></div>
-        <div className="absolute bottom-20 left-1/4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-amber-400/10 rounded-full animate-spin hidden md:block"></div>
       </div>
 
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Способы связи */}
-        <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8">
-            Свяжитесь с нами
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+              СВЯЖИТЕСЬ С НАМИ
+            </h2>
+            <div className="w-32 h-1 bg-blue-500 mx-auto rounded-full"></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {contactMethods.map((method, index) => (
-              <Card 
+              <div 
                 key={index}
-                className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300 hover:scale-105"
+                className="group relative"
               >
-                <CardContent className="p-4 sm:p-6 text-center">
-                  <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
+                <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-blue-500/30 p-8 hover:border-blue-400/50 transition-all duration-500 hover:scale-105 text-center">
+                  <div className="mx-auto w-16 h-16 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-6 border border-blue-500/30 shadow-xl shadow-blue-500/20 group-hover:rotate-12 transition-transform duration-500">
                     {method.icon}
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{method.title}</h3>
-                  <p className="text-sm sm:text-base text-gray-300 mb-4">{method.description}</p>
+                  <h3 className="text-xl font-black text-white mb-3">{method.title}</h3>
+                  <p className="text-sm text-gray-300 mb-6">{method.description}</p>
                   <Button
                     onClick={() => {
                       if (method.title === 'Email поддержка') {
@@ -158,75 +185,96 @@ const Support = () => {
                         window.open(method.link, '_blank');
                       }
                     }}
-                    className={`w-full bg-gradient-to-r ${method.color} text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 shadow-xl text-sm sm:text-base py-2 sm:py-3`}
+                    className="w-full bg-blue-500 hover:bg-blue-400 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-blue-500/25 py-4"
                   >
                     {method.action}
                   </Button>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Наши преимущества */}
-        <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8">
-            Наши преимущества
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center">
-              <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
-                <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+              НАШИ ПРЕИМУЩЕСТВА
+            </h2>
+            <div className="w-32 h-1 bg-yellow-500 mx-auto rounded-full"></div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="group relative">
+              <div className="absolute inset-0 bg-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-yellow-500/30 p-6 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105 text-center">
+                <div className="mx-auto w-16 h-16 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-yellow-500/30 shadow-xl shadow-yellow-500/20 group-hover:rotate-12 transition-transform duration-500">
+                  <Clock className="w-8 h-8 text-yellow-400" />
+                </div>
+                <h3 className="text-lg font-black text-white mb-3">Поддержка 24/7</h3>
+                <p className="text-sm text-gray-300">Помощь в любое время дня и ночи</p>
               </div>
-              <h3 className="text-sm sm:text-base font-semibold text-white mb-2">Поддержка 24/7</h3>
-              <p className="text-xs sm:text-sm text-gray-300">Помощь в любое время дня и ночи</p>
             </div>
             
-            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center">
-              <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
-                <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+            <div className="group relative">
+              <div className="absolute inset-0 bg-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-yellow-500/30 p-6 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105 text-center">
+                <div className="mx-auto w-16 h-16 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-yellow-500/30 shadow-xl shadow-yellow-500/20 group-hover:rotate-12 transition-transform duration-500">
+                  <Zap className="w-8 h-8 text-yellow-400" />
+                </div>
+                <h3 className="text-lg font-black text-white mb-3">Быстрый ответ</h3>
+                <p className="text-sm text-gray-300">Решаем вопросы в кратчайшие сроки</p>
               </div>
-              <h3 className="text-sm sm:text-base font-semibold text-white mb-2">Быстрый ответ</h3>
-              <p className="text-xs sm:text-sm text-gray-300">Решаем вопросы в кратчайшие сроки</p>
             </div>
             
-            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center">
-              <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
-                <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+            <div className="group relative">
+              <div className="absolute inset-0 bg-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-yellow-500/30 p-6 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105 text-center">
+                <div className="mx-auto w-16 h-16 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-yellow-500/30 shadow-xl shadow-yellow-500/20 group-hover:rotate-12 transition-transform duration-500">
+                  <Shield className="w-8 h-8 text-yellow-400" />
+                </div>
+                <h3 className="text-lg font-black text-white mb-3">Безопасность</h3>
+                <p className="text-sm text-gray-300">Конфиденциальность ваших данных</p>
               </div>
-              <h3 className="text-sm sm:text-base font-semibold text-white mb-2">Безопасность</h3>
-              <p className="text-xs sm:text-sm text-gray-300">Конфиденциальность ваших данных</p>
             </div>
             
-            <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6 text-center">
-              <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-amber-500/30">
-                <Star className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+            <div className="group relative">
+              <div className="absolute inset-0 bg-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-yellow-500/30 p-6 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105 text-center">
+                <div className="mx-auto w-16 h-16 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-yellow-500/30 shadow-xl shadow-yellow-500/20 group-hover:rotate-12 transition-transform duration-500">
+                  <Star className="w-8 h-8 text-yellow-400" />
+                </div>
+                <h3 className="text-lg font-black text-white mb-3">Качество</h3>
+                <p className="text-sm text-gray-300">Профессиональный подход к каждому клиенту</p>
               </div>
-              <h3 className="text-sm sm:text-base font-semibold text-white mb-2">Качество</h3>
-              <p className="text-xs sm:text-sm text-gray-300">Профессиональный подход к каждому клиенту</p>
             </div>
           </div>
         </div>
 
         {/* Часто задаваемые вопросы */}
-        <div className="mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-6 sm:mb-8">
-            Часто задаваемые вопросы
-          </h2>
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+              ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
+            </h2>
+            <div className="w-32 h-1 bg-orange-500 mx-auto rounded-full"></div>
+          </div>
           <div className="max-w-4xl mx-auto">
-            <Accordion type="single" collapsible className="space-y-3 sm:space-y-4">
+            <Accordion type="single" collapsible className="space-y-4">
               {faqItems.map((item, index) => (
                 <AccordionItem 
                   key={index} 
                   value={`item-${index}`}
-                  className="bg-black/40 backdrop-blur-xl border border-amber-500/30 rounded-lg sm:rounded-xl shadow-lg shadow-amber-500/20"
+                  className="group relative"
                 >
-                  <AccordionTrigger className="px-4 sm:px-6 py-3 sm:py-4 text-left text-sm sm:text-base font-medium text-white hover:text-amber-400 transition-colors">
-                    {item.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="px-4 sm:px-6 pb-3 sm:pb-4 text-sm sm:text-base text-gray-300">
-                    {item.answer}
-                  </AccordionContent>
+                  <div className="absolute inset-0 bg-orange-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                  <div className="relative bg-black/90 backdrop-blur-xl border border-orange-500/30 rounded-3xl shadow-2xl shadow-orange-500/20">
+                    <AccordionTrigger className="px-6 py-4 text-left text-base font-black text-white hover:text-orange-400 transition-colors">
+                      {item.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-4 text-sm text-gray-300">
+                      {item.answer}
+                    </AccordionContent>
+                  </div>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -234,14 +282,16 @@ const Support = () => {
         </div>
 
         {/* Кнопка назад */}
-        <div className="text-center mt-8 sm:mt-12">
+        <div className="text-center">
           <Button
             onClick={() => navigate('/')}
-            variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 border-amber-500/30 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-400 hover:to-blue-500 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-green-500/25"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Вернуться на главную
+            <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+            <div className="relative flex items-center gap-3">
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+              <span>Вернуться на главную</span>
+            </div>
           </Button>
         </div>
       </div>
