@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { refreshAchievements } from '../utils/achievementUtils';
 
 export interface OrderItem {
   id: string;
@@ -51,6 +52,9 @@ export const useOrders = () => {
 
       // Отправляем уведомление в Telegram бота
       await sendOrderNotification(items, totalAmount, orderId);
+
+      // Обновляем достижения
+      await refreshAchievements();
 
       return { success: true, orderId };
     } catch (error) {

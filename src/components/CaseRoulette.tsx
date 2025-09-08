@@ -5,6 +5,7 @@ import { supabase } from '../integrations/supabase/client';
 import { useNotification } from '../hooks/useNotification';
 import { useGlobalCaseCounter } from '../hooks/useGlobalCaseCounter';
 import { useAuth } from '../hooks/useAuth';
+import { refreshAchievements } from '../utils/achievementUtils';
 import Notification from './ui/Notification';
 
 // CSS стили для анимаций уведомлений
@@ -179,7 +180,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       console.log('✅ Баланс успешно обновлен');
       
       // Обновляем баланс в контексте напрямую (без полного обновления профиля)
-      if (setBalance) {
+      if (setBalance && profile) {
+        const newBalance = profile.balance + (item.price || 0);
         setBalance(newBalance);
         console.log('🔄 Баланс обновлен в контексте:', newBalance);
       }
@@ -666,6 +668,8 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
               console.log('✅ Индивидуальная статистика кейсов пользователя обновлена');
               // Обновляем профиль в контексте
               await refreshProfile();
+              // Обновляем достижения
+              await refreshAchievements();
             }
           } catch (error) {
             console.error('❌ Failed to update user cases statistics:', error);

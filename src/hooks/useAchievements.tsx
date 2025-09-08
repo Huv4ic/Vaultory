@@ -211,6 +211,19 @@ export const useAchievements = () => {
     loadAchievements();
   }, [profile, items]);
 
+  // Слушаем события обновления достижений
+  useEffect(() => {
+    const handleRefreshAchievements = () => {
+      loadAchievements();
+    };
+
+    window.addEventListener('refreshAchievements', handleRefreshAchievements);
+    
+    return () => {
+      window.removeEventListener('refreshAchievements', handleRefreshAchievements);
+    };
+  }, []);
+
   // Функция для получения статуса достижения
   const getAchievementStatus = (achievement: Achievement) => {
     if (achievement.completed) {

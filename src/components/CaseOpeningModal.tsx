@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, DollarSign, Package, Plus, User, ShoppingCart } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { refreshAchievements } from '@/utils/achievementUtils';
 
 interface CaseItem {
   name: string;
@@ -193,6 +194,9 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
       setBalance(newBalance);
       setSoldOrAdded(true);
       onSellItem(winningItem, sellPrice);
+      
+      // Обновляем достижения
+      await refreshAchievements();
     } catch (error) {
       console.error('Ошибка при продаже предмета:', error);
       alert('Произошла ошибка при продаже предмета');

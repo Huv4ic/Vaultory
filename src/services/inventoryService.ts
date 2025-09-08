@@ -1,5 +1,6 @@
 import { supabase } from '../integrations/supabase/client';
 import { InventoryItem } from '../hooks/useInventory';
+import { refreshAchievements } from '../utils/achievementUtils';
 
 export interface DatabaseInventoryItem {
   id: string;
@@ -204,6 +205,10 @@ export class InventoryService {
       }
 
       console.log('🎉 Предмет успешно продан за:', itemPrice);
+      
+      // Обновляем достижения
+      await refreshAchievements();
+      
       return itemPrice;
     } catch (error) {
       console.error('❌ Failed to sell item:', error);
