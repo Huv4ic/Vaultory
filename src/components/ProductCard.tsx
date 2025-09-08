@@ -62,8 +62,8 @@ const ProductCard = ({
       <div className="relative bg-gray-900 rounded-3xl border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-500 transform hover:scale-[1.03] hover:-translate-y-3 group overflow-hidden h-full flex flex-col shadow-2xl hover:shadow-cyan-500/30">
         
         {/* Светящиеся эффекты */}
-        <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
-        <div className="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl blur-xl"></div>
+        <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
+        <div className="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl blur-xl pointer-events-none"></div>
         
         {/* Изображение с пьедесталом */}
         <div className="relative h-56 overflow-hidden flex-shrink-0 rounded-t-3xl bg-gray-800">
@@ -79,7 +79,7 @@ const ProductCard = ({
           />
           
           {/* Светящийся эффект при наведении */}
-          <div className="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
           
           {/* Скидочный бейдж */}
           {original_price && original_price > price && (
@@ -164,7 +164,7 @@ const ProductCard = ({
               title={isInCart ? t('В корзине') : t('Добавить в корзину')}
             >
               {/* Светящийся эффект */}
-              <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></div>
+              <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse pointer-events-none"></div>
               
               {/* Иконка корзины */}
               <ShoppingCart className={`w-6 h-6 relative z-10 transition-all duration-300 ${
@@ -174,8 +174,8 @@ const ProductCard = ({
               {/* Дополнительные светящиеся эффекты */}
               {!isInCart && (
                 <>
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-purple-400/30 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-purple-400/30 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                 </>
               )}
             </Button>

@@ -382,7 +382,7 @@ const Index = () => {
                           onDetails={() => handleProductDetails(product.id)}
                         />
                         {/* Светящийся эффект вокруг карточки */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-none"></div>
                       </div>
                     </div>
                   ))}
