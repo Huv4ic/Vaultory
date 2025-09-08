@@ -152,27 +152,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       console.log('💰 Продаем предмет сразу после открытия кейса:', item);
       console.log('💵 Цена предмета:', item.price);
       
-      const { data: currentProfile, error: fetchBalanceError } = await supabase
-        .from('profiles')
-        .select('balance')
-        .eq('telegram_id', telegramId)
-        .single();
-  
-      if (fetchBalanceError || !currentProfile) {
-        console.error('❌ Error fetching current balance:', fetchBalanceError);
-        showError('Ошибка при получении баланса!');
-        return;
-      }
-  
-      const newBalance = (currentProfile.balance || 0) + (item.price || 0);
-      console.log('💰 Обновляем баланс:', { old: currentProfile.balance, new: newBalance });
-  
-      const { error: balanceError } = await supabase
-        .from('profiles')
-        .update({ 
-          balance: newBalance 
-        })
-        .eq('telegram_id', telegramId);
+      const { error: balanceError } = await supabase.rpc('update_user_balance', {
+        user_id: telegramId,
+        amount: item.price || 0,
+        description: 'Продажа предмета из кейса'
+      });
   
       if (balanceError) {
         console.error('❌ Error updating balance:', balanceError);
@@ -592,14 +576,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
       }
 
       // Списываем стоимость кейса
-      const newBalance = currentBalance - casePrice;
-      const { error: balanceError } = await supabase
-        .from('profiles')
-        .update({ 
-          balance: newBalance,
-          updated_at: new Date().toISOString()
-        })
-        .eq('telegram_id', profile.telegram_id);
+      const { error: balanceError } = await supabase.rpc('update_user_balance', {
+        user_id: profile.telegram_id,
+        amount: -casePrice,
+        description: `Открытие кейса: ${caseName}`
+      });
 
       if (balanceError) {
         console.error('❌ Error updating balance:', balanceError);
@@ -607,6 +588,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         return;
       }
 
+      const newBalance = currentBalance - casePrice;
       console.log('✅ Средства успешно списаны. Новый баланс:', newBalance);
       
       // Обновляем баланс в контексте напрямую (без полного обновления профиля)

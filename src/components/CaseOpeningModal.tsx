@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, DollarSign, Package, Plus, User, ShoppingCart } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CaseItem {
   name: string;
@@ -174,6 +175,20 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
     if (!telegramUser || soldOrAdded || !winningItem) return;
     try {
       const sellPrice = Math.floor(winningItem.price * 0.7); // 70% от цены
+      
+      // Обновляем баланс через функцию
+      const { error: balanceError } = await supabase.rpc('update_user_balance', {
+        user_id: telegramUser.id,
+        amount: sellPrice,
+        description: 'Продажа предмета из кейса'
+      });
+
+      if (balanceError) {
+        console.error('Ошибка при обновлении баланса:', balanceError);
+        alert('Ошибка при обновлении баланса');
+        return;
+      }
+
       const newBalance = balance + sellPrice;
       setBalance(newBalance);
       setSoldOrAdded(true);

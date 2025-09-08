@@ -161,29 +161,7 @@ const Inventory = () => {
         if (sellPrice > 0) {
           console.log('✅ Предмет успешно продан за:', sellPrice);
           
-          // Обновляем баланс пользователя в профиле
-          if (profile && profile.balance !== undefined) {
-            try {
-              // Обновляем баланс в базе данных
-              const { error: balanceError } = await supabase
-                .from('profiles')
-                .update({ 
-                  balance: profile.balance + sellPrice 
-                })
-                .eq('telegram_id', profile.telegram_id);
-              
-              if (balanceError) {
-                console.error('❌ Ошибка обновления баланса:', balanceError);
-              } else {
-                console.log('✅ Баланс обновлен в базе данных:', {
-                  old: profile.balance,
-                  new: profile.balance + sellPrice
-                });
-              }
-            } catch (balanceError) {
-              console.error('❌ Ошибка при обновлении баланса:', balanceError);
-            }
-          }
+          // Баланс уже обновлен в inventoryService.sellItem
           
           showSuccess(`Предмет "${itemToSell.name}" продан за ${sellPrice.toFixed(2)}₴! Деньги добавлены на баланс.`);
           console.log('Предмет продан:', itemToSell.name, 'за', sellPrice);

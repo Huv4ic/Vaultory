@@ -189,28 +189,11 @@ export class InventoryService {
       }
 
       // Добавляем деньги на баланс пользователя
-      // Сначала получаем текущий баланс
-      const { data: currentProfile, error: fetchBalanceError } = await supabase
-        .from('profiles')
-        .select('balance')
-        .eq('telegram_id', telegramId)
-        .single();
-
-      if (fetchBalanceError || !currentProfile) {
-        console.error('❌ Error fetching current balance:', fetchBalanceError);
-        console.log('💰 Возвращаем цену предмета без обновления баланса:', itemPrice);
-        return itemPrice;
-      }
-
-      const newBalance = (currentProfile.balance || 0) + itemPrice;
-      console.log('💰 Обновляем баланс:', { old: currentProfile.balance, new: newBalance });
-
-      const { error: balanceError } = await supabase
-        .from('profiles')
-        .update({ 
-          balance: newBalance 
-        })
-        .eq('telegram_id', telegramId);
+      const { error: balanceError } = await supabase.rpc('update_user_balance', {
+        user_id: telegramId,
+        amount: itemPrice,
+        description: 'Продажа предмета из инвентаря'
+      });
 
       if (balanceError) {
         console.error('❌ Error updating balance:', balanceError);

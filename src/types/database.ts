@@ -5,8 +5,8 @@ export interface Database {
       user_case_stats: {
         Row: {
           id: number;
-          user_id: number;
-          case_id: string; // Изменено с number на string
+          user_id: number; // BIGINT в базе, но number в TypeScript
+          case_id: string;
           opened_count: number;
           last_opened_at: string;
           created_at: string;
@@ -14,8 +14,8 @@ export interface Database {
         };
         Insert: {
           id?: number;
-          user_id: number;
-          case_id: string; // Изменено с number на string
+          user_id: number; // BIGINT в базе, но number в TypeScript
+          case_id: string;
           opened_count?: number;
           last_opened_at?: string;
           created_at?: string;
@@ -23,8 +23,8 @@ export interface Database {
         };
         Update: {
           id?: number;
-          user_id?: number;
-          case_id?: string; // Изменено с number на string
+          user_id?: number; // BIGINT в базе, но number в TypeScript
+          case_id?: string;
           opened_count?: number;
           last_opened_at?: string;
           created_at?: string;
