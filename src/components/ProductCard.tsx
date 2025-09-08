@@ -59,7 +59,7 @@ const ProductCard = ({
       title={t('Нажмите для просмотра товара')}
     >
       {/* Основная карточка */}
-      <div className="relative bg-gray-900 rounded-3xl border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-500 transform hover:scale-[1.03] hover:-translate-y-3 group overflow-hidden h-full flex flex-col shadow-2xl hover:shadow-cyan-500/30 min-h-[400px]">
+      <div className="relative bg-gray-900 rounded-3xl border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-500 transform hover:scale-[1.03] hover:-translate-y-3 group overflow-hidden h-full flex flex-col shadow-2xl hover:shadow-cyan-500/30 min-h-[450px]">
         
         {/* Светящиеся эффекты */}
         <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
