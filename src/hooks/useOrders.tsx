@@ -34,21 +34,10 @@ export const useOrders = () => {
     setIsProcessing(true);
 
     try {
-      // 1. Оформляем заказ через Supabase функцию
-      const { data: orderData, error: orderError } = await supabase.rpc('process_order', {
-        p_user_id: telegramUser.id,
-        p_total_amount: totalAmount,
-        p_items: items
-      });
+      // Генерируем ID заказа
+      const orderId = crypto.randomUUID();
 
-      if (orderError) {
-        console.error('Ошибка создания заказа:', orderError);
-        return { success: false, error: 'Ошибка создания заказа' };
-      }
-
-      const orderId = orderData;
-
-      // 2. Отправляем уведомление в Telegram бота
+      // Отправляем уведомление в Telegram бота
       await sendOrderNotification(items, totalAmount, orderId);
 
       return { success: true, orderId };
