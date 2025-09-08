@@ -78,13 +78,13 @@ export const useOrders = () => {
         `• ${item.name} x${item.quantity} - ${item.price * item.quantity}₴`
       ).join('\n');
 
-      const message = `🛒 *Новый заказ!*\n\n` +
+      const message = `🛒 Новый заказ!\n\n` +
         `👤 Пользователь: ${telegramUser?.username || 'Без username'}\n` +
         `🆔 Telegram ID: ${telegramUser?.id}\n` +
-        `📦 Номер заказа: \`${orderId}\`\n` +
+        `📦 Номер заказа: ${orderId}\n` +
         `💰 Сумма: ${totalAmount}₴\n\n` +
         `📋 Товары:\n${itemsList}\n\n` +
-        `⚠️ *Свяжитесь с пользователем для передачи товаров!*`;
+        `⚠️ Свяжитесь с пользователем для передачи товаров!`;
 
       console.log('📝 Сообщение для отправки:', message);
       console.log('🔗 URL:', `https://api.telegram.org/bot${botToken}/sendMessage`);
@@ -105,8 +105,7 @@ export const useOrders = () => {
         },
         body: JSON.stringify({
           chat_id: chatId,
-          text: message,
-          parse_mode: 'Markdown'
+          text: message
         })
       });
 
