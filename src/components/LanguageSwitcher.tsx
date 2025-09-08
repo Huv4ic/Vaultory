@@ -35,14 +35,14 @@ const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: LanguageSwitche
 
   return (
     <div className="relative group">
-      <div className="absolute inset-0 bg-pink-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+      <div className="absolute inset-0 bg-pink-500/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative flex items-center space-x-2 px-4 py-3 rounded-2xl bg-black/90 backdrop-blur-xl border border-pink-500/30 hover:border-pink-400/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-pink-500/20"
+        className="relative flex items-center space-x-2 px-3 py-2 rounded-xl bg-black/90 backdrop-blur-xl border border-pink-500/30 hover:border-pink-400/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-pink-500/20"
       >
-        <span className="text-lg">{currentLang.flag}</span>
+        <span className="text-sm text-pink-400 font-bold">{currentLang.flag}</span>
         <ChevronDown 
-          className={`w-4 h-4 text-pink-400 transition-all duration-300 ${isOpen ? 'rotate-180 text-pink-300' : ''}`} 
+          className={`w-3 h-3 text-pink-400 transition-all duration-300 ${isOpen ? 'rotate-180 text-pink-300' : ''}`} 
         />
       </button>
 
