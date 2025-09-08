@@ -235,32 +235,8 @@ export const InventoryProvider = ({ children }: { children: React.ReactNode }) =
 
       console.log('Adding item to database with telegramId:', telegramId);
 
-      // Проверка на дублирование по названию и кейсу
-      const existingItem = items.find(existingItem => 
-        existingItem.name === item.name && 
-        existingItem.caseId === item.caseId
-      );
-      
-      if (existingItem) {
-        console.log('🚫 Предмет уже существует в инвентаре, пропускаем добавление:', existingItem);
-        return;
-      }
-      
-      // Дополнительная проверка - проверяем в базе данных
-      try {
-        const dbItems = await InventoryService.getUserInventory(telegramId);
-        const dbDuplicate = dbItems.find(dbItem => 
-          dbItem.item_name === item.name && 
-          dbItem.case_id === item.caseId
-        );
-        
-        if (dbDuplicate) {
-          console.log('🚫 Предмет уже существует в базе данных, пропускаем добавление:', dbDuplicate);
-          return;
-        }
-      } catch (error) {
-        console.warn('⚠️ Не удалось проверить дублирование в БД, продолжаем:', error);
-      }
+    // Из кейса может выпасть один и тот же предмет несколько раз
+    // Каждый раз он должен добавляться в инвентарь
       
       // Дополнительная проверка - если предмет уже был продан, не добавляем
       if (item.status === 'sold') {
