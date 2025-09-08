@@ -208,102 +208,66 @@ const Inventory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      {/* Плавающие частицы инвентаря */}
-      <div className="inventory-floating-bg">
-        {[...Array(10)].map((_, i) => (
-          <div
-            key={i}
-            className="inventory-particle"
-            style={{
-              left: `${(i * 10 + 5)}%`, // Фиксированные позиции
-              width: `${8 + (i % 4) * 3}px`,
-              height: `${8 + (i % 4) * 3}px`,
-              animationDelay: `${i * 3}s`, // Фиксированные задержки
-            }}
-          />
-        ))}
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Анимированный фон */}
+      <div className="absolute inset-0">
+        {/* Плавающие частицы */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-green-400 rounded-full animate-ping opacity-60"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full opacity-80"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-40"></div>
+        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-70"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-red-400 rounded-full opacity-90"></div>
+        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-50"></div>
+        
+        {/* Светящиеся линии */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
       </div>
 
       {/* Hero Section */}
-      <div className="relative z-10 overflow-hidden">
-        {/* Морфирующий фон */}
-        <div className="absolute inset-0 inventory-morphing-bg opacity-20"></div>
-        
-        {/* Декоративные элементы */}
-        <div className="absolute top-20 left-10 w-40 h-40 bg-gradient-to-r from-green-400/15 to-emerald-500/15 rounded-full animate-pulse blur-3xl"></div>
-        <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-r from-blue-400/15 to-cyan-500/15 rounded-full animate-bounce blur-3xl"></div>
-        <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-gradient-to-r from-purple-400/15 to-pink-500/15 rounded-full animate-spin blur-3xl"></div>
-        <div className="absolute top-1/2 right-1/3 w-20 h-20 bg-gradient-to-r from-yellow-400/15 to-orange-500/15 rounded-full animate-float blur-3xl"></div>
-        
-        <div className="relative z-10 container mx-auto px-4 py-16">
-          {/* Кнопка "Назад" с красивыми эффектами */}
-          <div className="mb-8 animate-inventory-slide-in">
-            <Button
-              onClick={() => navigate(-1)}
-              variant="outline"
-              className="group relative overflow-hidden px-6 py-3 bg-black/40 backdrop-blur-xl border border-green-500/30 text-green-300 hover:text-white transition-all duration-500 shadow-xl shadow-green-500/20 rounded-xl text-sm font-medium hover:scale-105 hover:shadow-2xl hover:shadow-green-500/40"
-            >
-              {/* Анимированный фон */}
-              <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Контент кнопки */}
-              <div className="relative z-10 flex items-center">
-                <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
-                <span>Назад</span>
-              </div>
-              
-              {/* Блик */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-            </Button>
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-16 md:py-24 text-center">
+          {/* Главный заголовок с анимацией */}
+          <div className="mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-green-500/30 shadow-2xl shadow-green-500/30">
+              <Package className="w-10 h-10 md:w-12 md:h-12 text-green-400" />
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
+              ИНВЕНТАРЬ
+            </h1>
+            <div className="w-32 h-1 bg-green-500 mx-auto rounded-full"></div>
           </div>
           
-          {/* Заголовок с анимациями */}
-          <div className="text-center animate-inventory-fade-in" style={{animationDelay: '0.2s'}}>
-            <div className="inline-flex items-center justify-center mb-4 sm:mb-6">
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-ping mr-2 sm:mr-4"></div>
-              <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent rounded-full"></div>
-              <div className="mx-4 sm:mx-6 md:mx-8 relative">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white relative z-10 drop-shadow-lg">
-                  <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 bg-clip-text text-transparent">
-                    📦 Инвентарь
-                  </span>
-                </h1>
-                {/* Подсветка заголовка */}
-                <div className="absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-green-400/20 blur-sm">
-                  📦 Инвентарь
-                </div>
-              </div>
-              <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-l from-transparent via-green-400 to-transparent rounded-full"></div>
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full animate-ping ml-2 sm:ml-4"></div>
-            </div>
-            
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90 mb-8 text-center px-4">
-              Ваши <span className="text-green-400 font-semibold">уникальные предметы</span>, полученные из кейсов. 
-              Продавайте или выводите их для получения прибыли!
-            </p>
-            
-            {/* Декоративная линия */}
-            <div className="flex items-center justify-center">
-              <div className="w-20 sm:w-24 md:w-32 h-0.5 bg-gradient-to-r from-transparent to-green-400 rounded-full"></div>
-              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full mx-2 sm:mx-4 animate-pulse"></div>
-              <div className="w-20 sm:w-24 md:w-32 h-0.5 bg-gradient-to-l from-transparent to-green-400 rounded-full"></div>
-            </div>
-          </div>
+          {/* Описание */}
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Ваша <span className="text-green-400 font-bold">коллекция предметов</span>! 
+            Здесь вы можете <span className="text-blue-400 font-bold">продавать</span> и <span className="text-yellow-400 font-bold">выводить</span> выигранные предметы.
+          </p>
         </div>
       </div>
 
       {/* Основной контент */}
-      <div className="relative z-20 container mx-auto px-4 pb-12">
+      <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
+        {/* Кнопка "Назад" */}
+        <div className="mb-8">
+          <Button
+            onClick={() => navigate(-1)}
+            variant="outline"
+            className="px-6 py-3 bg-black/80 backdrop-blur-xl border border-green-500/30 text-green-300 hover:text-white transition-all duration-300 shadow-xl shadow-green-500/20 rounded-xl text-sm font-medium hover:scale-105"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Назад
+          </Button>
+        </div>
+        
         {/* Статистика */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 animate-inventory-fade-in" style={{animationDelay: '0.4s'}}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Общая стоимость */}
-          <div className="inventory-card-3d bg-black/20 backdrop-blur-2xl rounded-3xl p-8 text-center relative overflow-hidden group border border-green-500/20 hover:border-green-500/40 transition-all duration-500">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-green-400/10 to-transparent rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10">
-              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-green-400/20 to-emerald-600/20 rounded-2xl flex items-center justify-center mb-6 border border-green-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-green-500/20">
-                <DollarSign className="w-10 h-10 text-green-400 group-hover:animate-bounce" />
+          <div className="group relative">
+            <div className="absolute -inset-1 bg-green-500/20 rounded-3xl blur-xl"></div>
+            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-green-500/30 hover:border-green-400/50 transition-all duration-500 hover:scale-105">
+              <div className="mx-auto w-20 h-20 bg-green-500/20 rounded-2xl flex items-center justify-center mb-6 border border-green-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-green-500/20">
+                <DollarSign className="w-10 h-10 text-green-400" />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Общая стоимость</h3>
               <div className="text-3xl sm:text-4xl font-black text-green-400 inventory-stats-counter mb-2 drop-shadow-lg">
@@ -311,44 +275,36 @@ const Inventory = () => {
               </div>
               <div className="text-sm text-gray-400">Стоимость всех предметов</div>
             </div>
-            
-            {/* Эффект при наведении */}
-            <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
 
           {/* Количество предметов */}
-          <div className="inventory-card-3d bg-black/20 backdrop-blur-2xl rounded-3xl p-8 text-center relative overflow-hidden group border border-blue-500/20 hover:border-blue-500/40 transition-all duration-500">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-400/10 to-transparent rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10">
-              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-400/20 to-cyan-600/20 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-blue-500/20">
-                <Package className="w-10 h-10 text-blue-400 group-hover:animate-bounce" />
+          <div className="group relative">
+            <div className="absolute -inset-1 bg-blue-500/20 rounded-3xl blur-xl"></div>
+            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-blue-500/30 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
+              <div className="mx-auto w-20 h-20 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-blue-500/20">
+                <Package className="w-10 h-10 text-blue-400" />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Предметов</h3>
-              <div className="text-3xl sm:text-4xl font-black text-blue-400 inventory-stats-counter mb-2 drop-shadow-lg">
+              <div className="text-3xl sm:text-4xl font-black text-blue-400 mb-2">
                 {displayItems.length}
               </div>
               <div className="text-sm text-gray-400">Уникальных предметов</div>
             </div>
-            
-            {/* Эффект при наведении */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
 
           {/* Любимый кейс */}
-          <div className="inventory-card-3d bg-black/20 backdrop-blur-2xl rounded-3xl p-8 text-center relative overflow-hidden group border border-yellow-500/20 hover:border-yellow-500/40 transition-all duration-500">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-yellow-400/10 to-transparent rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10">
-              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-yellow-400/20 to-orange-600/20 rounded-2xl flex items-center justify-center mb-6 border border-yellow-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-yellow-500/20">
-                <Crown className="w-10 h-10 text-yellow-400 group-hover:animate-bounce" />
+          <div className="group relative">
+            <div className="absolute -inset-1 bg-yellow-500/20 rounded-3xl blur-xl"></div>
+            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105">
+              <div className="mx-auto w-20 h-20 bg-yellow-500/20 rounded-2xl flex items-center justify-center mb-6 border border-yellow-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-yellow-500/20">
+                <Crown className="w-10 h-10 text-yellow-400" />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Любимый кейс</h3>
               
               {favoriteCase ? (
                 <>
                   {/* Фото кейса с эффектами */}
-                  <div className="w-24 h-24 mx-auto mb-4 rounded-2xl overflow-hidden bg-gray-800 border border-yellow-500/30 inventory-holographic group-hover:scale-105 transition-transform duration-300">
+                  <div className="w-24 h-24 mx-auto mb-4 rounded-2xl overflow-hidden bg-gray-800 border border-yellow-500/30 group-hover:scale-105 transition-transform duration-300">
                     {favoriteCase.case_image_url ? (
                       <img 
                         src={favoriteCase.case_image_url} 
@@ -361,78 +317,44 @@ const Inventory = () => {
                       </div>
                     )}
                   </div>
-                  <div className="text-lg font-bold text-yellow-400 mb-2 drop-shadow-lg">{favoriteCase.case_name}</div>
+                  <div className="text-lg font-bold text-yellow-400 mb-2">{favoriteCase.case_name}</div>
                   <div className="text-sm text-gray-400">Открыто {favoriteCase.opened_count} раз</div>
                 </>
               ) : (
                 <div className="text-gray-400 font-medium">Нет данных</div>
               )}
             </div>
-            
-            {/* Эффект при наведении */}
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
           </div>
         </div>
 
         {/* Сетка предметов инвентаря */}
-        <div className="space-y-8 animate-inventory-fade-in" style={{animationDelay: '0.6s'}}>
-          {/* Красивый заголовок секции */}
+        <div className="space-y-8">
+          {/* Заголовок секции */}
           <div className="text-center">
-            <div className="inline-flex items-center justify-center mb-4">
-              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent to-blue-400 rounded-full"></div>
-              <div className="mx-6 relative">
-                <h3 className="text-2xl md:text-3xl font-bold text-white relative z-10">
-                  <span className="bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
-                    🎒 Предметы в инвентаре
-                  </span>
-                </h3>
-                {/* Подсветка */}
-                <div className="absolute inset-0 text-2xl md:text-3xl font-bold text-blue-400/20 blur-sm">
-                  🎒 Предметы в инвентаре
-                </div>
-              </div>
-              <div className="w-16 h-0.5 bg-gradient-to-l from-transparent to-blue-400 rounded-full"></div>
-            </div>
+            <h3 className="text-2xl md:text-3xl font-black text-white mb-4">
+              Предметы в инвентаре
+            </h3>
+            <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full mb-4"></div>
             <div className="text-blue-300 font-medium">
               Найдено предметов: <span className="text-white font-bold">{displayItems.length}</span>
             </div>
           </div>
           
           {displayItems.length === 0 ? (
-            <div className="text-center py-16 inventory-card-3d bg-black/20 backdrop-blur-2xl rounded-3xl border border-gray-600/30 relative overflow-hidden group">
-              {/* Анимированный фон */}
-              <div className="absolute inset-0 inventory-morphing-bg opacity-10"></div>
-              
-              {/* Плавающие частицы */}
-              <div className="absolute inset-0">
-                {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-2 h-2 bg-gray-400/20 rounded-full animate-float"
-                    style={{
-                      left: `${20 + i * 12}%`,
-                      top: `${30 + (i % 3) * 20}%`,
-                      animationDelay: `${i * 0.8}s`,
-                      animationDuration: `${4 + i * 0.5}s`
-                    }}
-                  />
-                ))}
-              </div>
-              
-              {/* Контент */}
-              <div className="relative z-10">
-                <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-gray-600/20 to-gray-800/20 rounded-2xl flex items-center justify-center border border-gray-500/30 group-hover:scale-110 transition-all duration-500">
-                  <Package className="w-12 h-12 text-gray-400 group-hover:text-blue-400 transition-colors duration-300" />
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-gray-500/20 rounded-3xl blur-xl"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-gray-500/30 p-16 text-center hover:border-gray-400/50 transition-all duration-500 hover:scale-105">
+                <div className="w-24 h-24 mx-auto mb-6 bg-gray-500/20 rounded-2xl flex items-center justify-center border border-gray-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-gray-500/20">
+                  <Package className="w-12 h-12 text-gray-400" />
                 </div>
-                <h4 className="text-2xl font-bold text-white mb-3">Инвентарь пуст</h4>
+                <h4 className="text-2xl font-black text-white mb-3">Инвентарь пуст</h4>
                 <p className="text-gray-400 text-lg mb-6 max-w-md mx-auto leading-relaxed">
                   Откройте кейсы, чтобы получить уникальные предметы и начать свою коллекцию!
                 </p>
                 
-                {/* Кнопка */}
                 <button
                   onClick={() => navigate('/cases')}
-                  className="inventory-button-shine px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-semibold rounded-2xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/40"
+                  className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-black rounded-2xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/25"
                 >
                   🎁 Открыть кейсы
                 </button>

@@ -175,8 +175,8 @@ const Profile = () => {
 
   if (!telegramUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
-        <div className="text-center bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="text-center bg-black/90 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
           <div className="text-6xl mb-6">🔒</div>
           <h1 className="text-3xl font-bold text-white mb-4">{t('Войдите в аккаунт')}</h1>
           <p className="text-gray-300 mb-6 max-w-md">
@@ -184,7 +184,7 @@ const Profile = () => {
           </p>
           <Button
             onClick={() => navigate('/auth')}
-            className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+            className="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
           >
             {t('Войти в аккаунт')}
           </Button>
@@ -195,7 +195,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
         <div className="text-center">
           <div className="relative">
             <div className="animate-spin rounded-full h-32 w-32 border-4 border-amber-400/30 mx-auto mb-4"></div>
@@ -213,169 +213,147 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      {/* Плавающие частицы фона - стабильные позиции */}
-      <div className="profile-floating-bg">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className="profile-particle"
-            style={{
-              left: `${(i * 12.5 + 10)}%`, // Фиксированные позиции вместо случайных
-              width: `${8 + (i % 3) * 4}px`,
-              height: `${8 + (i % 3) * 4}px`,
-              animationDelay: `${i * 2.5}s`, // Фиксированные задержки
-            }}
-          />
-        ))}
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Анимированный фон */}
+      <div className="absolute inset-0">
+        {/* Плавающие частицы */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400 rounded-full animate-ping opacity-60"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full opacity-80"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-40"></div>
+        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-70"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-red-400 rounded-full opacity-90"></div>
+        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-50"></div>
+        
+        {/* Светящиеся линии */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
       </div>
 
       {/* Hero Section */}
-      <div className="relative z-10 overflow-hidden">
-        {/* Морфирующий фон - уменьшенная интенсивность */}
-        <div className="absolute inset-0 profile-morphing-bg opacity-10"></div>
-        
-        {/* Декоративные элементы */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-amber-400/15 to-orange-500/15 rounded-full animate-pulse blur-2xl"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-purple-400/15 to-pink-500/15 rounded-full animate-bounce blur-2xl"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-gradient-to-r from-blue-400/15 to-cyan-500/15 rounded-full animate-spin blur-2xl"></div>
-        <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-gradient-to-r from-green-400/15 to-emerald-500/15 rounded-full animate-float blur-2xl"></div>
-        
-        <div className="relative z-10 container mx-auto px-4 py-16 text-center">
-          {/* Анимированный заголовок */}
-          <div className="mb-8 animate-profile-fade-in">
-            <div className="inline-flex items-center justify-center mb-4 sm:mb-6">
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-ping mr-2 sm:mr-4"></div>
-              <div className="w-16 sm:w-20 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent rounded-full"></div>
-              <div className="mx-4 sm:mx-6 relative">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black profile-text-glow bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
-                  👤 {t('Профиль')}
-                </h1>
-                {/* Подсветка заголовка */}
-                <div className="absolute inset-0 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-amber-400/20 blur-sm">
-                  👤 {t('Профиль')}
-                </div>
-              </div>
-              <div className="w-16 sm:w-20 h-1 bg-gradient-to-l from-transparent via-amber-400 to-transparent rounded-full"></div>
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-amber-400 rounded-full animate-ping ml-2 sm:ml-4"></div>
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-16 md:py-24 text-center">
+          {/* Главный заголовок с анимацией */}
+          <div className="mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-amber-500/30 shadow-2xl shadow-amber-500/30">
+              <User className="w-10 h-10 md:w-12 md:h-12 text-amber-400" />
             </div>
-            
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed opacity-90 text-center px-4">
-              Добро пожаловать в ваш <span className="text-amber-400 font-semibold">личный кабинет</span>! 
-              Здесь вы можете управлять аккаунтом, просматривать статистику и совершать покупки.
-            </p>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
+              ПРОФИЛЬ
+            </h1>
+            <div className="w-32 h-1 bg-amber-500 mx-auto rounded-full"></div>
           </div>
           
-          {/* Декоративная линия */}
-          <div className="flex items-center justify-center mb-6 sm:mb-8">
-            <div className="w-20 sm:w-24 md:w-32 h-0.5 bg-gradient-to-r from-transparent to-amber-400 rounded-full"></div>
-            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-amber-400 rounded-full mx-2 sm:mx-4 animate-pulse"></div>
-            <div className="w-20 sm:w-24 md:w-32 h-0.5 bg-gradient-to-l from-transparent to-amber-400 rounded-full"></div>
-          </div>
+          {/* Описание */}
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+            Добро пожаловать, <span className="text-amber-400 font-bold">{profile?.username || telegramUser?.first_name}</span>! 
+            Здесь вы можете <span className="text-blue-400 font-bold">управлять своим аккаунтом</span> и просматривать статистику.
+          </p>
         </div>
       </div>
 
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Основная информация профиля */}
-        <div className="mb-8 sm:mb-12 animate-profile-slide-in">
-          <div className="profile-glass-effect profile-card-hover rounded-3xl p-6 sm:p-8 relative overflow-hidden">
-            {/* Декоративные элементы */}
-            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-amber-400/10 to-transparent rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full blur-3xl"></div>
+        <div className="mb-8 sm:mb-12">
+          <div className="group relative">
+            {/* Внешнее свечение */}
+            <div className="absolute -inset-1 bg-amber-500/20 rounded-3xl blur-xl"></div>
             
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-              {/* Аватар и основная информация */}
-              <div className="text-center lg:text-left animate-profile-fade-in" style={{animationDelay: '0.1s'}}>
-                <div className="relative mx-auto lg:mx-0 w-24 h-24 sm:w-28 sm:h-28 mb-6">
-                  <div className="profile-avatar-glow w-full h-full rounded-full overflow-hidden shadow-2xl shadow-amber-500/40">
-                    <div className="w-full h-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
-                      {profile?.avatar_url ? (
-                        <img
-                          src={profile.avatar_url}
-                          alt="Avatar"
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <User className="w-12 h-12 sm:w-14 sm:h-14 text-white" />
-                      )}
+            {/* Основная карточка */}
+            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-amber-500/30 p-8 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Аватар и основная информация */}
+                <div className="text-center lg:text-left">
+                  <div className="relative mx-auto lg:mx-0 w-24 h-24 sm:w-28 sm:h-28 mb-6">
+                    <div className="w-full h-full rounded-full overflow-hidden shadow-2xl shadow-amber-500/40">
+                      <div className="w-full h-full bg-amber-500 flex items-center justify-center">
+                        {profile?.avatar_url ? (
+                          <img
+                            src={profile.avatar_url}
+                            alt="Avatar"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <User className="w-12 h-12 sm:w-14 sm:h-14 text-white" />
+                        )}
+                      </div>
                     </div>
+                    {/* Статус индикатор */}
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-black animate-pulse shadow-lg shadow-green-500/50"></div>
                   </div>
-                  {/* Статус индикатор */}
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-gray-900 animate-pulse shadow-lg shadow-green-500/50"></div>
-                </div>
-                
-                <div className="space-y-3">
-                  <h2 className="text-2xl sm:text-3xl font-black text-white profile-text-glow">
-                    {profile?.username || telegramUser.first_name}
-                  </h2>
-                  <p className="text-gray-400 text-sm sm:text-base font-medium">@{telegramUser.username || 'user'}</p>
                   
-                  {/* Роли и статус */}
-                  <div className="flex flex-col items-center lg:items-start space-y-2">
-                    {profile?.role === 'admin' && (
-                      <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white border-0 px-4 py-2 text-sm font-bold rounded-xl shadow-lg shadow-amber-500/30 hover:scale-105 transition-transform duration-300">
-                        <Shield className="w-4 h-4 mr-2" />
-                        Администратор
-                      </Badge>
-                    )}
+                  <div className="space-y-3">
+                    <h2 className="text-2xl sm:text-3xl font-black text-white">
+                      {profile?.username || telegramUser.first_name}
+                    </h2>
+                    <p className="text-gray-400 text-sm sm:text-base font-medium">@{telegramUser.username || 'user'}</p>
                     
-                    <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 border border-green-500/30 px-4 py-2 text-sm font-bold rounded-xl hover:scale-105 transition-transform duration-300">
-                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                      Активен
-                    </Badge>
+                    {/* Роли и статус */}
+                    <div className="flex flex-col items-center lg:items-start space-y-2">
+                      {profile?.role === 'admin' && (
+                        <Badge className="bg-amber-500 text-white border-0 px-4 py-2 text-sm font-bold rounded-xl shadow-lg shadow-amber-500/30 hover:scale-105 transition-transform duration-300">
+                          <Shield className="w-4 h-4 mr-2" />
+                          Администратор
+                        </Badge>
+                      )}
+                      
+                      <Badge className="bg-green-500/20 text-green-400 border border-green-500/30 px-4 py-2 text-sm font-bold rounded-xl hover:scale-105 transition-transform duration-300">
+                        <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                        Активен
+                      </Badge>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Баланс */}
-              <div className="text-center lg:text-left animate-profile-fade-in" style={{animationDelay: '0.2s'}}>
-                <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-amber-500/20 hover:border-amber-500/40 transition-all duration-300 profile-card-hover">
-                  <div className="flex items-center justify-center lg:justify-start mb-4">
-                    <div className="w-10 h-10 bg-gradient-to-r from-amber-400/20 to-amber-600/20 rounded-xl flex items-center justify-center mr-3 border border-amber-500/30">
-                      <Wallet className="w-5 h-5 text-amber-400 animate-pulse" />
+                {/* Баланс */}
+                <div className="text-center lg:text-left">
+                  <div className="bg-black/80 backdrop-blur-xl rounded-2xl p-6 border border-amber-500/30 hover:border-amber-500/50 transition-all duration-300">
+                    <div className="flex items-center justify-center lg:justify-start mb-4">
+                      <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center mr-3 border border-amber-500/30">
+                        <Wallet className="w-5 h-5 text-amber-400 animate-pulse" />
+                      </div>
+                      <h3 className="text-xl font-bold text-white">Баланс</h3>
                     </div>
-                    <h3 className="text-xl font-bold text-white profile-text-glow">Баланс</h3>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <div className="text-3xl sm:text-4xl font-black text-amber-400 profile-stat-counter profile-text-glow">
-                      {formatNumber(balance || 0)}₴
+                    
+                    <div className="mb-6">
+                      <div className="text-3xl sm:text-4xl font-black text-amber-400">
+                        {formatNumber(balance || 0)}₴
+                      </div>
+                      <div className="text-sm text-gray-400 mt-1">Доступно для покупок</div>
                     </div>
-                    <div className="text-sm text-gray-400 mt-1">Доступно для покупок</div>
+                    
+                    <Button
+                      onClick={handleTopUp}
+                      className="w-full px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm"
+                    >
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      Пополнить баланс
+                    </Button>
                   </div>
-                  
-                  <Button
-                    onClick={handleTopUp}
-                    className="profile-button-ripple w-full px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 text-sm"
-                  >
-                    <CreditCard className="w-4 h-4 mr-2" />
-                    Пополнить баланс
-                  </Button>
                 </div>
-              </div>
 
-              {/* Быстрые действия */}
-              <div className="text-center lg:text-left animate-profile-fade-in" style={{animationDelay: '0.3s'}}>
-                <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
-                  <h3 className="text-xl font-bold text-white mb-6 profile-text-glow">Быстрые действия</h3>
-                  <div className="space-y-4">
-                    <Button
-                      onClick={() => navigate('/catalog')}
-                      variant="outline"
-                      className="profile-button-ripple w-full py-3 bg-black/40 backdrop-blur-sm border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl text-sm font-medium hover:scale-105"
-                    >
-                      <ShoppingBag className="w-4 h-4 mr-2" />
-                      Каталог товаров
-                    </Button>
-                    <Button
-                      onClick={() => navigate('/cases')}
-                      variant="outline"
-                      className="profile-button-ripple w-full py-3 bg-black/40 backdrop-blur-sm border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/20 rounded-xl text-sm font-medium hover:scale-105"
-                    >
-                      <Gift className="w-4 h-4 mr-2" />
-                      Открыть кейсы
-                    </Button>
+                {/* Быстрые действия */}
+                <div className="text-center lg:text-left">
+                  <div className="bg-black/80 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
+                    <h3 className="text-xl font-bold text-white mb-6">Быстрые действия</h3>
+                    <div className="space-y-4">
+                      <Button
+                        onClick={() => navigate('/catalog')}
+                        variant="outline"
+                        className="w-full py-3 bg-black/40 backdrop-blur-sm border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl text-sm font-medium hover:scale-105"
+                      >
+                        <ShoppingBag className="w-4 h-4 mr-2" />
+                        Каталог товаров
+                      </Button>
+                      <Button
+                        onClick={() => navigate('/cases')}
+                        variant="outline"
+                        className="w-full py-3 bg-black/40 backdrop-blur-sm border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/20 rounded-xl text-sm font-medium hover:scale-105"
+                      >
+                        <Gift className="w-4 h-4 mr-2" />
+                        Открыть кейсы
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -384,59 +362,59 @@ const Profile = () => {
         </div>
 
         {/* Статистика */}
-        <div className="mb-12 sm:mb-16 animate-profile-fade-in" style={{animationDelay: '0.4s'}}>
+        <div className="mb-12 sm:mb-16">
           <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl font-black text-white profile-text-glow mb-4">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
               Ваша статистика
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-amber-500 mx-auto rounded-full"></div>
           </div>
           
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {/* Покупки */}
-            <div className="profile-glass-effect profile-card-hover rounded-2xl p-6 text-center relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-amber-400/10 to-transparent rounded-full blur-2xl"></div>
-              <div className="relative z-10">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-2xl flex items-center justify-center mb-4 border border-amber-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-amber-500/20">
-                  <ShoppingBag className="w-8 h-8 text-amber-400 group-hover:animate-bounce" />
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-amber-500/20 rounded-2xl blur-xl"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-amber-500/30 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
+                <div className="mx-auto w-16 h-16 bg-amber-500/20 rounded-2xl flex items-center justify-center mb-4 border border-amber-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-amber-500/20">
+                  <ShoppingBag className="w-8 h-8 text-amber-400" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-amber-400 profile-stat-counter profile-text-glow mb-2">{stats.totalPurchases}</div>
+                <div className="text-2xl sm:text-3xl font-black text-amber-400 mb-2">{stats.totalPurchases}</div>
                 <p className="text-sm text-gray-300 font-medium">Покупки</p>
               </div>
             </div>
 
             {/* Потрачено */}
-            <div className="profile-glass-effect profile-card-hover rounded-2xl p-6 text-center relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-green-400/10 to-transparent rounded-full blur-2xl"></div>
-              <div className="relative z-10">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-400/20 to-emerald-600/20 rounded-2xl flex items-center justify-center mb-4 border border-green-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-green-500/20">
-                  <TrendingUp className="w-8 h-8 text-green-400 group-hover:animate-bounce" />
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-green-500/20 rounded-2xl blur-xl"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-green-500/30 hover:border-green-400/50 transition-all duration-500 hover:scale-105">
+                <div className="mx-auto w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mb-4 border border-green-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-green-500/20">
+                  <TrendingUp className="w-8 h-8 text-green-400" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-green-400 profile-stat-counter profile-text-glow mb-2">{formatNumber(stats.totalSpent)}₴</div>
+                <div className="text-2xl sm:text-3xl font-black text-green-400 mb-2">{formatNumber(stats.totalSpent)}₴</div>
                 <p className="text-sm text-gray-300 font-medium">Потрачено</p>
               </div>
             </div>
 
             {/* Кейсы открыто */}
-            <div className="profile-glass-effect profile-card-hover rounded-2xl p-6 text-center relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-400/10 to-transparent rounded-full blur-2xl"></div>
-              <div className="relative z-10">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-2xl flex items-center justify-center mb-4 border border-purple-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-purple-500/20">
-                  <Gift className="w-8 h-8 text-purple-400 group-hover:animate-bounce" />
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-purple-500/20 rounded-2xl blur-xl"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 hover:scale-105">
+                <div className="mx-auto w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-4 border border-purple-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-purple-500/20">
+                  <Gift className="w-8 h-8 text-purple-400" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-purple-400 profile-stat-counter profile-text-glow mb-2">{stats.casesOpened}</div>
+                <div className="text-2xl sm:text-3xl font-black text-purple-400 mb-2">{stats.casesOpened}</div>
                 <p className="text-sm text-gray-300 font-medium">Кейсы открыто</p>
               </div>
             </div>
 
             {/* Предметы продано */}
-            <div className="profile-glass-effect profile-card-hover rounded-2xl p-6 text-center relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-400/10 to-transparent rounded-full blur-2xl"></div>
-              <div className="relative z-10">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-400/20 to-cyan-600/20 rounded-2xl flex items-center justify-center mb-4 border border-blue-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl shadow-blue-500/20">
-                  <Star className="w-8 h-8 text-blue-400 group-hover:animate-bounce" />
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-blue-500/20 rounded-2xl blur-xl"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-blue-500/30 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
+                <div className="mx-auto w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-4 border border-blue-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-blue-500/20">
+                  <Star className="w-8 h-8 text-blue-400" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-blue-400 profile-stat-counter profile-text-glow mb-2">{stats.itemsSold}</div>
+                <div className="text-2xl sm:text-3xl font-black text-blue-400 mb-2">{stats.itemsSold}</div>
                 <p className="text-sm text-gray-300 font-medium">Предметы продано</p>
               </div>
             </div>
@@ -446,14 +424,16 @@ const Profile = () => {
         {/* Достижения и настройки */}
         <div className="mb-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <Award className="w-6 h-6 mr-3 text-amber-400" />
-                  Достижения
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-amber-500/20 rounded-3xl blur-xl"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-amber-500/30 p-8 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-amber-500/20 rounded-2xl flex items-center justify-center mr-4 border border-amber-500/30 shadow-xl shadow-amber-500/20 group-hover:rotate-12 transition-all duration-500">
+                    <Award className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white">Достижения</h3>
+                </div>
+                
                 {achievementsLoading ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-2 border-amber-400 border-t-transparent"></div>
@@ -465,15 +445,15 @@ const Profile = () => {
                       const progress = getProgress(achievement);
                       
                       return (
-                        <div key={achievement.id} className="p-3 bg-black/30 backdrop-blur-sm rounded-lg border border-amber-500/20">
-                          <div className="flex items-center justify-between mb-2">
+                        <div key={achievement.id} className="p-4 bg-black/80 backdrop-blur-xl rounded-2xl border border-amber-500/20 hover:border-amber-400/40 transition-all duration-300">
+                          <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center space-x-3">
-                              <div className="w-8 h-8 bg-amber-500/30 rounded-full flex items-center justify-center">
+                              <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center border border-amber-500/30">
                                 {achievement.icon}
                               </div>
                               <div>
-                                <span className="text-gray-300 font-medium">{achievement.title}</span>
-                                <p className="text-gray-500 text-xs">{achievement.description}</p>
+                                <span className="text-gray-300 font-bold">{achievement.title}</span>
+                                <p className="text-gray-500 text-sm">{achievement.description}</p>
                               </div>
                             </div>
                             <Badge className={status.className}>
@@ -482,10 +462,10 @@ const Profile = () => {
                           </div>
                           
                           {/* Прогресс бар */}
-                          <div className="mt-2">
-                            <div className="flex justify-between items-center mb-1">
-                              <span className="text-xs text-gray-400">{formatProgress(achievement)}</span>
-                              <span className="text-xs text-gray-400">{progress.toFixed(0)}%</span>
+                          <div className="mt-3">
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-sm text-gray-400">{formatProgress(achievement)}</span>
+                              <span className="text-sm text-gray-400">{progress.toFixed(0)}%</span>
                             </div>
                             <div className="w-full bg-gray-700 rounded-full h-2">
                               <div 
@@ -505,22 +485,24 @@ const Profile = () => {
                     })}
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <Settings className="w-6 h-6 mr-3 text-amber-400" />
-                  Настройки
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-blue-500/20 rounded-3xl blur-xl"></div>
+              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-blue-500/30 p-8 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center mr-4 border border-blue-500/30 shadow-xl shadow-blue-500/20 group-hover:rotate-12 transition-all duration-500">
+                    <Settings className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white">Настройки</h3>
+                </div>
+                
                 <div className="space-y-4">
                   <Button
                     onClick={() => navigate('/transaction-history')}
                     variant="outline"
-                    className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
+                    className="w-full bg-black/80 backdrop-blur-xl border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400 hover:text-white transition-all duration-300 shadow-lg shadow-blue-500/20 rounded-xl font-medium hover:scale-105"
                   >
                     <History className="w-4 h-4 mr-2" />
                     История транзакций
@@ -529,18 +511,16 @@ const Profile = () => {
                   <Button
                     onClick={() => setShowEditModal(true)}
                     variant="outline"
-                    className="w-full bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
+                    className="w-full bg-black/80 backdrop-blur-xl border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400 hover:text-white transition-all duration-300 shadow-lg shadow-blue-500/20 rounded-xl font-medium hover:scale-105"
                   >
                     <User className="w-4 h-4 mr-2" />
                     Редактировать профиль
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
-
-
 
         {/* Кнопки действий */}
         <div className="text-center">
@@ -548,7 +528,7 @@ const Profile = () => {
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-red-500/40 text-red-300 hover:bg-red-500/20 hover:border-red-400 hover:text-red-200 transition-all duration-300 shadow-lg shadow-red-500/20 rounded-xl"
+              className="px-8 py-3 bg-black/80 backdrop-blur-xl border border-red-500/30 text-red-300 hover:bg-red-500/20 hover:border-red-400 hover:text-white transition-all duration-300 shadow-lg shadow-red-500/20 rounded-xl font-medium hover:scale-105"
             >
               <LogOut className="w-5 h-5 mr-2" />
               Выйти из аккаунта
@@ -557,7 +537,7 @@ const Profile = () => {
             <Button
               onClick={() => navigate('/')}
               variant="outline"
-              className="px-8 py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl"
+              className="px-8 py-3 bg-black/80 backdrop-blur-xl border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl font-medium hover:scale-105"
             >
               <Shield className="w-5 h-5 mr-2" />
               Вернуться на главную
@@ -565,6 +545,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      
       <EditProfileModal 
         isOpen={showEditModal} 
         onClose={() => setShowEditModal(false)} 
@@ -578,4 +559,4 @@ const Profile = () => {
   );
 };
 
-export default Profile; 
+export default Profile;
