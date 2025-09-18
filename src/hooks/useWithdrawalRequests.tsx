@@ -112,25 +112,14 @@ export const useWithdrawalRequests = () => {
         ? telegramUsername 
         : `@${telegramUsername}`;
 
-      console.log('Creating withdrawal request:', {
+      console.log('✅ Создание запроса на вывод:', {
         userId,
         itemId,
         itemName,
         telegramUsername: formattedUsername
       });
 
-      // Проверим, существует ли таблица
-      console.log('🔍 Проверяем подключение к Supabase...');
-      
-      // Прямая вставка в таблицу
-      console.log('📝 Данные для вставки:', {
-        user_id: userId,
-        item_id: itemId,
-        item_name: itemName,
-        telegram_username: formattedUsername,
-        status: 'pending'
-      });
-
+      // Простая вставка без лишних проверок
       const { data, error } = await supabase
         .from('withdrawal_requests')
         .insert({
@@ -144,17 +133,11 @@ export const useWithdrawalRequests = () => {
         .single();
 
       if (error) {
-        console.error('❌ Insert Error:', error);
-        console.error('❌ Error details:', {
-          code: error.code,
-          message: error.message,
-          details: error.details,
-          hint: error.hint
-        });
+        console.error('❌ Ошибка создания запроса:', error.message);
         throw error;
       }
 
-      console.log('✅ Insert Response:', data);
+      console.log('✅ Запрос создан успешно:', data);
 
       // Обновляем статус предмета в инвентаре на 'withdrawal_requested'
       try {
