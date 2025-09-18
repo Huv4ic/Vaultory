@@ -11,7 +11,6 @@ import AdminProducts from './AdminProducts';
 import AdminCases from './AdminCases';
 import AdminWithdrawalRequests from './AdminWithdrawalRequests';
 import UserRoleManagement from './UserRoleManagement';
-import AdminTelegramStats from './AdminTelegramStats';
 
 interface User {
   id: string;
@@ -521,16 +520,6 @@ export default function AdminPanel() {
           >
             🛡️ Роли
           </button>
-          <button
-            className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
-              activeTab === 'telegram' 
-                ? 'bg-pink-500 text-black shadow-2xl shadow-pink-500/25' 
-                : 'bg-black/80 backdrop-blur-xl border border-pink-500/30 text-pink-400 hover:border-pink-400/50 hover:bg-pink-500/10'
-            }`}
-            onClick={() => setActiveTab('telegram')}
-          >
-            📱 Telegram
-          </button>
         </div>
       </div>
 
@@ -541,7 +530,6 @@ export default function AdminPanel() {
         {activeTab === 'cases' && <AdminCases />}
         {activeTab === 'withdrawals' && <AdminWithdrawalRequests />}
         {activeTab === 'roles' && <UserRoleManagement />}
-        {activeTab === 'telegram' && <AdminTelegramStats />}
       </div>
     </div>
   );

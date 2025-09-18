@@ -59,7 +59,7 @@ const ProductCard = ({
       title={t('Нажмите для просмотра товара')}
     >
       {/* Основная карточка */}
-      <div className="relative bg-gray-900 rounded-3xl border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-500 transform hover:scale-[1.03] hover:-translate-y-3 group overflow-hidden h-full flex flex-col shadow-2xl hover:shadow-cyan-500/30 min-h-[450px]">
+      <div className="relative bg-gray-900 rounded-3xl border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-500 transform hover:scale-[1.03] hover:-translate-y-3 group overflow-hidden flex flex-col shadow-2xl hover:shadow-cyan-500/30 h-[500px]">
         
         {/* Светящиеся эффекты */}
         <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
@@ -115,7 +115,7 @@ const ProductCard = ({
         <div className="relative flex-1 flex flex-col bg-gray-800 rounded-b-3xl p-5">
           <div className="flex-1 flex flex-col justify-center text-center">
             {/* Название товара - красивый стильный текст */}
-            <h3 className="text-white font-bold text-xl mb-4 line-clamp-2 tracking-wide drop-shadow-lg">
+            <h3 className="text-white font-bold text-xl mb-4 line-clamp-2 tracking-wide drop-shadow-lg h-14 flex items-center justify-center">
               {getProductTranslation(id, 'name', name)}
             </h3>
             
@@ -138,14 +138,14 @@ const ProductCard = ({
             </div>
             
             {/* Статистика продаж - стилизованная */}
-            {sales && (
-              <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center justify-center mb-4 h-8">
+              {sales && (
                 <div className="px-4 py-2 bg-gray-700/50 text-cyan-300 text-sm font-medium rounded-full border border-cyan-400/30 backdrop-blur-sm shadow-lg">
                   <Star className="w-4 h-4 inline mr-2 text-cyan-400" />
                   {sales} {t('продаж')}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
           
           {/* Кнопка добавления в корзину - стильная */}
