@@ -151,7 +151,7 @@ const ProductCard = ({
           </div>
           
           {/* Кнопки действий */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             {/* Кнопка "Купить" */}
             {onBuyNow && (
               <Button
@@ -160,7 +160,7 @@ const ProductCard = ({
                   onBuyNow();
                 }}
                 size="sm"
-                className="flex-1 group relative px-4 py-3 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-500/50 hover:shadow-emerald-400/70"
+                className="flex-1 group relative h-12 px-4 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-500/50 hover:shadow-emerald-400/70"
                 title="Купить сейчас"
               >
                 {/* Светящийся эффект */}
