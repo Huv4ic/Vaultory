@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Eye, ShoppingCart, Star, Heart } from 'lucide-react';
+import { Eye, ShoppingCart, Star, Heart, Zap } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useTranslations } from '@/hooks/useTranslations';
@@ -20,6 +20,7 @@ interface ProductCardProps {
   isInCart: boolean;
   onAddToCart: () => void;
   onDetails: () => void;
+  onBuyNow?: () => void;
 }
 
 const ProductCard = ({
@@ -36,7 +37,8 @@ const ProductCard = ({
   description,
   isInCart,
   onAddToCart,
-  onDetails
+  onDetails,
+  onBuyNow
 }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const { t } = useLanguage();
@@ -148,8 +150,31 @@ const ProductCard = ({
             </div>
           </div>
           
-          {/* Кнопка добавления в корзину - стильная */}
-          <div className="flex justify-end">
+          {/* Кнопки действий */}
+          <div className="flex gap-2">
+            {/* Кнопка "Купить" */}
+            {onBuyNow && (
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onBuyNow();
+                }}
+                size="sm"
+                className="flex-1 group relative px-4 py-3 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-500/50 hover:shadow-emerald-400/70"
+                title="Купить сейчас"
+              >
+                {/* Светящийся эффект */}
+                <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse pointer-events-none"></div>
+                
+                {/* Контент кнопки */}
+                <div className="relative z-10 flex items-center justify-center">
+                  <Zap className="w-4 h-4 mr-1" />
+                  <span className="text-sm">Купить</span>
+                </div>
+              </Button>
+            )}
+            
+            {/* Кнопка добавления в корзину */}
             <Button
               onClick={(e) => {
                 e.stopPropagation();

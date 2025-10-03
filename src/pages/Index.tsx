@@ -109,10 +109,21 @@ const Index = () => {
 
   const handleAddToCart = (product) => {
     if (!telegramUser) {
-              showError(t('Войдите через Telegram, чтобы добавить в корзину!'));
+      showError(t('Войдите через Telegram, чтобы добавить в корзину!'));
       return;
     }
     addItem(product);
+  };
+
+  const handleBuyNow = (product) => {
+    if (!telegramUser) {
+      showError(t('Войдите через Telegram для покупки!'));
+      return;
+    }
+    // Добавляем товар в корзину
+    addItem(product);
+    // Сразу переходим в корзину
+    navigate('/cart');
   };
 
   if (loading) {
@@ -273,6 +284,7 @@ const Index = () => {
                           isInCart={items.some((item) => item.id === product.id)}
                           onAddToCart={() => handleAddToCart(product)}
                           onDetails={() => handleProductDetails(product.id)}
+                          onBuyNow={() => handleBuyNow(product)}
                         />
                         {/* Светящийся эффект вокруг карточки */}
                         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-none"></div>

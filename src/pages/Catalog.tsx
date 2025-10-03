@@ -112,6 +112,23 @@ const Catalog = () => {
     });
   };
 
+  const handleBuyNow = (product: any) => {
+    if (!telegramUser) {
+      alert(t('Войдите через Telegram для покупки!'));
+      return;
+    }
+    // Добавляем товар в корзину
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url,
+      image: (product.images && product.images.length > 0) ? product.images[0] : product.image_url
+    });
+    // Сразу переходим в корзину
+    navigate('/cart');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
@@ -376,6 +393,7 @@ const Catalog = () => {
                             isInCart={items.some(item => item.id === product.id)}
                             onAddToCart={() => handleAddToCart(product)}
                             onDetails={() => navigate(`/product/${product.id}`)}
+                            onBuyNow={() => handleBuyNow(product)}
                           />
                         </div>
                       ))}
