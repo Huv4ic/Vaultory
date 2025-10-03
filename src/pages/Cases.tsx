@@ -13,7 +13,7 @@ const Cases = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white flex items-center justify-center px-4">
         <div className="text-center">
           <div className="relative">
             <div className="animate-spin rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 border-4 border-amber-400/30 mx-auto"></div>
@@ -32,7 +32,7 @@ const Cases = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white flex items-center justify-center px-4">
         <div className="text-center">
           <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-red-500/20 rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-red-500/30">
             <span className="text-red-400 text-2xl sm:text-3xl">⚠️</span>
