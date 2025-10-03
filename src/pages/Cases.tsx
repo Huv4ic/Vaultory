@@ -51,7 +51,7 @@ const Cases = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
         {/* Плавающие частицы */}

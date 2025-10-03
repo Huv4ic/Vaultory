@@ -367,7 +367,7 @@ const ProductPage = () => {
                         handleAddToCart();
                         navigate('/cart');
                       }}
-                      className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-emerald-500/25"
+                      className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-emerald-600/25"
                     >
                       <Zap className="w-6 h-6 mr-3" />
                       Купить сейчас
