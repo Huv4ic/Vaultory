@@ -117,7 +117,7 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
         {/* Плавающие частицы */}
@@ -361,6 +361,18 @@ const ProductPage = () => {
 
                   {/* Кнопки действий */}
                   <div className="space-y-4">
+                    {/* Кнопка "Купить сейчас" */}
+                    <Button
+                      onClick={() => {
+                        handleAddToCart();
+                        navigate('/cart');
+                      }}
+                      className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-emerald-500/25"
+                    >
+                      <Zap className="w-6 h-6 mr-3" />
+                      Купить сейчас
+                    </Button>
+                    
                     <Button
                       onClick={handleAddToCart}
                       disabled={isInCart}
