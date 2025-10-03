@@ -274,7 +274,6 @@ const Index = () => {
                           category_id={product.category_id}
                           game={product.game}
                           rating={product.rating}
-                          sales={product.sales}
                           description={product.description}
                           isInCart={items.some((item) => item.id === product.id)}
                           onAddToCart={() => handleAddToCart(product)}

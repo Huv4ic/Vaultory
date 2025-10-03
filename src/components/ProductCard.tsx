@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Eye, ShoppingCart, Star, Heart, Zap } from 'lucide-react';
+import { Eye, ShoppingCart, Heart, Zap } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useTranslations } from '@/hooks/useTranslations';
@@ -15,7 +15,6 @@ interface ProductCardProps {
   category_id?: string;
   game?: string;
   rating?: number;
-  sales?: number;
   description?: string;
   isInCart: boolean;
   onAddToCart: () => void;
@@ -33,7 +32,6 @@ const ProductCard = ({
   category_id,
   game,
   rating,
-  sales,
   description,
   isInCart,
   onAddToCart,
@@ -139,15 +137,6 @@ const ProductCard = ({
               )}
             </div>
             
-            {/* Статистика продаж - стилизованная */}
-            <div className="flex items-center justify-center mb-4 h-8">
-              {sales && (
-                <div className="px-4 py-2 bg-gray-700/50 text-cyan-300 text-sm font-medium rounded-full border border-cyan-400/30 backdrop-blur-sm shadow-lg">
-                  <Star className="w-4 h-4 inline mr-2 text-cyan-400" />
-                  {sales} {t('продаж')}
-                </div>
-              )}
-            </div>
           </div>
           
           {/* Кнопки действий */}
