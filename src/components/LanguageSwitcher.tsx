@@ -38,7 +38,7 @@ const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: LanguageSwitche
       <div className="absolute inset-0 bg-pink-500/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative flex items-center space-x-2 px-3 py-2 rounded-xl bg-black/90 backdrop-blur-xl border border-pink-500/30 hover:border-pink-400/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-pink-500/20"
+        className="relative flex items-center space-x-2 px-3 py-2 rounded-xl bg-gray-800/90 backdrop-blur-xl border border-pink-500/30 hover:border-pink-400/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-pink-500/20"
       >
         <span className="text-sm text-pink-400 font-bold">{currentLang.flag}</span>
         <ChevronDown 
@@ -47,7 +47,7 @@ const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: LanguageSwitche
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-3 w-24 bg-black/95 backdrop-blur-xl rounded-2xl border border-pink-500/30 shadow-2xl shadow-pink-500/25 z-50">
+        <div className="absolute top-full right-0 mt-3 w-24 bg-gray-800/95 backdrop-blur-xl rounded-2xl border border-pink-500/30 shadow-2xl shadow-pink-500/25 z-50">
           <div className="py-3">
             {languages.map((language) => (
               <button

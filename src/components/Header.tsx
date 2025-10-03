@@ -40,7 +40,7 @@ const Header = () => {
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="w-10 h-10 sm:w-12 sm:h-12 relative transform group-hover:scale-110 transition-all duration-500">
               {/* Иконка с буквой V */}
-              <div className="absolute inset-0 bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-500 shadow-lg shadow-cyan-500/20">
+              <div className="absolute inset-0 bg-gray-800/80 backdrop-blur-xl rounded-xl flex items-center justify-center border border-cyan-500/30 group-hover:border-cyan-400/50 transition-all duration-500 shadow-lg shadow-cyan-500/20">
                 <div className="relative">
                   {/* Основная буква V */}
                   <div className="text-cyan-400 font-black text-xl sm:text-2xl tracking-wider group-hover:text-cyan-300 transition-all duration-500">
@@ -109,7 +109,7 @@ const Header = () => {
               to="/cart" 
               className="relative group"
             >
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-xl p-3 border border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-300 hover:scale-110 shadow-lg shadow-cyan-500/20">
+              <div className="relative bg-gray-800/80 backdrop-blur-xl rounded-xl p-3 border border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-300 hover:scale-110 shadow-lg shadow-cyan-500/20">
                 {/* Анимированный фон при hover */}
                 <div className="absolute inset-0 bg-cyan-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
@@ -141,7 +141,7 @@ const Header = () => {
               <div className="hidden md:flex items-center space-x-3">
                 <BalanceDisplay balance={balance} />
                 <div className="relative group">
-                  <button className="flex items-center space-x-2 p-2 rounded-xl bg-black/80 backdrop-blur-xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/20">
+                  <button className="flex items-center space-x-2 p-2 rounded-xl bg-gray-800/80 backdrop-blur-xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/20">
                     {profile?.avatar_url ? (
                       <img
                         src={profile.avatar_url}
@@ -157,7 +157,7 @@ const Header = () => {
                   </button>
                   
                   {/* Выпадающее меню профиля */}
-                  <div className="absolute right-0 mt-2 w-48 bg-black/95 backdrop-blur-xl border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="absolute right-0 mt-2 w-48 bg-gray-800/95 backdrop-blur-xl border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                     <div className="p-2">
                       <Link 
                         to="/profile" 
@@ -196,7 +196,7 @@ const Header = () => {
             {/* Мобильное меню */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-xl bg-black/80 backdrop-blur-xl border border-pink-500/30 hover:border-pink-400/50 transition-all duration-300"
+              className="md:hidden p-2 rounded-xl bg-gray-800/80 backdrop-blur-xl border border-pink-500/30 hover:border-pink-400/50 transition-all duration-300"
             >
               {isMenuOpen ? (
                 <X className="w-6 h-6 text-pink-400" />
@@ -222,7 +222,7 @@ const Header = () => {
                         className="w-8 h-8 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-8 h-8 bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center border border-cyan-500/30">
+                      <div className="w-8 h-8 bg-gray-800/80 backdrop-blur-xl rounded-full flex items-center justify-center border border-cyan-500/30">
                         <User className="w-4 h-4 text-cyan-400" />
                       </div>
                     )}
