@@ -152,25 +152,25 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
         {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-ping delay-1000 opacity-40"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-ping delay-2000 opacity-50"></div>
-        <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-yellow-400 rounded-full animate-ping delay-3000 opacity-30"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-green-400 rounded-full animate-ping delay-4000 opacity-40"></div>
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-40"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-ping delay-1000 opacity-30"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-ping delay-2000 opacity-35"></div>
+        <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-yellow-400 rounded-full animate-ping delay-3000 opacity-20"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-green-400 rounded-full animate-ping delay-4000 opacity-30"></div>
         
         {/* Светящиеся линии */}
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent animate-pulse"></div>
-        <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-purple-500/20 to-transparent animate-pulse delay-1000"></div>
-        <div className="absolute top-0 left-2/3 w-px h-full bg-gradient-to-b from-transparent via-pink-500/20 to-transparent animate-pulse delay-2000"></div>
+        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent animate-pulse"></div>
+        <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-purple-500/10 to-transparent animate-pulse delay-1000"></div>
+        <div className="absolute top-0 left-2/3 w-px h-full bg-gradient-to-b from-transparent via-pink-500/10 to-transparent animate-pulse delay-2000"></div>
       </div>
       {/* Telegram канал - современное окно с анимированным фоном */}
 
       {/* Категории игр с контрастным фоном */}
-      <section className="py-16 px-4 relative overflow-hidden bg-black">
+      <section className="py-16 px-4 relative overflow-hidden bg-transparent">
         {/* Контрастный анимированный фон */}
         <div className="absolute inset-0">
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -299,7 +299,7 @@ const Index = () => {
       </section>
 
       {/* FAQ с новым дизайном */}
-      <section className="py-16 px-4 bg-black relative overflow-hidden">
+      <section className="py-16 px-4 bg-transparent relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
