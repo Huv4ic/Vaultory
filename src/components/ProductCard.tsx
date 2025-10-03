@@ -160,7 +160,7 @@ const ProductCard = ({
                   onBuyNow();
                 }}
                 size="sm"
-                className="flex-1 group relative h-12 px-4 bg-emerald-500 hover:bg-emerald-400 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-500/50 hover:shadow-emerald-400/70"
+                className="flex-1 group relative h-12 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-600/50 hover:shadow-emerald-500/70"
                 title="Купить сейчас"
               >
                 {/* Светящийся эффект */}
