@@ -152,7 +152,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
         {/* Плавающие частицы */}
@@ -161,11 +161,6 @@ const Index = () => {
         <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-ping delay-2000 opacity-35"></div>
         <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-yellow-400 rounded-full animate-ping delay-3000 opacity-20"></div>
         <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-green-400 rounded-full animate-ping delay-4000 opacity-30"></div>
-        
-        {/* Светящиеся линии */}
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent animate-pulse"></div>
-        <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-purple-500/10 to-transparent animate-pulse delay-1000"></div>
-        <div className="absolute top-0 left-2/3 w-px h-full bg-gradient-to-b from-transparent via-pink-500/10 to-transparent animate-pulse delay-2000"></div>
       </div>
       {/* Telegram канал - современное окно с анимированным фоном */}
 
