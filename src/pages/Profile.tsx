@@ -175,8 +175,8 @@ const Profile = () => {
 
   if (!telegramUser) {
     return (
-      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
-        <div className="text-center bg-black/90 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
+      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden flex items-center justify-center">
+        <div className="text-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
           <div className="text-6xl mb-6">🔒</div>
           <h1 className="text-3xl font-bold text-white mb-4">{t('Войдите в аккаунт')}</h1>
           <p className="text-gray-300 mb-6 max-w-md">
@@ -195,7 +195,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden flex items-center justify-center">
         <div className="text-center">
           <div className="relative">
             <div className="animate-spin rounded-full h-32 w-32 border-4 border-amber-400/30 mx-auto mb-4"></div>
@@ -213,7 +213,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
         {/* Плавающие частицы */}
@@ -234,7 +234,7 @@ const Profile = () => {
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
           {/* Главный заголовок с анимацией */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-amber-500/30 shadow-2xl shadow-amber-500/30">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-full mb-6 border border-amber-500/30 shadow-2xl shadow-amber-500/30">
               <User className="w-10 h-10 md:w-12 md:h-12 text-amber-400" />
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
@@ -260,7 +260,7 @@ const Profile = () => {
             <div className="absolute -inset-1 bg-amber-500/20 rounded-3xl blur-xl"></div>
             
             {/* Основная карточка */}
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-amber-500/30 p-8 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
+            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-amber-500/30 p-8 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Аватар и основная информация */}
                 <div className="text-center lg:text-left">
@@ -307,7 +307,7 @@ const Profile = () => {
 
                 {/* Баланс */}
                 <div className="text-center lg:text-left">
-                  <div className="bg-black/80 backdrop-blur-xl rounded-2xl p-6 border border-amber-500/30 hover:border-amber-500/50 transition-all duration-300">
+                  <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 border border-amber-500/30 hover:border-amber-500/50 transition-all duration-300">
                     <div className="flex items-center justify-center lg:justify-start mb-4">
                       <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center mr-3 border border-amber-500/30">
                         <Wallet className="w-5 h-5 text-amber-400 animate-pulse" />
@@ -334,13 +334,13 @@ const Profile = () => {
 
                 {/* Быстрые действия */}
                 <div className="text-center lg:text-left">
-                  <div className="bg-black/80 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
+                  <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
                     <h3 className="text-xl font-bold text-white mb-6">Быстрые действия</h3>
                     <div className="space-y-4">
                       <Button
                         onClick={() => navigate('/catalog')}
                         variant="outline"
-                        className="w-full py-3 bg-black/40 backdrop-blur-sm border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl text-sm font-medium hover:scale-105"
+                        className="w-full py-3 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/40 backdrop-blur-sm border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl text-sm font-medium hover:scale-105"
                       >
                         <ShoppingBag className="w-4 h-4 mr-2" />
                         Каталог товаров
@@ -348,7 +348,7 @@ const Profile = () => {
                       <Button
                         onClick={() => navigate('/cases')}
                         variant="outline"
-                        className="w-full py-3 bg-black/40 backdrop-blur-sm border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/20 rounded-xl text-sm font-medium hover:scale-105"
+                        className="w-full py-3 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/40 backdrop-blur-sm border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/20 rounded-xl text-sm font-medium hover:scale-105"
                       >
                         <Gift className="w-4 h-4 mr-2" />
                         Открыть кейсы
@@ -374,7 +374,7 @@ const Profile = () => {
             {/* Покупки */}
             <div className="group relative">
               <div className="absolute -inset-1 bg-amber-500/20 rounded-2xl blur-xl"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-amber-500/30 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
+              <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-amber-500/30 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
                 <div className="mx-auto w-16 h-16 bg-amber-500/20 rounded-2xl flex items-center justify-center mb-4 border border-amber-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-amber-500/20">
                   <ShoppingBag className="w-8 h-8 text-amber-400" />
                 </div>
@@ -386,7 +386,7 @@ const Profile = () => {
             {/* Потрачено */}
             <div className="group relative">
               <div className="absolute -inset-1 bg-green-500/20 rounded-2xl blur-xl"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-green-500/30 hover:border-green-400/50 transition-all duration-500 hover:scale-105">
+              <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-green-500/30 hover:border-green-400/50 transition-all duration-500 hover:scale-105">
                 <div className="mx-auto w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center mb-4 border border-green-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-green-500/20">
                   <TrendingUp className="w-8 h-8 text-green-400" />
                 </div>
@@ -398,7 +398,7 @@ const Profile = () => {
             {/* Кейсы открыто */}
             <div className="group relative">
               <div className="absolute -inset-1 bg-purple-500/20 rounded-2xl blur-xl"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 hover:scale-105">
+              <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500 hover:scale-105">
                 <div className="mx-auto w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-4 border border-purple-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-purple-500/20">
                   <Gift className="w-8 h-8 text-purple-400" />
                 </div>
@@ -410,7 +410,7 @@ const Profile = () => {
             {/* Предметы продано */}
             <div className="group relative">
               <div className="absolute -inset-1 bg-blue-500/20 rounded-2xl blur-xl"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-blue-500/30 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
+              <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-2xl p-6 text-center border border-blue-500/30 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
                 <div className="mx-auto w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-4 border border-blue-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-blue-500/20">
                   <Star className="w-8 h-8 text-blue-400" />
                 </div>
@@ -426,7 +426,7 @@ const Profile = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="group relative">
               <div className="absolute -inset-1 bg-amber-500/20 rounded-3xl blur-xl"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-amber-500/30 p-8 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
+              <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-amber-500/30 p-8 hover:border-amber-400/50 transition-all duration-500 hover:scale-105">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-amber-500/20 rounded-2xl flex items-center justify-center mr-4 border border-amber-500/30 shadow-xl shadow-amber-500/20 group-hover:rotate-12 transition-all duration-500">
                     <Award className="w-6 h-6 text-amber-400" />
@@ -445,7 +445,7 @@ const Profile = () => {
                       const progress = getProgress(achievement);
                       
                       return (
-                        <div key={achievement.id} className="p-4 bg-black/80 backdrop-blur-xl rounded-2xl border border-amber-500/20 hover:border-amber-400/40 transition-all duration-300">
+                        <div key={achievement.id} className="p-4 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl border border-amber-500/20 hover:border-amber-400/40 transition-all duration-300">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center space-x-3">
                               <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center border border-amber-500/30">
@@ -490,7 +490,7 @@ const Profile = () => {
 
             <div className="group relative">
               <div className="absolute -inset-1 bg-blue-500/20 rounded-3xl blur-xl"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-blue-500/30 p-8 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
+              <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-blue-500/30 p-8 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center mr-4 border border-blue-500/30 shadow-xl shadow-blue-500/20 group-hover:rotate-12 transition-all duration-500">
                     <Settings className="w-6 h-6 text-blue-400" />
@@ -502,7 +502,7 @@ const Profile = () => {
                   <Button
                     onClick={() => navigate('/transaction-history')}
                     variant="outline"
-                    className="w-full bg-black/80 backdrop-blur-xl border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400 hover:text-white transition-all duration-300 shadow-lg shadow-blue-500/20 rounded-xl font-medium hover:scale-105"
+                    className="w-full bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400 hover:text-white transition-all duration-300 shadow-lg shadow-blue-500/20 rounded-xl font-medium hover:scale-105"
                   >
                     <History className="w-4 h-4 mr-2" />
                     История транзакций
@@ -511,7 +511,7 @@ const Profile = () => {
                   <Button
                     onClick={() => setShowEditModal(true)}
                     variant="outline"
-                    className="w-full bg-black/80 backdrop-blur-xl border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400 hover:text-white transition-all duration-300 shadow-lg shadow-blue-500/20 rounded-xl font-medium hover:scale-105"
+                    className="w-full bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400 hover:text-white transition-all duration-300 shadow-lg shadow-blue-500/20 rounded-xl font-medium hover:scale-105"
                   >
                     <User className="w-4 h-4 mr-2" />
                     Редактировать профиль
@@ -528,7 +528,7 @@ const Profile = () => {
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="px-8 py-3 bg-black/80 backdrop-blur-xl border border-red-500/30 text-red-300 hover:bg-red-500/20 hover:border-red-400 hover:text-white transition-all duration-300 shadow-lg shadow-red-500/20 rounded-xl font-medium hover:scale-105"
+              className="px-8 py-3 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl border border-red-500/30 text-red-300 hover:bg-red-500/20 hover:border-red-400 hover:text-white transition-all duration-300 shadow-lg shadow-red-500/20 rounded-xl font-medium hover:scale-105"
             >
               <LogOut className="w-5 h-5 mr-2" />
               Выйти из аккаунта
@@ -537,7 +537,7 @@ const Profile = () => {
             <Button
               onClick={() => navigate('/')}
               variant="outline"
-              className="px-8 py-3 bg-black/80 backdrop-blur-xl border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl font-medium hover:scale-105"
+              className="px-8 py-3 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-white transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-xl font-medium hover:scale-105"
             >
               <Shield className="w-5 h-5 mr-2" />
               Вернуться на главную

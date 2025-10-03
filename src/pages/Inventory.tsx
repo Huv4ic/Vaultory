@@ -208,7 +208,7 @@ const Inventory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
         {/* Плавающие частицы */}
@@ -229,7 +229,7 @@ const Inventory = () => {
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
           {/* Главный заголовок с анимацией */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-green-500/30 shadow-2xl shadow-green-500/30">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-full mb-6 border border-green-500/30 shadow-2xl shadow-green-500/30">
               <Package className="w-10 h-10 md:w-12 md:h-12 text-green-400" />
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
@@ -253,7 +253,7 @@ const Inventory = () => {
           <Button
             onClick={() => navigate(-1)}
             variant="outline"
-            className="px-6 py-3 bg-black/80 backdrop-blur-xl border border-green-500/30 text-green-300 hover:text-white transition-all duration-300 shadow-xl shadow-green-500/20 rounded-xl text-sm font-medium hover:scale-105"
+            className="px-6 py-3 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl border border-green-500/30 text-green-300 hover:text-white transition-all duration-300 shadow-xl shadow-green-500/20 rounded-xl text-sm font-medium hover:scale-105"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Назад
@@ -265,7 +265,7 @@ const Inventory = () => {
           {/* Общая стоимость */}
           <div className="group relative">
             <div className="absolute -inset-1 bg-green-500/20 rounded-3xl blur-xl"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-green-500/30 hover:border-green-400/50 transition-all duration-500 hover:scale-105">
+            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-green-500/30 hover:border-green-400/50 transition-all duration-500 hover:scale-105">
               <div className="mx-auto w-20 h-20 bg-green-500/20 rounded-2xl flex items-center justify-center mb-6 border border-green-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-green-500/20">
                 <DollarSign className="w-10 h-10 text-green-400" />
               </div>
@@ -280,7 +280,7 @@ const Inventory = () => {
           {/* Количество предметов */}
           <div className="group relative">
             <div className="absolute -inset-1 bg-blue-500/20 rounded-3xl blur-xl"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-blue-500/30 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
+            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-blue-500/30 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
               <div className="mx-auto w-20 h-20 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-blue-500/20">
                 <Package className="w-10 h-10 text-blue-400" />
               </div>
@@ -295,7 +295,7 @@ const Inventory = () => {
           {/* Любимый кейс */}
           <div className="group relative">
             <div className="absolute -inset-1 bg-yellow-500/20 rounded-3xl blur-xl"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105">
+            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl p-8 text-center border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105">
               <div className="mx-auto w-20 h-20 bg-yellow-500/20 rounded-2xl flex items-center justify-center mb-6 border border-yellow-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-yellow-500/20">
                 <Crown className="w-10 h-10 text-yellow-400" />
               </div>
@@ -343,7 +343,7 @@ const Inventory = () => {
           {displayItems.length === 0 ? (
             <div className="group relative">
               <div className="absolute -inset-1 bg-gray-500/20 rounded-3xl blur-xl"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-gray-500/30 p-16 text-center hover:border-gray-400/50 transition-all duration-500 hover:scale-105">
+              <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-500/30 p-16 text-center hover:border-gray-400/50 transition-all duration-500 hover:scale-105">
                 <div className="w-24 h-24 mx-auto mb-6 bg-gray-500/20 rounded-2xl flex items-center justify-center border border-gray-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-gray-500/20">
                   <Package className="w-12 h-12 text-gray-400" />
                 </div>
@@ -370,7 +370,7 @@ const Inventory = () => {
                 >
                   {/* Изображение предмета */}
                   <div className="relative mb-4">
-                    <div className="w-full h-32 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm border border-white/10 inventory-holographic">
+                    <div className="w-full h-32 rounded-xl overflow-hidden bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/30 backdrop-blur-sm border border-white/10 inventory-holographic">
                       {item.image_url || item.image ? (
                         <img 
                           src={item.image_url || item.image} 
@@ -392,7 +392,7 @@ const Inventory = () => {
                     </div>
                     
                     {/* Значок редкости */}
-                    <div className={`absolute top-2 right-2 px-2 py-0.5 rounded-full text-xs font-bold uppercase backdrop-blur-sm border ${getRarityColor(item.rarity || 'common')} bg-black/50`}>
+                    <div className={`absolute top-2 right-2 px-2 py-0.5 rounded-full text-xs font-bold uppercase backdrop-blur-sm border ${getRarityColor(item.rarity || 'common')} bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/50`}>
                       {(item.rarity || 'common').slice(0, 3)}
                     </div>
                   </div>
@@ -410,7 +410,7 @@ const Inventory = () => {
                     </div>
                     
                     {/* Детали - компактно */}
-                    <div className="bg-black/20 rounded-xl p-2 backdrop-blur-sm border border-white/5">
+                    <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/20 rounded-xl p-2 backdrop-blur-sm border border-white/5">
                       <div className="text-xs text-gray-400 mb-1">
                         <span className="text-white font-medium">{item.case_name || 'Неизвестно'}</span>
                       </div>
@@ -488,7 +488,7 @@ const Inventory = () => {
 
       {/* Модальное окно подтверждения продажи */}
       {showConfirmSell && itemToSell && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/50 flex items-center justify-center z-50 p-4">
           <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 max-w-md w-full">
             <div className="text-center">
               <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -523,7 +523,7 @@ const Inventory = () => {
 
       {/* Модальное окно для вывода предмета */}
       {showWithdrawModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-2xl p-6 max-w-md w-full border border-blue-500/30 shadow-2xl shadow-blue-500/20">
             <h3 className="text-xl font-bold text-white mb-4 text-center">
               📤 Запрос на вывод предмета
@@ -635,7 +635,7 @@ const Inventory = () => {
 
       {/* Модальное окно успешного создания запроса */}
       {showWithdrawSuccess && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-2xl p-6 max-w-md w-full border border-green-500/30 shadow-2xl shadow-green-500/20 text-center">
             <div className="text-6xl mb-4">✅</div>
             <h3 className="text-xl font-bold text-white mb-4">

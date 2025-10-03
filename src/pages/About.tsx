@@ -57,7 +57,7 @@ const About = () => {
 
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
         {/* Плавающие частицы */}
@@ -78,7 +78,7 @@ const About = () => {
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
           {/* Главный заголовок с анимацией */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-cyan-500/30 shadow-2xl shadow-cyan-500/30">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-full mb-6 border border-cyan-500/30 shadow-2xl shadow-cyan-500/30">
               <Crown className="w-10 h-10 md:w-12 md:h-12 text-cyan-400" />
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white">
@@ -101,8 +101,8 @@ const About = () => {
         <div className="mb-16">
           <div className="group relative">
             <div className="absolute inset-0 bg-cyan-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500 text-center">
-              <div className="mx-auto w-20 h-20 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-6 border border-cyan-500/30 shadow-xl shadow-cyan-500/20 group-hover:rotate-12 transition-transform duration-500">
+            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500 text-center">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-6 border border-cyan-500/30 shadow-xl shadow-cyan-500/20 group-hover:rotate-12 transition-transform duration-500">
                 <Target className="w-10 h-10 text-cyan-400" />
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-white mb-6">Наша миссия</h2>
@@ -129,8 +129,8 @@ const About = () => {
                 className="group relative"
               >
                 <div className="absolute inset-0 bg-purple-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-6 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 text-center">
-                  <div className="mx-auto w-16 h-16 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-purple-500/30 shadow-xl shadow-purple-500/20 group-hover:rotate-12 transition-transform duration-500">
+                <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-6 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 text-center">
+                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-purple-500/30 shadow-xl shadow-purple-500/20 group-hover:rotate-12 transition-transform duration-500">
                     {feature.icon}
                   </div>
                   <h3 className="text-lg font-black text-white mb-3">{feature.title}</h3>
@@ -147,7 +147,7 @@ const About = () => {
         <div className="mb-16">
           <div className="group relative">
             <div className="absolute inset-0 bg-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-pink-500/30 p-8 hover:border-pink-400/50 transition-all duration-500">
+            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-pink-500/30 p-8 hover:border-pink-400/50 transition-all duration-500">
               <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-8 flex items-center justify-center gap-3">
                 <Globe className="w-8 h-8 text-pink-400" />
                 НАША ИСТОРИЯ
@@ -201,7 +201,7 @@ const About = () => {
         <div className="mb-16">
           <div className="group relative">
             <div className="absolute inset-0 bg-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-yellow-500/30 p-8 hover:border-yellow-400/50 transition-all duration-500 text-center">
+            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-yellow-500/30 p-8 hover:border-yellow-400/50 transition-all duration-500 text-center">
               <h3 className="text-3xl md:text-4xl font-black text-white mb-6">
                 ГОТОВЫ НАЧАТЬ?
               </h3>

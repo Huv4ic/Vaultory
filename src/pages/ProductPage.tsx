@@ -47,6 +47,9 @@ const ProductPage = () => {
   const product = products.find(p => p.id === id);
 
   useEffect(() => {
+    // Прокручиваем страницу наверх при загрузке
+    window.scrollTo(0, 0);
+    
     if (product && product.images && product.images.length > 0) {
       setSelectedImage(product.images[0]);
     } else if (product && product.image_url) {

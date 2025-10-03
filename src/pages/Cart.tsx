@@ -89,7 +89,7 @@ const Cart = () => {
   if (!telegramUser) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
-        <div className="text-center bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
+        <div className="text-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
           <div className="text-6xl mb-6">🔒</div>
           <h1 className="text-3xl font-bold text-white mb-4">{t('Войдите через Telegram')}</h1>
           <p className="text-gray-300 mb-6 max-w-md">
@@ -120,7 +120,7 @@ const Cart = () => {
 
         <div className="relative z-10 text-center max-w-lg mx-auto px-6">
           {/* Главный контейнер с анимацией появления */}
-          <div className="bg-black/60 backdrop-blur-2xl rounded-3xl p-12 border border-white/10 shadow-2xl animate-fade-in-up relative overflow-hidden">
+          <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-2xl rounded-3xl p-12 border border-white/10 shadow-2xl animate-fade-in-up relative overflow-hidden">
             
             {/* Декоративные элементы */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
@@ -246,7 +246,7 @@ const Cart = () => {
           
           {/* Статистика корзины с улучшенным дизайном */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-            <div className="group relative bg-black/60 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 hover:scale-105 animate-fade-in-up">
+            <div className="group relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 hover:scale-105 animate-fade-in-up">
               <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-red-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="text-3xl mb-3 transform group-hover:scale-110 transition-transform duration-300">📦</div>
@@ -256,7 +256,7 @@ const Cart = () => {
               <div className="absolute top-3 right-3 w-2 h-2 bg-orange-400/40 rounded-full animate-ping"></div>
             </div>
             
-            <div className="group relative bg-black/60 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 shadow-2xl hover:shadow-yellow-500/20 transition-all duration-500 hover:scale-105 animate-fade-in-up delay-200">
+            <div className="group relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 shadow-2xl hover:shadow-yellow-500/20 transition-all duration-500 hover:scale-105 animate-fade-in-up delay-200">
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-orange-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="text-3xl mb-3 transform group-hover:scale-110 transition-transform duration-300">💰</div>
@@ -266,7 +266,7 @@ const Cart = () => {
               <div className="absolute bottom-3 left-3 w-1.5 h-1.5 bg-yellow-400/40 rounded-full animate-ping delay-500"></div>
             </div>
             
-            <div className="group relative bg-black/60 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 shadow-2xl hover:shadow-green-500/20 transition-all duration-500 hover:scale-105 animate-fade-in-up delay-400">
+            <div className="group relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 shadow-2xl hover:shadow-green-500/20 transition-all duration-500 hover:scale-105 animate-fade-in-up delay-400">
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="text-3xl mb-3 transform group-hover:scale-110 transition-transform duration-300">💳</div>
@@ -302,7 +302,7 @@ const Cart = () => {
             {items.map((item, index) => (
               <div 
                 key={item.id}
-                className="group relative bg-black/60 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 animate-fade-in-up overflow-hidden"
+                className="group relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 animate-fade-in-up overflow-hidden"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Светящийся эффект при hover */}
@@ -395,7 +395,7 @@ const Cart = () => {
           {/* Правая панель */}
           <div className="space-y-6">
             {/* Итого */}
-            <div className="group relative bg-black/60 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl hover:shadow-green-500/20 transition-all duration-500 p-6 overflow-hidden animate-fade-in-up">
+            <div className="group relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl hover:shadow-green-500/20 transition-all duration-500 p-6 overflow-hidden animate-fade-in-up">
               {/* Анимированный фон */}
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
@@ -475,7 +475,7 @@ const Cart = () => {
             </div>
 
             {/* Информация о безопасности с улучшенным дизайном */}
-            <div className="group relative bg-black/60 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 p-6 text-center animate-fade-in-up delay-300 overflow-hidden">
+            <div className="group relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 p-6 text-center animate-fade-in-up delay-300 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
               <div className="relative z-10">
@@ -490,7 +490,7 @@ const Cart = () => {
               <div className="absolute top-3 right-3 w-2 h-2 bg-purple-400/40 rounded-full animate-ping"></div>
             </div>
             
-            <div className="group relative bg-black/60 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 p-6 text-center animate-fade-in-up delay-500 overflow-hidden">
+            <div className="group relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 p-6 text-center animate-fade-in-up delay-500 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               
               <div className="relative z-10">
@@ -512,7 +512,7 @@ const Cart = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную
