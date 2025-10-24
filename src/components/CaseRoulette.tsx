@@ -792,13 +792,13 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         ${notificationStyles}
       `}</style>
       
-      <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-2 sm:p-4">
-        <div className="bg-gray-900/95 rounded-2xl sm:rounded-3xl border-2 border-amber-500/50 shadow-2xl shadow-amber-500/30 max-w-4xl sm:max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden">
+      <div className="fixed inset-0 bg-[#0e0e0e]/90 backdrop-blur-xl z-50 flex items-center justify-center p-2 sm:p-4">
+        <div className="bg-[#181818] rounded-2xl sm:rounded-3xl border-2 border-[#1c1c1c] max-w-4xl sm:max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden">
           {/* Заголовок */}
-          <div className="bg-gradient-to-r from-amber-500/20 to-yellow-500/20 p-4 sm:p-6 border-b border-amber-500/30">
+          <div className="bg-[#1c1c1c] p-4 sm:p-6 border-b border-[#1c1c1c]">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white flex items-center">
-                <Package className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-2 sm:mr-3 text-amber-400" />
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#f0f0f0] flex items-center">
+                <Package className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 mr-2 sm:mr-3 text-[#a31212]" />
                 Открытие кейса
               </h2>
               <Button
@@ -812,14 +812,14 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 disabled={isSpinning}
                 className={`${
                   isSpinning 
-                    ? 'text-gray-600 cursor-not-allowed' 
-                    : 'text-gray-400 hover:text-white hover:bg-white/10'
+                    ? 'text-[#a0a0a0] cursor-not-allowed' 
+                    : 'text-[#a0a0a0] hover:text-[#f0f0f0] hover:bg-[#1c1c1c]'
                 }`}
               >
                 <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </Button>
             </div>
-            <p className="text-gray-300 mt-2 text-sm sm:text-base">Стоимость: {casePrice}₴</p>
+            <p className="text-[#a0a0a0] mt-2 text-sm sm:text-base">Стоимость: {casePrice}₴</p>
           </div>
 
           {/* Рулетка */}
@@ -830,10 +830,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
               <div className="space-y-6 sm:space-y-8">
                 {/* Заголовок */}
                 <div className="text-center">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0] mb-2">
                     Открытие кейса
                   </h2>
-                  <p className="text-gray-400 text-sm sm:text-base">
+                  <p className="text-[#a0a0a0] text-sm sm:text-base">
                     Нажмите кнопку ниже, чтобы открыть кейс и получить случайный предмет
                   </p>
                 </div>
@@ -843,11 +843,11 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                   <Button
                     onClick={startSpin}
                     disabled={isSpinning}
-                    className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSpinning ? (
                       <>
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-black mr-3"></div>
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
                         Открытие...
                       </>
                     ) : (

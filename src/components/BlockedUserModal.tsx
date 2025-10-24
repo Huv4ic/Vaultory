@@ -15,51 +15,48 @@ const BlockedUserModal: React.FC<BlockedUserModalProps> = ({ isVisible, reason }
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0 bg-gradient-to-br from-red-900/20 via-black/50 to-red-900/20 animate-pulse"></div>
-      
+    <div className="fixed inset-0 z-[9999] bg-[#0e0e0e]/95 backdrop-blur-sm flex items-center justify-center p-4">
       {/* Основное окно */}
       <div className="relative z-10 w-full max-w-lg mx-auto">
-        <div className="bg-black/90 backdrop-blur-xl border-2 border-red-500/50 rounded-2xl shadow-2xl shadow-red-500/30 p-6 text-center">
+        <div className="bg-[#181818] border-2 border-[#1c1c1c] rounded-2xl p-6 text-center">
           
           {/* Иконка блокировки */}
-          <div className="mx-auto w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mb-4 border-2 border-red-500/50">
-            <Shield className="w-10 h-10 text-red-400" />
+          <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-full flex items-center justify-center mb-4 border-2 border-[#a31212]">
+            <Shield className="w-10 h-10 text-[#a31212]" />
           </div>
           
           {/* Заголовок */}
-          <h1 className="text-3xl font-bold text-red-400 mb-3 animate-pulse">
+          <h1 className="text-3xl font-bold text-[#a31212] mb-3">
             🚫 АККАУНТ ЗАБЛОКИРОВАН
           </h1>
           
           {/* Описание */}
-          <p className="text-lg text-gray-300 mb-4 leading-relaxed">
+          <p className="text-lg text-[#a0a0a0] mb-4 leading-relaxed">
             Ваш аккаунт был заблокирован администрацией сайта.
             {reason && (
-              <span className="block mt-2 text-red-300 font-medium">
+              <span className="block mt-2 text-[#a31212] font-medium">
                 Причина: {reason}
               </span>
             )}
           </p>
           
           {/* Дополнительная информация */}
-          <div className="bg-red-900/20 rounded-xl p-4 mb-6 border border-red-500/30">
+          <div className="bg-[#1c1c1c] rounded-xl p-4 mb-6 border border-[#1c1c1c]">
             <div className="flex items-center justify-center space-x-2 mb-3">
-              <AlertTriangle className="w-5 h-5 text-red-400" />
-              <span className="text-red-300 font-semibold text-sm">Что это означает?</span>
+              <AlertTriangle className="w-5 h-5 text-[#a31212]" />
+              <span className="text-[#a31212] font-semibold text-sm">Что это означает?</span>
             </div>
-            <ul className="text-gray-300 text-left space-y-1 text-sm max-w-sm mx-auto">
+            <ul className="text-[#a0a0a0] text-left space-y-1 text-sm max-w-sm mx-auto">
               <li className="flex items-start space-x-2">
-                <span className="text-red-400">•</span>
+                <span className="text-[#a31212]">•</span>
                 <span>Вы не можете использовать функции сайта</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-400">•</span>
+                <span className="text-[#a31212]">•</span>
                 <span>Доступ к покупкам и кейсам ограничен</span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="text-red-400">•</span>
+                <span className="text-[#a31212]">•</span>
                 <span>Ваш баланс заморожен</span>
               </li>
             </ul>

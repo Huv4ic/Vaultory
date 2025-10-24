@@ -199,7 +199,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
 
             {/* Загрузка нового файла */}
             <div className="space-y-4">
-              <div className="border-2 border-dashed border-amber-500/30 rounded-lg p-6 text-center hover:border-amber-500/50 transition-colors">
+              <div className="border-2 border-dashed border-[#1c1c1c] rounded-lg p-6 text-center hover:border-[#a31212] transition-colors">
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -210,12 +210,12 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
                 <Button
                   onClick={() => fileInputRef.current?.click()}
                   variant="outline"
-                  className="bg-transparent border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200"
+                  className="bg-transparent border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white"
                 >
                   <Upload className="w-4 h-4 mr-2" />
                   Выбрать изображение
                 </Button>
-                <p className="text-gray-400 text-xs mt-2">
+                <p className="text-[#a0a0a0] text-xs mt-2">
                   PNG, JPG до 5MB
                 </p>
               </div>
@@ -223,8 +223,8 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
               {/* Превью выбранного файла */}
               {previewUrl && (
                 <div className="text-center">
-                  <h4 className="text-gray-300 text-sm mb-2">Предварительный просмотр</h4>
-                  <div className="mx-auto w-20 h-20 rounded-full overflow-hidden border-2 border-amber-500/50">
+                  <h4 className="text-[#f0f0f0] text-sm mb-2">Предварительный просмотр</h4>
+                  <div className="mx-auto w-20 h-20 rounded-full overflow-hidden border-2 border-[#a31212]">
                     <img
                       src={previewUrl}
                       alt="Preview"
@@ -240,7 +240,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
               <Button
                 onClick={handleUpload}
                 disabled={!selectedFile || uploading}
-                className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold"
+                className="flex-1 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold"
               >
                 {uploading ? 'Загрузка...' : 'Сохранить'}
               </Button>

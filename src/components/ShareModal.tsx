@@ -35,11 +35,11 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, productName })
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-gray-900/95 backdrop-blur-xl border border-amber-500/30 rounded-2xl shadow-2xl shadow-amber-500/20 p-6 w-full max-w-md mx-auto">
+    <div className="fixed inset-0 z-[9999] bg-[#0e0e0e]/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-[#181818] border border-[#1c1c1c] rounded-2xl p-6 w-full max-w-md mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white flex items-center">
+          <h2 className="text-2xl font-bold text-[#f0f0f0] flex items-center">
             <span className="mr-2">🔗</span>
             Поделиться товаром
           </h2>
@@ -47,30 +47,30 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, productName })
             onClick={onClose}
             variant="ghost"
             size="sm"
-            className="text-gray-400 hover:text-white hover:bg-gray-800/50"
+            className="text-[#a0a0a0] hover:text-[#f0f0f0] hover:bg-[#1c1c1c]"
           >
             <X className="w-5 h-5" />
           </Button>
         </div>
 
         {/* Product Info */}
-        <div className="bg-gray-800/50 rounded-xl p-4 mb-6 border border-amber-500/20">
-          <h3 className="text-lg font-semibold text-white mb-2">{productName}</h3>
-          <p className="text-gray-300 text-sm">Скопируйте ссылку и отправьте друзьям</p>
+        <div className="bg-[#1c1c1c] rounded-xl p-4 mb-6 border border-[#1c1c1c]">
+          <h3 className="text-lg font-semibold text-[#f0f0f0] mb-2">{productName}</h3>
+          <p className="text-[#a0a0a0] text-sm">Скопируйте ссылку и отправьте друзьям</p>
         </div>
 
         {/* URL Display */}
-        <div className="bg-gray-800/30 rounded-xl p-4 mb-6 border border-gray-700/50">
-          <p className="text-gray-400 text-sm mb-2">Ссылка на товар:</p>
-          <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-600/50">
-            <p className="text-amber-400 text-sm break-all font-mono">{currentUrl}</p>
+        <div className="bg-[#1c1c1c] rounded-xl p-4 mb-6 border border-[#1c1c1c]">
+          <p className="text-[#a0a0a0] text-sm mb-2">Ссылка на товар:</p>
+          <div className="bg-[#0e0e0e] rounded-lg p-3 border border-[#1c1c1c]">
+            <p className="text-[#a31212] text-sm break-all font-mono">{currentUrl}</p>
           </div>
         </div>
 
         {/* Copy Button */}
         <Button
           onClick={handleCopy}
-          className="w-full bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white font-bold py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30"
+          className="w-full bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold py-3 rounded-xl transition-all duration-300 hover:scale-105"
         >
           {copied ? (
             <>

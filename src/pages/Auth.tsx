@@ -165,54 +165,37 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      {/* Анимированные элементы фона */}
-      <div className="absolute inset-0">
-        {/* Основные анимированные круги */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-amber-500/10 rounded-full animate-bounce blur-xl"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-amber-400/10 rounded-full animate-pulse blur-xl"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-amber-500/10 rounded-full animate-spin blur-xl"></div>
-        
-        {/* Дополнительные декоративные элементы */}
-        <div className="absolute top-1/3 left-1/3 w-16 h-16 bg-amber-400/5 rounded-full animate-pulse blur-lg"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-28 h-28 bg-amber-500/5 rounded-full animate-bounce blur-xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-gradient-to-r from-amber-500/5 to-amber-400/5 rounded-full animate-pulse blur-2xl"></div>
-        
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400/30 rounded-full animate-ping"></div>
-        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-amber-300/20 rounded-full animate-ping animation-delay-1000"></div>
-        <div className="absolute bottom-1/4 left-3/4 w-2 h-2 bg-amber-400/20 rounded-full animate-ping animation-delay-2000"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative overflow-hidden">
 
       {/* Hero Section */}
       <div className="relative z-10 container mx-auto px-4 py-12 text-center">
         <div className="max-w-4xl mx-auto">
           {/* Анимированный заголовок */}
           <div className="mb-6">
-            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent animate-pulse">
+            <h1 className="text-6xl font-bold mb-4 text-[#f0f0f0]">
               🔐 {t('Авторизация')}
             </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full animate-pulse"></div>
+            <div className="w-24 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           
           {/* Подзаголовок с анимацией */}
-          <p className="text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in px-4">
+          <p className="text-2xl text-[#a0a0a0] mb-12 max-w-3xl mx-auto leading-relaxed px-4">
             Войдите в свой аккаунт через Telegram для доступа к платформе Vaultory
           </p>
           
           {/* Дополнительная информация */}
           <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
+            <div className="text-center p-4 bg-[#181818] rounded-xl border border-[#1c1c1c]">
               <div className="text-2xl mb-2">🔒</div>
-              <p className="text-gray-300 text-sm">Безопасно</p>
+              <p className="text-[#a0a0a0] text-sm">Безопасно</p>
             </div>
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
+            <div className="text-center p-4 bg-[#181818] rounded-xl border border-[#1c1c1c]">
               <div className="text-2xl mb-2">⚡</div>
-              <p className="text-gray-300 text-sm">Быстро</p>
+              <p className="text-[#a0a0a0] text-sm">Быстро</p>
             </div>
-            <div className="text-center p-4 bg-black/40 backdrop-blur-sm rounded-xl border border-amber-500/20">
+            <div className="text-center p-4 bg-[#181818] rounded-xl border border-[#1c1c1c]">
               <div className="text-2xl mb-2">🛡️</div>
-              <p className="text-gray-300 text-sm">Надежно</p>
+              <p className="text-[#a0a0a0] text-sm">Надежно</p>
             </div>
           </div>
         </div>
@@ -221,19 +204,19 @@ const Auth = () => {
       {/* Форма авторизации */}
       <div className="relative z-20 container mx-auto px-4 pb-12">
         <div className="max-w-2xl mx-auto">
-          <Card className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-2xl shadow-amber-500/20">
+          <Card className="bg-[#181818] border-[#1c1c1c]">
             <CardContent className="p-8">
               {!loading && !error ? (
                 <div className="text-center">
-                  <div className="mx-auto w-20 h-20 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-full flex items-center justify-center mb-6 border border-amber-500/30">
-                    <FaTelegramPlane className="w-10 h-10 text-amber-400" />
+                  <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-full flex items-center justify-center mb-6 border border-[#a31212]">
+                    <FaTelegramPlane className="w-10 h-10 text-[#a31212]" />
                   </div>
                   
-                  <h2 className="text-2xl font-bold text-white mb-4">
+                  <h2 className="text-2xl font-bold text-[#f0f0f0] mb-4">
                     Войти через Telegram
                   </h2>
                   
-                  <p className="text-base text-gray-300 mb-8">
+                  <p className="text-base text-[#a0a0a0] mb-8">
                     Нажмите кнопку ниже, чтобы войти в свой аккаунт Telegram
                   </p>
                   
@@ -243,7 +226,7 @@ const Auth = () => {
                       handleTelegramLogin();
                     }}
                     disabled={loading}
-                    className="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/30 text-base"
+                    className="w-full py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 text-base"
                   >
                     <FaTelegramPlane className="w-5 h-5 mr-2" />
                     {loading ? 'Загрузка...' : 'Обновить виджет'}
