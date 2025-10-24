@@ -131,18 +131,10 @@ const Catalog = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
         <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-400/30 mx-auto mb-4"></div>
-            <div className="absolute inset-0 animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-amber-400 mx-auto"></div>
-          </div>
-          <p className="text-gray-300 text-xl">{t('Загрузка товаров...')}</p>
-          <div className="flex justify-center space-x-1 mt-4">
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-100"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-200"></div>
-          </div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#a31212] mx-auto mb-4"></div>
+          <p className="text-[#a0a0a0] text-xl">{t('Загрузка товаров...')}</p>
         </div>
       </div>
     );
@@ -150,16 +142,16 @@ const Catalog = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mb-6 border border-red-500/30">
-            <span className="text-red-400 text-3xl">⚠️</span>
+          <div className="mx-auto w-20 h-20 bg-[#181818] rounded-full flex items-center justify-center mb-6 border border-[#1c1c1c]">
+            <span className="text-[#a31212] text-3xl">⚠️</span>
           </div>
-          <h1 className="text-4xl font-bold mb-4 text-red-400">{t('Ошибка загрузки')}</h1>
-          <p className="text-xl mb-6 text-gray-300">{error}</p>
+          <h1 className="text-4xl font-bold mb-4 text-[#a31212]">{t('Ошибка загрузки')}</h1>
+          <p className="text-xl mb-6 text-[#a0a0a0]">{error}</p>
           <Button 
             onClick={() => window.location.reload()} 
-            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-red-500/30"
+            className="bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105"
           >
             {t('Попробовать снова')}
           </Button>
@@ -169,74 +161,57 @@ const Catalog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0">
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse opacity-80"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-green-400 rounded-full animate-pulse opacity-90"></div>
-        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-orange-400 rounded-full animate-bounce opacity-50"></div>
-        
-        {/* Светящиеся линии */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
-          {/* Главный заголовок с анимацией */}
+          {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full mb-6 animate-spin-slow shadow-2xl shadow-cyan-500/30">
-              <Crown className="w-10 h-10 md:w-12 md:h-12 text-white" />
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#181818] rounded-full mb-6 border border-[#1c1c1c]">
+              <Crown className="w-10 h-10 md:w-12 md:h-12 text-[#a31212]" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0]">
               КАТАЛОГ ТОВАРОВ
             </h1>
-            <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Откройте для себя <span className="text-cyan-400 font-bold">огромный выбор</span> качественных игровых товаров. 
-            От <span className="text-purple-400 font-bold">редких скинов</span> до <span className="text-pink-400 font-bold">эксклюзивных предметов</span> - у нас есть все для настоящих геймеров.
+          <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
+            Откройте для себя <span className="text-[#a31212] font-bold">огромный выбор</span> качественных игровых товаров. 
+            От <span className="text-[#f0f0f0] font-bold">редких скинов</span> до <span className="text-[#a31212] font-bold">эксклюзивных предметов</span> - у нас есть все для настоящих геймеров.
           </p>
           
-          {/* Статистика каталога с крутыми анимациями */}
+          {/* Статистика каталога */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+              <div className="relative bg-[#181818] rounded-2xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-[#a31212] rounded-full mx-auto mb-4">
                   <Package className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-400 text-sm mb-2">Всего товаров</p>
-                <p className="text-3xl font-black text-cyan-400">{products.length}</p>
+                <p className="text-[#a0a0a0] text-sm mb-2">Всего товаров</p>
+                <p className="text-3xl font-black text-[#a31212]">{products.length}</p>
               </div>
             </div>
             
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 hover:border-purple-400/50 transition-all duration-500 hover:scale-105">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+              <div className="relative bg-[#181818] rounded-2xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-[#a31212] rounded-full mx-auto mb-4">
                   <Star className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-400 text-sm mb-2">Категорий</p>
-                <p className="text-3xl font-black text-purple-400">{categories.length}</p>
+                <p className="text-[#a0a0a0] text-sm mb-2">Категорий</p>
+                <p className="text-3xl font-black text-[#a31212]">{categories.length}</p>
               </div>
             </div>
             
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-yellow-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-pink-500/30 p-6 hover:border-pink-400/50 transition-all duration-500 hover:scale-105">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-yellow-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+              <div className="relative bg-[#181818] rounded-2xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-[#a31212] rounded-full mx-auto mb-4">
                   <Flame className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-400 text-sm mb-2">Средний рейтинг</p>
-                <p className="text-3xl font-black text-pink-400">4.8</p>
+                <p className="text-[#a0a0a0] text-sm mb-2">Средний рейтинг</p>
+                <p className="text-3xl font-black text-[#a31212]">4.8</p>
               </div>
             </div>
           </div>
@@ -247,10 +222,10 @@ const Catalog = () => {
       <div className="relative z-20 container mx-auto px-4 pb-20">
         {/* Заголовок секции */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
             ПОИСК ТОВАРОВ
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+          <div className="w-24 h-1 bg-[#a31212] mx-auto rounded-full"></div>
         </div>
 
         {/* Поиск и фильтры с крутым дизайном */}
@@ -258,15 +233,14 @@ const Catalog = () => {
           <div className="space-y-6">
             {/* Поиск */}
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#a31212]" />
                 <Input
                   type="text"
                   placeholder="Поиск товаров..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-black/80 backdrop-blur-xl border border-cyan-500/30 text-white placeholder-gray-400 rounded-2xl focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 text-lg hover:border-cyan-400/50"
+                  className="w-full pl-12 pr-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
                 />
               </div>
             </div>
@@ -275,12 +249,11 @@ const Catalog = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Категории */}
               <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="relative">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full px-4 py-4 bg-black/80 backdrop-blur-xl border border-purple-500/30 text-white rounded-2xl focus:border-purple-400 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300 text-lg hover:border-purple-400/50"
+                    className="w-full px-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
                   >
                     <option value="all">Все категории</option>
                     {categories.map((category) => (
@@ -294,12 +267,11 @@ const Catalog = () => {
 
               {/* Сортировка */}
               <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-yellow-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
                 <div className="relative">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-4 py-4 bg-black/80 backdrop-blur-xl border border-pink-500/30 text-white rounded-2xl focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 text-lg hover:border-pink-400/50"
+                    className="w-full px-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
                   >
                     <option value="popular">По популярности</option>
                     <option value="price_asc">По цене (возрастание)</option>
@@ -316,24 +288,24 @@ const Catalog = () => {
         <div className="max-w-7xl mx-auto">
           {loading ? (
             <div className="text-center py-12 sm:py-16">
-              <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 border-b-2 border-amber-400 mx-auto mb-4 sm:mb-6"></div>
-              <p className="text-lg sm:text-xl text-gray-300">Загрузка товаров...</p>
+              <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 border-b-2 border-[#a31212] mx-auto mb-4 sm:mb-6"></div>
+              <p className="text-lg sm:text-xl text-[#a0a0a0]">Загрузка товаров...</p>
             </div>
           ) : error ? (
             <div className="text-center py-12 sm:py-16">
-              <p className="text-lg sm:text-xl text-red-400 mb-4 sm:mb-6">Ошибка загрузки товаров</p>
+              <p className="text-lg sm:text-xl text-[#a31212] mb-4 sm:mb-6">Ошибка загрузки товаров</p>
               <Button
                 onClick={() => window.location.reload()}
-                className="px-6 sm:px-8 py-2 sm:py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
+                className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
               >
                 Попробовать снова
               </Button>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-12 sm:py-16">
-              <Package className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-4 sm:mb-6 text-gray-600" />
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-400 mb-2">Товары не найдены</h3>
-              <p className="text-gray-500 text-sm sm:text-base mb-6">Попробуйте изменить параметры поиска</p>
+              <Package className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-4 sm:mb-6 text-[#a31212]" />
+              <h3 className="text-lg sm:text-xl font-semibold text-[#a0a0a0] mb-2">Товары не найдены</h3>
+              <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Попробуйте изменить параметры поиска</p>
             </div>
           ) : (
             <>

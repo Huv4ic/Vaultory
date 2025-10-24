@@ -32,7 +32,7 @@ const Support = () => {
 
   const contactMethods = [
     {
-      icon: <MessageCircle className="w-8 h-8 text-blue-400" />,
+      icon: <MessageCircle className="w-8 h-8 text-[#a31212]" />,
       title: "Telegram",
       description: "Быстрая поддержка через Telegram",
       action: "Написать в Telegram",
@@ -40,7 +40,7 @@ const Support = () => {
       color: "from-blue-500 to-blue-600"
     },
     {
-      icon: <Mail className="w-8 h-8 text-blue-400" />,
+      icon: <Mail className="w-8 h-8 text-[#a31212]" />,
       title: "Email поддержка",
       description: "Подробные вопросы и документация",
       action: "Отправить Email",
@@ -86,22 +86,22 @@ const Support = () => {
 
   const supportFeatures = [
     {
-      icon: <Clock className="w-6 h-6 text-amber-400" />,
+      icon: <Clock className="w-6 h-6 text-[#a31212]" />,
       title: "24/7 Поддержка",
       description: "Мы работаем круглосуточно для решения ваших вопросов"
     },
     {
-      icon: <Zap className="w-6 h-6 text-amber-400" />,
+      icon: <Zap className="w-6 h-6 text-[#a31212]" />,
       title: "Быстрый ответ",
       description: "Среднее время ответа: 5-30 минут"
     },
     {
-      icon: <Shield className="w-6 h-6 text-amber-400" />,
+      icon: <Shield className="w-6 h-6 text-[#a31212]" />,
       title: "Безопасность",
       description: "Все обращения конфиденциальны и защищены"
     },
     {
-      icon: <Users className="w-6 h-6 text-amber-400" />,
+      icon: <Users className="w-6 h-6 text-[#a31212]" />,
       title: "Опытная команда",
       description: "Наши специалисты решают любые вопросы"
     }
@@ -116,40 +116,26 @@ const Support = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0">
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-green-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full opacity-80"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-red-400 rounded-full opacity-90"></div>
-        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-50"></div>
-        
-        {/* Светящиеся линии */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
-          {/* Главный заголовок с анимацией */}
+          {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-full mb-6 border border-green-500/30 shadow-2xl shadow-green-500/30">
-              <HelpCircle className="w-10 h-10 md:w-12 md:h-12 text-green-400" />
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#181818] rounded-full mb-6 border border-[#1c1c1c]">
+              <HelpCircle className="w-10 h-10 md:w-12 md:h-12 text-[#a31212]" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0] text-center">
               ПОДДЕРЖКА
             </h1>
-            <div className="w-32 h-1 bg-green-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Мы всегда <span className="text-green-400 font-bold">готовы помочь</span>! Свяжитесь с нашей службой поддержки любым удобным способом 
-            и получите <span className="text-blue-400 font-bold">быстрый ответ</span> на все ваши вопросы.
+          <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
+            Мы всегда <span className="text-[#a31212] font-bold">готовы помочь</span>! Свяжитесь с нашей службой поддержки любым удобным способом 
+            и получите <span className="text-[#f0f0f0] font-bold">быстрый ответ</span> на все ваши вопросы.
           </p>
         </div>
       </div>
@@ -159,10 +145,10 @@ const Support = () => {
         {/* Способы связи */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
               СВЯЖИТЕСЬ С НАМИ
             </h2>
-            <div className="w-32 h-1 bg-blue-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {contactMethods.map((method, index) => (
@@ -170,13 +156,12 @@ const Support = () => {
                 key={index}
                 className="group relative"
               >
-                <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-blue-500/30 p-8 hover:border-blue-400/50 transition-all duration-500 hover:scale-105 text-center">
-                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-6 border border-blue-500/30 shadow-xl shadow-blue-500/20 group-hover:rotate-12 transition-transform duration-500">
+                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
+                  <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
                     {method.icon}
                   </div>
-                  <h3 className="text-xl font-black text-white mb-3">{method.title}</h3>
-                  <p className="text-sm text-gray-300 mb-6">{method.description}</p>
+                  <h3 className="text-xl font-black text-[#f0f0f0] mb-3">{method.title}</h3>
+                  <p className="text-sm text-[#a0a0a0] mb-6">{method.description}</p>
                   <Button
                     onClick={() => {
                       if (method.title === 'Email поддержка') {
@@ -185,7 +170,7 @@ const Support = () => {
                         window.open(method.link, '_blank');
                       }
                     }}
-                    className="w-full bg-blue-500 hover:bg-blue-400 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-blue-500/25 py-4"
+                    className="w-full bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 py-4"
                   >
                     {method.action}
                   </Button>

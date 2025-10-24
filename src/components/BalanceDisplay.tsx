@@ -12,12 +12,11 @@ const BalanceDisplay = ({ balance }: BalanceDisplayProps) => {
 
   return (
     <div className="group relative">
-      <div className="absolute inset-0 bg-yellow-500/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-      <div className="relative flex items-center bg-gray-800/90 backdrop-blur-xl text-white font-bold text-sm px-3 py-2 rounded-xl border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-300 hover:scale-105 shadow-lg shadow-yellow-500/20">
-        <div className="w-5 h-5 mr-2 bg-gray-700/80 backdrop-blur-xl rounded-lg flex items-center justify-center border border-yellow-500/30 shadow-md shadow-yellow-500/20 group-hover:rotate-12 transition-transform duration-300">
-          <DollarSign className="w-3 h-3 text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300" />
+      <div className="relative flex items-center bg-[#181818] text-[#f0f0f0] font-bold text-sm px-3 py-2 rounded-xl border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+        <div className="w-5 h-5 mr-2 bg-[#1c1c1c] rounded-lg flex items-center justify-center border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
+          <DollarSign className="w-3 h-3 text-[#a31212]" />
         </div>
-        <span className="text-yellow-400 group-hover:text-yellow-300 transition-colors duration-300 font-bold">
+        <span className="text-[#a31212] font-bold">
           {formatBalance(balance)}₴
         </span>
       </div>

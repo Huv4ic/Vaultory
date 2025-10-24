@@ -13,18 +13,10 @@ const Cases = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 border-4 border-amber-400/30 mx-auto"></div>
-            <div className="absolute inset-0 animate-spin rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 border-4 border-transparent border-t-amber-400 mx-auto"></div>
-          </div>
-          <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-gray-300">{t('Загрузка кейсов...')}</p>
-          <div className="flex justify-center space-x-1 mt-3 sm:mt-4">
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-100"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-200"></div>
-          </div>
+          <div className="animate-spin rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 border-4 border-[#a31212] mx-auto"></div>
+          <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-[#a0a0a0]">{t('Загрузка кейсов...')}</p>
         </div>
       </div>
     );
@@ -32,16 +24,16 @@ const Cases = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-red-500/20 rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-red-500/30">
-            <span className="text-red-400 text-2xl sm:text-3xl">⚠️</span>
+          <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-[#181818] rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-[#1c1c1c]">
+            <span className="text-[#a31212] text-2xl sm:text-3xl">⚠️</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-red-400">{t('Ошибка загрузки')}</h1>
-          <p className="text-lg sm:text-xl mb-4 sm:mb-6 text-gray-300 px-4">{error}</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-[#a31212]">{t('Ошибка загрузки')}</h1>
+          <p className="text-lg sm:text-xl mb-4 sm:mb-6 text-[#a0a0a0] px-4">{error}</p>
           <Button 
             onClick={() => window.location.reload()} 
-            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold px-6 sm:px-8 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-red-500/30"
+            className="bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold px-6 sm:px-8 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105"
           >
             {t('Попробовать снова')}
           </Button>
@@ -51,74 +43,58 @@ const Cases = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0">
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full opacity-80"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-green-400 rounded-full opacity-90"></div>
-        
-        {/* Светящиеся линии */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
-          {/* Главный заголовок с анимацией */}
+          {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full mb-6 animate-spin-slow shadow-2xl shadow-cyan-500/30">
-              <Crown className="w-10 h-10 md:w-12 md:h-12 text-white" />
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#181818] rounded-full mb-6 border border-[#1c1c1c]">
+              <Crown className="w-10 h-10 md:w-12 md:h-12 text-[#a31212]" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0]">
               ИГРОВЫЕ КЕЙСЫ
             </h1>
-            <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Откройте для себя мир <span className="text-cyan-400 font-bold">удивительных наград</span>! 
-            Каждый кейс содержит <span className="text-purple-400 font-bold">уникальные предметы</span> 
-            из ваших любимых игр. <span className="text-pink-400 font-bold">Попробуйте удачу</span> и получите эксклюзивные вещи.
+          <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
+            Откройте для себя мир <span className="text-[#a31212] font-bold">удивительных наград</span>! 
+            Каждый кейс содержит <span className="text-[#f0f0f0] font-bold">уникальные предметы</span> 
+            из ваших любимых игр. <span className="text-[#a31212] font-bold">Попробуйте удачу</span> и получите эксклюзивные вещи.
           </p>
           
-          {/* Статистика кейсов с крутыми анимациями */}
+          {/* Статистика кейсов */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+              <div className="relative bg-[#181818] rounded-2xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-[#a31212] rounded-full mx-auto mb-4">
                   <Package className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-400 text-sm mb-2">Всего кейсов</p>
-                <p className="text-3xl font-black text-cyan-400">{cases.length}</p>
+                <p className="text-[#a0a0a0] text-sm mb-2">Всего кейсов</p>
+                <p className="text-3xl font-black text-[#a31212]">{cases.length}</p>
               </div>
             </div>
             
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6 hover:border-purple-400/50 transition-all duration-500 hover:scale-105">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+              <div className="relative bg-[#181818] rounded-2xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-[#a31212] rounded-full mx-auto mb-4">
                   <Trophy className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-400 text-sm mb-2">Игр доступно</p>
-                <p className="text-3xl font-black text-purple-400">{new Set(cases.map(c => c.game)).size}</p>
+                <p className="text-[#a0a0a0] text-sm mb-2">Игр доступно</p>
+                <p className="text-3xl font-black text-[#a31212]">{new Set(cases.map(c => c.game)).size}</p>
               </div>
             </div>
             
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-yellow-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-2xl border border-pink-500/30 p-6 hover:border-pink-400/50 transition-all duration-500 hover:scale-105">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-yellow-600 rounded-full mx-auto mb-4 group-hover:rotate-12 transition-transform duration-500">
+              <div className="relative bg-[#181818] rounded-2xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+                <div className="flex items-center justify-center w-16 h-16 bg-[#a31212] rounded-full mx-auto mb-4">
                   <Star className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-400 text-sm mb-2">Уникальных предметов</p>
-                <p className="text-3xl font-black text-pink-400">{caseItems.length}</p>
+                <p className="text-[#a0a0a0] text-sm mb-2">Уникальных предметов</p>
+                <p className="text-3xl font-black text-[#a31212]">{caseItems.length}</p>
               </div>
             </div>
           </div>
@@ -129,10 +105,10 @@ const Cases = () => {
       <div className="relative z-20 container mx-auto px-4 pb-20">
         {/* Заголовок секции */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
             ВЫБЕРИТЕ КЕЙС
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+          <div className="w-24 h-1 bg-[#a31212] mx-auto rounded-full"></div>
         </div>
 
         {/* Сетка кейсов с потрясающими анимациями */}

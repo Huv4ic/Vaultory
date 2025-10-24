@@ -175,16 +175,16 @@ const Profile = () => {
 
   if (!telegramUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden flex items-center justify-center">
-        <div className="text-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
+      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
+        <div className="text-center bg-[#181818] rounded-2xl p-8 border border-[#1c1c1c]">
           <div className="text-6xl mb-6">🔒</div>
-          <h1 className="text-3xl font-bold text-white mb-4">{t('Войдите в аккаунт')}</h1>
-          <p className="text-gray-300 mb-6 max-w-md">
+          <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">{t('Войдите в аккаунт')}</h1>
+          <p className="text-[#a0a0a0] mb-6 max-w-md">
             {t('Для просмотра профиля необходимо войти через Telegram')}
           </p>
           <Button
             onClick={() => navigate('/auth')}
-            className="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+            className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105"
           >
             {t('Войти в аккаунт')}
           </Button>
@@ -195,58 +195,36 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden flex items-center justify-center">
+      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
         <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-32 w-32 border-4 border-amber-400/30 mx-auto mb-4"></div>
-            <div className="absolute inset-0 animate-spin rounded-full h-32 w-32 border-4 border-transparent border-t-amber-400 mx-auto"></div>
-          </div>
-          <p className="text-gray-300 text-xl">{t('Загрузка профиля...')}</p>
-          <div className="flex justify-center space-x-1 mt-4">
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-100"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-200"></div>
-          </div>
+          <div className="animate-spin rounded-full h-32 w-32 border-4 border-[#a31212] mx-auto mb-4"></div>
+          <p className="text-[#a0a0a0] text-xl">{t('Загрузка профиля...')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0">
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full opacity-80"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-red-400 rounded-full opacity-90"></div>
-        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-50"></div>
-        
-        {/* Светящиеся линии */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
-          {/* Главный заголовок с анимацией */}
+          {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-full mb-6 border border-amber-500/30 shadow-2xl shadow-amber-500/30">
-              <User className="w-10 h-10 md:w-12 md:h-12 text-amber-400" />
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#181818] rounded-full mb-6 border border-[#1c1c1c]">
+              <User className="w-10 h-10 md:w-12 md:h-12 text-[#a31212]" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0] text-center">
               ПРОФИЛЬ
             </h1>
-            <div className="w-32 h-1 bg-amber-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Добро пожаловать, <span className="text-amber-400 font-bold">{profile?.username || telegramUser?.first_name}</span>! 
-            Здесь вы можете <span className="text-blue-400 font-bold">управлять своим аккаунтом</span> и просматривать статистику.
+          <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
+            Добро пожаловать, <span className="text-[#a31212] font-bold">{profile?.username || telegramUser?.first_name}</span>! 
+            Здесь вы можете <span className="text-[#f0f0f0] font-bold">управлять своим аккаунтом</span> и просматривать статистику.
           </p>
         </div>
       </div>
