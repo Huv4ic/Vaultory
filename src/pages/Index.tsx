@@ -128,9 +128,9 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#a31212] mx-auto"></div>
           <p className="mt-4 text-xl">{t('Загрузка товаров...')}</p>
         </div>
       </div>
@@ -139,11 +139,11 @@ const Index = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4 text-red-500">{t('Ошибка загрузки')}</h1>
+          <h1 className="text-4xl font-bold mb-4 text-[#a31212]">{t('Ошибка загрузки')}</h1>
           <p className="text-xl mb-4">{error}</p>
-          <Button onClick={() => window.location.reload()} className="bg-gradient-to-r from-red-500 to-purple-600">
+          <Button onClick={() => window.location.reload()} className="bg-[#a31212] hover:bg-[#8a0f0f]">
             {t('Попробовать снова')}
           </Button>
         </div>
@@ -152,47 +152,27 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 text-white relative overflow-hidden">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0">
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-40"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-ping delay-1000 opacity-30"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-ping delay-2000 opacity-35"></div>
-        <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-yellow-400 rounded-full animate-ping delay-3000 opacity-20"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-green-400 rounded-full animate-ping delay-4000 opacity-30"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] relative">
       {/* Telegram канал - современное окно с анимированным фоном */}
 
-      {/* Категории игр с контрастным фоном */}
-      <section className="py-16 px-4 relative overflow-hidden bg-transparent">
-        {/* Контрастный анимированный фон */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-cyan-500/10 rounded-full animate-spin" style={{animationDuration: '40s'}}></div>
-          
-          {/* Дополнительные светящиеся элементы */}
-          <div className="absolute top-1/3 right-1/5 w-32 h-32 bg-pink-500/5 rounded-full blur-2xl animate-pulse delay-2000"></div>
-          <div className="absolute bottom-1/3 left-1/5 w-48 h-48 bg-yellow-500/5 rounded-full blur-2xl animate-pulse delay-3000"></div>
-        </div>
+      {/* Категории игр */}
+      <section className="py-16 px-4 relative bg-[#0e0e0e]">
         
         <div className="container mx-auto relative z-10">
           {/* Hero секция */}
           <div className="text-center mb-12 sm:mb-16">
             <div className="flex justify-center mb-6">
               <div className="relative">
-                <Crown className="w-16 h-16 sm:w-20 sm:h-20 text-yellow-400 animate-spin-slow" />
-                <div className="absolute inset-0 w-16 h-16 sm:w-20 sm:h-20 border-2 border-yellow-400/30 rounded-full animate-ping"></div>
+                <Crown className="w-16 h-16 sm:w-20 sm:h-20 text-[#a31212]" />
               </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent px-2">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6 text-[#f0f0f0] px-2">
               {t('Популярные игры')}
             </h2>
             <div className="flex justify-center items-center space-x-4 mb-8">
-              <div className="h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent w-24"></div>
-              <Sparkles className="w-6 h-6 text-yellow-400 animate-pulse" />
-              <div className="h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent w-24"></div>
+              <div className="h-px bg-[#1c1c1c] w-24"></div>
+              <Sparkles className="w-6 h-6 text-[#a31212]" />
+              <div className="h-px bg-[#1c1c1c] w-24"></div>
             </div>
           </div>
           
@@ -202,32 +182,25 @@ const Index = () => {
               onClick={() => setSelectedCategory('all')}
               className={`group relative px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 sm:space-x-3 text-sm sm:text-base ${
                 selectedCategory === 'all'
-                  ? 'bg-cyan-500 text-black shadow-2xl shadow-cyan-500/25 border-2 border-cyan-400'
-                  : 'bg-gray-800/50 backdrop-blur-sm text-white hover:bg-gray-700/50 border border-gray-600/50 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/10'
+                  ? 'bg-[#a31212] text-white border-2 border-[#8a0f0f]'
+                  : 'bg-[#181818] text-[#a0a0a0] hover:bg-[#1c1c1c] border border-[#1c1c1c] hover:border-[#a31212]'
               }`}
             >
-              <Zap className={`w-4 h-4 sm:w-5 sm:h-5 ${selectedCategory === 'all' ? 'text-black' : 'text-cyan-400 group-hover:animate-pulse'}`} />
+              <Zap className={`w-4 h-4 sm:w-5 sm:h-5 ${selectedCategory === 'all' ? 'text-white' : 'text-[#a31212]'}`} />
               <span>{t('Все игры')}</span>
-              {selectedCategory === 'all' && (
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-xl sm:rounded-2xl animate-pulse"></div>
-              )}
             </button>
             {gameCategories.map((category, index) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`group relative px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 sm:space-x-3 text-sm sm:text-base animate-fade-in ${
+                className={`group relative px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 sm:space-x-3 text-sm sm:text-base ${
                   selectedCategory === category.id
-                    ? 'bg-purple-500 text-white shadow-2xl shadow-purple-500/25 border-2 border-purple-400'
-                    : 'bg-gray-800/50 backdrop-blur-sm text-white hover:bg-gray-700/50 border border-gray-600/50 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10'
+                    ? 'bg-[#a31212] text-white border-2 border-[#8a0f0f]'
+                    : 'bg-[#181818] text-[#a0a0a0] hover:bg-[#1c1c1c] border border-[#1c1c1c] hover:border-[#a31212]'
                 }`}
-                style={{animationDelay: `${index * 0.1}s`}}
               >
-                <span className="text-sm sm:text-lg group-hover:scale-110 transition-transform duration-300">{getCategoryIcon(category.name)}</span>
+                <span className="text-sm sm:text-lg group-hover:scale-105 transition-transform duration-300">{getCategoryIcon(category.name)}</span>
                 <span>{category.name}</span>
-                {selectedCategory === category.id && (
-                  <div className="absolute inset-0 bg-purple-400/20 rounded-xl sm:rounded-2xl animate-pulse"></div>
-                )}
               </button>
             ))}
           </div>
@@ -240,18 +213,17 @@ const Index = () => {
                 <div className="mb-8 sm:mb-12 relative">
                   <div className="flex items-center justify-center md:justify-start mb-6 sm:mb-8">
                     <div className="relative group">
-                      <Star className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 absolute -left-8 sm:-left-10 top-1/2 transform -translate-y-1/2 animate-pulse" />
-                      <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-wide text-center md:text-left px-2 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                      <Star className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212] absolute -left-8 sm:-left-10 top-1/2 transform -translate-y-1/2" />
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#f0f0f0] tracking-wide text-center md:text-left px-2">
                         {gameName.toUpperCase()}
                       </h3>
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 via-purple-400/10 to-pink-400/10 rounded-lg blur-xl group-hover:blur-2xl transition-all duration-300"></div>
                     </div>
                   </div>
                   {/* Декоративная линия */}
                   <div className="flex items-center justify-center md:justify-start">
-                    <div className="h-1 bg-gradient-to-r from-cyan-500 to-transparent w-16 sm:w-24 rounded-full"></div>
-                    <div className="h-px bg-gradient-to-r from-purple-500/50 to-pink-500/50 w-20 sm:w-32 ml-4 rounded-full"></div>
-                    <div className="h-1 bg-gradient-to-l from-pink-500 to-transparent w-16 sm:w-24 ml-4 rounded-full"></div>
+                    <div className="h-1 bg-[#a31212] w-16 sm:w-24 rounded-full"></div>
+                    <div className="h-px bg-[#1c1c1c] w-20 sm:w-32 ml-4 rounded-full"></div>
+                    <div className="h-1 bg-[#a31212] w-16 sm:w-24 ml-4 rounded-full"></div>
                   </div>
                 </div>
                 
