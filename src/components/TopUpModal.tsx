@@ -203,10 +203,10 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-black/90 backdrop-blur-xl border-amber-500/30 max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-[#181818] border-[#1c1c1c] max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-white text-2xl flex items-center">
-            <CreditCard className="w-6 h-6 mr-3 text-amber-400" />
+          <DialogTitle className="text-[#f0f0f0] text-2xl flex items-center">
+            <CreditCard className="w-6 h-6 mr-3 text-[#a31212]" />
             Пополнение баланса
           </DialogTitle>
         </DialogHeader>
@@ -216,15 +216,15 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
           {!selectedMethod && (
             <>
               <div className="text-center mb-6">
-                <p className="text-gray-300 text-lg">
+                <p className="text-[#a0a0a0] text-lg">
                   Выберите удобный для вас способ оплаты
                 </p>
               </div>
 
               {/* Банковские карты */}
               <div>
-                <h3 className="text-white text-lg font-semibold mb-4 flex items-center">
-                  <CreditCard className="w-5 h-5 mr-2 text-blue-400" />
+                <h3 className="text-[#f0f0f0] text-lg font-semibold mb-4 flex items-center">
+                  <CreditCard className="w-5 h-5 mr-2 text-[#a31212]" />
                   Банковские карты
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -233,20 +233,20 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                     .map((method) => (
                       <Card
                         key={method.id}
-                        className="bg-black/40 backdrop-blur-sm border-amber-500/20 hover:border-amber-400/40 cursor-pointer transition-all duration-300 hover:scale-105"
+                        className="bg-[#181818] border-[#1c1c1c] hover:border-[#a31212] cursor-pointer transition-all duration-300 hover:scale-105"
                         onClick={() => handleMethodSelect(method)}
                       >
                         <CardContent className="p-4">
                           <div className="flex items-center space-x-3">
-                            <div className={`w-12 h-12 bg-gradient-to-r ${method.color} rounded-full flex items-center justify-center text-white`}>
+                            <div className="w-12 h-12 bg-[#a31212] rounded-full flex items-center justify-center text-white">
                               {method.icon}
                             </div>
                             <div className="flex-1">
-                              <h4 className="text-white font-semibold">{method.name}</h4>
-                              <p className="text-gray-400 text-sm">{method.description}</p>
-                              <p className="text-amber-400 text-xs">Мин. сумма: {method.minAmount}</p>
+                              <h4 className="text-[#f0f0f0] font-semibold">{method.name}</h4>
+                              <p className="text-[#a0a0a0] text-sm">{method.description}</p>
+                              <p className="text-[#a31212] text-xs">Мин. сумма: {method.minAmount}</p>
                             </div>
-                            <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                            <Badge className="bg-[#1c1c1c] text-[#a31212] border-[#1c1c1c]">
                               Выбрать
                             </Badge>
                           </div>
@@ -258,8 +258,8 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
 
               {/* Криптовалюты */}
               <div>
-                <h3 className="text-white text-lg font-semibold mb-4 flex items-center">
-                  <Coins className="w-5 h-5 mr-2 text-green-400" />
+                <h3 className="text-[#f0f0f0] text-lg font-semibold mb-4 flex items-center">
+                  <Coins className="w-5 h-5 mr-2 text-[#a31212]" />
                   Криптовалюты
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -268,20 +268,20 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                     .map((method) => (
                       <Card
                         key={method.id}
-                        className="bg-black/40 backdrop-blur-sm border-amber-500/20 hover:border-amber-400/40 cursor-pointer transition-all duration-300 hover:scale-105"
+                        className="bg-[#181818] border-[#1c1c1c] hover:border-[#a31212] cursor-pointer transition-all duration-300 hover:scale-105"
                         onClick={() => handleMethodSelect(method)}
                       >
                         <CardContent className="p-4">
                           <div className="flex items-center space-x-3">
-                            <div className={`w-12 h-12 bg-gradient-to-r ${method.color} rounded-full flex items-center justify-center text-white`}>
+                            <div className="w-12 h-12 bg-[#a31212] rounded-full flex items-center justify-center text-white">
                               {method.icon}
                             </div>
                             <div className="flex-1">
-                              <h4 className="text-white font-semibold">{method.name}</h4>
-                              <p className="text-gray-400 text-sm">{method.description}</p>
-                              <p className="text-amber-400 text-xs">Мин. сумма: {method.minAmount}</p>
+                              <h4 className="text-[#f0f0f0] font-semibold">{method.name}</h4>
+                              <p className="text-[#a0a0a0] text-sm">{method.description}</p>
+                              <p className="text-[#a31212] text-xs">Мин. сумма: {method.minAmount}</p>
                             </div>
-                            <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                            <Badge className="bg-[#1c1c1c] text-[#a31212] border-[#1c1c1c]">
                               Выбрать
                             </Badge>
                           </div>
@@ -297,32 +297,32 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
           {selectedMethod && (
             <div className="space-y-6">
               <div className="text-center">
-                <div className={`w-20 h-20 bg-gradient-to-r ${selectedMethod.color} rounded-full flex items-center justify-center text-white mx-auto mb-4`}>
+                <div className="w-20 h-20 bg-[#a31212] rounded-full flex items-center justify-center text-white mx-auto mb-4">
                   {selectedMethod.icon}
                 </div>
-                <h3 className="text-white text-2xl font-bold mb-2">{selectedMethod.name}</h3>
-                <p className="text-gray-400">{selectedMethod.description}</p>
+                <h3 className="text-[#f0f0f0] text-2xl font-bold mb-2">{selectedMethod.name}</h3>
+                <p className="text-[#a0a0a0]">{selectedMethod.description}</p>
               </div>
 
-              <Card className="bg-black/40 backdrop-blur-sm border-amber-500/30">
+              <Card className="bg-[#181818] border-[#1c1c1c]">
                 <CardContent className="p-6">
-                  <h4 className="text-white font-semibold mb-4 text-center">
+                  <h4 className="text-[#f0f0f0] font-semibold mb-4 text-center">
                     Реквизиты для оплаты
                   </h4>
                   
-                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 border border-amber-500/20">
+                  <div className="bg-[#1c1c1c] rounded-lg p-4 border border-[#1c1c1c]">
                     <div className="flex items-center justify-between">
-                      <code className="text-amber-400 text-lg break-all">
+                      <code className="text-[#a31212] text-lg break-all">
                         {selectedMethod.details}
                       </code>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => handleCopy(selectedMethod.details, selectedMethod.id)}
-                        className="ml-4 border-amber-500/40 text-amber-400 hover:bg-amber-500/20"
+                        className="ml-4 border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:text-white"
                       >
                         {copied === selectedMethod.id ? (
-                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          <CheckCircle className="w-4 h-4 text-[#a31212]" />
                         ) : (
                           <Copy className="w-4 h-4" />
                         )}
@@ -331,13 +331,13 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                   </div>
 
                   <div className="mt-6 text-center space-y-4">
-                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
-                      <p className="text-amber-400 text-sm">
+                    <div className="bg-[#1c1c1c] border border-[#1c1c1c] rounded-lg p-4">
+                      <p className="text-[#a31212] text-sm">
                         💡 <strong>Важно:</strong> После оплаты отправьте скриншот чека в поддержку
                       </p>
                     </div>
                     
-                    <div className="text-gray-300 text-sm space-y-2">
+                    <div className="text-[#a0a0a0] text-sm space-y-2">
                       <p>• Минимальная сумма: {selectedMethod.minAmount}</p>
                       <p>• Время зачисления: до 24 часов</p>
                       <p>• Поддержка: vaultorypoderjka@gmail.com</p>
@@ -353,8 +353,8 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                   disabled={isCheckingBalance || balanceChecked}
                   className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${
                     balanceChecked 
-                      ? 'bg-green-600 hover:bg-green-700 text-white' 
-                      : 'bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white hover:scale-105 shadow-lg shadow-amber-500/30'
+                      ? 'bg-[#a31212] hover:bg-[#8a0f0f] text-white' 
+                      : 'bg-[#a31212] hover:bg-[#8a0f0f] text-white hover:scale-105'
                   }`}
                 >
                   {isCheckingBalance ? (
@@ -376,7 +376,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                 </Button>
                 
                 {balanceChecked && (
-                  <p className="text-green-400 text-sm mt-2">
+                  <p className="text-[#a31212] text-sm mt-2">
                     Администратор получил уведомление и проверит оплату
                   </p>
                 )}
@@ -386,13 +386,13 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                 <Button
                   onClick={() => setSelectedMethod(null)}
                   variant="outline"
-                  className="flex-1 border-amber-500/40 text-amber-400 hover:bg-amber-500/20"
+                  className="flex-1 border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:text-white"
                 >
                   ← Назад к выбору
                 </Button>
                 <Button
                   onClick={handleClose}
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-white"
+                  className="flex-1 bg-[#a31212] hover:bg-[#8a0f0f] text-white"
                 >
                   Закрыть
                 </Button>
@@ -406,7 +406,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
               <Button
                 onClick={handleClose}
                 variant="outline"
-                className="border-amber-500/40 text-amber-400 hover:bg-amber-500/20"
+                className="border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:text-white"
               >
                 <X className="w-4 h-4 mr-2" />
                 Закрыть

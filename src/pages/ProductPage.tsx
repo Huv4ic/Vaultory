@@ -79,18 +79,10 @@ const ProductPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
         <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-400/30 mx-auto mb-4"></div>
-            <div className="absolute inset-0 animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-amber-400 mx-auto"></div>
-          </div>
-          <p className="text-gray-300 text-xl">Загрузка товара...</p>
-          <div className="flex justify-center space-x-1 mt-4">
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-100"></div>
-            <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce animation-delay-200"></div>
-          </div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#a31212] mx-auto mb-4"></div>
+          <p className="text-[#a0a0a0] text-xl">Загрузка товара...</p>
         </div>
       </div>
     );
@@ -98,16 +90,16 @@ const ProductPage = () => {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
-        <div className="text-center bg-black/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
+      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
+        <div className="text-center bg-[#181818] rounded-2xl p-8 border border-[#1c1c1c]">
           <div className="text-6xl mb-6">❌</div>
-          <h1 className="text-3xl font-bold text-white mb-4">Товар не найден</h1>
-          <p className="text-gray-300 mb-6">
+          <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">Товар не найден</h1>
+          <p className="text-[#a0a0a0] mb-6">
             К сожалению, запрашиваемый товар не существует или был удален.
           </p>
           <Button
             onClick={() => navigate('/catalog')}
-            className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+            className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105"
           >
             Вернуться в каталог
           </Button>
@@ -117,27 +109,7 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0">
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full opacity-80"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-green-400 rounded-full opacity-90"></div>
-        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-orange-400 rounded-full animate-bounce opacity-50"></div>
-        
-        {/* Светящиеся линии */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-        
-        {/* Большие светящиеся элементы */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full blur-xl"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-xl"></div>
-        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-gradient-to-r from-pink-500/10 to-yellow-500/10 rounded-full blur-xl"></div>
-        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-full blur-xl"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative">
 
       {/* Основной контент */}
       <div className="relative z-10 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
@@ -145,11 +117,10 @@ const ProductPage = () => {
         <div className="mb-8 pt-20">
           <Button
             onClick={() => navigate(-1)}
-            className="group relative px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25"
+            className="px-6 py-3 bg-[#181818] border border-[#1c1c1c] text-[#a0a0a0] hover:text-[#f0f0f0] hover:border-[#a31212] font-bold rounded-2xl transition-all duration-300 hover:scale-105"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
-            <div className="relative flex items-center gap-3">
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+            <div className="flex items-center gap-3">
+              <ArrowLeft className="w-5 h-5" />
               <span>Назад</span>
             </div>
           </Button>
@@ -157,16 +128,16 @@ const ProductPage = () => {
 
         {loading ? (
           <div className="text-center py-12 sm:py-16">
-            <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 border-b-2 border-amber-400 mx-auto mb-4 sm:mb-6"></div>
-            <p className="text-lg sm:text-xl text-gray-300">Загрузка товара...</p>
+            <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 border-b-2 border-[#a31212] mx-auto mb-4 sm:mb-6"></div>
+            <p className="text-lg sm:text-xl text-[#a0a0a0]">Загрузка товара...</p>
           </div>
         ) : error ? (
           <div className="text-center py-12 sm:py-16">
-            <h2 className="text-2xl sm:text-3xl font-bold text-red-400 mb-4 sm:mb-6">Ошибка загрузки</h2>
-            <p className="text-gray-300 text-sm sm:text-base mb-6">Не удалось загрузить информацию о товаре</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#a31212] mb-4 sm:mb-6">Ошибка загрузки</h2>
+            <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Не удалось загрузить информацию о товаре</p>
             <Button
               onClick={() => navigate('/catalog')}
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
             >
               Вернуться в каталог
             </Button>
@@ -177,23 +148,13 @@ const ProductPage = () => {
             <div className="space-y-6">
               {/* Главное изображение */}
               <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-6 hover:border-cyan-400/50 transition-all duration-500">
-                  <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-cyan-400/20 to-purple-600/20 border border-cyan-500/30 relative">
-                    {/* Декоративные кольца */}
-                    <div className="absolute inset-2 border border-cyan-400/20 rounded-xl animate-spin-slow"></div>
-                    <div className="absolute inset-4 border border-purple-400/20 rounded-xl animate-spin-reverse"></div>
-                    
+                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300">
+                  <div className="aspect-square rounded-2xl overflow-hidden bg-[#1c1c1c] border border-[#1c1c1c] relative">
                     <img
                       src={selectedImage}
                       alt={product.name}
-                      className="relative z-10 w-full h-full object-contain hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-contain hover:scale-105 transition-transform duration-300"
                     />
-                    
-                    {/* Магические частицы */}
-                    <div className="absolute top-4 right-4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-                    <div className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-purple-400 rounded-full animate-ping opacity-80"></div>
-                    <div className="absolute top-1/2 left-2 w-1 h-1 bg-pink-400 rounded-full animate-bounce opacity-70"></div>
                   </div>
                 </div>
               </div>
@@ -201,10 +162,9 @@ const ProductPage = () => {
               {/* Миниатюры */}
               {product.images && product.images.length > 1 && (
                 <div className="group relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                  <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-6 hover:border-purple-400/50 transition-all duration-500">
-                    <h3 className="text-lg font-black text-white mb-4 flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-purple-400" />
+                  <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300">
+                    <h3 className="text-lg font-black text-[#f0f0f0] mb-4 flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-[#a31212]" />
                       Другие изображения
                     </h3>
                     <div className="grid grid-cols-4 gap-3">
@@ -212,20 +172,20 @@ const ProductPage = () => {
                         <button
                           key={index}
                           onClick={() => setSelectedImage(image)}
-                          className={`group/thumb aspect-square rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-110 relative ${
+                          className={`group/thumb aspect-square rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-105 relative ${
                             selectedImage === image
-                              ? 'border-cyan-400 shadow-lg shadow-cyan-500/30'
-                              : 'border-purple-500/30 hover:border-purple-400/50'
+                              ? 'border-[#a31212]'
+                              : 'border-[#1c1c1c] hover:border-[#a31212]'
                           }`}
                         >
                           <img
                             src={image}
                             alt={`${product.name} ${index + 1}`}
-                            className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-300"
+                            className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-300"
                           />
                           {selectedImage === image && (
-                            <div className="absolute inset-0 bg-cyan-400/20 flex items-center justify-center">
-                              <CheckCircle className="w-6 h-6 text-cyan-400" />
+                            <div className="absolute inset-0 bg-[#a31212]/20 flex items-center justify-center">
+                              <CheckCircle className="w-6 h-6 text-[#a31212]" />
                             </div>
                           )}
                         </button>
@@ -240,23 +200,22 @@ const ProductPage = () => {
             <div className="space-y-6">
               {/* Основная информация */}
               <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-pink-500/30 p-8 hover:border-pink-400/50 transition-all duration-500">
+                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex-1">
-                      <h1 className="text-3xl md:text-4xl font-black text-white mb-2 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                      <h1 className="text-3xl md:text-4xl font-black text-[#f0f0f0] mb-2">
                         {product.name}
                       </h1>
                       <div className="flex items-center gap-2">
-                        <Gem className="w-5 h-5 text-pink-400" />
-                        <span className="text-gray-400 text-sm">Премиум товар</span>
+                        <Gem className="w-5 h-5 text-[#a31212]" />
+                        <span className="text-[#a0a0a0] text-sm">Премиум товар</span>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Button
                         onClick={handleShare}
                         size="sm"
-                        className="w-12 h-12 p-0 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl transition-all duration-300 hover:scale-110 shadow-lg shadow-cyan-500/25"
+                        className="w-12 h-12 p-0 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white rounded-xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
                       >
                         <Share2 className="w-5 h-5" />
                       </Button>
@@ -264,10 +223,10 @@ const ProductPage = () => {
                         onClick={() => toggleFavorite(product.id)}
                         size="sm"
                         disabled={favoritesLoading}
-                        className={`w-12 h-12 p-0 rounded-xl transition-all duration-300 hover:scale-110 ${
+                        className={`w-12 h-12 p-0 rounded-xl transition-all duration-300 hover:scale-105 border ${
                           isFavorite(product.id)
-                            ? 'bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white shadow-lg shadow-red-500/25'
-                            : 'bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white shadow-lg shadow-purple-500/25'
+                            ? 'bg-[#a31212] hover:bg-[#8a0f0f] text-white border-[#a31212]'
+                            : 'bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white border-[#1c1c1c] hover:border-[#a31212]'
                         }`}
                       >
                         <Heart className={`w-5 h-5 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
@@ -278,17 +237,17 @@ const ProductPage = () => {
                   {/* Цена */}
                   <div className="mb-6">
                     <div className="flex items-center space-x-4 mb-3">
-                      <span className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                      <span className="text-4xl md:text-5xl font-black text-[#a31212]">
                         {product.price}₴
                       </span>
                       {product.original_price && product.original_price > product.price && (
-                        <span className="text-xl text-gray-400 line-through">{product.original_price}₴</span>
+                        <span className="text-xl text-[#a0a0a0] line-through">{product.original_price}₴</span>
                       )}
                     </div>
                     {product.original_price && product.original_price > product.price && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl border border-green-500/30">
-                        <Target className="w-4 h-4 text-green-400" />
-                        <span className="text-green-400 font-bold">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                        <Target className="w-4 h-4 text-[#a31212]" />
+                        <span className="text-[#a31212] font-bold">
                           Скидка {Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
                         </span>
                       </div>
@@ -298,15 +257,15 @@ const ProductPage = () => {
                   {/* Рейтинг и продажи */}
                   <div className="flex items-center space-x-6 mb-6">
                     {product.rating && (
-                      <div className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl border border-yellow-500/30">
-                        <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                        <span className="text-white font-bold">{product.rating}</span>
+                      <div className="flex items-center space-x-2 px-4 py-2 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                        <Star className="w-5 h-5 text-[#a31212] fill-current" />
+                        <span className="text-[#f0f0f0] font-bold">{product.rating}</span>
                       </div>
                     )}
                     {product.sales && (
-                      <div className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl border border-green-500/30">
-                        <TrendingUp className="w-5 h-5 text-green-400" />
-                        <span className="text-gray-300 font-medium">{product.sales} продаж</span>
+                      <div className="flex items-center space-x-2 px-4 py-2 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                        <TrendingUp className="w-5 h-5 text-[#a31212]" />
+                        <span className="text-[#a0a0a0] font-medium">{product.sales} продаж</span>
                       </div>
                     )}
                   </div>
@@ -314,9 +273,9 @@ const ProductPage = () => {
                   {/* Игра */}
                   {product.game && (
                     <div className="mb-6">
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl border border-blue-500/30">
-                        <Crown className="w-4 h-4 text-blue-400" />
-                        <span className="text-blue-400 font-bold">{product.game}</span>
+                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                        <Crown className="w-4 h-4 text-[#a31212]" />
+                        <span className="text-[#a31212] font-bold">{product.game}</span>
                       </div>
                     </div>
                   )}
@@ -324,35 +283,35 @@ const ProductPage = () => {
                   {/* Описание */}
                   {product.description && (
                     <div className="mb-6">
-                      <h3 className="text-lg font-black text-white mb-3 flex items-center gap-2">
-                        <Flame className="w-5 h-5 text-orange-400" />
+                      <h3 className="text-lg font-black text-[#f0f0f0] mb-3 flex items-center gap-2">
+                        <Flame className="w-5 h-5 text-[#a31212]" />
                         Описание
                       </h3>
-                      <p className="text-gray-300 leading-relaxed">{product.description}</p>
+                      <p className="text-[#a0a0a0] leading-relaxed">{product.description}</p>
                     </div>
                   )}
 
                   {/* Количество */}
                   <div className="mb-6">
-                    <label className="block text-lg font-black text-white mb-3 flex items-center gap-2">
-                      <Target className="w-5 h-5 text-cyan-400" />
+                    <label className="block text-lg font-black text-[#f0f0f0] mb-3 flex items-center gap-2">
+                      <Target className="w-5 h-5 text-[#a31212]" />
                       Количество
                     </label>
                     <div className="flex items-center space-x-4">
                       <Button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
                         size="sm"
-                        className="w-12 h-12 p-0 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-400 hover:to-pink-500 text-white rounded-xl transition-all duration-300 hover:scale-110 shadow-lg shadow-red-500/25"
+                        className="w-12 h-12 p-0 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white rounded-xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
                       >
                         -
                       </Button>
-                      <span className="text-2xl font-black text-white min-w-[4rem] text-center bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                      <span className="text-2xl font-black text-[#f0f0f0] min-w-[4rem] text-center">
                         {quantity}
                       </span>
                       <Button
                         onClick={() => setQuantity(quantity + 1)}
                         size="sm"
-                        className="w-12 h-12 p-0 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white rounded-xl transition-all duration-300 hover:scale-110 shadow-lg shadow-green-500/25"
+                        className="w-12 h-12 p-0 bg-[#a31212] hover:bg-[#8a0f0f] text-white rounded-xl transition-all duration-300 hover:scale-105"
                       >
                         +
                       </Button>
@@ -367,7 +326,7 @@ const ProductPage = () => {
                         handleAddToCart();
                         navigate('/cart');
                       }}
-                      className="w-full py-4 bg-emerald-700 hover:bg-emerald-600 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-emerald-700/30"
+                      className="w-full py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105"
                     >
                       <Zap className="w-6 h-6 mr-3" />
                       Купить сейчас
@@ -376,7 +335,7 @@ const ProductPage = () => {
                     <Button
                       onClick={handleAddToCart}
                       disabled={isInCart}
-                      className="w-full py-4 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full py-4 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isInCart ? (
                         <>
@@ -393,7 +352,7 @@ const ProductPage = () => {
                     
                     <Button
                       onClick={() => navigate('/cart')}
-                      className="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-purple-500/25"
+                      className="w-full py-4 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
                     >
                       <Eye className="w-6 h-6 mr-3" />
                       Перейти в корзину
@@ -404,24 +363,23 @@ const ProductPage = () => {
 
               {/* Информация о доставке */}
               <div className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-green-500/30 p-8 hover:border-green-400/50 transition-all duration-500">
-                  <h3 className="text-2xl font-black text-white mb-6 flex items-center gap-3">
-                    <Rocket className="w-6 h-6 text-green-400" />
+                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+                  <h3 className="text-2xl font-black text-[#f0f0f0] mb-6 flex items-center gap-3">
+                    <Rocket className="w-6 h-6 text-[#a31212]" />
                     Доставка и гарантия
                   </h3>
                   <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-3 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl border border-green-500/20">
-                      <Clock className="w-5 h-5 text-green-400" />
-                      <span className="text-white font-medium">Мгновенная доставка</span>
+                    <div className="flex items-center space-x-3 p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                      <Clock className="w-5 h-5 text-[#a31212]" />
+                      <span className="text-[#f0f0f0] font-medium">Мгновенная доставка</span>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/20">
-                      <Shield className="w-5 h-5 text-blue-400" />
-                      <span className="text-white font-medium">Гарантия качества</span>
+                    <div className="flex items-center space-x-3 p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                      <Shield className="w-5 h-5 text-[#a31212]" />
+                      <span className="text-[#f0f0f0] font-medium">Гарантия качества</span>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl border border-yellow-500/20">
-                      <CheckCircle className="w-5 h-5 text-yellow-400" />
-                      <span className="text-white font-medium">Официальный товар</span>
+                    <div className="flex items-center space-x-3 p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                      <CheckCircle className="w-5 h-5 text-[#a31212]" />
+                      <span className="text-[#f0f0f0] font-medium">Официальный товар</span>
                     </div>
                   </div>
                 </div>
@@ -430,12 +388,12 @@ const ProductPage = () => {
           </div>
         ) : (
           <div className="text-center py-12 sm:py-16">
-            <Package className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-4 sm:mb-6 text-gray-600" />
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-400 mb-2">Товар не найден</h2>
-            <p className="text-gray-500 text-sm sm:text-base mb-6">Запрашиваемый товар не существует</p>
+            <Package className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-4 sm:mb-6 text-[#a31212]" />
+            <h2 className="text-xl sm:text-2xl font-bold text-[#a0a0a0] mb-2">Товар не найден</h2>
+            <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Запрашиваемый товар не существует</p>
             <Button
               onClick={() => navigate('/catalog')}
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
             >
               Вернуться в каталог
             </Button>
@@ -447,12 +405,12 @@ const ProductPage = () => {
       <div className="mt-32 max-w-[1920px] mx-auto px-4 relative">
         {/* Заголовок секции */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-black mb-4 text-[#f0f0f0]">
             ПОХОЖИЕ ТОВАРЫ
           </h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full mb-6"></div>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Откройте для себя другие <span className="text-cyan-400 font-bold">удивительные товары</span> из этой категории
+          <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full mb-6"></div>
+          <p className="text-[#a0a0a0] text-lg max-w-2xl mx-auto">
+            Откройте для себя другие <span className="text-[#a31212] font-bold">удивительные товары</span> из этой категории
           </p>
         </div>
         
