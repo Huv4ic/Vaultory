@@ -59,32 +59,20 @@ const ProductCard = ({
       title={t('Нажмите для просмотра товара')}
     >
       {/* Основная карточка */}
-      <div className="relative bg-gray-900 rounded-3xl border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-500 transform hover:scale-[1.03] hover:-translate-y-3 group overflow-hidden flex flex-col shadow-2xl hover:shadow-cyan-500/30 h-[500px]">
+      <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-2 group overflow-hidden flex flex-col h-[500px]">
         
-        {/* Светящиеся эффекты */}
-        <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"></div>
-        <div className="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl blur-xl pointer-events-none"></div>
-        
-        {/* Изображение с пьедесталом */}
-        <div className="relative h-56 overflow-hidden flex-shrink-0 rounded-t-3xl bg-gray-800">
-          {/* Пьедестал с свечением */}
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-10 bg-gray-700 rounded-full shadow-2xl"></div>
-          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-20 h-8 bg-cyan-500/30 rounded-full blur-md shadow-cyan-500/50"></div>
-          <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-18 h-6 bg-cyan-400/20 rounded-full blur-lg"></div>
-          
+        {/* Изображение */}
+        <div className="relative h-56 overflow-hidden flex-shrink-0 rounded-t-3xl bg-[#1c1c1c]">
           <img
             src={image}
             alt={name}
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 filter brightness-90 group-hover:brightness-110"
+            className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
           />
-          
-          {/* Светящийся эффект при наведении */}
-          <div className="absolute inset-0 bg-cyan-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
           
           {/* Скидочный бейдж */}
           {original_price && original_price > price && (
             <div className="absolute top-4 left-4 z-20">
-              <div className="bg-emerald-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg shadow-emerald-500/50 animate-pulse">
+              <div className="bg-[#a31212] text-white px-3 py-1.5 rounded-full text-xs font-bold">
                 -{Math.round(((original_price - price) / original_price) * 100)}%
               </div>
             </div>
@@ -99,39 +87,39 @@ const ProductCard = ({
             disabled={loading}
             size="sm"
             variant="ghost"
-            className="absolute top-4 right-4 z-20 bg-gray-800/80 hover:bg-gray-700/90 transition-all duration-300 p-2 h-10 w-10 rounded-full border border-gray-600/50 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/30"
+            className="absolute top-4 right-4 z-20 bg-[#181818] hover:bg-[#1c1c1c] transition-all duration-300 p-2 h-10 w-10 rounded-full border border-[#1c1c1c] hover:border-[#a31212]"
           >
             <Heart 
               className={`w-5 h-5 transition-all duration-300 ${
                 isFavorite(id) 
-                  ? 'text-red-500 fill-current drop-shadow-lg' 
-                  : 'text-gray-300 hover:text-red-400 hover:drop-shadow-lg'
+                  ? 'text-[#a31212] fill-current' 
+                  : 'text-[#a0a0a0] hover:text-[#a31212]'
               }`} 
             />
           </Button>
         </div>
 
         {/* Нижняя часть с информацией */}
-        <div className="relative flex-1 flex flex-col bg-gray-800 rounded-b-3xl p-5">
+        <div className="relative flex-1 flex flex-col bg-[#1c1c1c] rounded-b-3xl p-5">
           <div className="flex-1 flex flex-col justify-center text-center">
-            {/* Название товара - красивый стильный текст */}
-            <h3 className="text-white font-bold text-xl mb-4 line-clamp-2 tracking-wide drop-shadow-lg h-14 flex items-center justify-center">
+            {/* Название товара */}
+            <h3 className="text-[#f0f0f0] font-bold text-xl mb-4 line-clamp-2 tracking-wide h-14 flex items-center justify-center">
               {getProductTranslation(id, 'name', name)}
             </h3>
             
-            {/* Цены - стильные и яркие */}
+            {/* Цены */}
             <div className="flex items-center justify-center space-x-4 mb-4">
               {original_price && original_price > price ? (
                 <>
-                  <span className="text-gray-400 line-through text-base font-medium">
+                  <span className="text-[#a0a0a0] line-through text-base font-medium">
                     {original_price}₴
                   </span>
-                  <span className="text-cyan-400 font-black text-2xl drop-shadow-lg shadow-cyan-500/50">
+                  <span className="text-[#a31212] font-black text-2xl">
                     {price}₴
                   </span>
                 </>
               ) : (
-                <span className="text-cyan-400 font-black text-2xl drop-shadow-lg shadow-cyan-500/50">
+                <span className="text-[#a31212] font-black text-2xl">
                   {price}₴
                 </span>
               )}
@@ -149,12 +137,9 @@ const ProductCard = ({
                   onBuyNow();
                 }}
                 size="sm"
-                className="flex-1 group relative h-12 px-4 bg-emerald-700 hover:bg-emerald-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-700/50 hover:shadow-emerald-600/70"
+                className="flex-1 group relative h-12 px-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
                 title="Купить сейчас"
               >
-                {/* Светящийся эффект */}
-                <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse pointer-events-none"></div>
-                
                 {/* Контент кнопки */}
                 <div className="relative z-10 flex items-center justify-center">
                   <Zap className="w-4 h-4 mr-1" />
@@ -170,28 +155,17 @@ const ProductCard = ({
                 onAddToCart();
               }}
               size="sm"
-              className={`group relative h-12 w-12 p-0 rounded-full transition-all duration-300 hover:scale-110 ${
+              className={`group relative h-12 w-12 p-0 rounded-full transition-all duration-300 hover:scale-105 ${
                 isInCart 
-                  ? 'bg-green-500 hover:bg-green-400 text-white shadow-lg shadow-green-500/50 hover:shadow-green-400/70' 
-                  : 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white shadow-lg shadow-cyan-500/50 hover:shadow-cyan-400/70'
+                  ? 'bg-[#a31212] hover:bg-[#8a0f0f] text-white' 
+                  : 'bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white border border-[#1c1c1c] hover:border-[#a31212]'
               }`}
               title={isInCart ? t('В корзине') : t('Добавить в корзину')}
             >
-              {/* Светящийся эффект */}
-              <div className="absolute inset-0 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse pointer-events-none"></div>
-              
               {/* Иконка корзины */}
               <ShoppingCart className={`w-6 h-6 relative z-10 transition-all duration-300 ${
-                isInCart ? 'animate-bounce' : 'group-hover:scale-110'
+                isInCart ? 'animate-bounce' : 'group-hover:scale-105'
               }`} />
-              
-              {/* Дополнительные светящиеся эффекты */}
-              {!isInCart && (
-                <>
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-purple-400/30 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                </>
-              )}
             </Button>
           </div>
         </div>

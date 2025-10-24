@@ -18,7 +18,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        primary: "bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white text-lg py-3 font-bold rounded-lg shadow-lg transition-all duration-200"
+        primary: "bg-[#a31212] hover:bg-[#8a0f0f] text-white text-lg py-3 font-bold rounded-lg transition-all duration-300"
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -43,11 +43,11 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
-    let base = 'transition-all duration-200 font-bold rounded-lg shadow-lg';
+    let base = 'transition-all duration-300 font-bold rounded-lg';
     if (variant === 'primary') {
-      base += ' bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white text-lg py-3';
+      base += ' bg-[#a31212] hover:bg-[#8a0f0f] text-white text-lg py-3';
     } else if (variant === 'outline') {
-      base += ' border-2 border-cyan-600 text-cyan-600 bg-white hover:bg-cyan-50 hover:border-cyan-700 hover:text-cyan-700';
+      base += ' border-2 border-[#1c1c1c] text-[#a0a0a0] bg-[#181818] hover:bg-[#1c1c1c] hover:border-[#a31212] hover:text-[#f0f0f0]';
     }
     return (
       <Comp

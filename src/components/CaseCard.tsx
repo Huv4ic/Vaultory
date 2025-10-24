@@ -55,7 +55,7 @@ const CaseCard = ({
   };
 
   return (
-    <Card className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 animate-fade-in">
+    <Card className="bg-[#181818] backdrop-blur-sm border border-[#1c1c1c] transform hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-[#a31212]/20 animate-fade-in">
       <CardHeader className="text-center relative overflow-hidden">
         <div className={`absolute inset-0 bg-gradient-to-br ${caseData.gradient} opacity-20`}></div>
         <div className="relative z-10">
@@ -66,16 +66,16 @@ const CaseCard = ({
               className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700"
             />
           </div>
-          <CardTitle className="text-white text-xl mb-2">{getCaseTranslation(caseData.id, 'name', caseData.name)}</CardTitle>
-          <p className="text-gray-300">{caseData.game}</p>
+          <CardTitle className="text-[#f0f0f0] text-xl mb-2">{getCaseTranslation(caseData.id, 'name', caseData.name)}</CardTitle>
+          <p className="text-[#a0a0a0]">{caseData.game}</p>
         </div>
       </CardHeader>
       <CardContent className="text-center relative z-10 space-y-4">
-        <div className="text-3xl font-bold text-white">{caseData.price}₴</div>
+        <div className="text-3xl font-bold text-[#f0f0f0]">{caseData.price}₴</div>
         
         {/* Количество кейсов */}
         <div>
-          <label className="block text-sm font-medium mb-2 text-gray-300">{t('Количество')}</label>
+          <label className="block text-sm font-medium mb-2 text-[#a0a0a0]">{t('Количество')}</label>
           <div className="flex justify-center space-x-2">
             {[1, 2, 3, 4, 5].map((count) => (
               <Button
@@ -83,7 +83,7 @@ const CaseCard = ({
                 variant={openingCount === count ? "default" : "outline"}
                 size="sm"
                 onClick={() => onOpeningCountChange(count)}
-                className={openingCount === count ? "bg-purple-500 hover:bg-purple-600" : "border-gray-600 text-gray-300"}
+                className={openingCount === count ? "bg-[#a31212] hover:bg-[#8a0f0f]" : "border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:text-[#f0f0f0]"}
               >
                 {count}
               </Button>
@@ -91,31 +91,31 @@ const CaseCard = ({
           </div>
         </div>
 
-        <div className="text-lg font-semibold text-red-400">
+        <div className="text-lg font-semibold text-[#a31212]">
           {t('Общая стоимость:')}: {caseData.price * openingCount}₴
         </div>
 
         <Button 
           onClick={() => onOpenCase(caseData)}
           disabled={balance < caseData.price * openingCount}
-          className={`w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 text-white font-bold text-lg py-3 rounded-lg shadow-lg transition-all duration-200`}
+          className={`w-full bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg py-3 rounded-lg transition-all duration-300`}
         >
           {balance < caseData.price * openingCount ? t('Загрузка товара...') : t('Открыть кейс')}
         </Button>
 
         {/* Возможные предметы */}
         <div className="mt-4">
-          <h4 className="text-sm font-semibold mb-2 text-gray-300">Возможные предметы:</h4>
+          <h4 className="text-sm font-semibold mb-2 text-[#a0a0a0]">Возможные предметы:</h4>
           <div className="space-y-2 max-h-32 overflow-y-auto">
             {caseData.items.map((item, index) => (
-              <div key={index} className="flex items-center justify-between bg-gray-700/30 p-2 rounded text-xs">
+              <div key={index} className="flex items-center justify-between bg-[#1c1c1c] p-2 rounded text-xs">
                 <div className="flex items-center space-x-2">
                   <Badge className={`${getRarityColor(item.rarity)} text-white text-xs`}>
                     {item.rarity}
                   </Badge>
-                  <span className="text-white truncate">{item.name}</span>
+                  <span className="text-[#f0f0f0] truncate">{item.name}</span>
                 </div>
-                <span className="text-green-400 font-semibold">{item.price}₴</span>
+                <span className="text-[#a31212] font-semibold">{item.price}₴</span>
               </div>
             ))}
           </div>
