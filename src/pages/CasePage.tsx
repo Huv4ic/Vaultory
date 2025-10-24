@@ -288,67 +288,19 @@ const CasePage = () => {
   const getCaseTheme = (caseName: string) => {
     const name = caseName.toLowerCase();
     
-    // Простые готовые стили для каждого кейса
-    if (name.includes('феникс') || name.includes('phoenix')) {
-      return "bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 hover:from-orange-600 hover:via-red-600 hover:to-orange-700 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-orange-500/30 border-0 text-sm sm:text-base";
-    }
+    // Единый стиль для всех кейсов
+    return "bg-[#a31212] hover:bg-[#8a0f0f] text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 border-0 text-sm sm:text-base";
     
-    if (name.includes('годзилла') || name.includes('godzilla')) {
-      return "bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('гадюка') || name.includes('viper') || name.includes('змея') || name.includes('snake')) {
-      return "bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:from-green-600 hover:via-green-700 hover:to-green-800 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-green-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('акула') || name.includes('shark') || name.includes('рыба') || name.includes('fish')) {
-      return "bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 hover:from-gray-700 hover:via-gray-800 hover:to-gray-900 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-gray-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('дракон') || name.includes('dragon')) {
-      return "bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-700 hover:via-red-800 hover:to-red-900 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-red-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('единорог') || name.includes('unicorn')) {
-      return "bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 hover:from-purple-500 hover:via-pink-600 hover:to-purple-700 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('космос') || name.includes('space') || name.includes('галактика') || name.includes('galaxy')) {
-      return "bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:via-purple-700 hover:to-indigo-800 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-indigo-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('океан') || name.includes('ocean') || name.includes('море') || name.includes('sea')) {
-      return "bg-gradient-to-r from-cyan-500 via-blue-600 to-cyan-700 hover:from-cyan-600 hover:via-blue-700 hover:to-cyan-800 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-cyan-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('лес') || name.includes('forest') || name.includes('природа') || name.includes('nature')) {
-      return "bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:from-green-600 hover:via-green-700 hover:to-green-800 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-green-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('огонь') || name.includes('fire') || name.includes('пламя') || name.includes('flame')) {
-      return "bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 hover:from-orange-600 hover:via-red-600 hover:to-orange-700 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-orange-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('лед') || name.includes('ice') || name.includes('снег') || name.includes('snow')) {
-      return "bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 hover:from-blue-500 hover:via-cyan-600 hover:to-blue-700 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    if (name.includes('молния') || name.includes('lightning') || name.includes('электричество') || name.includes('electric')) {
-      return "bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-yellow-500/30 border-0 text-sm sm:text-base";
-    }
-    
-    // По умолчанию - золотая тема
-    return "bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:via-yellow-600 hover:to-amber-700 text-black font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30 border-0 text-sm sm:text-base";
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0]">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 border-4 border-amber-400/30 mx-auto"></div>
-              <p className="mt-4 text-lg sm:text-xl text-gray-300">Загрузка кейса...</p>
+              <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 border-4 border-[#a31212] mx-auto"></div>
+              <p className="mt-4 text-lg sm:text-xl text-[#a0a0a0]">Загрузка кейса...</p>
             </div>
           </div>
         </div>
@@ -358,11 +310,11 @@ const CasePage = () => {
 
   if (error || !caseData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0]">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-red-400 mb-4">{error || 'Кейс не найден'}</h1>
-            <Button onClick={() => navigate('/cases')} className="bg-amber-600 hover:bg-amber-700 px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#a31212] mb-4">{error || 'Кейс не найден'}</h1>
+            <Button onClick={() => navigate('/cases')} className="bg-[#a31212] hover:bg-[#8a0f0f] px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Вернуться к кейсам
             </Button>
