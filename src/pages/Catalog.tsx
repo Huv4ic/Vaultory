@@ -163,6 +163,44 @@ const Catalog = () => {
   return (
     <div className="min-h-screen bg-[#0e0e0e] relative">
 
+      {/* Новинки Section */}
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center mb-6">
+            <div className="w-6 h-6 bg-[#a31212] rounded-full flex items-center justify-center mr-3">
+              <span className="text-white text-sm">🔥</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">
+              Новинки
+            </h2>
+          </div>
+          
+          {/* Новинки Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 mb-8">
+            {gameCategories.slice(0, 8).map((category) => (
+              <div 
+                key={category.id}
+                className="group bg-[#181818] rounded-xl p-4 text-center hover:bg-[#1c1c1c] transition-all duration-300 cursor-pointer border border-[#1c1c1c] hover:border-[#a31212]"
+                onClick={() => setSelectedCategory(category.id)}
+              >
+                <div className="w-12 h-12 mx-auto mb-3 bg-[#1c1c1c] rounded-lg flex items-center justify-center">
+                  <img 
+                    src={category.image || '/placeholder.svg'} 
+                    alt={category.name}
+                    className="w-8 h-8 object-contain"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = '/placeholder.svg';
+                    }}
+                  />
+                </div>
+                <p className="text-[#f0f0f0] text-sm font-medium truncate">{category.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
