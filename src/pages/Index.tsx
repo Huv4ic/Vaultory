@@ -271,9 +271,9 @@ const Index = () => {
   // Фильтр по категории товара
   if (selectedCategory !== 'all') {
     filteredProducts = filteredProducts.filter(product => {
-      const productCategory = categories.find(cat => cat.id === product.category_id);
-      return productCategory && productCategory.id === selectedCategory;
-    });
+        const productCategory = categories.find(cat => cat.id === product.category_id);
+        return productCategory && productCategory.id === selectedCategory;
+      });
   }
 
   // Поиск по названию
@@ -409,13 +409,13 @@ const Index = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
               {gameCategoriesCards.map((category, index) => (
                 <div
-                  key={category.id}
+                key={category.id}
                   onClick={() => setSelectedGameCategory(selectedGameCategory === category.id ? 'all' : category.id)}
                   className={`group relative cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
                     selectedGameCategory === category.id ? 'scale-105 -translate-y-2' : ''
-                  }`}
-                  style={{animationDelay: `${index * 0.1}s`}}
-                >
+                }`}
+                style={{animationDelay: `${index * 0.1}s`}}
+              >
                   {/* Карточка категории */}
                   <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.color} p-4 sm:p-6 h-32 sm:h-40 border-2 transition-all duration-300 ${
                     selectedGameCategory === category.id 
@@ -457,7 +457,7 @@ const Index = () => {
               ))}
             </div>
           </div>
-          
+
           {/* Поиск и фильтры */}
           <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
             <div className="space-y-6">
@@ -527,7 +527,8 @@ const Index = () => {
           )}
 
 
-          {/* Товары по играм */}
+          {/* Товары по играм - показываем только если выбрана категория */}
+          {selectedGameCategory !== 'all' && (
           <div className="space-y-16 sm:space-y-20">
             {Object.keys(groupedProducts).length === 0 ? (
               /* Сообщение о том, что товаров нет в наличии */
@@ -645,6 +646,7 @@ const Index = () => {
             ))
             )}
           </div>
+          )}
         </div>
       </section>
 
