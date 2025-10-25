@@ -221,6 +221,17 @@ const AdminGameCategories = () => {
     ];
 
     console.log('Добавляем категории в базу данных...', gameCategories.length);
+    
+    // Проверяем, существует ли таблица
+    const { data: tableCheck, error: tableError } = await supabase
+      .from('game_categories')
+      .select('id')
+      .limit(1);
+    
+    if (tableError && tableError.code === '42P01') {
+      throw new Error('Таблица game_categories не существует. Создайте таблицу в Supabase.');
+    }
+    
     const { error } = await supabase
       .from('game_categories')
       .insert(
@@ -233,7 +244,7 @@ const AdminGameCategories = () => {
 
     if (error) {
       console.error('Error seeding categories:', error);
-      throw error;
+      throw new Error(`Ошибка базы данных: ${error.message || error.details || 'Неизвестная ошибка'}`);
     }
     console.log('Категории успешно добавлены в базу данных');
   };
@@ -354,7 +365,8 @@ const AdminGameCategories = () => {
       closeModal();
     } catch (err) {
       console.error('Error saving category:', err);
-      setError('Ошибка при сохранении категории: ' + (err as any).message);
+      const errorMessage = (err as any)?.message || (err as any)?.details || 'Неизвестная ошибка';
+      setError('Ошибка при сохранении категории: ' + errorMessage);
       setUploading(false);
     }
   };
