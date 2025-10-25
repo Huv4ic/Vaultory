@@ -145,6 +145,36 @@ const Index = () => {
       name: 'Arena Breakout',
       color: 'from-green-600 to-blue-600',
       icon: '🛡️'
+    },
+    'epic_games': {
+      name: 'Epic Games',
+      color: 'from-indigo-500 to-purple-600',
+      icon: '🎯'
+    },
+    'brawl_stars': {
+      name: 'Brawl Stars',
+      color: 'from-yellow-500 to-orange-600',
+      icon: '⭐'
+    },
+    'gta': {
+      name: 'GTA',
+      color: 'from-green-500 to-blue-600',
+      icon: '🚗'
+    },
+    'rocket_league': {
+      name: 'Rocket League',
+      color: 'from-blue-500 to-cyan-600',
+      icon: '🚀'
+    },
+    'spotify': {
+      name: 'Spotify',
+      color: 'from-green-500 to-emerald-600',
+      icon: '🎵'
+    },
+    'world_of_tanks': {
+      name: 'World of Tanks Blitz',
+      color: 'from-gray-600 to-yellow-600',
+      icon: '🚗'
     }
   };
 
@@ -164,6 +194,12 @@ const Index = () => {
     if (lowerGameName.includes('zenless')) return 'zenless';
     if (lowerGameName.includes('identity')) return 'identity_v';
     if (lowerGameName.includes('arena')) return 'arena_breakout';
+    if (lowerGameName.includes('epic games') || lowerGameName.includes('epicgames')) return 'epic_games';
+    if (lowerGameName.includes('brawl stars') || lowerGameName.includes('brawlstars')) return 'brawl_stars';
+    if (lowerGameName.includes('gta') || lowerGameName.includes('grand theft auto')) return 'gta';
+    if (lowerGameName.includes('rocket league') || lowerGameName.includes('rocketleague')) return 'rocket_league';
+    if (lowerGameName.includes('spotify')) return 'spotify';
+    if (lowerGameName.includes('world of tanks') || lowerGameName.includes('worldoftanks') || lowerGameName.includes('wot')) return 'world_of_tanks';
     
     return null;
   };
@@ -214,6 +250,12 @@ const Index = () => {
       if (categoryName === 'zenless') return gameName.includes('zenless');
       if (categoryName === 'identity_v') return gameName.includes('identity');
       if (categoryName === 'arena_breakout') return gameName.includes('arena');
+      if (categoryName === 'epic_games') return gameName.includes('epic games') || gameName.includes('epicgames');
+      if (categoryName === 'brawl_stars') return gameName.includes('brawl stars') || gameName.includes('brawlstars');
+      if (categoryName === 'gta') return gameName.includes('gta') || gameName.includes('grand theft auto');
+      if (categoryName === 'rocket_league') return gameName.includes('rocket league') || gameName.includes('rocketleague');
+      if (categoryName === 'spotify') return gameName.includes('spotify');
+      if (categoryName === 'world_of_tanks') return gameName.includes('world of tanks') || gameName.includes('worldoftanks') || gameName.includes('wot');
       
       return false;
     });
