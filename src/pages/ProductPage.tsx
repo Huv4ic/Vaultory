@@ -98,7 +98,7 @@ const ProductPage = () => {
             К сожалению, запрашиваемый товар не существует или был удален.
           </p>
           <Button
-            onClick={() => navigate('/catalog')}
+            onClick={() => navigate('/')}
             className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105"
           >
             Вернуться в каталог
@@ -136,7 +136,7 @@ const ProductPage = () => {
             <h2 className="text-2xl sm:text-3xl font-bold text-[#a31212] mb-4 sm:mb-6">Ошибка загрузки</h2>
             <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Не удалось загрузить информацию о товаре</p>
             <Button
-              onClick={() => navigate('/catalog')}
+              onClick={() => navigate('/')}
               className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
             >
               Вернуться в каталог
@@ -392,7 +392,7 @@ const ProductPage = () => {
             <h2 className="text-xl sm:text-2xl font-bold text-[#a0a0a0] mb-2">Товар не найден</h2>
             <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Запрашиваемый товар не существует</p>
             <Button
-              onClick={() => navigate('/catalog')}
+              onClick={() => navigate('/')}
               className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
             >
               Вернуться в каталог

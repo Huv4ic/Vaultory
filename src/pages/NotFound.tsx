@@ -81,7 +81,7 @@ const NotFound = () => {
             </Button>
             
             <Button
-              onClick={() => navigate('/catalog')}
+              onClick={() => navigate('/')}
               variant="outline"
               className="px-6 sm:px-8 py-2 sm:py-3 bg-[#181818] border border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
             >

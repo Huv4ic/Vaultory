@@ -142,7 +142,7 @@ const OrderSuccess = () => {
           {/* Кнопки действий */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Button
-              onClick={() => navigate('/catalog')}
+              onClick={() => navigate('/')}
               className="px-6 sm:px-8 py-3 sm:py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-base sm:text-lg rounded-lg sm:rounded-xl transition-all duration-300"
             >
               🛍️ Продолжить покупки

@@ -30,7 +30,7 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12 px-4">
-            <Link to="/catalog">
+            <Link to="/#products">
               <Button size="lg" className="bg-[#a31212] hover:bg-[#8a0f0f] border-none text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 rounded-lg sm:rounded-xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
                 Начать покупки
                 <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />

@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle, ChevronDown, Crown, Sparkles, Zap, Star } from 'lucide-react';
+import { CheckCircle, ChevronDown, Crown, Sparkles, Zap, Star, Search, Target } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useProducts, Product } from '@/hooks/useProducts';
@@ -15,6 +16,8 @@ import TelegramStats from '@/components/TelegramStats';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('popular');
   const navigate = useNavigate();
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
@@ -67,12 +70,41 @@ const Index = () => {
     image: cat.image
   }));
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
-    : products.filter(product => {
-        const productCategory = categories.find(cat => cat.id === product.category_id);
-        return productCategory && productCategory.id === selectedCategory;
-      });
+  // Фильтрация и поиск товаров
+  let filteredProducts = products;
+
+  // Фильтр по категории
+  if (selectedCategory !== 'all') {
+    filteredProducts = filteredProducts.filter(product => {
+      const productCategory = categories.find(cat => cat.id === product.category_id);
+      return productCategory && productCategory.id === selectedCategory;
+    });
+  }
+
+  // Поиск по названию
+  if (searchQuery.trim()) {
+    filteredProducts = filteredProducts.filter(product =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  // Сортировка
+  switch (sortBy) {
+    case 'price_asc':
+      filteredProducts = filteredProducts.sort((a, b) => a.price - b.price);
+      break;
+    case 'price_desc':
+      filteredProducts = filteredProducts.sort((a, b) => b.price - a.price);
+      break;
+    case 'newest':
+      filteredProducts = filteredProducts.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+      break;
+    case 'popular':
+    default:
+      // Сортировка по рейтингу (если есть) или по популярности
+      filteredProducts = filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      break;
+  }
 
   // Группируем товары по играм - показываем все сразу
   const groupedProducts = filteredProducts.reduce((groups, product) => {
@@ -157,7 +189,7 @@ const Index = () => {
 
 
       {/* Категории игр */}
-      <section className="py-16 px-4 relative bg-[#0e0e0e]">
+      <section id="products" className="py-16 px-4 relative bg-[#0e0e0e]">
         
         <div className="container mx-auto relative z-10">
           {/* Hero секция */}
@@ -177,6 +209,74 @@ const Index = () => {
             </div>
           </div>
           
+          {/* Поиск и фильтры */}
+          <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
+            <div className="space-y-6">
+              {/* Поиск */}
+              <div className="group relative">
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#a31212]" />
+                  <Input
+                    type="text"
+                    placeholder="Поиск товаров..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-12 pr-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
+                  />
+                </div>
+              </div>
+
+              {/* Фильтры */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Категории */}
+                <div className="group relative">
+                  <div className="relative">
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="w-full px-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
+                    >
+                      <option value="all">Все категории</option>
+                      {gameCategories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Сортировка */}
+                <div className="group relative">
+                  <div className="relative">
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="w-full px-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
+                    >
+                      <option value="popular">По популярности</option>
+                      <option value="price_asc">По цене (возрастание)</option>
+                      <option value="price_desc">По цене (убывание)</option>
+                      <option value="newest">По дате</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Результаты поиска */}
+          {searchQuery.trim() && (
+            <div className="mb-8 text-center">
+              <div className="inline-flex items-center gap-3 px-6 py-3 bg-[#181818] rounded-2xl border border-[#1c1c1c]">
+                <Target className="w-5 h-5 text-[#a31212]" />
+                <p className="text-[#f0f0f0] text-lg">
+                  Найдено товаров: <span className="text-[#f0f0f0] font-black text-xl">{filteredProducts.length}</span>
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Фильтры категорий */}
           <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 sm:mb-16">
             <button

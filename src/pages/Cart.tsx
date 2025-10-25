@@ -141,7 +141,7 @@ const Cart = () => {
             {/* Кнопка с улучшенным дизайном */}
             <div className="relative">
               <Button
-                onClick={() => navigate('/catalog')}
+                onClick={() => navigate('/')}
                 className="px-10 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105"
               >
                 <span className="flex items-center justify-center">
@@ -306,7 +306,7 @@ const Cart = () => {
                 <h3 className="text-lg sm:text-xl font-semibold text-[#f0f0f0] mb-2">Корзина пуста</h3>
                 <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Добавьте товары из каталога</p>
                 <Button
-                  onClick={() => navigate('/catalog')}
+                  onClick={() => navigate('/')}
                   className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
                 >
                   Перейти в каталог

@@ -313,7 +313,7 @@ const Profile = () => {
                     <h3 className="text-xl font-bold text-[#f0f0f0] mb-6">Быстрые действия</h3>
                     <div className="space-y-4">
                       <Button
-                        onClick={() => navigate('/catalog')}
+                        onClick={() => navigate('/')}
                         variant="outline"
                         className="w-full py-3 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-xl text-sm font-medium"
                       >

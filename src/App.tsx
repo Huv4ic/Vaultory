@@ -7,7 +7,6 @@ import { InventoryProvider } from "@/hooks/useInventory";
 import { CaseStatsProvider } from "@/hooks/useCaseStats";
 import { FavoritesProvider } from "@/providers/FavoritesProvider";
 import Index from "./pages/Index";
-import Catalog from "./pages/Catalog";
 import About from "./pages/About";
 import Cases from "./pages/Cases";
 import Support from "./pages/Support";
@@ -55,7 +54,6 @@ const AppContent = () => {
           <div className="flex-1">
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/catalog" element={<Catalog />} />
               <Route path="/about" element={<About />} />
               <Route path="/cases" element={<Cases />} />
               <Route path="/case/:id" element={<CasePage />} />

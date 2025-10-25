@@ -64,13 +64,6 @@ const Header = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#a31212] group-hover:w-full transition-all duration-300"></span>
             </Link>
             <Link 
-              to="/catalog" 
-              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 hover:scale-105 font-bold relative group text-base"
-            >
-              {t('Каталог')}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#a31212] group-hover:w-full transition-all duration-300"></span>
-            </Link>
-            <Link 
               to="/cases" 
               className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 hover:scale-105 font-bold relative group text-base"
             >
@@ -227,13 +220,6 @@ const Header = () => {
                 className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-bold text-base px-3 py-2 rounded-lg hover:bg-[#1c1c1c]"
               >
                 {t('Главная')}
-              </Link>
-              <Link 
-                to="/catalog" 
-                onClick={() => setIsMenuOpen(false)}
-                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-bold text-base px-3 py-2 rounded-lg hover:bg-[#1c1c1c]"
-              >
-                {t('Каталог')}
               </Link>
               <Link 
                 to="/cases" 

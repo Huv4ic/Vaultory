@@ -65,14 +65,6 @@ const Footer = () => {
             <ul className="space-y-1.5 sm:space-y-2">
               <li>
                 <Link 
-                  to="/catalog" 
-                  className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-300 hover:translate-x-1 transform inline-block text-sm sm:text-base"
-                >
-                  {t('Каталог товаров')}
-                </Link>
-              </li>
-              <li>
-                <Link 
                   to="/cases" 
                   className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-300 hover:translate-x-1 transform inline-block text-sm sm:text-base"
                 >

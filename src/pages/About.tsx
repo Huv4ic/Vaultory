@@ -193,7 +193,7 @@ const About = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
-                  onClick={() => navigate('/catalog')}
+                  onClick={() => navigate('/')}
                   className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105"
                 >
                   Перейти в каталог
