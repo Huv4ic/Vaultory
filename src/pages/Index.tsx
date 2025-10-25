@@ -404,60 +404,6 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Крупные карточки категорий игр */}
-          <div className="mb-16 sm:mb-20">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-              {gameCategoriesCards.map((category, index) => (
-                <div
-                key={category.id}
-                  onClick={() => setSelectedGameCategory(selectedGameCategory === category.id ? 'all' : category.id)}
-                  className={`group relative cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
-                    selectedGameCategory === category.id ? 'scale-105 -translate-y-2' : ''
-                }`}
-                style={{animationDelay: `${index * 0.1}s`}}
-              >
-                  {/* Карточка категории */}
-                  <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.color} p-4 sm:p-6 h-32 sm:h-40 border-2 transition-all duration-300 ${
-                    selectedGameCategory === category.id 
-                      ? 'border-[#a31212] shadow-2xl shadow-[#a31212]/30' 
-                      : 'border-transparent hover:border-[#a31212]/50'
-                  }`}>
-                    {/* Молния в углу */}
-                    <div className="absolute top-2 left-2 z-10">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
-                        selectedGameCategory === category.id 
-                          ? 'bg-[#a31212] text-white' 
-                          : 'bg-white/20 text-white'
-                      }`}>
-                        <Zap className="w-4 h-4" />
-                      </div>
-                    </div>
-                    
-                    {/* Заглушка изображения */}
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                      <div className="text-4xl sm:text-5xl opacity-80">
-                        {category.icon}
-                      </div>
-                    </div>
-                    
-                    {/* Градиентный оверлей */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                    
-                    {/* Название категории */}
-                    <div className="absolute bottom-2 left-2 right-2">
-                      <h3 className="text-white font-bold text-sm sm:text-base truncate">
-                        {category.name}
-                      </h3>
-                    </div>
-                    
-                    {/* Эффект при наведении */}
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Поиск и фильтры */}
           <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
             <div className="space-y-6">
@@ -525,6 +471,61 @@ const Index = () => {
               </div>
             </div>
           )}
+          
+          {/* Крупные карточки категорий игр */}
+          <div className="mb-16 sm:mb-20">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+              {gameCategoriesCards.map((category, index) => (
+                <div
+                key={category.id}
+                  onClick={() => setSelectedGameCategory(selectedGameCategory === category.id ? 'all' : category.id)}
+                  className={`group relative cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
+                    selectedGameCategory === category.id ? 'scale-105 -translate-y-2' : ''
+                }`}
+                style={{animationDelay: `${index * 0.1}s`}}
+              >
+                  {/* Карточка категории */}
+                  <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.color} p-4 sm:p-6 h-32 sm:h-40 border-2 transition-all duration-300 ${
+                    selectedGameCategory === category.id 
+                      ? 'border-[#a31212] shadow-2xl shadow-[#a31212]/30' 
+                      : 'border-transparent hover:border-[#a31212]/50'
+                  }`}>
+                    {/* Молния в углу */}
+                    <div className="absolute top-2 left-2 z-10">
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        selectedGameCategory === category.id 
+                          ? 'bg-[#a31212] text-white' 
+                          : 'bg-white/20 text-white'
+                      }`}>
+                        <Zap className="w-4 h-4" />
+                      </div>
+                    </div>
+                    
+                    {/* Заглушка изображения */}
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                      <div className="text-4xl sm:text-5xl opacity-80">
+                        {category.icon}
+                      </div>
+                    </div>
+                    
+                    {/* Градиентный оверлей */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    
+                    {/* Название категории */}
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <h3 className="text-white font-bold text-sm sm:text-base truncate">
+                        {category.name}
+                      </h3>
+                    </div>
+                    
+                    {/* Эффект при наведении */}
+                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
 
 
           {/* Товары по играм - показываем только если выбрана категория */}
