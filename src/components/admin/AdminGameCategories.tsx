@@ -4,9 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { Search, Plus, Edit, Trash2, Save, X, Gamepad2, Database } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Save, X, Gamepad2 } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
-import { seedGameCategories } from '../../scripts/seedGameCategories';
 
 interface GameCategory {
   id: string;
@@ -69,13 +68,161 @@ const AdminGameCategories = () => {
 
       if (error) throw error;
       
-      setCategories(data || []);
+      // Если категорий нет, добавляем все существующие
+      if (!data || data.length === 0) {
+        await seedAllCategories();
+        // Загружаем категории снова после добавления
+        const { data: newData, error: newError } = await supabase
+          .from('game_categories')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (newError) throw newError;
+        setCategories(newData || []);
+      } else {
+        setCategories(data);
+      }
+      
       setLoading(false);
       
     } catch (err) {
       console.error('Error fetching categories:', err);
       toast('Ошибка при загрузке категорий', 'error');
       setLoading(false);
+    }
+  };
+
+  const seedAllCategories = async () => {
+    const gameCategories = [
+      {
+        id: 'tiktok',
+        name: 'TikTok',
+        color: 'from-pink-500 to-purple-600',
+        icon: '📱'
+      },
+      {
+        id: 'standoff2',
+        name: 'Standoff 2',
+        color: 'from-blue-500 to-cyan-600',
+        icon: '🔫'
+      },
+      {
+        id: 'mobile_legends',
+        name: 'Mobile Legends',
+        color: 'from-orange-500 to-red-600',
+        icon: '⚔️'
+      },
+      {
+        id: 'pubg',
+        name: 'PUBG Mobile',
+        color: 'from-green-500 to-teal-600',
+        icon: '🎯'
+      },
+      {
+        id: 'free_fire',
+        name: 'Free Fire',
+        color: 'from-red-500 to-pink-600',
+        icon: '🔥'
+      },
+      {
+        id: 'steam',
+        name: 'Steam',
+        color: 'from-gray-500 to-blue-600',
+        icon: '🎮'
+      },
+      {
+        id: 'roblox',
+        name: 'Roblox',
+        color: 'from-purple-500 to-indigo-600',
+        icon: '🧱'
+      },
+      {
+        id: 'genshin',
+        name: 'Genshin Impact',
+        color: 'from-yellow-500 to-orange-600',
+        icon: '⭐'
+      },
+      {
+        id: 'honkai',
+        name: 'Honkai Star Rail',
+        color: 'from-pink-500 to-purple-600',
+        icon: '🚀'
+      },
+      {
+        id: 'zenless',
+        name: 'Zenless Zone Zero',
+        color: 'from-cyan-500 to-blue-600',
+        icon: '⚡'
+      },
+      {
+        id: 'identity_v',
+        name: 'Identity V',
+        color: 'from-gray-600 to-purple-600',
+        icon: '🎭'
+      },
+      {
+        id: 'arena_breakout',
+        name: 'Arena Breakout',
+        color: 'from-green-600 to-blue-600',
+        icon: '🛡️'
+      },
+      {
+        id: 'epic_games',
+        name: 'Epic Games',
+        color: 'from-indigo-500 to-purple-600',
+        icon: '🎯'
+      },
+      {
+        id: 'brawl_stars',
+        name: 'Brawl Stars',
+        color: 'from-yellow-500 to-orange-600',
+        icon: '⭐'
+      },
+      {
+        id: 'gta',
+        name: 'GTA',
+        color: 'from-green-500 to-blue-600',
+        icon: '🚗'
+      },
+      {
+        id: 'rocket_league',
+        name: 'Rocket League',
+        color: 'from-blue-500 to-cyan-600',
+        icon: '🚀'
+      },
+      {
+        id: 'spotify',
+        name: 'Spotify',
+        color: 'from-green-500 to-emerald-600',
+        icon: '🎵'
+      },
+      {
+        id: 'world_of_tanks',
+        name: 'World of Tanks Blitz',
+        color: 'from-gray-600 to-yellow-600',
+        icon: '🚗'
+      },
+      {
+        id: 'telegram_stars',
+        name: 'Звезды Telegram',
+        color: 'from-blue-500 to-cyan-600',
+        icon: '⭐'
+      }
+    ];
+
+    const { error } = await supabase
+      .from('game_categories')
+      .insert(
+        gameCategories.map(category => ({
+          ...category,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }))
+      );
+
+    if (error) {
+      console.error('Error seeding categories:', error);
+      throw error;
     }
   };
 
@@ -243,21 +390,6 @@ const AdminGameCategories = () => {
     }
   };
 
-  const handleSeedCategories = async () => {
-    if (!window.confirm('Добавить все существующие категории игр в базу данных? Это действие нельзя отменить.')) return;
-    
-    try {
-      setLoading(true);
-      await seedGameCategories();
-      await fetchCategories(); // Обновляем список
-      toast('Все категории успешно добавлены!', 'success');
-    } catch (err) {
-      console.error('Error seeding categories:', err);
-      toast('Ошибка при добавлении категорий', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -275,20 +407,10 @@ const AdminGameCategories = () => {
     <div className="p-3 sm:p-6 bg-gray-900 text-white rounded-xl shadow-xl">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
         <h2 className="text-xl sm:text-2xl font-bold">Управление главными категориями</h2>
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Button 
-            onClick={handleSeedCategories} 
-            className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base"
-            disabled={loading}
-          >
-            <Database className="w-4 h-4 mr-2" />
-            Добавить все категории
-          </Button>
-          <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
-            <Plus className="w-4 h-4 mr-2" />
-            Добавить категорию
-          </Button>
-        </div>
+        <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
+          <Plus className="w-4 h-4 mr-2" />
+          Добавить категорию
+        </Button>
       </div>
 
       {/* Поиск */}
