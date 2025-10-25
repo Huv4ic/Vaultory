@@ -70,16 +70,25 @@ const AdminGameCategories = () => {
       
       // Если категорий нет, добавляем все существующие
       if (!data || data.length === 0) {
-        await seedAllCategories();
-        // Загружаем категории снова после добавления
-        const { data: newData, error: newError } = await supabase
-          .from('game_categories')
-          .select('*')
-          .order('created_at', { ascending: false });
-        
-        if (newError) throw newError;
-        setCategories(newData || []);
+        console.log('Категорий нет, добавляем все существующие...');
+        try {
+          await seedAllCategories();
+          console.log('Категории успешно добавлены');
+          // Загружаем категории снова после добавления
+          const { data: newData, error: newError } = await supabase
+            .from('game_categories')
+            .select('*')
+            .order('created_at', { ascending: false });
+          
+          if (newError) throw newError;
+          setCategories(newData || []);
+          console.log('Загружено категорий:', newData?.length);
+        } catch (seedError) {
+          console.error('Ошибка при добавлении категорий:', seedError);
+          toast('Ошибка при добавлении категорий', 'error');
+        }
       } else {
+        console.log('Категории уже существуют:', data.length);
         setCategories(data);
       }
       
@@ -93,6 +102,7 @@ const AdminGameCategories = () => {
   };
 
   const seedAllCategories = async () => {
+    console.log('Начинаем добавление категорий...');
     const gameCategories = [
       {
         id: 'tiktok',
@@ -210,6 +220,7 @@ const AdminGameCategories = () => {
       }
     ];
 
+    console.log('Добавляем категории в базу данных...', gameCategories.length);
     const { error } = await supabase
       .from('game_categories')
       .insert(
@@ -224,6 +235,7 @@ const AdminGameCategories = () => {
       console.error('Error seeding categories:', error);
       throw error;
     }
+    console.log('Категории успешно добавлены в базу данных');
   };
 
   const uploadImage = async (file: File): Promise<string> => {
@@ -407,10 +419,32 @@ const AdminGameCategories = () => {
     <div className="p-3 sm:p-6 bg-gray-900 text-white rounded-xl shadow-xl">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
         <h2 className="text-xl sm:text-2xl font-bold">Управление главными категориями</h2>
-        <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
-          <Plus className="w-4 h-4 mr-2" />
-          Добавить категорию
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button 
+            onClick={async () => {
+              try {
+                setLoading(true);
+                await seedAllCategories();
+                await fetchCategories();
+                toast('Все категории успешно добавлены!', 'success');
+              } catch (err) {
+                console.error('Error seeding categories:', err);
+                toast('Ошибка при добавлении категорий', 'error');
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base"
+            disabled={loading}
+          >
+            <Gamepad2 className="w-4 h-4 mr-2" />
+            Добавить все категории
+          </Button>
+          <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
+            <Plus className="w-4 h-4 mr-2" />
+            Добавить категорию
+          </Button>
+        </div>
       </div>
 
       {/* Поиск */}
