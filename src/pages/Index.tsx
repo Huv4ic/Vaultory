@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
@@ -13,12 +13,15 @@ import { useNotification } from '../hooks/useNotification';
 import Notification from '../components/ui/Notification';
 import { useTranslations } from '@/hooks/useTranslations';
 import TelegramStats from '@/components/TelegramStats';
+import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
   const [selectedGameCategory, setSelectedGameCategory] = useState('all');
+  const [gameCategories, setGameCategories] = useState<any[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const navigate = useNavigate();
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
@@ -26,6 +29,34 @@ const Index = () => {
   const { items, addItem } = useCart();
   const { showError, notification, hideNotification } = useNotification();
   const { getCategoryTranslation } = useTranslations();
+
+  // Загружаем категории игр из базы данных
+  useEffect(() => {
+    const fetchGameCategories = async () => {
+      try {
+        setCategoriesLoading(true);
+        const { data, error } = await supabase
+          .from('game_categories')
+          .select('*')
+          .order('name', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching game categories:', error);
+          // Если ошибка, используем захардкоженные категории как fallback
+          setGameCategories([]);
+        } else {
+          setGameCategories(data || []);
+        }
+      } catch (err) {
+        console.error('Error fetching game categories:', err);
+        setGameCategories([]);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
+    fetchGameCategories();
+  }, []);
 
   // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре страницы
   // useEffect(() => {
@@ -64,8 +95,8 @@ const Index = () => {
     return iconMap['default'];
   };
 
-  // Создаем gameCategories из данных БД с переводами
-  const gameCategories = categories.map(cat => ({
+  // Создаем translatedCategories из данных БД с переводами
+  const translatedCategories = categories.map(cat => ({
     id: cat.id,
     name: getCategoryTranslation(cat.id, cat.name),
     image: cat.image
@@ -84,104 +115,16 @@ const Index = () => {
     return uniqueGames;
   };
 
-  // Словарь всех возможных игр с их настройками
-  const allGameCategories = {
-    'tiktok': {
-      name: 'TikTok',
-      color: 'from-pink-500 to-purple-600',
-      icon: '📱'
-    },
-    'standoff2': {
-      name: 'Standoff 2',
-      color: 'from-blue-500 to-cyan-600',
-      icon: '🔫'
-    },
-    'mobile_legends': {
-      name: 'Mobile Legends',
-      color: 'from-orange-500 to-red-600',
-      icon: '⚔️'
-    },
-    'pubg': {
-      name: 'PUBG Mobile',
-      color: 'from-green-500 to-teal-600',
-      icon: '🎯'
-    },
-    'free_fire': {
-      name: 'Free Fire',
-      color: 'from-red-500 to-pink-600',
-      icon: '🔥'
-    },
-    'steam': {
-      name: 'Steam',
-      color: 'from-gray-500 to-blue-600',
-      icon: '🎮'
-    },
-    'roblox': {
-      name: 'Roblox',
-      color: 'from-purple-500 to-indigo-600',
-      icon: '🧱'
-    },
-    'genshin': {
-      name: 'Genshin Impact',
-      color: 'from-yellow-500 to-orange-600',
-      icon: '⭐'
-    },
-    'honkai': {
-      name: 'Honkai Star Rail',
-      color: 'from-pink-500 to-purple-600',
-      icon: '🚀'
-    },
-    'zenless': {
-      name: 'Zenless Zone Zero',
-      color: 'from-cyan-500 to-blue-600',
-      icon: '⚡'
-    },
-    'identity_v': {
-      name: 'Identity V',
-      color: 'from-gray-600 to-purple-600',
-      icon: '🎭'
-    },
-    'arena_breakout': {
-      name: 'Arena Breakout',
-      color: 'from-green-600 to-blue-600',
-      icon: '🛡️'
-    },
-    'epic_games': {
-      name: 'Epic Games',
-      color: 'from-indigo-500 to-purple-600',
-      icon: '🎯'
-    },
-    'brawl_stars': {
-      name: 'Brawl Stars',
-      color: 'from-yellow-500 to-orange-600',
-      icon: '⭐'
-    },
-    'gta': {
-      name: 'GTA',
-      color: 'from-green-500 to-blue-600',
-      icon: '🚗'
-    },
-    'rocket_league': {
-      name: 'Rocket League',
-      color: 'from-blue-500 to-cyan-600',
-      icon: '🚀'
-    },
-    'spotify': {
-      name: 'Spotify',
-      color: 'from-green-500 to-emerald-600',
-      icon: '🎵'
-    },
-    'world_of_tanks': {
-      name: 'World of Tanks Blitz',
-      color: 'from-gray-600 to-yellow-600',
-      icon: '🚗'
-    },
-    'telegram_stars': {
-      name: 'Звезды Telegram',
-      color: 'from-blue-500 to-cyan-600',
-      icon: '⭐'
-    }
-  };
+  // Создаем словарь категорий из базы данных
+  const allGameCategories = gameCategories.reduce((acc, category) => {
+    acc[category.id] = {
+      name: category.name,
+      color: category.color,
+      icon: category.icon,
+      image_url: category.image_url
+    };
+    return acc;
+  }, {} as any);
 
   // Функция для сопоставления названия игры с категорией
   const matchGameToCategory = (gameName: string) => {
@@ -212,6 +155,10 @@ const Index = () => {
 
   // Создаем карточки только для игр, которые есть на сайте
   const gameCategoriesCards = (() => {
+    if (categoriesLoading || !gameCategories.length) {
+      return [];
+    }
+    
     const availableGames = getAvailableGames();
     const usedCategories = new Set();
     
@@ -224,7 +171,7 @@ const Index = () => {
         cards.push({
           id: categoryId,
           name: allGameCategories[categoryId].name,
-          image: '/api/placeholder/300/200',
+          image: allGameCategories[categoryId].image_url || '/api/placeholder/300/200',
           color: allGameCategories[categoryId].color,
           icon: allGameCategories[categoryId].icon
         });
@@ -432,7 +379,7 @@ const Index = () => {
                       className="w-full px-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
                     >
                       <option value="all">Все категории</option>
-                      {gameCategories.map((category) => (
+                      {translatedCategories.map((category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
@@ -474,8 +421,14 @@ const Index = () => {
           
           {/* Крупные карточки категорий игр */}
           <div className="mb-16 sm:mb-20">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
-              {gameCategoriesCards.map((category, index) => (
+            {categoriesLoading ? (
+              <div className="text-center py-8">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#a31212]"></div>
+                <p className="text-[#a0a0a0] mt-4">Загрузка категорий...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+                {gameCategoriesCards.map((category, index) => (
                 <div
                 key={category.id}
                   onClick={() => setSelectedGameCategory(selectedGameCategory === category.id ? 'all' : category.id)}
@@ -523,7 +476,8 @@ const Index = () => {
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
+            )}
           </div>
 
 
