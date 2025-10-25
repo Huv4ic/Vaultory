@@ -277,34 +277,6 @@ const Index = () => {
             </div>
           )}
 
-          {/* Фильтры категорий */}
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 sm:mb-16">
-            <button
-              onClick={() => setSelectedCategory('all')}
-              className={`group relative px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 sm:space-x-3 text-sm sm:text-base ${
-                selectedCategory === 'all'
-                  ? 'bg-[#a31212] text-white border-2 border-[#8a0f0f]'
-                  : 'bg-[#181818] text-[#a0a0a0] hover:bg-[#1c1c1c] border border-[#1c1c1c] hover:border-[#a31212]'
-              }`}
-            >
-              <Zap className={`w-4 h-4 sm:w-5 sm:h-5 ${selectedCategory === 'all' ? 'text-white' : 'text-[#a31212]'}`} />
-              <span>{t('Все игры')}</span>
-            </button>
-            {gameCategories.map((category, index) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`group relative px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 sm:space-x-3 text-sm sm:text-base ${
-                  selectedCategory === category.id
-                    ? 'bg-[#a31212] text-white border-2 border-[#8a0f0f]'
-                    : 'bg-[#181818] text-[#a0a0a0] hover:bg-[#1c1c1c] border border-[#1c1c1c] hover:border-[#a31212]'
-                }`}
-              >
-                <span className="text-sm sm:text-lg group-hover:scale-105 transition-transform duration-300">{getCategoryIcon(category.name)}</span>
-                <span>{category.name}</span>
-              </button>
-            ))}
-          </div>
 
           {/* Товары по играм */}
           <div className="space-y-16 sm:space-y-20">
