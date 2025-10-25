@@ -18,6 +18,7 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
+  const [selectedGameCategory, setSelectedGameCategory] = useState('all');
   const navigate = useNavigate();
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
@@ -70,10 +71,122 @@ const Index = () => {
     image: cat.image
   }));
 
+  // Крупные категории игр для отображения карточками
+  const gameCategoriesCards = [
+    {
+      id: 'tiktok',
+      name: 'TikTok',
+      image: '/api/placeholder/300/200',
+      color: 'from-pink-500 to-purple-600',
+      icon: '📱'
+    },
+    {
+      id: 'standoff2',
+      name: 'Standoff 2',
+      image: '/api/placeholder/300/200',
+      color: 'from-blue-500 to-cyan-600',
+      icon: '🔫'
+    },
+    {
+      id: 'mobile_legends',
+      name: 'Mobile Legends',
+      image: '/api/placeholder/300/200',
+      color: 'from-orange-500 to-red-600',
+      icon: '⚔️'
+    },
+    {
+      id: 'pubg',
+      name: 'PUBG Mobile',
+      image: '/api/placeholder/300/200',
+      color: 'from-green-500 to-teal-600',
+      icon: '🎯'
+    },
+    {
+      id: 'free_fire',
+      name: 'Free Fire',
+      image: '/api/placeholder/300/200',
+      color: 'from-red-500 to-pink-600',
+      icon: '🔥'
+    },
+    {
+      id: 'steam',
+      name: 'Steam',
+      image: '/api/placeholder/300/200',
+      color: 'from-gray-500 to-blue-600',
+      icon: '🎮'
+    },
+    {
+      id: 'roblox',
+      name: 'Roblox',
+      image: '/api/placeholder/300/200',
+      color: 'from-purple-500 to-indigo-600',
+      icon: '🧱'
+    },
+    {
+      id: 'genshin',
+      name: 'Genshin Impact',
+      image: '/api/placeholder/300/200',
+      color: 'from-yellow-500 to-orange-600',
+      icon: '⭐'
+    },
+    {
+      id: 'honkai',
+      name: 'Honkai Star Rail',
+      image: '/api/placeholder/300/200',
+      color: 'from-pink-500 to-purple-600',
+      icon: '🚀'
+    },
+    {
+      id: 'zenless',
+      name: 'Zenless Zone Zero',
+      image: '/api/placeholder/300/200',
+      color: 'from-cyan-500 to-blue-600',
+      icon: '⚡'
+    },
+    {
+      id: 'identity_v',
+      name: 'Identity V',
+      image: '/api/placeholder/300/200',
+      color: 'from-gray-600 to-purple-600',
+      icon: '🎭'
+    },
+    {
+      id: 'arena_breakout',
+      name: 'Arena Breakout',
+      image: '/api/placeholder/300/200',
+      color: 'from-green-600 to-blue-600',
+      icon: '🛡️'
+    }
+  ];
+
   // Фильтрация и поиск товаров
   let filteredProducts = products;
 
-  // Фильтр по категории
+  // Фильтр по игровой категории
+  if (selectedGameCategory !== 'all') {
+    filteredProducts = filteredProducts.filter(product => {
+      const gameName = product.game?.toLowerCase() || '';
+      const categoryName = selectedGameCategory.toLowerCase();
+      
+      // Проверяем соответствие по названию игры
+      if (categoryName === 'tiktok') return gameName.includes('tiktok');
+      if (categoryName === 'standoff2') return gameName.includes('standoff') || gameName.includes('standoff2');
+      if (categoryName === 'mobile_legends') return gameName.includes('mobile legends') || gameName.includes('mobilelegends');
+      if (categoryName === 'pubg') return gameName.includes('pubg');
+      if (categoryName === 'free_fire') return gameName.includes('free fire') || gameName.includes('freefire');
+      if (categoryName === 'steam') return gameName.includes('steam');
+      if (categoryName === 'roblox') return gameName.includes('roblox');
+      if (categoryName === 'genshin') return gameName.includes('genshin');
+      if (categoryName === 'honkai') return gameName.includes('honkai');
+      if (categoryName === 'zenless') return gameName.includes('zenless');
+      if (categoryName === 'identity_v') return gameName.includes('identity');
+      if (categoryName === 'arena_breakout') return gameName.includes('arena');
+      
+      return false;
+    });
+  }
+
+  // Фильтр по категории товара
   if (selectedCategory !== 'all') {
     filteredProducts = filteredProducts.filter(product => {
       const productCategory = categories.find(cat => cat.id === product.category_id);
@@ -209,6 +322,60 @@ const Index = () => {
             </div>
           </div>
           
+          {/* Крупные карточки категорий игр */}
+          <div className="mb-16 sm:mb-20">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+              {gameCategoriesCards.map((category, index) => (
+                <div
+                  key={category.id}
+                  onClick={() => setSelectedGameCategory(selectedGameCategory === category.id ? 'all' : category.id)}
+                  className={`group relative cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
+                    selectedGameCategory === category.id ? 'scale-105 -translate-y-2' : ''
+                  }`}
+                  style={{animationDelay: `${index * 0.1}s`}}
+                >
+                  {/* Карточка категории */}
+                  <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.color} p-4 sm:p-6 h-32 sm:h-40 border-2 transition-all duration-300 ${
+                    selectedGameCategory === category.id 
+                      ? 'border-[#a31212] shadow-2xl shadow-[#a31212]/30' 
+                      : 'border-transparent hover:border-[#a31212]/50'
+                  }`}>
+                    {/* Молния в углу */}
+                    <div className="absolute top-2 left-2 z-10">
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        selectedGameCategory === category.id 
+                          ? 'bg-[#a31212] text-white' 
+                          : 'bg-white/20 text-white'
+                      }`}>
+                        <Zap className="w-4 h-4" />
+                      </div>
+                    </div>
+                    
+                    {/* Заглушка изображения */}
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                      <div className="text-4xl sm:text-5xl opacity-80">
+                        {category.icon}
+                      </div>
+                    </div>
+                    
+                    {/* Градиентный оверлей */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    
+                    {/* Название категории */}
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <h3 className="text-white font-bold text-sm sm:text-base truncate">
+                        {category.name}
+                      </h3>
+                    </div>
+                    
+                    {/* Эффект при наведении */}
+                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
           {/* Поиск и фильтры */}
           <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
             <div className="space-y-6">
@@ -322,6 +489,7 @@ const Index = () => {
                     <button
                       onClick={() => {
                         setSelectedCategory('all');
+                        setSelectedGameCategory('all');
                         setSearchQuery('');
                         setSortBy('popular');
                       }}
