@@ -176,10 +176,13 @@ export class InventoryService {
 
       // Обновляем статистику проданных предметов
       try {
-        const { error: statsError } = await supabase.rpc('update_items_sold_statistics', {
-          user_id: telegramId,
-          items_sold_increment: 1
-        });
+        // Используем простой запрос для обновления статистики проданных предметов
+        const { error: statsError } = await supabase
+          .from('profiles')
+          .update({ 
+            items_sold: (await supabase.from('profiles').select('items_sold').eq('telegram_id', telegramId).single()).data?.items_sold + 1 || 1
+          })
+          .eq('telegram_id', telegramId);
 
         if (statsError) {
           console.error('❌ Error updating items sold statistics:', statsError);
