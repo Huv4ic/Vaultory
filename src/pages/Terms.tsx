@@ -33,7 +33,7 @@ const Terms = () => {
   const termsSections = [
     {
       title: "Общие положения",
-      icon: <FileText className="w-6 h-6 text-amber-400" />,
+      icon: <FileText className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Настоящие Условия использования регулируют отношения между Vaultory и пользователями платформы.",
         "Используя наш сервис, вы соглашаетесь с данными условиями.",
@@ -42,7 +42,7 @@ const Terms = () => {
     },
     {
       title: "Регистрация и аккаунт",
-      icon: <User className="w-6 h-6 text-amber-400" />,
+      icon: <User className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Для использования сервиса необходима регистрация через Telegram.",
         "Пользователь несет ответственность за безопасность своего аккаунта.",
@@ -51,7 +51,7 @@ const Terms = () => {
     },
     {
       title: "Покупки и оплата",
-      icon: <CreditCard className="w-6 h-6 text-amber-400" />,
+      icon: <CreditCard className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Все цены указаны в гривнах (₴) и включают все налоги.",
         "Оплата производится через защищенные платежные системы.",
@@ -60,7 +60,7 @@ const Terms = () => {
     },
     {
       title: "Кейсы и товары",
-      icon: <ShoppingBag className="w-6 h-6 text-amber-400" />,
+      icon: <ShoppingBag className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Содержимое кейсов определяется случайным образом.",
         "Все товары являются официальными и лицензированными.",
@@ -69,7 +69,7 @@ const Terms = () => {
     },
     {
       title: "Безопасность",
-      icon: <Shield className="w-6 h-6 text-amber-400" />,
+      icon: <Shield className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Все транзакции защищены современными технологиями шифрования.",
         "Мы не храним данные платежных карт.",
@@ -78,7 +78,7 @@ const Terms = () => {
     },
     {
       title: "Ограничения",
-      icon: <AlertTriangle className="w-6 h-6 text-amber-400" />,
+      icon: <AlertTriangle className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Запрещено использование сервиса для незаконной деятельности.",
         "Не допускается нарушение прав интеллектуальной собственности.",
@@ -87,7 +87,7 @@ const Terms = () => {
     },
     {
       title: "Поддержка",
-      icon: <HelpCircle className="w-6 h-6 text-amber-400" />,
+      icon: <HelpCircle className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Техническая поддержка доступна 24/7 через Telegram и Email.",
         "Время ответа на запросы: до 30 минут в рабочее время.",
@@ -96,7 +96,7 @@ const Terms = () => {
     },
     {
       title: "Изменения и обновления",
-      icon: <Clock className="w-6 h-6 text-amber-400" />,
+      icon: <Clock className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Мы регулярно обновляем функционал и улучшаем сервис.",
         "Уведомления об изменениях публикуются на сайте.",
@@ -108,21 +108,21 @@ const Terms = () => {
   const importantNotes = [
     {
       type: "info",
-      icon: <Info className="w-5 h-5 text-amber-400" />,
+      icon: <Info className="w-5 h-5 text-[#a31212]" />,
       text: "Все покупки защищены системой гарантий",
       title: "Гарантии",
       description: "Все покупки защищены системой гарантий"
     },
     {
       type: "warning",
-      icon: <AlertTriangle className="w-5 h-5 text-amber-400" />,
+      icon: <AlertTriangle className="w-5 h-5 text-[#a31212]" />,
       text: "Кейсы открываются случайным образом, результаты не гарантированы",
       title: "Случайность",
       description: "Кейсы открываются случайным образом, результаты не гарантированы"
     },
     {
       type: "success",
-      icon: <CheckCircle className="w-5 h-5 text-amber-400" />,
+      icon: <CheckCircle className="w-5 h-5 text-[#a31212]" />,
       text: "Поддержка доступна круглосуточно",
       title: "Поддержка 24/7",
       description: "Поддержка доступна круглосуточно"
@@ -130,40 +130,26 @@ const Terms = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0">
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full opacity-80"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-red-400 rounded-full opacity-90"></div>
-        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-50"></div>
-        
-        {/* Светящиеся линии */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
-          {/* Главный заголовок с анимацией */}
+          {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-full mb-6 border border-cyan-500/30 shadow-2xl shadow-cyan-500/30">
-              <FileText className="w-10 h-10 md:w-12 md:h-12 text-cyan-400" />
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#181818] rounded-full mb-6 border border-[#1c1c1c]">
+              <FileText className="w-10 h-10 md:w-12 md:h-12 text-[#a31212]" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0] text-center">
               УСЛОВИЯ ИСПОЛЬЗОВАНИЯ
             </h1>
-            <div className="w-32 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Ознакомьтесь с <span className="text-cyan-400 font-bold">правилами использования</span> платформы Vaultory. 
-            Мы стремимся обеспечить <span className="text-blue-400 font-bold">прозрачные и справедливые</span> условия для всех пользователей.
+          <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
+            Ознакомьтесь с <span className="text-[#a31212] font-bold">правилами использования</span> платформы Vaultory. 
+            Мы стремимся обеспечить <span className="text-[#f0f0f0] font-bold">прозрачные и справедливые</span> условия для всех пользователей.
           </p>
         </div>
       </div>

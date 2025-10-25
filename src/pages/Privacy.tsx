@@ -34,7 +34,7 @@ const Privacy = () => {
   const privacySections = [
     {
       title: "Сбор данных",
-      icon: <Database className="w-6 h-6 text-amber-400" />,
+      icon: <Database className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Мы собираем только необходимые данные для предоставления услуг.",
         "Информация включает: Telegram ID, имя пользователя, баланс, историю покупок.",
@@ -44,7 +44,7 @@ const Privacy = () => {
     },
     {
       title: "Использование данных",
-      icon: <Eye className="w-6 h-6 text-amber-400" />,
+      icon: <Eye className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Данные используются для обработки заказов и платежей.",
         "Аналитика помогает улучшать качество сервиса.",
@@ -54,7 +54,7 @@ const Privacy = () => {
     },
     {
       title: "Безопасность",
-      icon: <Lock className="w-6 h-6 text-amber-400" />,
+      icon: <Lock className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Все данные защищены современными технологиями шифрования.",
         "Доступ к серверам ограничен и контролируется.",
@@ -64,7 +64,7 @@ const Privacy = () => {
     },
     {
       title: "Права пользователей",
-      icon: <User className="w-6 h-6 text-amber-400" />,
+      icon: <User className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Право на доступ к своим персональным данным.",
         "Возможность исправления неточной информации.",
@@ -74,7 +74,7 @@ const Privacy = () => {
     },
     {
       title: "Хранение данных",
-      icon: <Database className="w-6 h-6 text-amber-400" />,
+      icon: <Database className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Данные хранятся на защищенных серверах в ЕС.",
         "Резервные копии создаются регулярно.",
@@ -84,7 +84,7 @@ const Privacy = () => {
     },
     {
       title: "Cookies и трекинг",
-      icon: <Settings className="w-6 h-6 text-amber-400" />,
+      icon: <Settings className="w-6 h-6 text-[#a31212]" />,
       content: [
         "Используем только необходимые cookies для работы сайта.",
         "Не отслеживаем поведение пользователей.",
@@ -98,22 +98,22 @@ const Privacy = () => {
     {
       category: "Основные данные",
       items: ["Telegram ID", "Имя пользователя", "Email (если указан)"],
-      icon: <User className="w-5 h-5 text-amber-400" />
+      icon: <User className="w-5 h-5 text-[#a31212]" />
     },
     {
       category: "Финансовые данные",
       items: ["Баланс аккаунта", "История транзакций", "Методы оплаты"],
-      icon: <CreditCard className="w-5 h-5 text-amber-400" />
+      icon: <CreditCard className="w-5 h-5 text-[#a31212]" />
     },
     {
       category: "Игровые данные",
       items: ["История покупок", "Открытые кейсы", "Полученные предметы"],
-      icon: <Shield className="w-5 h-5 text-amber-400" />
+      icon: <Shield className="w-5 h-5 text-[#a31212]" />
     },
     {
       category: "Технические данные",
       items: ["IP адрес", "Время посещений", "Ошибки системы"],
-      icon: <Database className="w-5 h-5 text-amber-400" />
+      icon: <Database className="w-5 h-5 text-[#a31212]" />
     }
   ];
 
@@ -121,60 +121,46 @@ const Privacy = () => {
     {
       title: "Шифрование",
       description: "Все данные передаются по защищенным SSL соединениям",
-      icon: <Lock className="w-6 h-6 text-amber-400" />
+      icon: <Lock className="w-6 h-6 text-[#a31212]" />
     },
     {
       title: "Аутентификация",
       description: "Двухфакторная аутентификация через Telegram",
-      icon: <Shield className="w-6 h-6 text-amber-400" />
+      icon: <Shield className="w-6 h-6 text-[#a31212]" />
     },
     {
       title: "Мониторинг",
       description: "Постоянный мониторинг безопасности и подозрительной активности",
-      icon: <Eye className="w-6 h-6 text-amber-400" />
+      icon: <Eye className="w-6 h-6 text-[#a31212]" />
     },
     {
       title: "Обновления",
       description: "Регулярные обновления безопасности и исправления уязвимостей",
-      icon: <CheckCircle className="w-6 h-6 text-amber-400" />
+      icon: <CheckCircle className="w-6 h-6 text-[#a31212]" />
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 relative overflow-hidden">
-      {/* Анимированный фон */}
-      <div className="absolute inset-0">
-        {/* Плавающие частицы */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-purple-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400 rounded-full opacity-80"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-red-400 rounded-full opacity-90"></div>
-        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-cyan-400 rounded-full animate-bounce opacity-50"></div>
-        
-        {/* Светящиеся линии */}
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
-          {/* Главный заголовок с анимацией */}
+          {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-full mb-6 border border-purple-500/30 shadow-2xl shadow-purple-500/30">
-              <Shield className="w-10 h-10 md:w-12 md:h-12 text-purple-400" />
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#181818] rounded-full mb-6 border border-[#1c1c1c]">
+              <Shield className="w-10 h-10 md:w-12 md:h-12 text-[#a31212]" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white text-center">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0] text-center">
               ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
             </h1>
-            <div className="w-32 h-1 bg-purple-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            Мы серьезно относимся к <span className="text-purple-400 font-bold">защите ваших данных</span>. 
-            Узнайте, как мы <span className="text-blue-400 font-bold">собираем, используем и защищаем</span> вашу информацию.
+          <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
+            Мы серьезно относимся к <span className="text-[#a31212] font-bold">защите ваших данных</span>. 
+            Узнайте, как мы <span className="text-[#f0f0f0] font-bold">собираем, используем и защищаем</span> вашу информацию.
           </p>
         </div>
       </div>
@@ -184,15 +170,14 @@ const Privacy = () => {
         {/* Краткая информация */}
         <div className="mb-16">
           <div className="group relative max-w-4xl mx-auto">
-            <div className="absolute inset-0 bg-purple-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-12 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 text-center">
-              <div className="mx-auto w-24 h-24 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-8 border border-purple-500/30 shadow-xl shadow-purple-500/20 group-hover:rotate-12 transition-transform duration-500">
-                <Shield className="w-12 h-12 text-purple-400" />
+            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-12 hover:border-[#a31212] transition-all duration-300 text-center">
+              <div className="mx-auto w-24 h-24 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-8 border border-[#a31212]">
+                <Shield className="w-12 h-12 text-[#a31212]" />
               </div>
-              <h3 className="text-3xl font-black text-white mb-6">
+              <h3 className="text-3xl font-black text-[#f0f0f0] mb-6">
                 Ваша конфиденциальность - наш приоритет
               </h3>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-[#a0a0a0] max-w-3xl mx-auto leading-relaxed">
                 Мы используем современные технологии для защиты ваших данных и никогда не передаем 
                 персональную информацию третьим лицам без вашего согласия.
               </p>

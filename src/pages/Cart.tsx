@@ -163,38 +163,23 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      {/* Анимированный фон с частицами */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400/30 rounded-full animate-bounce"></div>
-        <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-purple-400/30 rounded-full animate-bounce delay-300"></div>
-        <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-pink-400/30 rounded-full animate-bounce delay-700"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-cyan-400/20 rounded-full animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/2 w-1 h-1 bg-yellow-400/20 rounded-full animate-pulse delay-500"></div>
-        <div className="absolute bottom-1/3 left-1/2 w-1.5 h-1.5 bg-green-400/20 rounded-full animate-bounce delay-1000"></div>
-      </div>
+    <div className="min-h-screen bg-[#0e0e0e] relative">
 
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="relative z-10 container mx-auto px-4 py-16 text-center">
-          {/* Заголовок с анимированной иконкой */}
+          {/* Заголовок */}
           <div className="mb-8">
             <div className="relative inline-block mb-6">
-              <div className="text-6xl md:text-7xl animate-float">🛒</div>
-              <div className="absolute inset-0 text-6xl md:text-7xl blur-xl opacity-20 animate-pulse">🛒</div>
+              <div className="text-6xl md:text-7xl">🛒</div>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-wide relative">
-              <span className="relative z-10">{t('Корзина')}</span>
-              <div className="absolute inset-0 text-4xl md:text-5xl font-black text-orange-400/20 blur-sm animate-pulse">
-                {t('Корзина')}
-              </div>
+            <h1 className="text-4xl md:text-5xl font-black text-[#f0f0f0] mb-4 tracking-wide">
+              {t('Корзина')}
             </h1>
             
             <div className="flex justify-center mt-4 mb-8">
-              <div className="h-1 w-20 bg-white/20 rounded-full relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-full animate-slide-right"></div>
-              </div>
+              <div className="h-1 w-20 bg-[#a31212] rounded-full"></div>
             </div>
           </div>
 
@@ -208,24 +193,24 @@ const Cart = () => {
             <div className="group relative bg-[#181818] rounded-2xl p-6 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">📦</div>
-                <p className="text-[#a0a0a0] text-sm mb-2">Товаров в корзине</p>
-                <p className="text-[#a31212] font-black text-2xl">{items.length}</p>
+                <p className="text-[#f0f0f0] text-sm mb-2">Товаров в корзине</p>
+                <p className="text-[#f0f0f0] font-black text-2xl">{items.length}</p>
               </div>
             </div>
             
             <div className="group relative bg-[#181818] rounded-2xl p-6 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">💰</div>
-                <p className="text-[#a0a0a0] text-sm mb-2">Общая стоимость</p>
-                <p className="text-[#a31212] font-black text-2xl">{formatNumber(total)}₴</p>
+                <p className="text-[#f0f0f0] text-sm mb-2">Общая стоимость</p>
+                <p className="text-[#f0f0f0] font-black text-2xl">{formatNumber(total)}₴</p>
               </div>
             </div>
             
             <div className="group relative bg-[#181818] rounded-2xl p-6 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">💳</div>
-                <p className="text-[#a0a0a0] text-sm mb-2">Ваш баланс</p>
-                <p className="text-[#a31212] font-black text-2xl">{formatNumber(balance)}₴</p>
+                <p className="text-[#f0f0f0] text-sm mb-2">Ваш баланс</p>
+                <p className="text-[#f0f0f0] font-black text-2xl">{formatNumber(balance)}₴</p>
               </div>
             </div>
           </div>
@@ -274,8 +259,8 @@ const Cart = () => {
                     <div className="flex-1 space-y-3">
                       <h3 className="text-lg sm:text-xl font-bold text-[#f0f0f0]">{item.name}</h3>
                       <div className="flex items-center space-x-3">
-                        <span className="text-2xl font-black text-[#a31212]">{item.price}₴</span>
-                        <div className="px-3 py-1 bg-[#1c1c1c] text-[#a0a0a0] text-xs font-bold rounded-full border border-[#1c1c1c]">
+                        <span className="text-2xl font-black text-[#f0f0f0]">{item.price}₴</span>
+                        <div className="px-3 py-1 bg-[#1c1c1c] text-[#f0f0f0] text-xs font-bold rounded-full border border-[#1c1c1c]">
                           Цена за единицу
                         </div>
                       </div>
@@ -348,7 +333,7 @@ const Cart = () => {
                 {/* Детали заказа */}
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between items-center p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                    <span className="text-[#a0a0a0] flex items-center">
+                    <span className="text-[#f0f0f0] flex items-center">
                       <Package className="w-4 h-4 mr-2 text-[#a31212]" />
                       Товары ({items.length})
                     </span>
@@ -356,17 +341,17 @@ const Cart = () => {
                   </div>
                   
                   <div className="flex justify-between items-center p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                    <span className="text-[#a0a0a0] flex items-center">
+                    <span className="text-[#f0f0f0] flex items-center">
                       <CreditCard className="w-4 h-4 mr-2 text-[#a31212]" />
                       Комиссия
                     </span>
-                    <span className="text-[#a31212] font-bold">0₴</span>
+                    <span className="text-[#f0f0f0] font-bold">0₴</span>
                   </div>
                   
                   <div className="border-t border-[#1c1c1c] pt-4">
                     <div className="flex justify-between items-center p-4 bg-[#1c1c1c] rounded-xl border border-[#a31212]">
                       <span className="text-[#f0f0f0] font-bold text-lg">Всего к оплате</span>
-                      <span className="text-[#a31212] font-black text-2xl">{formatNumber(total)}₴</span>
+                      <span className="text-[#f0f0f0] font-black text-2xl">{formatNumber(total)}₴</span>
                     </div>
                   </div>
                 </div>

@@ -130,49 +130,48 @@ const About = () => {
         {/* История компании */}
         <div className="mb-16">
           <div className="group relative">
-            <div className="absolute inset-0 bg-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-pink-500/30 p-8 hover:border-pink-400/50 transition-all duration-500">
-              <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-8 flex items-center justify-center gap-3">
-                <Globe className="w-8 h-8 text-pink-400" />
+            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+              <h2 className="text-3xl md:text-4xl font-black text-[#f0f0f0] text-center mb-8 flex items-center justify-center gap-3">
+                <Globe className="w-8 h-8 text-[#a31212]" />
                 НАША ИСТОРИЯ
               </h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4">
-                    <div className="w-4 h-4 bg-pink-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="w-4 h-4 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <h3 className="text-lg font-black text-white mb-2">2025</h3>
-                      <p className="text-sm text-gray-300">Основание магазина Vaultory</p>
+                      <h3 className="text-lg font-black text-[#f0f0f0] mb-2">2025</h3>
+                      <p className="text-sm text-[#a0a0a0]">Основание магазина Vaultory</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="w-4 h-4 bg-pink-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="w-4 h-4 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <h3 className="text-lg font-black text-white mb-2">2025</h3>
-                      <p className="text-sm text-gray-300">Запуск магазина и первые клиенты</p>
+                      <h3 className="text-lg font-black text-[#f0f0f0] mb-2">2025</h3>
+                      <p className="text-sm text-[#a0a0a0]">Запуск магазина и первые клиенты</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="w-4 h-4 bg-pink-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="w-4 h-4 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <h3 className="text-lg font-black text-white mb-2">Настоящее время</h3>
-                      <p className="text-sm text-gray-300">Постоянное развитие и улучшение сервиса</p>
+                      <h3 className="text-lg font-black text-[#f0f0f0] mb-2">Настоящее время</h3>
+                      <p className="text-sm text-[#a0a0a0]">Постоянное развитие и улучшение сервиса</p>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4">
-                    <div className="w-4 h-4 bg-pink-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="w-4 h-4 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <h3 className="text-lg font-black text-white mb-2">Будущее</h3>
-                      <p className="text-sm text-gray-300">Расширение ассортимента и новые возможности</p>
+                      <h3 className="text-lg font-black text-[#f0f0f0] mb-2">Будущее</h3>
+                      <p className="text-sm text-[#a0a0a0]">Расширение ассортимента и новые возможности</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="w-4 h-4 bg-pink-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="w-4 h-4 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
                     <div>
-                      <h3 className="text-lg font-black text-white mb-2">Цель</h3>
-                      <p className="text-sm text-gray-300">Стать лидером в сфере игровых товаров</p>
+                      <h3 className="text-lg font-black text-[#f0f0f0] mb-2">Цель</h3>
+                      <p className="text-sm text-[#a0a0a0]">Стать лидером в сфере игровых товаров</p>
                     </div>
                   </div>
                 </div>
@@ -184,25 +183,24 @@ const About = () => {
         {/* Призыв к действию */}
         <div className="mb-16">
           <div className="group relative">
-            <div className="absolute inset-0 bg-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-yellow-500/30 p-8 hover:border-yellow-400/50 transition-all duration-500 text-center">
-              <h3 className="text-3xl md:text-4xl font-black text-white mb-6">
+            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300 text-center">
+              <h3 className="text-3xl md:text-4xl font-black text-[#f0f0f0] mb-6">
                 ГОТОВЫ НАЧАТЬ?
               </h3>
-              <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-                Присоединяйтесь к тысячам <span className="text-yellow-400 font-bold">довольных клиентов</span> Vaultory и откройте для себя 
-                мир <span className="text-orange-400 font-bold">качественных игровых товаров</span>!
+              <p className="text-lg text-[#a0a0a0] mb-8 max-w-2xl mx-auto">
+                Присоединяйтесь к тысячам <span className="text-[#a31212] font-bold">довольных клиентов</span> Vaultory и откройте для себя 
+                мир <span className="text-[#a31212] font-bold">качественных игровых товаров</span>!
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   onClick={() => navigate('/catalog')}
-                  className="px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25"
+                  className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105"
                 >
                   Перейти в каталог
                 </Button>
                 <Button
                   onClick={openGmail}
-                  className="px-8 py-4 bg-purple-500 hover:bg-purple-400 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-purple-500/25"
+                  className="px-8 py-4 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
                 >
                   Связаться с нами
                 </Button>
@@ -215,9 +213,8 @@ const About = () => {
         <div className="text-center">
           <Button
             onClick={() => navigate('/')}
-            className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25"
+            className="group relative px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
             <div className="relative flex items-center gap-3">
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
               <span>Вернуться на главную</span>

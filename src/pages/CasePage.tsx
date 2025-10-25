@@ -325,13 +325,13 @@ const CasePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0]">
       <div className="container mx-auto px-4 py-8">
         {/* Кнопка возврата */}
         <div className="mb-6 mt-16 sm:mt-20 md:mt-24">
           <Button 
             onClick={() => navigate('/cases')} 
-            className={caseData ? getCaseTheme(caseData.name) : "bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:via-yellow-600 hover:to-amber-700 text-black font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/30 border-0 text-sm sm:text-base"}
+            className="bg-[#a31212] hover:bg-[#8a0f0f] text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
             Вернуться к кейсам
@@ -358,23 +358,23 @@ const CasePage = () => {
           {/* Информация о кейсе */}
           <div className="space-y-4 sm:space-y-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3">{caseData.name}</h1>
-              <Badge variant="outline" className="text-amber-400 border-amber-400 text-sm sm:text-lg px-3 sm:px-4 py-1 sm:py-2">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#f0f0f0] mb-2 sm:mb-3">{caseData.name}</h1>
+              <Badge variant="outline" className="text-[#a31212] border-[#a31212] text-sm sm:text-lg px-3 sm:px-4 py-1 sm:py-2">
                 {caseData.game}
               </Badge>
             </div>
 
             {caseData.description && (
-              <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
+              <p className="text-[#a0a0a0] text-base sm:text-lg leading-relaxed">
                 {caseData.description}
               </p>
             )}
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-              <div className="text-2xl sm:text-3xl font-bold text-amber-400">
+              <div className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">
                 {caseData.price}₴
               </div>
-              <Badge variant="outline" className="text-green-400 border-green-400 text-sm sm:text-base">
+              <Badge variant="outline" className="text-[#a31212] border-[#a31212] text-sm sm:text-base">
                 <Package className="w-4 h-4 mr-2" />
                 {caseItems.length} предметов
               </Badge>
@@ -383,30 +383,28 @@ const CasePage = () => {
             {/* Кнопка открытия кейса */}
             <Button
               onClick={handleOpenCase}
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold text-lg sm:text-xl rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-amber-500/30"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg sm:text-xl rounded-xl transition-all duration-300 hover:scale-105"
             >
               <Package className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
               Открыть кейс
             </Button>
-          </div>
-        </div>
 
-        {/* Содержимое кейса */}
-        <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 text-center">
-            Содержимое кейса
-          </h2>
+            {/* Содержимое кейса - теперь под кнопкой */}
+            <div className="mt-8">
+              <h3 className="text-xl sm:text-2xl font-bold text-[#f0f0f0] mb-4">
+                Содержимое кейса
+              </h3>
           
           {caseItems.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {sortItemsByRarity(caseItems).map((item, index) => (
-                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative">
+                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative bg-[#181818] rounded-xl p-4 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300">
                   {/* Изображение предмета */}
                   <div className="relative mx-auto">
                     <img
                       src={item.image_url || '/images/placeholder.jpg'}
                       alt={item.name}
-                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain mx-auto transition-transform duration-300 group-hover:scale-110"
+                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain mx-auto"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
                       }}
@@ -419,17 +417,17 @@ const CasePage = () => {
 
                   {/* Название предмета */}
                   <div>
-                    <h3 className="font-semibold text-white text-sm sm:text-base leading-tight px-2">
+                    <h3 className="font-semibold text-[#f0f0f0] text-sm sm:text-base leading-tight px-2">
                       {item.name}
                     </h3>
                   </div>
 
                   {/* Редкость */}
                   <div className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium ${
-                    item.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
-                    item.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
-                    item.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
-                    'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                    item.rarity === 'legendary' ? 'bg-[#a31212]/20 text-[#a31212] border border-[#a31212]/30' :
+                    item.rarity === 'epic' ? 'bg-[#a31212]/20 text-[#a31212] border border-[#a31212]/30' :
+                    item.rarity === 'rare' ? 'bg-[#a31212]/20 text-[#a31212] border border-[#a31212]/30' :
+                    'bg-[#1c1c1c] text-[#a0a0a0] border border-[#1c1c1c]'
                   }`}>
                     {getRarityName(item.rarity)}
                   </div>
@@ -438,34 +436,36 @@ const CasePage = () => {
             </div>
           ) : (
             <div className="text-center py-8 sm:py-12">
-              <Package className="w-16 h-16 sm:w-20 sm:w-24 mx-auto mb-4 text-gray-600" />
-              <p className="text-gray-400 text-base sm:text-lg">В этом кейсе пока нет предметов</p>
+              <Package className="w-16 h-16 sm:w-20 sm:w-24 mx-auto mb-4 text-[#a0a0a0]" />
+              <p className="text-[#a0a0a0] text-base sm:text-lg">В этом кейсе пока нет предметов</p>
             </div>
           )}
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Рулетка для открытия кейса */}
-      {showRoulette && caseData && (
-        <CaseRoulette
-          caseItems={caseItems}
-          casePrice={caseData.price}
-          caseName={caseData.name}
-          telegramId={profile?.telegram_id || 0}
-          onClose={() => setShowRoulette(false)}
-          onCaseOpened={handleCaseOpened}
+        {/* Рулетка для открытия кейса */}
+        {showRoulette && caseData && (
+          <CaseRoulette
+            caseItems={caseItems}
+            casePrice={caseData.price}
+            caseName={caseData.name}
+            telegramId={profile?.telegram_id || 0}
+            onClose={() => setShowRoulette(false)}
+            onCaseOpened={handleCaseOpened}
+          />
+        )}
+        
+        {/* Красивые уведомления */}
+        <Notification
+          show={notification.show}
+          message={notification.message}
+          type={notification.type}
+          onClose={hideNotification}
+          autoHide={notification.autoHide}
+          duration={notification.duration}
         />
-      )}
-      
-      {/* Красивые уведомления */}
-      <Notification
-        show={notification.show}
-        message={notification.message}
-        type={notification.type}
-        onClose={hideNotification}
-        autoHide={notification.autoHide}
-        duration={notification.duration}
-      />
+      </div>
     </div>
   );
 };
