@@ -237,7 +237,7 @@ const ProductPage = () => {
                   {/* Цена */}
                   <div className="mb-6">
                     <div className="flex items-center space-x-4 mb-3">
-                      <span className="text-4xl md:text-5xl font-black text-[#a31212]">
+                      <span className="text-4xl md:text-5xl font-black text-[#f0f0f0]">
                         {product.price}₴
                       </span>
                       {product.original_price && product.original_price > product.price && (
@@ -453,7 +453,7 @@ const ProductPage = () => {
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <span className="text-2xl font-black text-[#a31212]">
+                        <span className="text-2xl font-black text-[#f0f0f0]">
                           {similarProduct.price}₴
                         </span>
                       </div>

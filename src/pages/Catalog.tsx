@@ -312,10 +312,10 @@ const Catalog = () => {
             <>
               {/* Счетчик результатов */}
               <div className="mb-12 text-center">
-                <div className="inline-flex items-center gap-3 px-6 py-3 bg-black/80 backdrop-blur-xl rounded-2xl border border-cyan-500/30">
-                  <Target className="w-5 h-5 text-cyan-400" />
-                  <p className="text-gray-300 text-lg">
-                    Найдено товаров: <span className="text-cyan-400 font-black text-xl">{filteredProducts.length}</span>
+                <div className="inline-flex items-center gap-3 px-6 py-3 bg-[#181818] rounded-2xl border border-[#1c1c1c]">
+                  <Target className="w-5 h-5 text-[#a31212]" />
+                  <p className="text-[#f0f0f0] text-lg">
+                    Найдено товаров: <span className="text-[#f0f0f0] font-black text-xl">{filteredProducts.length}</span>
                   </p>
                 </div>
               </div>
@@ -328,19 +328,14 @@ const Catalog = () => {
                     <div className="mb-12 relative">
                       <div className="text-center mb-6">
                         <div className="relative inline-block">
-                          <h3 className="text-4xl md:text-5xl font-black text-white tracking-wider relative z-10 drop-shadow-lg">
+                          <h3 className="text-4xl md:text-5xl font-black text-[#f0f0f0] tracking-wider relative z-10">
                             {gameName.toUpperCase()}
                           </h3>
-                          {/* Светящийся эффект */}
-                          <div className="absolute inset-0 text-4xl md:text-5xl font-black text-cyan-400/40 tracking-wider blur-sm">
-                            {gameName.toUpperCase()}
-                          </div>
                         </div>
                       </div>
                       {/* Декоративная линия */}
                       <div className="flex items-center justify-center">
-                        <div className="h-1 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full w-32 shadow-lg shadow-cyan-500/30"></div>
-                        <div className="h-0.5 bg-gradient-to-r from-purple-500/50 to-transparent rounded-full w-24 ml-2"></div>
+                        <div className="h-1 bg-[#a31212] rounded-full w-32"></div>
                       </div>
                     </div>
                     

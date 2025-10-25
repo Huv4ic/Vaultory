@@ -398,9 +398,9 @@ const CasePage = () => {
           {caseItems.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {sortItemsByRarity(caseItems).map((item, index) => (
-                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative bg-[#181818] rounded-xl p-4 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300">
+                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative bg-[#181818] rounded-xl p-4 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 h-full flex flex-col">
                   {/* Изображение предмета */}
-                  <div className="relative mx-auto">
+                  <div className="relative mx-auto flex-shrink-0">
                     <img
                       src={item.image_url || '/images/placeholder.jpg'}
                       alt={item.name}
@@ -416,18 +416,18 @@ const CasePage = () => {
                   </div>
 
                   {/* Название предмета */}
-                  <div>
-                    <h3 className="font-semibold text-[#f0f0f0] text-sm sm:text-base leading-tight px-2">
+                  <div className="flex-1 flex items-center justify-center min-h-[3rem]">
+                    <h3 className="font-semibold text-[#f0f0f0] text-sm sm:text-base leading-tight px-2 break-words overflow-hidden">
                       {item.name}
                     </h3>
                   </div>
 
                   {/* Редкость */}
-                  <div className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium ${
-                    item.rarity === 'legendary' ? 'bg-[#a31212]/20 text-[#a31212] border border-[#a31212]/30' :
-                    item.rarity === 'epic' ? 'bg-[#a31212]/20 text-[#a31212] border border-[#a31212]/30' :
-                    item.rarity === 'rare' ? 'bg-[#a31212]/20 text-[#a31212] border border-[#a31212]/30' :
-                    'bg-[#1c1c1c] text-[#a0a0a0] border border-[#1c1c1c]'
+                  <div className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium flex-shrink-0 ${
+                    item.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                    item.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
+                    item.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+                    'bg-gray-500/20 text-gray-400 border border-gray-500/30'
                   }`}>
                     {getRarityName(item.rarity)}
                   </div>
