@@ -80,13 +80,13 @@ const TransactionHistory = () => {
       case 'withdrawal':
         return <TrendingDown className="w-5 h-5 text-red-400" />;
       case 'case_opening':
-        return <Gift className="w-5 h-5 text-amber-400" />;
+        return <Gift className="w-5 h-5 text-[#a31212]" />;
       case 'purchase':
-        return <ShoppingCart className="w-5 h-5 text-blue-400" />;
+        return <ShoppingCart className="w-5 h-5 text-[#a31212]" />;
       case 'refund':
-        return <Wallet className="w-5 h-5 text-purple-400" />;
+        return <Wallet className="w-5 h-5 text-[#a31212]" />;
       default:
-        return <Clock className="w-5 h-5 text-gray-400" />;
+        return <Clock className="w-5 h-5 text-[#a0a0a0]" />;
     }
   };
 
@@ -146,45 +146,36 @@ const TransactionHistory = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
         <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-400/30 mx-auto mb-4"></div>
-            <div className="absolute inset-0 animate-spin rounded-full h-16 w-16 border-4 border-transparent border-t-amber-400 mx-auto"></div>
-          </div>
-          <p className="text-gray-300 text-xl">Загрузка истории транзакций...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#a31212] mx-auto mb-4"></div>
+          <p className="text-[#a0a0a0] text-xl">Загрузка истории транзакций...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-[#0e0e0e]">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
         <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-[#f0f0f0]">
             📊 История транзакций
           </h1>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-4">
             Отслеживайте все ваши финансовые операции на платформе Vaultory
           </p>
         </div>
-        
-        {/* Анимированные элементы фона */}
-        <div className="absolute top-20 left-10 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-amber-400/10 rounded-full animate-bounce hidden md:block"></div>
-        <div className="absolute top-40 right-20 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-amber-500/10 rounded-full animate-pulse hidden md:block"></div>
-        <div className="absolute bottom-20 left-1/4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-amber-400/10 rounded-full animate-spin hidden md:block"></div>
       </div>
 
       {/* Основной контент */}
       <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Фильтры */}
         <div className="mb-6 sm:mb-8">
-          <div className="bg-black/40 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-amber-500/30 shadow-2xl shadow-amber-500/20 p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 flex items-center">
-              <Filter className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-amber-400" />
+          <div className="bg-[#181818] rounded-xl sm:rounded-2xl border border-[#1c1c1c] p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-[#f0f0f0] mb-3 sm:mb-4 flex items-center">
+              <Filter className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-[#a31212]" />
               Фильтры
             </h2>
             <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -201,8 +192,8 @@ const TransactionHistory = () => {
                   variant={filter === filterOption.value ? "default" : "outline"}
                   className={`px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-lg sm:rounded-xl transition-all duration-300 ${
                     filter === filterOption.value
-                      ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                      : 'bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200'
+                      ? 'bg-[#a31212] hover:bg-[#8a0f0f] text-white'
+                      : 'bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white'
                   }`}
                 >
                   <span className="mr-1 sm:mr-2">{filterOption.icon}</span>
@@ -217,14 +208,14 @@ const TransactionHistory = () => {
         <div className="space-y-3 sm:space-y-4">
           {loading ? (
             <div className="text-center py-12 sm:py-16">
-              <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-amber-400 mx-auto mb-4 sm:mb-6"></div>
-              <p className="text-lg sm:text-xl text-gray-300">Загрузка транзакций...</p>
+              <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-[#a31212] mx-auto mb-4 sm:mb-6"></div>
+              <p className="text-lg sm:text-xl text-[#a0a0a0]">Загрузка транзакций...</p>
             </div>
           ) : filteredTransactions.length === 0 ? (
             <div className="text-center py-12 sm:py-16">
-              <Wallet className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 text-gray-600" />
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-400 mb-2">Транзакции не найдены</h3>
-              <p className="text-gray-500 text-sm sm:text-base">
+              <Wallet className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 text-[#a0a0a0]" />
+              <h3 className="text-lg sm:text-xl font-semibold text-[#a0a0a0] mb-2">Транзакции не найдены</h3>
+              <p className="text-[#a0a0a0] text-sm sm:text-base">
                 {filter === 'all' 
                   ? 'У вас пока нет транзакций' 
                   : `Транзакции типа "${filter}" не найдены`}
@@ -232,7 +223,7 @@ const TransactionHistory = () => {
             </div>
           ) : (
             filteredTransactions.map((transaction) => (
-              <Card key={transaction.id} className="bg-black/40 backdrop-blur-xl border-amber-500/30 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transition-all duration-300">
+              <Card key={transaction.id} className="bg-[#181818] border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-3 sm:space-y-0">
                     <div className="flex items-center space-x-3 sm:space-x-4">
@@ -240,13 +231,13 @@ const TransactionHistory = () => {
                         {getTransactionIcon(transaction.type)}
                       </div>
                       <div>
-                        <div className="text-base sm:text-lg font-semibold text-white">
+                        <div className="text-base sm:text-lg font-semibold text-[#f0f0f0]">
                           {getTransactionTypeText(transaction.type)}
                         </div>
-                        <div className="text-gray-300 text-sm">
+                        <div className="text-[#a0a0a0] text-sm">
                           {transaction.description}
                         </div>
-                        <div className="text-gray-400 text-xs">
+                        <div className="text-[#a0a0a0] text-xs">
                           {new Date(transaction.created_at).toLocaleString('ru-RU')}
                         </div>
                       </div>
@@ -256,7 +247,7 @@ const TransactionHistory = () => {
                         {transaction.amount > 0 ? '+' : ''}{transaction.amount}₴
                       </div>
                       {transaction.order_id && (
-                        <div className="text-gray-400 text-xs sm:text-sm">
+                        <div className="text-[#a0a0a0] text-xs sm:text-sm">
                           Заказ: {transaction.order_id}
                         </div>
                       )}
@@ -273,7 +264,7 @@ const TransactionHistory = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 bg-black/60 backdrop-blur-sm border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 hover:text-amber-200 transition-all duration-300 shadow-lg shadow-amber-500/20 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="px-6 sm:px-8 py-2 sm:py-3 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную

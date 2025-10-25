@@ -159,10 +159,10 @@ const Terms = () => {
         {/* Основные разделы */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
               ОСНОВНЫЕ РАЗДЕЛЫ
             </h2>
-            <div className="w-32 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {termsSections.map((section, index) => (
@@ -170,19 +170,18 @@ const Terms = () => {
                 key={index}
                 className="group relative"
               >
-                <div className="absolute inset-0 bg-cyan-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
+                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mr-4 border border-cyan-500/30 shadow-xl shadow-cyan-500/20 group-hover:rotate-12 transition-transform duration-500">
+                    <div className="w-16 h-16 bg-[#a31212]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#a31212]/30">
                       {section.icon}
                     </div>
-                    <h3 className="text-xl font-black text-white">{section.title}</h3>
+                    <h3 className="text-xl font-black text-[#f0f0f0]">{section.title}</h3>
                   </div>
                   <div className="space-y-3">
                     {section.content.map((item, itemIndex) => (
                       <div key={itemIndex} className="flex items-start space-x-3">
-                        <CheckCircle className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-gray-300 leading-relaxed">{item}</span>
+                        <CheckCircle className="w-5 h-5 text-[#a31212] mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-[#a0a0a0] leading-relaxed">{item}</span>
                       </div>
                     ))}
                   </div>
@@ -195,10 +194,10 @@ const Terms = () => {
         {/* Важные примечания */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 text-white">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
               ВАЖНЫЕ ПРИМЕЧАНИЯ
             </h2>
-            <div className="w-32 h-1 bg-blue-500 mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {importantNotes.map((note, index) => (
@@ -206,13 +205,12 @@ const Terms = () => {
                 key={index}
                 className="group relative"
               >
-                <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-blue-500/30 p-6 hover:border-blue-400/50 transition-all duration-500 hover:scale-105 text-center">
-                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-4 border border-blue-500/30 shadow-xl shadow-blue-500/20 group-hover:rotate-12 transition-transform duration-500">
+                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 text-center">
+                  <div className="mx-auto w-16 h-16 bg-[#a31212]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]/30">
                     {note.icon}
                   </div>
-                  <h3 className="text-lg font-black text-white mb-3">{note.title}</h3>
-                  <p className="text-sm text-gray-300">{note.description}</p>
+                  <h3 className="text-lg font-black text-[#f0f0f0] mb-3">{note.title}</h3>
+                  <p className="text-sm text-[#a0a0a0]">{note.description}</p>
                 </div>
               </div>
             ))}
@@ -222,18 +220,17 @@ const Terms = () => {
         {/* Контактная информация */}
         <div className="text-center">
           <div className="group relative max-w-2xl mx-auto">
-            <div className="absolute inset-0 bg-cyan-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
-              <h3 className="text-2xl font-black text-white mb-4">
+            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+              <h3 className="text-2xl font-black text-[#f0f0f0] mb-4">
                 Вопросы по условиям?
               </h3>
-              <p className="text-lg text-gray-300 mb-6">
+              <p className="text-lg text-[#a0a0a0] mb-6">
                 Если у вас есть вопросы по нашим условиям использования, 
                 не стесняйтесь обращаться к нам.
               </p>
               <Button
                 onClick={openGmail}
-                className="w-full bg-cyan-500 hover:bg-cyan-400 text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25 py-4"
+                className="w-full bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black text-lg rounded-2xl transition-all duration-300 py-4"
               >
                 <HelpCircle className="w-5 h-5 mr-2" />
                 Связаться с нами
@@ -247,7 +244,7 @@ const Terms = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-8 py-3 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/80 backdrop-blur-xl border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 transition-all duration-300 rounded-2xl text-lg hover:scale-105 shadow-lg shadow-cyan-500/20"
+            className="px-8 py-3 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-2xl text-lg"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Вернуться на главную
