@@ -155,43 +155,6 @@ const Index = () => {
     <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] relative">
       {/* Telegram канал - современное окно с анимированным фоном */}
 
-      {/* Новинки Section */}
-      <section className="py-8 px-4 relative bg-[#0e0e0e]">
-        <div className="container mx-auto relative z-10">
-          <div className="flex items-center mb-6">
-            <div className="w-6 h-6 bg-[#a31212] rounded-full flex items-center justify-center mr-3">
-              <span className="text-white text-sm">🔥</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">
-              Новинки
-            </h2>
-          </div>
-          
-          {/* Новинки Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 mb-8">
-            {gameCategories.slice(0, 8).map((category) => (
-              <div 
-                key={category.id}
-                className="group bg-[#181818] rounded-xl p-4 text-center hover:bg-[#1c1c1c] transition-all duration-300 cursor-pointer border border-[#1c1c1c] hover:border-[#a31212]"
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                <div className="w-12 h-12 mx-auto mb-3 bg-[#1c1c1c] rounded-lg flex items-center justify-center">
-                  <img 
-                    src={category.image || '/placeholder.svg'} 
-                    alt={category.name}
-                    className="w-8 h-8 object-contain"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder.svg';
-                    }}
-                  />
-                </div>
-                <p className="text-[#f0f0f0] text-sm font-medium truncate">{category.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Категории игр */}
       <section className="py-16 px-4 relative bg-[#0e0e0e]">
@@ -303,26 +266,21 @@ const Index = () => {
       </section>
 
       {/* FAQ с новым дизайном */}
-      <section className="py-16 px-4 bg-transparent relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
+      <section className="py-16 px-4 bg-transparent relative">
         <div className="container mx-auto max-w-4xl relative z-10">
           <div className="text-center mb-12 sm:mb-16">
             <div className="flex justify-center mb-6">
               <div className="relative">
-                <Sparkles className="w-12 h-12 sm:w-16 sm:h-16 text-yellow-400 animate-spin-slow" />
-                <div className="absolute inset-0 w-12 h-12 sm:w-16 sm:h-16 border-2 border-yellow-400/30 rounded-full animate-ping"></div>
+                <Sparkles className="w-12 h-12 sm:w-16 sm:h-16 text-[#a31212]" />
               </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-center mb-6 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-center mb-6 text-[#f0f0f0]">
               {t('Частые вопросы')}
             </h2>
             <div className="flex justify-center items-center space-x-4">
-              <div className="h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent w-24"></div>
-              <Star className="w-6 h-6 text-yellow-400 animate-pulse" />
-              <div className="h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent w-24"></div>
+              <div className="h-px bg-[#1c1c1c] w-24"></div>
+              <Star className="w-6 h-6 text-[#a31212]" />
+              <div className="h-px bg-[#1c1c1c] w-24"></div>
             </div>
           </div>
           
@@ -331,16 +289,15 @@ const Index = () => {
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`} 
-                className="group bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-gray-600/30 px-6 sm:px-8 animate-fade-in hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/10 transition-all duration-300"
-                style={{animationDelay: `${index * 0.1}s`}}
+                className="group bg-[#181818] rounded-2xl border border-[#1c1c1c] px-6 sm:px-8 hover:border-[#a31212] transition-all duration-300"
               >
-                <AccordionTrigger className="text-lg sm:text-xl font-bold text-white hover:text-cyan-400 transition-colors py-6 sm:py-8 hover:no-underline group-hover:scale-[1.02]">
+                <AccordionTrigger className="text-lg sm:text-xl font-bold text-[#f0f0f0] hover:text-[#a31212] transition-colors py-6 sm:py-8 hover:no-underline">
                   <div className="flex items-center">
-                    <CheckCircle className="w-6 h-6 text-cyan-500 mr-4 group-hover:animate-pulse" />
+                    <CheckCircle className="w-6 h-6 text-[#a31212] mr-4" />
                     {item.question}
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-300 pb-6 sm:pb-8 text-base sm:text-lg leading-relaxed animate-fade-in">
+                <AccordionContent className="text-[#f0f0f0] pb-6 sm:pb-8 text-base sm:text-lg leading-relaxed">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>

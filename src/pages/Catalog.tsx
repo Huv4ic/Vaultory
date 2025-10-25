@@ -163,43 +163,6 @@ const Catalog = () => {
   return (
     <div className="min-h-screen bg-[#0e0e0e] relative">
 
-      {/* Новинки Section */}
-      <div className="relative z-10">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex items-center mb-6">
-            <div className="w-6 h-6 bg-[#a31212] rounded-full flex items-center justify-center mr-3">
-              <span className="text-white text-sm">🔥</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">
-              Новинки
-            </h2>
-          </div>
-          
-          {/* Новинки Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 mb-8">
-            {gameCategories.slice(0, 8).map((category) => (
-              <div 
-                key={category.id}
-                className="group bg-[#181818] rounded-xl p-4 text-center hover:bg-[#1c1c1c] transition-all duration-300 cursor-pointer border border-[#1c1c1c] hover:border-[#a31212]"
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                <div className="w-12 h-12 mx-auto mb-3 bg-[#1c1c1c] rounded-lg flex items-center justify-center">
-                  <img 
-                    src={category.image || '/placeholder.svg'} 
-                    alt={category.name}
-                    className="w-8 h-8 object-contain"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder.svg';
-                    }}
-                  />
-                </div>
-                <p className="text-[#f0f0f0] text-sm font-medium truncate">{category.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Hero Section */}
       <div className="relative z-10">
@@ -417,68 +380,66 @@ const Catalog = () => {
         {/* Информационные блоки */}
         <div className="mt-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
               ИНФОРМАЦИЯ
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-[#a31212] mx-auto rounded-full"></div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500">
+              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mr-4 group-hover:rotate-12 transition-transform duration-500">
-                    <Shield className="w-6 h-6 text-white" />
+                  <div className="w-12 h-12 bg-[#1c1c1c] rounded-full flex items-center justify-center mr-4 border border-[#a31212]">
+                    <Shield className="w-6 h-6 text-[#a31212]" />
                   </div>
-                  <h3 className="text-2xl font-black text-white">Качество товаров</h3>
+                  <h3 className="text-2xl font-black text-[#f0f0f0]">Качество товаров</h3>
                 </div>
-                <div className="space-y-4 text-gray-300">
+                <div className="space-y-4 text-[#f0f0f0]">
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <p>Все товары <span className="text-cyan-400 font-bold">официальные</span> и лицензированные</p>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Все товары <span className="text-[#a31212] font-bold">официальные</span> и лицензированные</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-purple-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <p>Гарантия <span className="text-purple-400 font-bold">качества</span> и работоспособности</p>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Гарантия <span className="text-[#a31212] font-bold">качества</span> и работоспособности</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-pink-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="text-pink-400 font-bold">Мгновенная</span> доставка после оплаты</p>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
+                    <p><span className="text-[#a31212] font-bold">Мгновенная</span> доставка после оплаты</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <p>Поддержка <span className="text-yellow-400 font-bold">24/7</span> по любым вопросам</p>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Поддержка <span className="text-[#a31212] font-bold">24/7</span> по любым вопросам</p>
                   </div>
                 </div>
               </div>
             </div>
             
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-8 hover:border-purple-400/50 transition-all duration-500">
+              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mr-4 group-hover:rotate-12 transition-transform duration-500">
-                    <Rocket className="w-6 h-6 text-white" />
+                  <div className="w-12 h-12 bg-[#1c1c1c] rounded-full flex items-center justify-center mr-4 border border-[#a31212]">
+                    <Rocket className="w-6 h-6 text-[#a31212]" />
                   </div>
-                  <h3 className="text-2xl font-black text-white">Популярные категории</h3>
+                  <h3 className="text-2xl font-black text-[#f0f0f0]">Популярные категории</h3>
                 </div>
-                <div className="space-y-4 text-gray-300">
+                <div className="space-y-4 text-[#f0f0f0]">
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <p>Скины для <span className="text-green-400 font-bold">популярных игр</span></p>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
+                    <p>Скины для <span className="text-[#a31212] font-bold">популярных игр</span></p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="text-orange-400 font-bold">Эксклюзивные</span> предметы</p>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
+                    <p><span className="text-[#a31212] font-bold">Эксклюзивные</span> предметы</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="text-red-400 font-bold">Коллекционные</span> вещи</p>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
+                    <p><span className="text-[#a31212] font-bold">Коллекционные</span> вещи</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <p><span className="text-blue-400 font-bold">Новинки</span> и редкие находки</p>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full mt-2 flex-shrink-0"></div>
+                    <p><span className="text-[#a31212] font-bold">Новинки</span> и редкие находки</p>
                   </div>
                 </div>
               </div>
@@ -490,9 +451,8 @@ const Catalog = () => {
         <div className="text-center mt-16">
           <Button
             onClick={() => navigate('/')}
-            className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-cyan-500/25"
+            className="group relative px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-2xl transition-all duration-300 hover:scale-105"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
             <div className="relative flex items-center gap-3">
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
               <span>Вернуться на главную</span>

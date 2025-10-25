@@ -425,15 +425,10 @@ const ProductPage = () => {
                 className="group relative cursor-pointer"
                 onClick={() => navigate(`/product/${similarProduct.id}`)}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-6 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105">
+                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105">
                   {/* Изображение */}
                   <div className="relative mb-6">
-                    <div className="w-full h-40 bg-gradient-to-br from-cyan-400/20 to-purple-600/20 rounded-2xl flex items-center justify-center overflow-hidden border border-cyan-500/30 relative">
-                      {/* Декоративные кольца */}
-                      <div className="absolute inset-2 border border-cyan-400/20 rounded-xl animate-spin-slow"></div>
-                      <div className="absolute inset-4 border border-purple-400/20 rounded-xl animate-spin-reverse"></div>
-                      
+                    <div className="w-full h-40 bg-[#1c1c1c] rounded-2xl flex items-center justify-center overflow-hidden border border-[#1c1c1c]">
                       <img
                         src={
                           (similarProduct.images && similarProduct.images.length > 0) 
@@ -441,34 +436,30 @@ const ProductPage = () => {
                             : (similarProduct.image_url || '/placeholder.svg')
                         }
                         alt={similarProduct.name}
-                        className="relative z-10 w-full h-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-contain rounded-xl"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = '/placeholder.svg';
                         }}
                       />
-                      
-                      {/* Магические частицы */}
-                      <div className="absolute top-3 right-3 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-                      <div className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-purple-400 rounded-full animate-ping opacity-80"></div>
                     </div>
                   </div>
                   
                   {/* Информация о товаре */}
                   <div className="relative z-10">
-                    <h4 className="text-white font-black mb-3 line-clamp-2 text-lg group-hover:text-cyan-100 transition-colors duration-300">
+                    <h4 className="text-[#f0f0f0] font-black mb-3 line-clamp-2 text-lg">
                       {similarProduct.name}
                     </h4>
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <span className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                        <span className="text-2xl font-black text-[#a31212]">
                           {similarProduct.price}₴
                         </span>
                       </div>
                       <Button
                         size="sm"
-                        className="w-12 h-12 p-0 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white rounded-xl transition-all duration-300 hover:scale-110 shadow-lg shadow-cyan-500/25"
+                        className="w-12 h-12 p-0 bg-[#a31212] hover:bg-[#8a0f0f] text-white rounded-xl transition-all duration-300 hover:scale-105"
                         onClick={(e) => {
                           e.stopPropagation();
                           addItem({
@@ -492,48 +483,45 @@ const ProductPage = () => {
       {/* Дополнительная информация */}
       <div className="mt-32 mb-20 max-w-[1920px] mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
             ПОЧЕМУ ВЫБИРАЮТ НАС
           </h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-cyan-500 to-purple-500 mx-auto rounded-full"></div>
+          <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="group relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105 text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-xl shadow-cyan-500/20">
-                <Award className="w-10 h-10 text-white" />
+            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
+              <div className="w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#a31212]">
+                <Award className="w-10 h-10 text-[#a31212]" />
               </div>
-              <h4 className="text-2xl font-black text-white mb-4 group-hover:text-cyan-100 transition-colors duration-300">Гарантия качества</h4>
-              <p className="text-gray-300 leading-relaxed">
-                Все товары <span className="text-cyan-400 font-bold">официальные</span> и лицензированные. Мы гарантируем подлинность каждого продукта.
+              <h4 className="text-2xl font-black text-[#f0f0f0] mb-4">Гарантия качества</h4>
+              <p className="text-[#a0a0a0] leading-relaxed">
+                Все товары <span className="text-[#a31212] font-bold">официальные</span> и лицензированные. Мы гарантируем подлинность каждого продукта.
               </p>
             </div>
           </div>
           
           <div className="group relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-green-500/30 p-8 hover:border-green-400/50 transition-all duration-500 hover:scale-105 text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-xl shadow-green-500/20">
-                <Zap className="w-10 h-10 text-white" />
+            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
+              <div className="w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#a31212]">
+                <Zap className="w-10 h-10 text-[#a31212]" />
               </div>
-              <h4 className="text-2xl font-black text-white mb-4 group-hover:text-green-100 transition-colors duration-300">Быстрая доставка</h4>
-              <p className="text-gray-300 leading-relaxed">
-                Товары доставляются <span className="text-green-400 font-bold">мгновенно</span> после оплаты. Никаких ожиданий - получайте сразу!
+              <h4 className="text-2xl font-black text-[#f0f0f0] mb-4">Быстрая доставка</h4>
+              <p className="text-[#a0a0a0] leading-relaxed">
+                Товары доставляются <span className="text-[#a31212] font-bold">мгновенно</span> после оплаты. Никаких ожиданий - получайте сразу!
               </p>
             </div>
           </div>
           
           <div className="group relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-            <div className="relative bg-black/90 backdrop-blur-xl rounded-3xl border border-purple-500/30 p-8 hover:border-purple-400/50 transition-all duration-500 hover:scale-105 text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-xl shadow-purple-500/20">
-                <TrendingUp className="w-10 h-10 text-white" />
+            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
+              <div className="w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#a31212]">
+                <TrendingUp className="w-10 h-10 text-[#a31212]" />
               </div>
-              <h4 className="text-2xl font-black text-white mb-4 group-hover:text-purple-100 transition-colors duration-300">Популярность</h4>
-              <p className="text-gray-300 leading-relaxed">
-                Высокий рейтинг и много <span className="text-purple-400 font-bold">положительных отзывов</span> от довольных клиентов по всему миру.
+              <h4 className="text-2xl font-black text-[#f0f0f0] mb-4">Популярность</h4>
+              <p className="text-[#a0a0a0] leading-relaxed">
+                Высокий рейтинг и много <span className="text-[#a31212] font-bold">положительных отзывов</span> от довольных клиентов по всему миру.
               </p>
             </div>
           </div>
