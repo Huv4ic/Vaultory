@@ -103,6 +103,14 @@ const AdminGameCategories = () => {
 
   const seedAllCategories = async () => {
     console.log('Начинаем добавление категорий...');
+    
+    // Проверяем аутентификацию
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      throw new Error('Пользователь не аутентифицирован');
+    }
+    console.log('Пользователь аутентифицирован:', user.id);
+    
     const gameCategories = [
       {
         id: 'tiktok',
@@ -301,6 +309,15 @@ const AdminGameCategories = () => {
     try {
       setError(null);
       setUploading(true);
+      
+      // Проверяем аутентификацию
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setError('Пользователь не аутентифицирован');
+        setUploading(false);
+        return;
+      }
+      console.log('Пользователь аутентифицирован для сохранения:', user.id);
       
       if (!currentCategory.name.trim()) {
         setError('Название категории обязательно!');
