@@ -182,7 +182,7 @@ const Index = () => {
     return null;
   };
 
-  // Создаем карточки только для игр, которые есть на сайте
+  // Создаем карточки для ВСЕХ категорий из базы данных
   const gameCategoriesCards = (() => {
     console.log('Создаем карточки категорий...', { 
       categoriesLoading, 
@@ -196,30 +196,22 @@ const Index = () => {
       return [];
     }
     
-    const availableGames = getAvailableGames();
-    console.log('Доступные игры:', availableGames);
-    const usedCategories = new Set();
-    
+    // Показываем ВСЕ категории из базы данных, а не только те, для которых есть товары
     const cards = [];
     
-    availableGames.forEach(gameName => {
-      const categoryId = matchGameToCategory(gameName);
-      console.log(`Игра: ${gameName}, категория: ${categoryId}`);
-      if (categoryId && allGameCategories[categoryId] && !usedCategories.has(categoryId)) {
-        usedCategories.add(categoryId);
-        const card = {
-          id: categoryId,
-          name: allGameCategories[categoryId].name,
-          image: allGameCategories[categoryId].image_url || '/api/placeholder/300/200',
-          color: allGameCategories[categoryId].color,
-          icon: allGameCategories[categoryId].icon
-        };
-        console.log('Добавляем карточку:', card);
-        cards.push(card);
-      }
+    gameCategories.forEach(category => {
+      const card = {
+        id: category.id,
+        name: category.name,
+        image: category.image_url || '/api/placeholder/300/200',
+        color: category.color,
+        icon: category.icon
+      };
+      console.log('Добавляем карточку из базы данных:', card);
+      cards.push(card);
     });
     
-    console.log('Итоговые карточки:', cards);
+    console.log('Итоговые карточки (все категории):', cards);
     return cards;
   })();
 
@@ -229,31 +221,9 @@ const Index = () => {
   // Фильтр по игровой категории
   if (selectedGameCategory !== 'all') {
     filteredProducts = filteredProducts.filter(product => {
-      const gameName = product.game?.toLowerCase() || '';
-      const categoryName = selectedGameCategory.toLowerCase();
-      
-      // Проверяем соответствие по названию игры
-      if (categoryName === 'tiktok') return gameName.includes('tiktok');
-      if (categoryName === 'standoff2') return gameName.includes('standoff') || gameName.includes('standoff2');
-      if (categoryName === 'mobile_legends') return gameName.includes('mobile legends') || gameName.includes('mobilelegends');
-      if (categoryName === 'pubg') return gameName.includes('pubg');
-      if (categoryName === 'free_fire') return gameName.includes('free fire') || gameName.includes('freefire');
-      if (categoryName === 'steam') return gameName.includes('steam');
-      if (categoryName === 'roblox') return gameName.includes('roblox');
-      if (categoryName === 'genshin') return gameName.includes('genshin');
-      if (categoryName === 'honkai') return gameName.includes('honkai');
-      if (categoryName === 'zenless') return gameName.includes('zenless');
-      if (categoryName === 'identity_v') return gameName.includes('identity');
-      if (categoryName === 'arena_breakout') return gameName.includes('arena');
-      if (categoryName === 'epic_games') return gameName.includes('epic games') || gameName.includes('epicgames');
-      if (categoryName === 'brawl_stars') return gameName.includes('brawl stars') || gameName.includes('brawlstars');
-      if (categoryName === 'gta') return gameName.includes('gta') || gameName.includes('grand theft auto');
-      if (categoryName === 'rocket_league') return gameName.includes('rocket league') || gameName.includes('rocketleague');
-      if (categoryName === 'spotify') return gameName.includes('spotify');
-      if (categoryName === 'world_of_tanks') return gameName.includes('world of tanks') || gameName.includes('worldoftanks') || gameName.includes('wot');
-      if (categoryName === 'telegram_stars') return gameName.includes('telegram') || gameName.includes('звезды') || (gameName.includes('stars') && !gameName.includes('brawl'));
-      
-      return false;
+      const gameName = product.game || '';
+      const matchedCategory = matchGameToCategory(gameName);
+      return matchedCategory === selectedGameCategory;
     });
   }
 
