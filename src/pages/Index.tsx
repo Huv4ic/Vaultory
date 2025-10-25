@@ -280,7 +280,62 @@ const Index = () => {
 
           {/* Товары по играм */}
           <div className="space-y-16 sm:space-y-20">
-            {Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => (
+            {Object.keys(groupedProducts).length === 0 ? (
+              /* Сообщение о том, что товаров нет в наличии */
+              <div className="text-center py-16 sm:py-20">
+                <div className="max-w-2xl mx-auto">
+                  <div className="relative mb-8">
+                    {/* Анимированная иконка */}
+                    <div className="w-24 h-24 mx-auto mb-6 bg-[#a31212]/20 rounded-3xl flex items-center justify-center border border-[#a31212]/30 animate-pulse">
+                      <div className="relative">
+                        <div className="w-12 h-12 bg-[#a31212] rounded-2xl flex items-center justify-center">
+                          <span className="text-2xl">📦</span>
+                        </div>
+                        {/* Светящийся эффект */}
+                        <div className="absolute inset-0 bg-[#a31212]/30 rounded-2xl blur-xl animate-ping"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#f0f0f0] mb-4">
+                    Товары скоро появятся!
+                  </h3>
+                  
+                  <div className="space-y-4 mb-8">
+                    <p className="text-lg sm:text-xl text-[#a0a0a0] leading-relaxed">
+                      В данной категории пока нет товаров, но мы активно работаем над пополнением ассортимента.
+                    </p>
+                    <p className="text-base sm:text-lg text-[#a0a0a0]">
+                      Следите за обновлениями - новые товары появляются регулярно!
+                    </p>
+                  </div>
+                  
+                  {/* Декоративные элементы */}
+                  <div className="flex justify-center items-center space-x-4 mb-8">
+                    <div className="h-px bg-[#1c1c1c] w-16"></div>
+                    <div className="w-2 h-2 bg-[#a31212] rounded-full animate-pulse"></div>
+                    <div className="h-px bg-[#1c1c1c] w-16"></div>
+                  </div>
+                  
+                  {/* Кнопка для возврата к поиску */}
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                      onClick={() => {
+                        setSelectedCategory('all');
+                        setSearchQuery('');
+                        setSortBy('popular');
+                      }}
+                      className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#a31212]/20"
+                    >
+                      <span className="flex items-center justify-center">
+                        🔍 Посмотреть все товары
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => (
               <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
                 {/* Заголовок игры */}
                 <div className="mb-8 sm:mb-12 relative">
@@ -332,7 +387,8 @@ const Index = () => {
                   ))}
                 </div>
               </div>
-            ))}
+            ))
+            )}
           </div>
         </div>
       </section>
