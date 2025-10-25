@@ -11,6 +11,7 @@ export interface Product {
   image_url?: string;
   category_id?: string;
   game?: string;
+  game_category_id?: string;
   rating?: number;
   sales?: number;
   description?: string;

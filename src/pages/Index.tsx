@@ -220,11 +220,25 @@ const Index = () => {
 
   // Фильтр по игровой категории
   if (selectedGameCategory !== 'all') {
+    console.log('Фильтруем товары по категории:', selectedGameCategory);
+    console.log('Всего товаров до фильтрации:', filteredProducts.length);
+    
     filteredProducts = filteredProducts.filter(product => {
+      // Сначала проверяем game_category_id (приоритет)
+      if (product.game_category_id) {
+        const matches = product.game_category_id === selectedGameCategory;
+        console.log(`Товар "${product.name}" с game_category_id="${product.game_category_id}" ${matches ? 'ПОДХОДИТ' : 'НЕ ПОДХОДИТ'}`);
+        return matches;
+      }
+      // Если game_category_id нет, используем старую логику
       const gameName = product.game || '';
       const matchedCategory = matchGameToCategory(gameName);
-      return matchedCategory === selectedGameCategory;
+      const matches = matchedCategory === selectedGameCategory;
+      console.log(`Товар "${product.name}" с game="${gameName}" -> категория="${matchedCategory}" ${matches ? 'ПОДХОДИТ' : 'НЕ ПОДХОДИТ'}`);
+      return matches;
     });
+    
+    console.log('Товаров после фильтрации:', filteredProducts.length);
   }
 
   // Фильтр по категории товара
