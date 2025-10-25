@@ -47,6 +47,7 @@ const Index = () => {
           setGameCategories([]);
         } else {
           console.log('Загружено категорий игр:', data?.length || 0);
+          console.log('Данные категорий:', data);
           setGameCategories(data || []);
         }
       } catch (err) {
@@ -68,10 +69,21 @@ const Index = () => {
       }
     };
     
+    // Также проверяем каждые 5 секунд на случай если localStorage не сработает
+    const interval = setInterval(() => {
+      const updated = localStorage.getItem('categoriesUpdated');
+      if (updated) {
+        console.log('Периодическая проверка: обновление категорий');
+        fetchGameCategories();
+        localStorage.removeItem('categoriesUpdated'); // Убираем флаг после обновления
+      }
+    }, 5000);
+    
     window.addEventListener('storage', handleStorageChange);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
     };
   }, []);
 
@@ -172,29 +184,42 @@ const Index = () => {
 
   // Создаем карточки только для игр, которые есть на сайте
   const gameCategoriesCards = (() => {
+    console.log('Создаем карточки категорий...', { 
+      categoriesLoading, 
+      gameCategoriesLength: gameCategories.length,
+      gameCategories: gameCategories,
+      allGameCategories: allGameCategories
+    });
+    
     if (categoriesLoading || !gameCategories.length) {
+      console.log('Возвращаем пустой массив карточек');
       return [];
     }
     
     const availableGames = getAvailableGames();
+    console.log('Доступные игры:', availableGames);
     const usedCategories = new Set();
     
     const cards = [];
     
     availableGames.forEach(gameName => {
       const categoryId = matchGameToCategory(gameName);
+      console.log(`Игра: ${gameName}, категория: ${categoryId}`);
       if (categoryId && allGameCategories[categoryId] && !usedCategories.has(categoryId)) {
         usedCategories.add(categoryId);
-        cards.push({
+        const card = {
           id: categoryId,
           name: allGameCategories[categoryId].name,
           image: allGameCategories[categoryId].image_url || '/api/placeholder/300/200',
           color: allGameCategories[categoryId].color,
           icon: allGameCategories[categoryId].icon
-        });
+        };
+        console.log('Добавляем карточку:', card);
+        cards.push(card);
       }
     });
     
+    console.log('Итоговые карточки:', cards);
     return cards;
   })();
 
@@ -438,6 +463,36 @@ const Index = () => {
           
           {/* Крупные карточки категорий игр */}
           <div className="mb-16 sm:mb-20">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">Категории игр</h2>
+              <Button 
+                onClick={async () => {
+                  console.log('Принудительное обновление категорий...');
+                  setCategoriesLoading(true);
+                  try {
+                    const { data, error } = await supabase
+                      .from('game_categories')
+                      .select('*')
+                      .order('name', { ascending: true });
+                    
+                    if (error) {
+                      console.error('Error refreshing categories:', error);
+                    } else {
+                      console.log('Принудительно обновлено категорий:', data?.length || 0);
+                      setGameCategories(data || []);
+                    }
+                  } catch (err) {
+                    console.error('Error refreshing categories:', err);
+                  } finally {
+                    setCategoriesLoading(false);
+                  }
+                }}
+                className="bg-[#a31212] hover:bg-[#8a0e0e] text-white px-4 py-2 rounded-lg text-sm"
+                disabled={categoriesLoading}
+              >
+                {categoriesLoading ? 'Обновление...' : '🔄 Обновить'}
+              </Button>
+            </div>
             
             {categoriesLoading ? (
               <div className="text-center py-8">
@@ -472,12 +527,22 @@ const Index = () => {
                       </div>
                     </div>
                     
-                    {/* Заглушка изображения */}
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                      <div className="text-4xl sm:text-5xl opacity-80">
-                        {category.icon}
+                    {/* Изображение или иконка */}
+                    {category.image && category.image !== '/api/placeholder/300/200' ? (
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <img 
+                          src={category.image} 
+                          alt={category.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
-                    </div>
+                    ) : (
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <div className="text-4xl sm:text-5xl opacity-80">
+                          {category.icon}
+                        </div>
+                      </div>
+                    )}
                     
                     {/* Градиентный оверлей */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
