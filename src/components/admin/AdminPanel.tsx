@@ -11,6 +11,7 @@ import AdminProducts from './AdminProducts';
 import AdminCases from './AdminCases';
 import AdminWithdrawalRequests from './AdminWithdrawalRequests';
 import UserRoleManagement from './UserRoleManagement';
+import AdminGameCategories from './AdminGameCategories';
 
 interface User {
   id: string;
@@ -520,6 +521,16 @@ export default function AdminPanel() {
           >
             🛡️ Роли
           </button>
+          <button
+            className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
+              activeTab === 'game-categories' 
+                ? 'bg-purple-500 text-black shadow-2xl shadow-purple-500/25' 
+                : 'bg-black/80 backdrop-blur-xl border border-purple-500/30 text-purple-400 hover:border-purple-400/50 hover:bg-purple-500/10'
+            }`}
+            onClick={() => setActiveTab('game-categories')}
+          >
+            🎮 Главные категории
+          </button>
         </div>
       </div>
 
@@ -530,6 +541,7 @@ export default function AdminPanel() {
         {activeTab === 'cases' && <AdminCases />}
         {activeTab === 'withdrawals' && <AdminWithdrawalRequests />}
         {activeTab === 'roles' && <UserRoleManagement />}
+        {activeTab === 'game-categories' && <AdminGameCategories />}
       </div>
     </div>
   );

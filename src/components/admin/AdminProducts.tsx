@@ -20,10 +20,12 @@ const emptyProduct: ProductFormData = {
   sales: 0,
   description: '',
   features: [],
+  game_category_id: '',
 };
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<AdminProduct[]>([]);
+  const [gameCategories, setGameCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -35,6 +37,7 @@ const AdminProducts = () => {
 
   useEffect(() => {
     fetchProducts();
+    fetchGameCategories();
   }, []);
 
   const fetchProducts = async () => {
@@ -59,6 +62,23 @@ const AdminProducts = () => {
     }
   };
 
+  const fetchGameCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('game_categories')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+      
+      setGameCategories(data || []);
+      
+    } catch (err) {
+      console.error('Error fetching game categories:', err);
+      toast('Ошибка при загрузке главных категорий', 'error');
+    }
+  };
+
   const openAddModal = () => {
     setEditMode('add');
     setCurrentProduct(emptyProduct);
@@ -80,6 +100,7 @@ const AdminProducts = () => {
       sales: product.sales,
       description: product.description || '',
       features: product.features || [],
+      game_category_id: product.game_category_id || '',
     });
     setEditingId(product.id);
     setError(null);
@@ -98,7 +119,7 @@ const AdminProducts = () => {
       setError(null);
       
       // Валидация
-      if (!currentProduct.name.trim() || !currentProduct.price || !currentProduct.image_url.trim() || !currentProduct.category.trim() || !currentProduct.game.trim()) {
+      if (!currentProduct.name.trim() || !currentProduct.price || !currentProduct.image_url.trim() || !currentProduct.category.trim() || !currentProduct.game.trim() || !currentProduct.game_category_id) {
         setError('Заполните все обязательные поля!');
         return;
       }
@@ -118,6 +139,7 @@ const AdminProducts = () => {
             sales: currentProduct.sales,
             description: currentProduct.description,
             features: currentProduct.features,
+            game_category_id: currentProduct.game_category_id,
             updated_at: new Date().toISOString(),
           })
           .eq('id', editingId)
@@ -151,6 +173,7 @@ const AdminProducts = () => {
             sales: currentProduct.sales,
             description: currentProduct.description,
             features: currentProduct.features,
+            game_category_id: currentProduct.game_category_id,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           }])
@@ -431,6 +454,23 @@ const AdminProducts = () => {
                     className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Главная категория *</label>
+                <select
+                  name="game_category_id"
+                  value={currentProduct.game_category_id}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white text-sm sm:text-base"
+                >
+                  <option value="">Выберите главную категорию</option>
+                  {gameCategories.map(category => (
+                    <option key={category.id} value={category.id}>
+                      {category.icon} {category.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>

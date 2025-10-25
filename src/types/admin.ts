@@ -10,6 +10,7 @@ export interface AdminProduct {
   sales: number;
   description?: string;
   features?: string[];
+  game_category_id?: string;
   created_at: string;
   updated_at: string;
 }
@@ -64,6 +65,7 @@ export interface ProductFormData {
   sales: number;
   description: string;
   features: string[];
+  game_category_id: string;
 }
 
 export interface CaseFormData {
