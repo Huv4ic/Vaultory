@@ -103,7 +103,7 @@ const ProductCard = ({
         <div className="relative flex-1 flex flex-col bg-[#1c1c1c] rounded-b-3xl p-5">
           <div className="flex-1 flex flex-col justify-center text-center">
             {/* Название товара */}
-            <h3 className="text-[#f0f0f0] font-bold text-xl mb-4 line-clamp-2 tracking-wide h-14 flex items-center justify-center">
+            <h3 className="text-[#f0f0f0] font-bold text-lg mb-4 line-clamp-3 tracking-wide min-h-[3.5rem] flex items-center justify-center text-center leading-tight">
               {getProductTranslation(id, 'name', name)}
             </h3>
             

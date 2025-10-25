@@ -578,6 +578,14 @@
   overflow: hidden;
 }
 
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* Анимации для страницы кейсов - тёмный стиль */
 .animate-fade-in {
   animation: fade-in 0.8s ease-out forwards;
