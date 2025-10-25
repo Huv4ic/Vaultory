@@ -4,14 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { Search, Plus, Edit, Trash2, Save, X, Gamepad2 } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Save, X, Gamepad2, Database } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
+import { seedGameCategories } from '../../scripts/seedGameCategories';
 
 interface GameCategory {
   id: string;
   name: string;
   color: string;
   icon: string;
+  image_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -20,6 +22,7 @@ const emptyCategory = {
   name: '',
   color: 'from-blue-500 to-purple-600',
   icon: '🎮',
+  image_url: '',
 };
 
 const AdminGameCategories = () => {
@@ -31,6 +34,8 @@ const AdminGameCategories = () => {
   const [currentCategory, setCurrentCategory] = useState(emptyCategory);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
 
   const colorOptions = [
@@ -74,6 +79,24 @@ const AdminGameCategories = () => {
     }
   };
 
+  const uploadImage = async (file: File): Promise<string> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+    const filePath = `game-categories/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('images')
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage
+      .from('images')
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
   const openAddModal = () => {
     setEditMode('add');
     setCurrentCategory(emptyCategory);
@@ -88,9 +111,11 @@ const AdminGameCategories = () => {
       name: category.name,
       color: category.color,
       icon: category.icon,
+      image_url: category.image_url || '',
     });
     setEditingId(category.id);
     setError(null);
+    setSelectedFile(null);
     setModalOpen(true);
   };
 
@@ -99,15 +124,31 @@ const AdminGameCategories = () => {
     setCurrentCategory(emptyCategory);
     setEditingId(null);
     setError(null);
+    setSelectedFile(null);
   };
 
   const handleSave = async () => {
     try {
       setError(null);
+      setUploading(true);
       
       if (!currentCategory.name.trim()) {
         setError('Название категории обязательно!');
+        setUploading(false);
         return;
+      }
+
+      let imageUrl = currentCategory.image_url;
+
+      // Загружаем изображение, если выбрано
+      if (selectedFile) {
+        try {
+          imageUrl = await uploadImage(selectedFile);
+        } catch (uploadErr) {
+          setError('Ошибка при загрузке изображения: ' + (uploadErr as any).message);
+          setUploading(false);
+          return;
+        }
       }
 
       if (editMode === 'edit' && editingId) {
@@ -117,6 +158,7 @@ const AdminGameCategories = () => {
             name: currentCategory.name,
             color: currentCategory.color,
             icon: currentCategory.icon,
+            image_url: imageUrl,
             updated_at: new Date().toISOString(),
           })
           .eq('id', editingId)
@@ -136,6 +178,7 @@ const AdminGameCategories = () => {
             name: currentCategory.name,
             color: currentCategory.color,
             icon: currentCategory.icon,
+            image_url: imageUrl,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           }])
@@ -148,10 +191,12 @@ const AdminGameCategories = () => {
         toast('Категория успешно добавлена!', 'success');
       }
 
+      setUploading(false);
       closeModal();
     } catch (err) {
       console.error('Error saving category:', err);
       setError('Ошибка при сохранении категории: ' + (err as any).message);
+      setUploading(false);
     }
   };
 
@@ -182,6 +227,38 @@ const AdminGameCategories = () => {
     }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      // Показываем превью изображения
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setCurrentCategory(prev => ({
+          ...prev,
+          image_url: e.target?.result as string
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSeedCategories = async () => {
+    if (!window.confirm('Добавить все существующие категории игр в базу данных? Это действие нельзя отменить.')) return;
+    
+    try {
+      setLoading(true);
+      await seedGameCategories();
+      await fetchCategories(); // Обновляем список
+      toast('Все категории успешно добавлены!', 'success');
+    } catch (err) {
+      console.error('Error seeding categories:', err);
+      toast('Ошибка при добавлении категорий', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -198,10 +275,20 @@ const AdminGameCategories = () => {
     <div className="p-3 sm:p-6 bg-gray-900 text-white rounded-xl shadow-xl">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
         <h2 className="text-xl sm:text-2xl font-bold">Управление главными категориями</h2>
-        <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
-          <Plus className="w-4 h-4 mr-2" />
-          Добавить категорию
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button 
+            onClick={handleSeedCategories} 
+            className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base"
+            disabled={loading}
+          >
+            <Database className="w-4 h-4 mr-2" />
+            Добавить все категории
+          </Button>
+          <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
+            <Plus className="w-4 h-4 mr-2" />
+            Добавить категорию
+          </Button>
+        </div>
       </div>
 
       {/* Поиск */}
@@ -248,8 +335,20 @@ const AdminGameCategories = () => {
                 </div>
               </div>
               
-              <div className={`w-full h-16 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center`}>
-                <span className="text-2xl">{category.icon}</span>
+              <div className={`w-full h-16 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center overflow-hidden`}>
+                {category.image_url ? (
+                  <img 
+                    src={category.image_url} 
+                    alt={category.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Если изображение не загрузилось, показываем иконку
+                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                ) : null}
+                <span className={`text-2xl ${category.image_url ? 'hidden' : ''}`}>{category.icon}</span>
               </div>
               
               <div className="mt-2 text-xs text-gray-400">
@@ -324,10 +423,61 @@ const AdminGameCategories = () => {
                 </div>
               </div>
 
+              <div>
+                <label className="block text-sm font-medium mb-2">Изображение категории</label>
+                <div className="space-y-3">
+                  <div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-gray-600 file:text-white hover:file:bg-gray-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Или введите URL изображения</label>
+                    <Input
+                      name="image_url"
+                      value={currentCategory.image_url}
+                      onChange={handleChange}
+                      placeholder="https://example.com/image.jpg"
+                      className="bg-gray-700 border-gray-600 text-sm sm:text-base"
+                    />
+                  </div>
+
+                  {currentCategory.image_url && (
+                    <div className="mt-3">
+                      <label className="block text-sm font-medium mb-2">Превью:</label>
+                      <div className="w-32 h-20 rounded-lg overflow-hidden border border-gray-600">
+                        <img 
+                          src={currentCategory.image_url} 
+                          alt="Превью"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="flex flex-col sm:flex-row gap-2 pt-4">
-                <Button onClick={handleSave} className="flex-1 bg-green-600 hover:bg-green-700 text-sm sm:text-base">
-                  <Save className="w-4 h-4 mr-2" />
-                  {editMode === 'add' ? 'Добавить' : 'Сохранить'}
+                <Button 
+                  onClick={handleSave} 
+                  disabled={uploading}
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-sm sm:text-base disabled:opacity-50"
+                >
+                  {uploading ? (
+                    <>
+                      <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Загрузка...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      {editMode === 'add' ? 'Добавить' : 'Сохранить'}
+                    </>
+                  )}
                 </Button>
                 <Button onClick={closeModal} variant="outline" className="flex-1 text-sm sm:text-base">
                   Отмена
