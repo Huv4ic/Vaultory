@@ -205,7 +205,7 @@ const Index = () => {
     if (lowerGameName.includes('rocket league') || lowerGameName.includes('rocketleague')) return 'rocket_league';
     if (lowerGameName.includes('spotify')) return 'spotify';
     if (lowerGameName.includes('world of tanks') || lowerGameName.includes('worldoftanks') || lowerGameName.includes('wot')) return 'world_of_tanks';
-    if (lowerGameName.includes('telegram') || lowerGameName.includes('звезды') || lowerGameName.includes('stars')) return 'telegram_stars';
+    if (lowerGameName.includes('telegram') || lowerGameName.includes('звезды') || (lowerGameName.includes('stars') && !lowerGameName.includes('brawl'))) return 'telegram_stars';
     
     return null;
   };
@@ -262,7 +262,7 @@ const Index = () => {
       if (categoryName === 'rocket_league') return gameName.includes('rocket league') || gameName.includes('rocketleague');
       if (categoryName === 'spotify') return gameName.includes('spotify');
       if (categoryName === 'world_of_tanks') return gameName.includes('world of tanks') || gameName.includes('worldoftanks') || gameName.includes('wot');
-      if (categoryName === 'telegram_stars') return gameName.includes('telegram') || gameName.includes('звезды') || gameName.includes('stars');
+      if (categoryName === 'telegram_stars') return gameName.includes('telegram') || gameName.includes('звезды') || (gameName.includes('stars') && !gameName.includes('brawl'));
       
       return false;
     });
