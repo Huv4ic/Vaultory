@@ -35,6 +35,8 @@ const Index = () => {
     const fetchGameCategories = async () => {
       try {
         setCategoriesLoading(true);
+        console.log('Загружаем категории игр из базы данных...');
+        
         const { data, error } = await supabase
           .from('game_categories')
           .select('*')
@@ -42,9 +44,9 @@ const Index = () => {
 
         if (error) {
           console.error('Error fetching game categories:', error);
-          // Если ошибка, используем захардкоженные категории как fallback
           setGameCategories([]);
         } else {
+          console.log('Загружено категорий игр:', data?.length || 0);
           setGameCategories(data || []);
         }
       } catch (err) {
@@ -56,6 +58,11 @@ const Index = () => {
     };
 
     fetchGameCategories();
+    
+    // Обновляем категории каждые 30 секунд для синхронизации
+    const interval = setInterval(fetchGameCategories, 30000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре страницы
@@ -421,6 +428,36 @@ const Index = () => {
           
           {/* Крупные карточки категорий игр */}
           <div className="mb-16 sm:mb-20">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">Категории игр</h2>
+              <Button 
+                onClick={async () => {
+                  setCategoriesLoading(true);
+                  try {
+                    const { data, error } = await supabase
+                      .from('game_categories')
+                      .select('*')
+                      .order('name', { ascending: true });
+                    
+                    if (error) {
+                      console.error('Error refreshing categories:', error);
+                    } else {
+                      console.log('Обновлено категорий:', data?.length || 0);
+                      setGameCategories(data || []);
+                    }
+                  } catch (err) {
+                    console.error('Error refreshing categories:', err);
+                  } finally {
+                    setCategoriesLoading(false);
+                  }
+                }}
+                className="bg-[#a31212] hover:bg-[#8a0e0e] text-white px-4 py-2 rounded-lg text-sm"
+                disabled={categoriesLoading}
+              >
+                {categoriesLoading ? 'Обновление...' : 'Обновить'}
+              </Button>
+            </div>
+            
             {categoriesLoading ? (
               <div className="text-center py-8">
                 <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#a31212]"></div>
