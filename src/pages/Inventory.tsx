@@ -314,30 +314,29 @@ const Inventory = () => {
         <div className="space-y-8">
           {/* Заголовок секции */}
           <div className="text-center">
-            <h3 className="text-2xl md:text-3xl font-black text-white mb-4">
+            <h3 className="text-2xl md:text-3xl font-black text-[#f0f0f0] mb-4">
               Предметы в инвентаре
             </h3>
-            <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full mb-4"></div>
-            <div className="text-blue-300 font-medium">
-              Найдено предметов: <span className="text-white font-bold">{displayItems.length}</span>
+            <div className="w-24 h-1 bg-[#a31212] mx-auto rounded-full mb-4"></div>
+            <div className="text-[#a0a0a0] font-medium">
+              Найдено предметов: <span className="text-[#f0f0f0] font-bold">{displayItems.length}</span>
             </div>
           </div>
           
           {displayItems.length === 0 ? (
             <div className="group relative">
-              <div className="absolute -inset-1 bg-gray-500/20 rounded-3xl blur-xl"></div>
-              <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/90 backdrop-blur-xl rounded-3xl border border-gray-500/30 p-16 text-center hover:border-gray-400/50 transition-all duration-500 hover:scale-105">
-                <div className="w-24 h-24 mx-auto mb-6 bg-gray-500/20 rounded-2xl flex items-center justify-center border border-gray-500/30 group-hover:rotate-12 transition-all duration-500 shadow-xl shadow-gray-500/20">
-                  <Package className="w-12 h-12 text-gray-400" />
+              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-16 text-center hover:border-[#a31212] transition-all duration-300">
+                <div className="w-24 h-24 mx-auto mb-6 bg-[#a31212]/20 rounded-2xl flex items-center justify-center border border-[#a31212]/30">
+                  <Package className="w-12 h-12 text-[#a31212]" />
                 </div>
-                <h4 className="text-2xl font-black text-white mb-3">Инвентарь пуст</h4>
-                <p className="text-gray-400 text-lg mb-6 max-w-md mx-auto leading-relaxed">
+                <h4 className="text-2xl font-black text-[#f0f0f0] mb-3">Инвентарь пуст</h4>
+                <p className="text-[#a0a0a0] text-lg mb-6 max-w-md mx-auto leading-relaxed">
                   Откройте кейсы, чтобы получить уникальные предметы и начать свою коллекцию!
                 </p>
                 
                 <button
                   onClick={() => navigate('/cases')}
-                  className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-black rounded-2xl transition-all duration-300 hover:scale-105 shadow-xl shadow-blue-500/25"
+                  className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black rounded-2xl transition-all duration-300"
                 >
                   🎁 Открыть кейсы
                 </button>

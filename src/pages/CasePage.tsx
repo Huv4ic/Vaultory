@@ -398,13 +398,13 @@ const CasePage = () => {
           {caseItems.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {sortItemsByRarity(caseItems).map((item, index) => (
-                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative bg-[#181818] rounded-xl p-4 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 h-full flex flex-col">
+                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative bg-[#181818] rounded-xl p-3 sm:p-4 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 h-full flex flex-col">
                   {/* Изображение предмета */}
                   <div className="relative mx-auto flex-shrink-0">
                     <img
                       src={item.image_url || '/images/placeholder.jpg'}
                       alt={item.name}
-                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain mx-auto"
+                      className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain mx-auto"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
                       }}
@@ -416,20 +416,20 @@ const CasePage = () => {
                   </div>
 
                   {/* Название предмета */}
-                  <div className="flex-1 flex items-center justify-center min-h-[3rem]">
-                    <h3 className="font-semibold text-[#f0f0f0] text-sm sm:text-base leading-tight px-2 break-words overflow-hidden">
+                  <div className="flex-1 flex items-center justify-center min-h-[2.5rem] sm:min-h-[3rem] px-1">
+                    <h3 className="font-semibold text-[#f0f0f0] text-xs sm:text-sm leading-tight break-words overflow-hidden text-center line-clamp-2">
                       {item.name}
                     </h3>
                   </div>
 
                   {/* Редкость */}
-                  <div className={`inline-flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium flex-shrink-0 ${
+                  <div className={`inline-flex items-center justify-center px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 max-w-full ${
                     item.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
                     item.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' :
                     item.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
                     'bg-gray-500/20 text-gray-400 border border-gray-500/30'
                   }`}>
-                    {getRarityName(item.rarity)}
+                    <span className="truncate">{getRarityName(item.rarity)}</span>
                   </div>
                 </div>
               ))}
