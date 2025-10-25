@@ -71,93 +71,126 @@ const Index = () => {
     image: cat.image
   }));
 
-  // Крупные категории игр для отображения карточками
-  const gameCategoriesCards = [
-    {
-      id: 'tiktok',
+  // Получаем уникальные игры из товаров
+  const getAvailableGames = () => {
+    if (!products || products.length === 0) return [];
+    
+    const gameNames = products
+      .map(product => product.game)
+      .filter(game => game && game.trim() !== '')
+      .map(game => game.toLowerCase().trim());
+    
+    const uniqueGames = [...new Set(gameNames)];
+    return uniqueGames;
+  };
+
+  // Словарь всех возможных игр с их настройками
+  const allGameCategories = {
+    'tiktok': {
       name: 'TikTok',
-      image: '/api/placeholder/300/200',
       color: 'from-pink-500 to-purple-600',
       icon: '📱'
     },
-    {
-      id: 'standoff2',
+    'standoff2': {
       name: 'Standoff 2',
-      image: '/api/placeholder/300/200',
       color: 'from-blue-500 to-cyan-600',
       icon: '🔫'
     },
-    {
-      id: 'mobile_legends',
+    'mobile_legends': {
       name: 'Mobile Legends',
-      image: '/api/placeholder/300/200',
       color: 'from-orange-500 to-red-600',
       icon: '⚔️'
     },
-    {
-      id: 'pubg',
+    'pubg': {
       name: 'PUBG Mobile',
-      image: '/api/placeholder/300/200',
       color: 'from-green-500 to-teal-600',
       icon: '🎯'
     },
-    {
-      id: 'free_fire',
+    'free_fire': {
       name: 'Free Fire',
-      image: '/api/placeholder/300/200',
       color: 'from-red-500 to-pink-600',
       icon: '🔥'
     },
-    {
-      id: 'steam',
+    'steam': {
       name: 'Steam',
-      image: '/api/placeholder/300/200',
       color: 'from-gray-500 to-blue-600',
       icon: '🎮'
     },
-    {
-      id: 'roblox',
+    'roblox': {
       name: 'Roblox',
-      image: '/api/placeholder/300/200',
       color: 'from-purple-500 to-indigo-600',
       icon: '🧱'
     },
-    {
-      id: 'genshin',
+    'genshin': {
       name: 'Genshin Impact',
-      image: '/api/placeholder/300/200',
       color: 'from-yellow-500 to-orange-600',
       icon: '⭐'
     },
-    {
-      id: 'honkai',
+    'honkai': {
       name: 'Honkai Star Rail',
-      image: '/api/placeholder/300/200',
       color: 'from-pink-500 to-purple-600',
       icon: '🚀'
     },
-    {
-      id: 'zenless',
+    'zenless': {
       name: 'Zenless Zone Zero',
-      image: '/api/placeholder/300/200',
       color: 'from-cyan-500 to-blue-600',
       icon: '⚡'
     },
-    {
-      id: 'identity_v',
+    'identity_v': {
       name: 'Identity V',
-      image: '/api/placeholder/300/200',
       color: 'from-gray-600 to-purple-600',
       icon: '🎭'
     },
-    {
-      id: 'arena_breakout',
+    'arena_breakout': {
       name: 'Arena Breakout',
-      image: '/api/placeholder/300/200',
       color: 'from-green-600 to-blue-600',
       icon: '🛡️'
     }
-  ];
+  };
+
+  // Функция для сопоставления названия игры с категорией
+  const matchGameToCategory = (gameName: string) => {
+    const lowerGameName = gameName.toLowerCase();
+    
+    if (lowerGameName.includes('tiktok')) return 'tiktok';
+    if (lowerGameName.includes('standoff')) return 'standoff2';
+    if (lowerGameName.includes('mobile legends') || lowerGameName.includes('mobilelegends')) return 'mobile_legends';
+    if (lowerGameName.includes('pubg')) return 'pubg';
+    if (lowerGameName.includes('free fire') || lowerGameName.includes('freefire')) return 'free_fire';
+    if (lowerGameName.includes('steam')) return 'steam';
+    if (lowerGameName.includes('roblox')) return 'roblox';
+    if (lowerGameName.includes('genshin')) return 'genshin';
+    if (lowerGameName.includes('honkai')) return 'honkai';
+    if (lowerGameName.includes('zenless')) return 'zenless';
+    if (lowerGameName.includes('identity')) return 'identity_v';
+    if (lowerGameName.includes('arena')) return 'arena_breakout';
+    
+    return null;
+  };
+
+  // Создаем карточки только для игр, которые есть на сайте
+  const gameCategoriesCards = (() => {
+    const availableGames = getAvailableGames();
+    const usedCategories = new Set();
+    
+    const cards = [];
+    
+    availableGames.forEach(gameName => {
+      const categoryId = matchGameToCategory(gameName);
+      if (categoryId && allGameCategories[categoryId] && !usedCategories.has(categoryId)) {
+        usedCategories.add(categoryId);
+        cards.push({
+          id: categoryId,
+          name: allGameCategories[categoryId].name,
+          image: '/api/placeholder/300/200',
+          color: allGameCategories[categoryId].color,
+          icon: allGameCategories[categoryId].icon
+        });
+      }
+    });
+    
+    return cards;
+  })();
 
   // Фильтрация и поиск товаров
   let filteredProducts = products;
