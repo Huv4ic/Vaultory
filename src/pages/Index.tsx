@@ -593,7 +593,7 @@ const Index = () => {
                     <div className="relative group">
                       <Star className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212] absolute -left-8 sm:-left-10 top-1/2 transform -translate-y-1/2" />
                       <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#f0f0f0] tracking-wide text-center md:text-left px-2">
-                        {gameName.toUpperCase()}
+                        {gameName.toLowerCase().includes('telegram') || gameName.toLowerCase().includes('звезды') || gameName.toLowerCase().includes('stars') ? 'ЗВЕЗДЫ' : gameName.toUpperCase()}
                       </h3>
                     </div>
                   </div>
