@@ -254,37 +254,18 @@ const AdminGameCategories = () => {
   };
 
   const uploadImage = async (file: File): Promise<string> => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
-    const filePath = `game-categories/${fileName}`;
-
-    // Пробуем разные bucket'ы
-    const buckets = ['images', 'avatars', 'public'];
-    let lastError = null;
-
-    for (const bucket of buckets) {
-      try {
-        const { error: uploadError } = await supabase.storage
-          .from(bucket)
-          .upload(filePath, file);
-
-        if (!uploadError) {
-          const { data } = supabase.storage
-            .from(bucket)
-            .getPublicUrl(filePath);
-          return data.publicUrl;
-        }
-        lastError = uploadError;
-      } catch (err) {
-        lastError = err;
-        continue;
-      }
-    }
-
-    // Если все bucket'ы не работают, возвращаем base64
-    return new Promise((resolve) => {
+    // Просто конвертируем в base64 - никаких проблем с bucket'ами
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target?.result as string);
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        if (result) {
+          resolve(result);
+        } else {
+          reject(new Error('Не удалось загрузить изображение'));
+        }
+      };
+      reader.onerror = () => reject(new Error('Ошибка чтения файла'));
       reader.readAsDataURL(file);
     });
   };
@@ -364,6 +345,12 @@ const AdminGameCategories = () => {
 
         setCategories(prev => prev.map(c => c.id === editingId ? data : c));
         toast('Категория успешно обновлена!', 'success');
+        
+        // Обновляем список категорий
+        await fetchCategories();
+        
+        // Уведомляем сайт об изменении
+        localStorage.setItem('categoriesUpdated', Date.now().toString());
       } else {
         const newId = `category_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const { data, error } = await supabase
@@ -384,6 +371,12 @@ const AdminGameCategories = () => {
 
         setCategories(prev => [data, ...prev]);
         toast('Категория успешно добавлена!', 'success');
+        
+        // Обновляем список категорий
+        await fetchCategories();
+        
+        // Уведомляем сайт об изменении
+        localStorage.setItem('categoriesUpdated', Date.now().toString());
       }
 
       setUploading(false);
@@ -412,6 +405,9 @@ const AdminGameCategories = () => {
 
       setCategories(prev => prev.filter(c => c.id !== id));
       toast('Категория успешно удалена!', 'success');
+      
+      // Обновляем список категорий
+      await fetchCategories();
     } catch (err) {
       console.error('Error deleting category:', err);
       toast('Ошибка при удалении категории', 'error');

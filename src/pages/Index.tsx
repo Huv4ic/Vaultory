@@ -59,10 +59,20 @@ const Index = () => {
 
     fetchGameCategories();
     
-    // Обновляем категории каждые 30 секунд для синхронизации
-    const interval = setInterval(fetchGameCategories, 30000);
+    // Слушаем изменения в localStorage от админки
+    const handleStorageChange = () => {
+      const updated = localStorage.getItem('categoriesUpdated');
+      if (updated) {
+        console.log('Получено уведомление об обновлении категорий от админки');
+        fetchGameCategories();
+      }
+    };
     
-    return () => clearInterval(interval);
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре страницы
@@ -428,35 +438,6 @@ const Index = () => {
           
           {/* Крупные карточки категорий игр */}
           <div className="mb-16 sm:mb-20">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">Категории игр</h2>
-              <Button 
-                onClick={async () => {
-                  setCategoriesLoading(true);
-                  try {
-                    const { data, error } = await supabase
-                      .from('game_categories')
-                      .select('*')
-                      .order('name', { ascending: true });
-                    
-                    if (error) {
-                      console.error('Error refreshing categories:', error);
-                    } else {
-                      console.log('Обновлено категорий:', data?.length || 0);
-                      setGameCategories(data || []);
-                    }
-                  } catch (err) {
-                    console.error('Error refreshing categories:', err);
-                  } finally {
-                    setCategoriesLoading(false);
-                  }
-                }}
-                className="bg-[#a31212] hover:bg-[#8a0e0e] text-white px-4 py-2 rounded-lg text-sm"
-                disabled={categoriesLoading}
-              >
-                {categoriesLoading ? 'Обновление...' : 'Обновить'}
-              </Button>
-            </div>
             
             {categoriesLoading ? (
               <div className="text-center py-8">
