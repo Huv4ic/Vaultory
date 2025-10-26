@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingCart, User, LogOut, Settings, Package, Crown, Sparkles, Zap, Search } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, LogOut, Settings, Package, Crown, Sparkles, Zap, Search, Plus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useProducts } from '@/hooks/useProducts';
 import LanguageSwitcher from './LanguageSwitcher';
-import BalanceDisplay from './BalanceDisplay';
+import TopUpModal from './TopUpModal';
 import { Input } from './ui/input';
 
 const Header = () => {
@@ -15,6 +15,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [isTopUpModalOpen, setIsTopUpModalOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const { telegramUser, signOutTelegram, balance, profile } = useAuth();
   const { items } = useCart();
@@ -198,7 +199,10 @@ const Header = () => {
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextElementSibling.style.display = 'flex';
+                              const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                              if (nextElement) {
+                                nextElement.style.display = 'flex';
+                              }
                             }}
                           />
                         ) : null}
@@ -278,7 +282,6 @@ const Header = () => {
             {/* Профиль пользователя */}
             {telegramUser ? (
               <div className="hidden md:flex items-center space-x-3">
-                <BalanceDisplay balance={balance} />
                 <div className="relative group">
                   <button className="flex items-center space-x-2 p-2 rounded-xl bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
                     {profile?.avatar_url ? (
@@ -296,29 +299,50 @@ const Header = () => {
                   </button>
                   
                   {/* Выпадающее меню профиля */}
-                  <div className="absolute right-0 mt-2 w-48 bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                    <div className="p-2">
-                      <Link 
-                        to="/profile" 
-                        className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
-                      >
-                        <Settings className="w-4 h-4 text-[#a31212] group-hover/item:text-[#8a0f0f]" />
-                        <span className="text-[#a0a0a0] group-hover/item:text-[#f0f0f0] text-sm">{t('Профиль')}</span>
-                      </Link>
-                      <Link 
-                        to="/inventory" 
-                        className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
-                      >
-                        <Package className="w-4 h-4 text-[#a31212] group-hover/item:text-[#8a0f0f]" />
-                        <span className="text-[#a0a0a0] group-hover/item:text-[#f0f0f0] text-sm">Инвентарь</span>
-                      </Link>
-                      <button 
-                        onClick={handleLogout}
-                        className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
-                      >
-                        <LogOut className="w-4 h-4 text-[#a31212] group-hover/item:text-[#8a0f0f]" />
-                        <span className="text-[#a31212] group-hover/item:text-[#8a0f0f] text-sm">{t('Выйти')}</span>
-                      </button>
+                  <div className="absolute right-0 mt-2 w-56 bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <div className="p-3">
+                      {/* Баланс */}
+                      <div className="mb-3 pb-3 border-b border-[#1c1c1c]">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[#a0a0a0] text-sm">Баланс</span>
+                          <div className="flex items-center space-x-1">
+                            <span className="text-[#f0f0f0] font-bold text-lg">{balance?.toLocaleString() || '0'}</span>
+                            <span className="text-[#f0f0f0] text-sm">₽</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setIsTopUpModalOpen(true)}
+                          className="w-full bg-[#a31212] hover:bg-[#8a0f0f] text-white font-semibold py-2 px-3 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+                        >
+                          <Plus className="w-4 h-4" />
+                          <span>Пополнить</span>
+                        </button>
+                      </div>
+                      
+                      {/* Меню */}
+                      <div className="space-y-1">
+                        <Link 
+                          to="/profile" 
+                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
+                        >
+                          <Settings className="w-4 h-4 text-[#a31212] group-hover/item:text-[#8a0f0f]" />
+                          <span className="text-[#a0a0a0] group-hover/item:text-[#f0f0f0] text-sm">{t('Профиль')}</span>
+                        </Link>
+                        <Link 
+                          to="/inventory" 
+                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
+                        >
+                          <Package className="w-4 h-4 text-[#a31212] group-hover/item:text-[#8a0f0f]" />
+                          <span className="text-[#a0a0a0] group-hover/item:text-[#f0f0f0] text-sm">Инвентарь</span>
+                        </Link>
+                        <button 
+                          onClick={handleLogout}
+                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
+                        >
+                          <LogOut className="w-4 h-4 text-[#a31212] group-hover/item:text-[#8a0f0f]" />
+                          <span className="text-[#a31212] group-hover/item:text-[#8a0f0f] text-sm">{t('Выйти')}</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -369,7 +393,20 @@ const Header = () => {
                   </div>
                 </div>
                 <div className="mb-2">
-                  <BalanceDisplay balance={balance} />
+                  <div className="flex items-center justify-between p-3 bg-[#181818] rounded-lg border border-[#1c1c1c]">
+                    <span className="text-[#a0a0a0] text-sm">Баланс</span>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-[#f0f0f0] font-bold text-lg">{balance?.toLocaleString() || '0'}</span>
+                      <span className="text-[#f0f0f0] text-sm">₽</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setIsTopUpModalOpen(true)}
+                    className="w-full mt-2 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-semibold py-2 px-3 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Пополнить</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -436,6 +473,12 @@ const Header = () => {
           </div>
         )}
       </div>
+      
+      {/* Модальное окно пополнения */}
+      <TopUpModal 
+        isOpen={isTopUpModalOpen} 
+        onClose={() => setIsTopUpModalOpen(false)} 
+      />
     </header>
   );
 };
