@@ -229,6 +229,12 @@ const Index = () => {
     console.log('Фильтруем товары по категории:', selectedGameCategory);
     console.log('Всего товаров до фильтрации:', filteredProducts.length);
     
+    // Отладка: показываем все товары и их game/game_category_id
+    console.log('Все товары для отладки:');
+    filteredProducts.forEach((product, index) => {
+      console.log(`${index + 1}. "${product.name}" - game: "${product.game}", game_category_id: "${product.game_category_id}"`);
+    });
+    
     filteredProducts = filteredProducts.filter(product => {
       // Сначала проверяем game_category_id (приоритет)
       if (product.game_category_id) {
@@ -240,7 +246,7 @@ const Index = () => {
       const gameName = product.game || '';
       const matchedCategory = matchGameToCategory(gameName);
       const matches = matchedCategory === selectedGameCategory;
-      console.log(`Товар "${product.name}" с game="${gameName}" -> категория="${matchedCategory}" ${matches ? 'ПОДХОДИТ' : 'НЕ ПОДХОДИТ'}`);
+      console.log(`Товар "${product.name}" с game="${gameName}" -> категория="${matchedCategory}" (ищем: "${selectedGameCategory}") ${matches ? 'ПОДХОДИТ' : 'НЕ ПОДХОДИТ'}`);
       return matches;
     });
     
