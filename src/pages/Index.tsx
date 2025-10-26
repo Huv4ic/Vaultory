@@ -251,6 +251,15 @@ const Index = () => {
     });
     
     console.log('Товаров после фильтрации:', filteredProducts.length);
+    console.log('Отфильтрованные товары:', filteredProducts.map(p => ({ name: p.name, game: p.game, game_category_id: p.game_category_id })));
+    
+    // Проверяем, что filteredProducts действительно содержит товары
+    if (filteredProducts.length > 0) {
+      console.log('✅ Товары найдены после фильтрации!');
+      console.log('Первый товар:', filteredProducts[0]);
+    } else {
+      console.log('❌ Товары не найдены после фильтрации');
+    }
   }
 
 
@@ -262,15 +271,24 @@ const Index = () => {
   }
 
   // Сортировка по рейтингу (если есть) или по популярности
+  console.log('Товаров перед сортировкой:', filteredProducts.length);
   filteredProducts = filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  console.log('Товаров после сортировки:', filteredProducts.length);
 
   // Группируем товары по играм - показываем все сразу
-  const groupedProducts = filteredProducts.reduce((groups, product) => {
+  console.log('Начинаем группировку товаров. filteredProducts.length:', filteredProducts.length);
+  console.log('filteredProducts перед группировкой:', filteredProducts);
+  
+  const groupedProducts = filteredProducts.reduce((groups, product, index) => {
     const game = product.game || 'Товары'; // Если нет игры, относим к "Товары"
+    console.log(`Группируем товар ${index + 1}: "${product.name}" -> группа: "${game}"`);
+    
     if (!groups[game]) {
       groups[game] = [];
+      console.log(`Создаем новую группу: "${game}"`);
     }
     groups[game].push(product);
+    console.log(`Добавлен в группу "${game}". Размер группы: ${groups[game].length}`);
     return groups;
   }, {} as Record<string, Product[]>);
 
