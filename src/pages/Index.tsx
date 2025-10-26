@@ -455,8 +455,7 @@ const Index = () => {
 
 
 
-          {/* Товары по играм - показываем только если выбрана категория */}
-          {selectedGameCategory !== 'all' && (
+          {/* Товары по играм - показываем всегда, но фильтруем по категории */}
           <div className="space-y-16 sm:space-y-20">
             {Object.keys(groupedProducts).length === 0 ? (
               /* Сообщение о том, что товаров нет в наличии */
@@ -572,7 +571,6 @@ const Index = () => {
             ))
             )}
           </div>
-          )}
         </div>
       </section>
 
