@@ -59,11 +59,17 @@ const Index = () => {
 
     fetchGameCategories();
     
-    // Синхронизируем searchQuery с URL параметрами
-    const searchFromUrl = searchParams.get('search') || '';
-    if (searchFromUrl !== searchQuery) {
-      setSearchQuery(searchFromUrl);
-    }
+  // Синхронизируем searchQuery и selectedGameCategory с URL параметрами
+  const searchFromUrl = searchParams.get('search') || '';
+  const categoryFromUrl = searchParams.get('category') || 'all';
+  
+  if (searchFromUrl !== searchQuery) {
+    setSearchQuery(searchFromUrl);
+  }
+  
+  if (categoryFromUrl !== selectedGameCategory) {
+    setSelectedGameCategory(categoryFromUrl);
+  }
     
     // Слушаем изменения в localStorage от админки
     const handleStorageChange = () => {
@@ -237,8 +243,21 @@ const Index = () => {
   // Фильтрация товаров - разделяем поиск и категории
   let filteredProducts = [...products]; // Создаем копию массива
 
-  // 1. ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ (только если НЕ используется поиск)
-  if (!searchQuery.trim() && selectedGameCategory !== 'all') {
+  // 1. ПОИСК ПО НАЗВАНИЮ (приоритет над категориями)
+  if (searchQuery.trim()) {
+    console.log('=== ПОИСК ПО НАЗВАНИЮ ===');
+    console.log('Поисковый запрос:', searchQuery);
+    console.log('Всего товаров до поиска:', filteredProducts.length);
+    
+    filteredProducts = filteredProducts.filter(product =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (product.game && product.game.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+    
+    console.log('Товаров после поиска:', filteredProducts.length);
+  }
+  // 2. ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ (только если НЕ используется поиск)
+  else if (selectedGameCategory !== 'all') {
     console.log('=== ФИЛЬТРАЦИЯ ПО КАТЕГОРИИ ===');
     console.log('selectedGameCategory:', selectedGameCategory);
     console.log('Всего товаров до фильтрации по категории:', filteredProducts.length);
@@ -259,23 +278,9 @@ const Index = () => {
     });
     
     console.log('Товаров после фильтрации по категории:', filteredProducts.length);
-  } else if (!searchQuery.trim() && selectedGameCategory === 'all') {
-    console.log('=== ПОКАЗЫВАЕМ ВСЕ ТОВАРЫ (selectedGameCategory = all) ===');
+  } else {
+    console.log('=== ПОКАЗЫВАЕМ ВСЕ ТОВАРЫ (selectedGameCategory = all, searchQuery пустой) ===');
     console.log('Всего товаров для отображения:', filteredProducts.length);
-  }
-
-  // 2. ПОИСК ПО НАЗВАНИЮ (только если есть поисковый запрос)
-  if (searchQuery.trim()) {
-    console.log('=== ПОИСК ПО НАЗВАНИЮ ===');
-    console.log('Поисковый запрос:', searchQuery);
-    console.log('Всего товаров до поиска:', filteredProducts.length);
-    
-    filteredProducts = filteredProducts.filter(product =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (product.game && product.game.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-    
-    console.log('Товаров после поиска:', filteredProducts.length);
   }
 
   // 3. СОРТИРОВКА
@@ -439,7 +444,13 @@ const Index = () => {
                 {gameCategoriesCards.map((category, index) => (
                 <div
                 key={category.id}
-                  onClick={() => setSelectedGameCategory(selectedGameCategory === category.id ? 'all' : category.id)}
+                  onClick={() => {
+                    // Очищаем поиск при выборе категории
+                    setSearchQuery('');
+                    setSelectedGameCategory(selectedGameCategory === category.id ? 'all' : category.id);
+                    // Обновляем URL
+                    navigate(`/?category=${selectedGameCategory === category.id ? 'all' : category.id}`);
+                  }}
                   className={`group relative cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
                     selectedGameCategory === category.id ? 'scale-105 -translate-y-2' : ''
                 }`}
@@ -568,6 +579,7 @@ const Index = () => {
                       onClick={() => {
                         setSelectedGameCategory('all');
                         setSearchQuery('');
+                        navigate('/');
                       }}
                       className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#a31212]/20"
                     >
