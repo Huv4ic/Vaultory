@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,9 +16,8 @@ import TelegramStats from '@/components/TelegramStats';
 import { supabase } from '@/integrations/supabase/client';
 
 const Index = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('popular');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedGameCategory, setSelectedGameCategory] = useState('all');
   const [gameCategories, setGameCategories] = useState<any[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
@@ -59,6 +58,12 @@ const Index = () => {
     };
 
     fetchGameCategories();
+    
+    // Синхронизируем searchQuery с URL параметрами
+    const searchFromUrl = searchParams.get('search') || '';
+    if (searchFromUrl !== searchQuery) {
+      setSearchQuery(searchFromUrl);
+    }
     
     // Слушаем изменения в localStorage от админки
     const handleStorageChange = () => {
@@ -241,13 +246,6 @@ const Index = () => {
     console.log('Товаров после фильтрации:', filteredProducts.length);
   }
 
-  // Фильтр по категории товара
-  if (selectedCategory !== 'all') {
-    filteredProducts = filteredProducts.filter(product => {
-        const productCategory = categories.find(cat => cat.id === product.category_id);
-        return productCategory && productCategory.id === selectedCategory;
-      });
-  }
 
   // Поиск по названию
   if (searchQuery.trim()) {
@@ -256,23 +254,8 @@ const Index = () => {
     );
   }
 
-  // Сортировка
-  switch (sortBy) {
-    case 'price_asc':
-      filteredProducts = filteredProducts.sort((a, b) => a.price - b.price);
-      break;
-    case 'price_desc':
-      filteredProducts = filteredProducts.sort((a, b) => b.price - a.price);
-      break;
-    case 'newest':
-      filteredProducts = filteredProducts.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
-      break;
-    case 'popular':
-    default:
-      // Сортировка по рейтингу (если есть) или по популярности
-      filteredProducts = filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      break;
-  }
+  // Сортировка по рейтингу (если есть) или по популярности
+  filteredProducts = filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
 
   // Группируем товары по играм - показываем все сразу
   const groupedProducts = filteredProducts.reduce((groups, product) => {
@@ -380,56 +363,6 @@ const Index = () => {
           {/* Поиск и фильтры */}
           <div className="max-w-4xl mx-auto mb-12 sm:mb-16">
             <div className="space-y-6">
-              {/* Поиск */}
-              <div className="group relative">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#a31212]" />
-                  <Input
-                    type="text"
-                    placeholder="Поиск товаров..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
-                  />
-                </div>
-              </div>
-
-              {/* Фильтры */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Категории */}
-                <div className="group relative">
-                  <div className="relative">
-                    <select
-                      value={selectedCategory}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="w-full px-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
-                    >
-                      <option value="all">Все категории</option>
-                      {translatedCategories.map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {category.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Сортировка */}
-                <div className="group relative">
-                  <div className="relative">
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="w-full px-4 py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] rounded-2xl focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-lg hover:border-[#a31212]/50"
-                    >
-                      <option value="popular">По популярности</option>
-                      <option value="price_asc">По цене (возрастание)</option>
-                      <option value="price_desc">По цене (убывание)</option>
-                      <option value="newest">По дате</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -447,35 +380,8 @@ const Index = () => {
           
           {/* Крупные карточки категорий игр */}
           <div className="mb-16 sm:mb-20">
-            <div className="flex justify-between items-center mb-6">
+            <div className="mb-6">
               <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">Категории игр</h2>
-              <Button 
-                onClick={async () => {
-                  console.log('Принудительное обновление категорий...');
-                  setCategoriesLoading(true);
-                  try {
-                    const { data, error } = await supabase
-                      .from('game_categories')
-                      .select('*')
-                      .order('name', { ascending: true });
-                    
-                    if (error) {
-                      console.error('Error refreshing categories:', error);
-                    } else {
-                      console.log('Принудительно обновлено категорий:', data?.length || 0);
-                      setGameCategories(data || []);
-                    }
-                  } catch (err) {
-                    console.error('Error refreshing categories:', err);
-                  } finally {
-                    setCategoriesLoading(false);
-                  }
-                }}
-                className="bg-[#a31212] hover:bg-[#8a0e0e] text-white px-4 py-2 rounded-lg text-sm"
-                disabled={categoriesLoading}
-              >
-                {categoriesLoading ? 'Обновление...' : '🔄 Обновить'}
-              </Button>
             </div>
             
             {categoriesLoading ? (
@@ -593,10 +499,8 @@ const Index = () => {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <button
                       onClick={() => {
-                        setSelectedCategory('all');
                         setSelectedGameCategory('all');
                         setSearchQuery('');
-                        setSortBy('popular');
                       }}
                       className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#a31212]/20"
                     >

@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingCart, User, LogOut, Settings, Package, Crown, Sparkles, Zap } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, LogOut, Settings, Package, Crown, Sparkles, Zap, Search } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
 import LanguageSwitcher from './LanguageSwitcher';
 import BalanceDisplay from './BalanceDisplay';
+import { Input } from './ui/input';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { telegramUser, signOutTelegram, balance, profile } = useAuth();
   const { items } = useCart();
   const { t } = useLanguage();
@@ -26,6 +28,14 @@ const Header = () => {
   const handleLogout = () => {
     signOutTelegram();
     navigate('/');
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Переходим на главную страницу с параметром поиска
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   return (
@@ -84,6 +94,20 @@ const Header = () => {
               {t('Поддержка')}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#a31212] group-hover:w-full transition-all duration-300"></span>
             </Link>
+            
+            {/* Поисковая строка */}
+            <form onSubmit={handleSearch} className="hidden lg:block">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#a31212]" />
+                <Input
+                  type="text"
+                  placeholder="Поиск товаров..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-48 pl-10 pr-4 py-2 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-lg focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-sm"
+                />
+              </div>
+            </form>
           </nav>
 
           {/* Правая часть */}
