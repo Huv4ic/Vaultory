@@ -35,6 +35,69 @@ const AdminProducts = () => {
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
+  // Функция синхронизации товара с таблицей products
+  const syncProductToMainTable = async (productData: any) => {
+    try {
+      console.log('Синхронизируем товар с основной таблицей:', productData);
+      
+      // Проверяем, существует ли товар в основной таблице
+      const { data: existingProduct, error: checkError } = await supabase
+        .from('products')
+        .select('id')
+        .eq('id', productData.id)
+        .single();
+
+      if (checkError && checkError.code !== 'PGRST116') {
+        console.error('Ошибка проверки существования товара:', checkError);
+        return;
+      }
+
+      const productToSync = {
+        id: productData.id,
+        name: productData.name,
+        price: productData.price,
+        original_price: productData.original_price,
+        image_url: productData.image_url,
+        category: productData.category,
+        game: productData.game,
+        game_category_id: productData.game_category_id,
+        rating: productData.rating,
+        sales: productData.sales,
+        description: productData.description,
+        features: productData.features,
+        created_at: productData.created_at,
+        updated_at: productData.updated_at
+      };
+
+      if (existingProduct) {
+        // Обновляем существующий товар
+        const { error: updateError } = await supabase
+          .from('products')
+          .update(productToSync)
+          .eq('id', productData.id);
+
+        if (updateError) {
+          console.error('Ошибка обновления товара в основной таблице:', updateError);
+        } else {
+          console.log('Товар успешно обновлен в основной таблице');
+        }
+      } else {
+        // Создаем новый товар
+        const { error: insertError } = await supabase
+          .from('products')
+          .insert([productToSync]);
+
+        if (insertError) {
+          console.error('Ошибка создания товара в основной таблице:', insertError);
+        } else {
+          console.log('Товар успешно создан в основной таблице');
+        }
+      }
+    } catch (err) {
+      console.error('Ошибка синхронизации товара:', err);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchGameCategories();
@@ -156,6 +219,9 @@ const AdminProducts = () => {
 
         setProducts(prev => prev.map(p => p.id === editingId ? data : p));
         toast('Товар успешно обновлен!', 'success');
+        
+        // Синхронизируем с основной таблицей
+        await syncProductToMainTable(data);
       } else {
         // Создание нового товара
         const newId = `product_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -190,6 +256,9 @@ const AdminProducts = () => {
 
         setProducts(prev => [data, ...prev]);
         toast('Товар успешно добавлен!', 'success');
+        
+        // Синхронизируем с основной таблицей
+        await syncProductToMainTable(data);
       }
 
       closeModal();
@@ -216,6 +285,12 @@ const AdminProducts = () => {
 
       setProducts(prev => prev.filter(p => p.id !== id));
       toast('Товар успешно удален!', 'success');
+      
+      // Удаляем из основной таблицы
+      await supabase
+        .from('products')
+        .delete()
+        .eq('id', id);
     } catch (err) {
       console.error('Error deleting product:', err);
       toast('Ошибка при удалении товара', 'error');
