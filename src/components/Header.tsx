@@ -229,7 +229,7 @@ const Header = () => {
                       
                       {/* Цена */}
                       <div className="text-[#a31212] text-sm font-bold">
-                        {product.price}₽
+                        {product.price}₴
                       </div>
                     </div>
                   ))}
@@ -307,7 +307,7 @@ const Header = () => {
                           <span className="text-[#a0a0a0] text-sm">Баланс</span>
                           <div className="flex items-center space-x-1">
                             <span className="text-[#f0f0f0] font-bold text-lg">{balance?.toLocaleString() || '0'}</span>
-                            <span className="text-[#f0f0f0] text-sm">₽</span>
+                            <span className="text-[#f0f0f0] text-sm">₴</span>
                           </div>
                         </div>
                         <button
@@ -397,7 +397,7 @@ const Header = () => {
                     <span className="text-[#a0a0a0] text-sm">Баланс</span>
                     <div className="flex items-center space-x-1">
                       <span className="text-[#f0f0f0] font-bold text-lg">{balance?.toLocaleString() || '0'}</span>
-                      <span className="text-[#f0f0f0] text-sm">₽</span>
+                      <span className="text-[#f0f0f0] text-sm">₴</span>
                     </div>
                   </div>
                   <button

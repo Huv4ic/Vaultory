@@ -170,7 +170,7 @@ const AdminOrders = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-white">
-              {orders?.reduce((sum, order) => sum + order.total_amount, 0) || 0}₽
+              {orders?.reduce((sum, order) => sum + order.total_amount, 0) || 0}₴
             </div>
           </CardContent>
         </Card>
@@ -209,7 +209,7 @@ const AdminOrders = () => {
                     {order.products?.name || 'Товар удален'}
                   </TableCell>
                   <TableCell className="text-gray-300">
-                    {order.total_amount}₽
+                    {order.total_amount}₴
                   </TableCell>
                   <TableCell>
                     {getStatusBadge(order.status)}
@@ -246,7 +246,7 @@ const AdminOrders = () => {
                                 <p>Пользователь: {selectedOrder.profiles?.username}</p>
                                 <p>Товар: {selectedOrder.products?.name}</p>
                                 <p>Количество: {selectedOrder.quantity}</p>
-                                <p>Сумма: {selectedOrder.total_amount}₽</p>
+                                <p>Сумма: {selectedOrder.total_amount}₴</p>
                                 <p>Способ оплаты: {selectedOrder.payment_method || 'Не указан'}</p>
                               </div>
                               
