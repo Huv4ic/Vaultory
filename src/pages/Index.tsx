@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
@@ -21,6 +21,7 @@ const Index = () => {
   const [selectedGameCategory, setSelectedGameCategory] = useState('all');
   const [gameCategories, setGameCategories] = useState<any[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const productsSectionRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
@@ -70,6 +71,18 @@ const Index = () => {
   if (categoryFromUrl !== selectedGameCategory) {
     setSelectedGameCategory(categoryFromUrl);
   }
+
+  // Автоматический скролл при изменении URL параметров (только для категорий)
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category') || 'all';
+    
+    // Скроллим только если выбрана конкретная категория
+    if (categoryFromUrl !== 'all' && categoryFromUrl !== selectedGameCategory) {
+      setTimeout(() => {
+        scrollToProducts();
+      }, 200); // Увеличиваем задержку для полного обновления состояния
+    }
+  }, [searchParams]);
     
     // Слушаем изменения в localStorage от админки
     const handleStorageChange = () => {
@@ -359,6 +372,16 @@ const Index = () => {
     navigate('/cart');
   };
 
+  // Функция для скролла к товарам
+  const scrollToProducts = () => {
+    if (productsSectionRef.current) {
+      productsSectionRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center">
@@ -447,9 +470,16 @@ const Index = () => {
                   onClick={() => {
                     // Очищаем поиск при выборе категории
                     setSearchQuery('');
-                    setSelectedGameCategory(selectedGameCategory === category.id ? 'all' : category.id);
+                    const newCategory = selectedGameCategory === category.id ? 'all' : category.id;
+                    setSelectedGameCategory(newCategory);
                     // Обновляем URL
-                    navigate(`/?category=${selectedGameCategory === category.id ? 'all' : category.id}`);
+                    navigate(`/?category=${newCategory}`);
+                    // Скроллим к товарам только если выбрана конкретная категория
+                    if (newCategory !== 'all') {
+                      setTimeout(() => {
+                        scrollToProducts();
+                      }, 100); // Небольшая задержка для обновления состояния
+                    }
                   }}
                   className={`group relative cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
                     selectedGameCategory === category.id ? 'scale-105 -translate-y-2' : ''
@@ -512,7 +542,7 @@ const Index = () => {
 
 
           {/* Товары по играм - показываем в зависимости от режима */}
-          <div className="space-y-16 sm:space-y-20">
+          <div ref={productsSectionRef} className="space-y-16 sm:space-y-20">
             {(() => {
               console.log('=== ПРОВЕРКА ОТОБРАЖЕНИЯ ТОВАРОВ ===');
               console.log('- Object.keys(groupedProducts).length:', Object.keys(groupedProducts).length);
