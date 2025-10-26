@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ShoppingCart, User, LogOut, Settings, Package, Crown, Sparkles, Zap, Search } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useProducts } from '@/hooks/useProducts';
 import LanguageSwitcher from './LanguageSwitcher';
 import BalanceDisplay from './BalanceDisplay';
 import { Input } from './ui/input';
@@ -12,9 +13,13 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const searchRef = useRef<HTMLDivElement>(null);
   const { telegramUser, signOutTelegram, balance, profile } = useAuth();
   const { items } = useCart();
   const { t } = useLanguage();
+  const { products } = useProducts();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,13 +35,68 @@ const Header = () => {
     navigate('/');
   };
 
+  // Фильтруем товары по поисковому запросу
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (product.game && product.game.toLowerCase().includes(searchQuery.toLowerCase()))
+  ).slice(0, 8); // Показываем максимум 8 товаров
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       // Переходим на главную страницу с параметром поиска
       navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+      setShowSearchDropdown(false);
     }
   };
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+    setShowSearchDropdown(false);
+    setSearchQuery('');
+  };
+
+  const handleKeyDown = (e) => {
+    if (!showSearchDropdown) return;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedIndex(prev => 
+          prev < filteredProducts.length - 1 ? prev + 1 : prev
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedIndex(prev => prev > 0 ? prev - 1 : -1);
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (selectedIndex >= 0 && filteredProducts[selectedIndex]) {
+          handleProductClick(filteredProducts[selectedIndex].id);
+        } else if (searchQuery.trim()) {
+          handleSearch(e);
+        }
+        break;
+      case 'Escape':
+        setShowSearchDropdown(false);
+        setSelectedIndex(-1);
+        break;
+    }
+  };
+
+  // Закрываем dropdown при клике вне его
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSearchDropdown(false);
+        setSelectedIndex(-1);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -95,19 +155,95 @@ const Header = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#a31212] group-hover:w-full transition-all duration-300"></span>
             </Link>
             
-            {/* Поисковая строка */}
-            <form onSubmit={handleSearch} className="hidden lg:block">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#a31212]" />
-                <Input
-                  type="text"
-                  placeholder="Поиск товаров..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-48 pl-10 pr-4 py-2 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-lg focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-sm"
-                />
-              </div>
-            </form>
+            {/* Поисковая строка с выпадающим меню */}
+            <div ref={searchRef} className="hidden lg:block relative">
+              <form onSubmit={handleSearch}>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#a31212]" />
+                  <Input
+                    type="text"
+                    placeholder="Найти игру или сервис"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      setShowSearchDropdown(e.target.value.length > 0);
+                      setSelectedIndex(-1);
+                    }}
+                    onFocus={() => setShowSearchDropdown(searchQuery.length > 0)}
+                    onKeyDown={handleKeyDown}
+                    className="w-64 pl-10 pr-4 py-2 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-lg focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-sm"
+                  />
+                </div>
+              </form>
+
+              {/* Выпадающее меню с товарами */}
+              {showSearchDropdown && filteredProducts.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-[#181818] border border-[#1c1c1c] rounded-lg shadow-xl z-50 max-h-80 overflow-y-auto">
+                  {filteredProducts.map((product, index) => (
+                    <div
+                      key={product.id}
+                      onClick={() => handleProductClick(product.id)}
+                      className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors duration-200 ${
+                        index === selectedIndex 
+                          ? 'bg-[#1c1c1c]' 
+                          : 'hover:bg-[#1c1c1c]'
+                      }`}
+                    >
+                      {/* Картинка товара */}
+                      <div className="w-8 h-8 flex-shrink-0 rounded overflow-hidden">
+                        {product.image_url ? (
+                          <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              e.currentTarget.nextElementSibling.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <div 
+                          className={`w-full h-full bg-[#2a2a2a] flex items-center justify-center text-[#a0a0a0] text-xs ${
+                            product.image_url ? 'hidden' : 'flex'
+                          }`}
+                        >
+                          🎮
+                        </div>
+                      </div>
+                      
+                      {/* Название товара */}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[#f0f0f0] text-sm font-medium truncate">
+                          {product.name}
+                        </p>
+                        {product.game && (
+                          <p className="text-[#a0a0a0] text-xs truncate">
+                            {product.game}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {/* Цена */}
+                      <div className="text-[#a31212] text-sm font-bold">
+                        {product.price}₽
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {/* Кнопка "Показать все результаты" */}
+                  {searchQuery.trim() && (
+                    <div className="border-t border-[#1c1c1c]">
+                      <button
+                        onClick={() => handleSearch({ preventDefault: () => {} })}
+                        className="w-full px-4 py-3 text-left text-[#a31212] hover:bg-[#1c1c1c] transition-colors duration-200 text-sm font-medium"
+                      >
+                        Показать все результаты для "{searchQuery}"
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* Правая часть */}
