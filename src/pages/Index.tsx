@@ -223,9 +223,16 @@ const Index = () => {
   // Отладка: проверяем что загружается
   console.log('=== ОТЛАДКА ТОВАРОВ ===');
   console.log('products.length:', products.length);
-  console.log('products:', products);
   console.log('loading:', loading);
   console.log('error:', error);
+  
+  // Показываем первые 5 товаров для отладки
+  if (products.length > 0) {
+    console.log('Первые 5 товаров:');
+    products.slice(0, 5).forEach((product, index) => {
+      console.log(`${index + 1}. "${product.name}" - game: "${product.game}", game_category_id: "${product.game_category_id}"`);
+    });
+  }
 
   // Фильтрация товаров - разделяем поиск и категории
   let filteredProducts = [...products]; // Создаем копию массива
@@ -252,6 +259,9 @@ const Index = () => {
     });
     
     console.log('Товаров после фильтрации по категории:', filteredProducts.length);
+  } else if (!searchQuery.trim() && selectedGameCategory === 'all') {
+    console.log('=== ПОКАЗЫВАЕМ ВСЕ ТОВАРЫ (selectedGameCategory = all) ===');
+    console.log('Всего товаров для отображения:', filteredProducts.length);
   }
 
   // 2. ПОИСК ПО НАЗВАНИЮ (только если есть поисковый запрос)
@@ -274,8 +284,8 @@ const Index = () => {
   console.log('Товаров после сортировки:', filteredProducts.length);
 
   // Группируем товары по играм - показываем все сразу
+  console.log('=== ГРУППИРОВКА ТОВАРОВ ===');
   console.log('Начинаем группировку товаров. filteredProducts.length:', filteredProducts.length);
-  console.log('filteredProducts перед группировкой:', filteredProducts);
   
   const groupedProducts = filteredProducts.reduce((groups, product, index) => {
     const game = product.game || 'Товары'; // Если нет игры, относим к "Товары"
@@ -289,9 +299,18 @@ const Index = () => {
     console.log(`Добавлен в группу "${game}". Размер группы: ${groups[game].length}`);
     return groups;
   }, {} as Record<string, Product[]>);
-
+  
+  console.log('=== РЕЗУЛЬТАТ ГРУППИРОВКИ ===');
   console.log('groupedProducts:', groupedProducts);
   console.log('Object.keys(groupedProducts).length:', Object.keys(groupedProducts).length);
+  
+  // Показываем каждую группу
+  Object.entries(groupedProducts).forEach(([gameName, gameProducts]) => {
+    console.log(`Группа "${gameName}": ${gameProducts.length} товаров`);
+    gameProducts.forEach((product, index) => {
+      console.log(`  ${index + 1}. "${product.name}"`);
+    });
+  });
 
   const faqItems = [
     { 
@@ -493,7 +512,14 @@ const Index = () => {
               const hasProducts = Object.keys(groupedProducts).length > 0 && filteredProducts.length > 0;
               console.log('- hasProducts:', hasProducts);
               
-              return !hasProducts;
+              // Показываем товары если есть хотя бы одна группа
+              if (hasProducts) {
+                console.log('✅ Товары будут отображены');
+                return false; // Показываем товары
+              } else {
+                console.log('❌ Товары НЕ будут отображены');
+                return true; // Показываем сообщение "нет товаров"
+              }
             })() ? (
               /* Сообщение о том, что товаров нет в наличии */
               <div className="text-center py-16 sm:py-20">
@@ -553,64 +579,73 @@ const Index = () => {
                 </div>
               </div>
             ) : (
-              Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => (
-              <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
-                {/* Заголовок игры */}
-                <div className="mb-8 sm:mb-12 relative">
-                  <div className="flex items-center justify-center md:justify-start mb-6 sm:mb-8">
-                    <div className="relative group">
-                      <Star className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212] absolute -left-8 sm:-left-10 top-1/2 transform -translate-y-1/2" />
-                      <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#f0f0f0] tracking-wide text-center md:text-left px-2">
-                        {(() => {
-                          const matchedCategory = Object.values(allGameCategories).find(category => 
-                            matchGameToCategory(gameName) === category.id
-                          );
-                          return matchedCategory ? matchedCategory.name.toUpperCase() : gameName.toUpperCase();
-                        })()}
-                      </h3>
-                    </div>
-                  </div>
-                  {/* Декоративная линия */}
-                  <div className="flex items-center justify-center md:justify-start">
-                    <div className="h-1 bg-[#a31212] w-16 sm:w-24 rounded-full"></div>
-                    <div className="h-px bg-[#1c1c1c] w-20 sm:w-32 ml-4 rounded-full"></div>
-                    <div className="h-1 bg-[#a31212] w-16 sm:w-24 ml-4 rounded-full"></div>
-                  </div>
-                </div>
+              Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => {
+                console.log(`=== ОТОБРАЖЕНИЕ ГРУППЫ "${gameName}" ===`);
+                console.log(`Количество товаров в группе: ${gameProducts.length}`);
+                console.log('Товары в группе:', gameProducts.map(p => p.name));
                 
-                {/* Товары этой игры */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8">
-                  {gameProducts.map((product, index) => (
-                    <div 
-                      key={product.id} 
-                      className="animate-fade-in group"
-                      style={{animationDelay: `${(gameIndex * 5 + index) * 0.1}s`}}
-                    >
-                      <div className="relative">
-                        <ProductCard
-                          id={product.id}
-                          name={product.name}
-                          price={product.price}
-                          original_price={product.original_price}
-                          images={product.images}
-                          image_url={product.image_url}
-                          category_id={product.category_id}
-                          game={product.game}
-                          rating={product.rating}
-                          description={product.description}
-                          isInCart={items.some((item) => item.id === product.id)}
-                          onAddToCart={() => handleAddToCart(product)}
-                          onDetails={() => handleProductDetails(product.id)}
-                          onBuyNow={() => handleBuyNow(product)}
-                        />
-                        {/* Светящийся эффект вокруг карточки */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-none"></div>
+                return (
+                  <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
+                    {/* Заголовок игры */}
+                    <div className="mb-8 sm:mb-12 relative">
+                      <div className="flex items-center justify-center md:justify-start mb-6 sm:mb-8">
+                        <div className="relative group">
+                          <Star className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212] absolute -left-8 sm:-left-10 top-1/2 transform -translate-y-1/2" />
+                          <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#f0f0f0] tracking-wide text-center md:text-left px-2">
+                            {(() => {
+                              const matchedCategory = Object.values(allGameCategories).find(category => 
+                                matchGameToCategory(gameName) === category.id
+                              );
+                              return matchedCategory ? matchedCategory.name.toUpperCase() : gameName.toUpperCase();
+                            })()}
+                          </h3>
+                        </div>
+                      </div>
+                      {/* Декоративная линия */}
+                      <div className="flex items-center justify-center md:justify-start">
+                        <div className="h-1 bg-[#a31212] w-16 sm:w-24 rounded-full"></div>
+                        <div className="h-px bg-[#1c1c1c] w-20 sm:w-32 ml-4 rounded-full"></div>
+                        <div className="h-1 bg-[#a31212] w-16 sm:w-24 ml-4 rounded-full"></div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))
+                    
+                    {/* Товары этой игры */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8">
+                      {gameProducts.map((product, index) => {
+                        console.log(`Отображаем товар ${index + 1}: "${product.name}"`);
+                        return (
+                          <div 
+                            key={product.id} 
+                            className="animate-fade-in group"
+                            style={{animationDelay: `${(gameIndex * 5 + index) * 0.1}s`}}
+                          >
+                            <div className="relative">
+                              <ProductCard
+                                id={product.id}
+                                name={product.name}
+                                price={product.price}
+                                original_price={product.original_price}
+                                images={product.images}
+                                image_url={product.image_url}
+                                category_id={product.category_id}
+                                game={product.game}
+                                rating={product.rating}
+                                description={product.description}
+                                isInCart={items.some((item) => item.id === product.id)}
+                                onAddToCart={() => handleAddToCart(product)}
+                                onDetails={() => handleProductDetails(product.id)}
+                                onBuyNow={() => handleBuyNow(product)}
+                              />
+                              {/* Светящийся эффект вокруг карточки */}
+                              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-none"></div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })
             )}
           </div>
         </div>
