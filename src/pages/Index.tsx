@@ -220,20 +220,14 @@ const Index = () => {
     return cards;
   })();
 
-  // Фильтрация и поиск товаров
+  // Фильтрация товаров - разделяем поиск и категории
   let filteredProducts = [...products]; // Создаем копию массива
 
-  // Фильтр по игровой категории
-  console.log('selectedGameCategory:', selectedGameCategory);
-  if (selectedGameCategory !== 'all') {
-    console.log('Фильтруем товары по категории:', selectedGameCategory);
-    console.log('Всего товаров до фильтрации:', filteredProducts.length);
-    
-    // Отладка: показываем все товары и их game/game_category_id
-    console.log('Все товары для отладки:');
-    filteredProducts.forEach((product, index) => {
-      console.log(`${index + 1}. "${product.name}" - game: "${product.game}", game_category_id: "${product.game_category_id}"`);
-    });
+  // 1. ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ (только если НЕ используется поиск)
+  if (!searchQuery.trim() && selectedGameCategory !== 'all') {
+    console.log('=== ФИЛЬТРАЦИЯ ПО КАТЕГОРИИ ===');
+    console.log('selectedGameCategory:', selectedGameCategory);
+    console.log('Всего товаров до фильтрации по категории:', filteredProducts.length);
     
     filteredProducts = filteredProducts.filter(product => {
       // Сначала проверяем game_category_id (приоритет)
@@ -250,29 +244,24 @@ const Index = () => {
       return matches;
     });
     
-    console.log('Товаров после фильтрации:', filteredProducts.length);
-    console.log('Отфильтрованные товары:', filteredProducts.map(p => ({ name: p.name, game: p.game, game_category_id: p.game_category_id })));
-    
-    // Проверяем, что filteredProducts действительно содержит товары
-    if (filteredProducts.length > 0) {
-      console.log('✅ Товары найдены после фильтрации!');
-      console.log('Первый товар:', filteredProducts[0]);
-    } else {
-      console.log('❌ Товары не найдены после фильтрации');
-    }
+    console.log('Товаров после фильтрации по категории:', filteredProducts.length);
   }
 
-  // Поиск по названию
+  // 2. ПОИСК ПО НАЗВАНИЮ (только если есть поисковый запрос)
   if (searchQuery.trim()) {
-    console.log('Применяем поиск по названию:', searchQuery);
-    console.log('Товаров до поиска:', filteredProducts.length);
+    console.log('=== ПОИСК ПО НАЗВАНИЮ ===');
+    console.log('Поисковый запрос:', searchQuery);
+    console.log('Всего товаров до поиска:', filteredProducts.length);
+    
     filteredProducts = filteredProducts.filter(product =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (product.game && product.game.toLowerCase().includes(searchQuery.toLowerCase()))
     );
+    
     console.log('Товаров после поиска:', filteredProducts.length);
   }
 
-  // Сортировка по рейтингу (если есть) или по популярности
+  // 3. СОРТИРОВКА
   console.log('Товаров перед сортировкой:', filteredProducts.length);
   filteredProducts = filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
   console.log('Товаров после сортировки:', filteredProducts.length);
@@ -485,14 +474,19 @@ const Index = () => {
 
 
 
-          {/* Товары по играм - показываем всегда, но фильтруем по категории */}
+          {/* Товары по играм - показываем в зависимости от режима */}
           <div className="space-y-16 sm:space-y-20">
             {(() => {
-              console.log('Проверяем отображение товаров:');
+              console.log('=== ПРОВЕРКА ОТОБРАЖЕНИЯ ТОВАРОВ ===');
               console.log('- Object.keys(groupedProducts).length:', Object.keys(groupedProducts).length);
               console.log('- filteredProducts.length:', filteredProducts.length);
               console.log('- selectedGameCategory:', selectedGameCategory);
-              return Object.keys(groupedProducts).length === 0 || filteredProducts.length === 0;
+              console.log('- searchQuery:', searchQuery);
+              
+              const hasProducts = Object.keys(groupedProducts).length > 0 && filteredProducts.length > 0;
+              console.log('- hasProducts:', hasProducts);
+              
+              return !hasProducts;
             })() ? (
               /* Сообщение о том, что товаров нет в наличии */
               <div className="text-center py-16 sm:py-20">
@@ -511,16 +505,21 @@ const Index = () => {
                   </div>
                   
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#f0f0f0] mb-4">
-                    Товары скоро появятся!
+                    {searchQuery.trim() ? 'Ничего не найдено' : 'Товары скоро появятся!'}
                   </h3>
                   
                   <div className="space-y-4 mb-8">
                     <p className="text-lg sm:text-xl text-[#a0a0a0] leading-relaxed">
-                      В данной категории пока нет товаров, но мы активно работаем над пополнением ассортимента.
+                      {searchQuery.trim() 
+                        ? 'Попробуйте изменить поисковый запрос или выберите другую категорию'
+                        : 'В данной категории пока нет товаров, но мы активно работаем над пополнением ассортимента.'
+                      }
                     </p>
-                    <p className="text-base sm:text-lg text-[#a0a0a0]">
-                      Следите за обновлениями - новые товары появляются регулярно!
-                    </p>
+                    {!searchQuery.trim() && (
+                      <p className="text-base sm:text-lg text-[#a0a0a0]">
+                        Следите за обновлениями - новые товары появляются регулярно!
+                      </p>
+                    )}
                   </div>
                   
                   {/* Декоративные элементы */}
@@ -540,7 +539,7 @@ const Index = () => {
                       className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#a31212]/20"
                     >
                       <span className="flex items-center justify-center">
-                        🔍 Посмотреть все товары
+                        {searchQuery.trim() ? '🔍 Очистить поиск' : '🔍 Посмотреть все товары'}
                       </span>
                     </button>
                   </div>
