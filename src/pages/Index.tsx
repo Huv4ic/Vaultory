@@ -221,7 +221,7 @@ const Index = () => {
   })();
 
   // Фильтрация и поиск товаров
-  let filteredProducts = products;
+  let filteredProducts = [...products]; // Создаем копию массива
 
   // Фильтр по игровой категории
   console.log('selectedGameCategory:', selectedGameCategory);
@@ -262,12 +262,14 @@ const Index = () => {
     }
   }
 
-
   // Поиск по названию
   if (searchQuery.trim()) {
+    console.log('Применяем поиск по названию:', searchQuery);
+    console.log('Товаров до поиска:', filteredProducts.length);
     filteredProducts = filteredProducts.filter(product =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    console.log('Товаров после поиска:', filteredProducts.length);
   }
 
   // Сортировка по рейтингу (если есть) или по популярности
