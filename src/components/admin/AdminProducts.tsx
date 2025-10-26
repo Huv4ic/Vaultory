@@ -58,7 +58,6 @@ const AdminProducts = () => {
         price: productData.price,
         original_price: productData.original_price,
         image_url: productData.image_url,
-        category: productData.category,
         game: productData.game,
         game_category_id: productData.game_category_id,
         rating: productData.rating,
