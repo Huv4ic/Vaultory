@@ -224,6 +224,7 @@ const Index = () => {
   let filteredProducts = products;
 
   // Фильтр по игровой категории
+  console.log('selectedGameCategory:', selectedGameCategory);
   if (selectedGameCategory !== 'all') {
     console.log('Фильтруем товары по категории:', selectedGameCategory);
     console.log('Всего товаров до фильтрации:', filteredProducts.length);
@@ -266,6 +267,9 @@ const Index = () => {
     groups[game].push(product);
     return groups;
   }, {} as Record<string, Product[]>);
+
+  console.log('groupedProducts:', groupedProducts);
+  console.log('Object.keys(groupedProducts).length:', Object.keys(groupedProducts).length);
 
   const faqItems = [
     { 
@@ -457,7 +461,13 @@ const Index = () => {
 
           {/* Товары по играм - показываем всегда, но фильтруем по категории */}
           <div className="space-y-16 sm:space-y-20">
-            {Object.keys(groupedProducts).length === 0 ? (
+            {(() => {
+              console.log('Проверяем отображение товаров:');
+              console.log('- Object.keys(groupedProducts).length:', Object.keys(groupedProducts).length);
+              console.log('- filteredProducts.length:', filteredProducts.length);
+              console.log('- selectedGameCategory:', selectedGameCategory);
+              return Object.keys(groupedProducts).length === 0 || filteredProducts.length === 0;
+            })() ? (
               /* Сообщение о том, что товаров нет в наличии */
               <div className="text-center py-16 sm:py-20">
                 <div className="max-w-2xl mx-auto">
