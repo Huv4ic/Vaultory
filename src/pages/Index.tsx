@@ -60,30 +60,6 @@ const Index = () => {
 
     fetchGameCategories();
     
-  // Синхронизируем searchQuery и selectedGameCategory с URL параметрами
-  const searchFromUrl = searchParams.get('search') || '';
-  const categoryFromUrl = searchParams.get('category') || 'all';
-  
-  if (searchFromUrl !== searchQuery) {
-    setSearchQuery(searchFromUrl);
-  }
-  
-  if (categoryFromUrl !== selectedGameCategory) {
-    setSelectedGameCategory(categoryFromUrl);
-  }
-
-  // Автоматический скролл при изменении URL параметров (только для категорий)
-  useEffect(() => {
-    const categoryFromUrl = searchParams.get('category') || 'all';
-    
-    // Скроллим только если выбрана конкретная категория
-    if (categoryFromUrl !== 'all' && categoryFromUrl !== selectedGameCategory) {
-      setTimeout(() => {
-        scrollToProducts();
-      }, 200); // Увеличиваем задержку для полного обновления состояния
-    }
-  }, [searchParams]);
-    
     // Слушаем изменения в localStorage от админки
     const handleStorageChange = () => {
       const updated = localStorage.getItem('categoriesUpdated');
@@ -110,6 +86,32 @@ const Index = () => {
       clearInterval(interval);
     };
   }, []);
+
+  // Синхронизируем searchQuery и selectedGameCategory с URL параметрами
+  useEffect(() => {
+    const searchFromUrl = searchParams.get('search') || '';
+    const categoryFromUrl = searchParams.get('category') || 'all';
+    
+    if (searchFromUrl !== searchQuery) {
+      setSearchQuery(searchFromUrl);
+    }
+    
+    if (categoryFromUrl !== selectedGameCategory) {
+      setSelectedGameCategory(categoryFromUrl);
+    }
+  }, [searchParams, searchQuery, selectedGameCategory]);
+
+  // Автоматический скролл при изменении URL параметров (только для категорий)
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category') || 'all';
+    
+    // Скроллим только если выбрана конкретная категория
+    if (categoryFromUrl !== 'all' && categoryFromUrl !== selectedGameCategory) {
+      setTimeout(() => {
+        scrollToProducts();
+      }, 200); // Увеличиваем задержку для полного обновления состояния
+    }
+  }, [searchParams, selectedGameCategory]);
 
   // Убираем автоматическое обновление профиля - баланс не должен обновляться просто при просмотре страницы
   // useEffect(() => {
@@ -635,10 +637,10 @@ const Index = () => {
                           <Star className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212] absolute -left-8 sm:-left-10 top-1/2 transform -translate-y-1/2" />
                           <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#f0f0f0] tracking-wide text-center md:text-left px-2">
                             {(() => {
-                              const matchedCategory = Object.values(allGameCategories).find(category => 
+                              const matchedCategory = Object.values(allGameCategories).find((category: any) => 
                                 matchGameToCategory(gameName) === category.id
                               );
-                              return matchedCategory ? matchedCategory.name.toUpperCase() : gameName.toUpperCase();
+                              return matchedCategory ? (matchedCategory as any).name.toUpperCase() : gameName.toUpperCase();
                             })()}
                           </h3>
                         </div>
