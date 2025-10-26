@@ -185,21 +185,21 @@ export default function AdminPanel() {
   
   if (!telegramUser || !isAdmin) {
     return (
-      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+      <div className="min-h-screen bg-[#0e0e0e] relative overflow-hidden flex items-center justify-center">
         {/* Анимированный фон */}
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-red-400 rounded-full animate-ping opacity-60"></div>
-          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-yellow-400 rounded-full opacity-80"></div>
-          <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-orange-400 rounded-full animate-bounce opacity-40"></div>
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#a31212] rounded-full animate-ping opacity-60"></div>
+          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-[#a31212] rounded-full opacity-80"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-[#a31212] rounded-full animate-bounce opacity-40"></div>
         </div>
         
         <div className="relative z-10 text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-black/80 backdrop-blur-xl rounded-full mb-6 border border-red-500/30 shadow-2xl shadow-red-500/30">
-            <Shield className="w-10 h-10 text-red-400" />
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-[#181818] backdrop-blur-xl rounded-full mb-6 border border-[#a31212] shadow-2xl shadow-[#a31212]/30">
+            <Shield className="w-10 h-10 text-[#a31212]" />
           </div>
-          <h2 className="text-3xl font-black mb-4 text-white">ДОСТУП ЗАПРЕЩЕН</h2>
-          <p className="text-lg text-gray-300 mb-8">Необходимы права администратора</p>
-          <div className="bg-black/90 backdrop-blur-xl rounded-2xl border border-red-500/30 p-6 text-sm text-gray-400">
+          <h2 className="text-3xl font-black mb-4 text-[#f0f0f0]">ДОСТУП ЗАПРЕЩЕН</h2>
+          <p className="text-lg text-[#a0a0a0] mb-8">Необходимы права администратора</p>
+          <div className="bg-[#181818] backdrop-blur-xl rounded-2xl border border-[#a31212] p-6 text-sm text-[#a0a0a0]">
             <p>User: {user ? 'Да' : 'Нет'}</p>
             <p>IsAdmin: {isAdmin ? 'Да' : 'Нет'}</p>
             <p>Profile Role: {profile?.role || 'Нет'}</p>
@@ -218,16 +218,16 @@ export default function AdminPanel() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
         <div className="group relative">
-          <div className="absolute inset-0 bg-blue-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-          <Card className="relative bg-black/90 backdrop-blur-xl border border-blue-500/30 hover:border-blue-400/50 transition-all duration-500 hover:scale-105">
+          <div className="absolute inset-0 bg-[#a31212]/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+          <Card className="relative bg-[#181818]/90 backdrop-blur-xl border border-[#a31212]/30 hover:border-[#a31212]/50 transition-all duration-500 hover:scale-105">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-300 text-sm font-medium">Всего пользователей</p>
-                  <p className="text-3xl font-black text-blue-400">{users.length}</p>
+                  <p className="text-[#a0a0a0] text-sm font-medium">Всего пользователей</p>
+                  <p className="text-3xl font-black text-[#a31212]">{users.length}</p>
                 </div>
-                <div className="w-12 h-12 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-blue-500/30 shadow-xl shadow-blue-500/20 group-hover:rotate-12 transition-transform duration-500">
-                  <Users className="h-6 w-6 text-blue-400" />
+                <div className="w-12 h-12 bg-[#181818] backdrop-blur-xl rounded-2xl flex items-center justify-center border border-[#a31212]/30 shadow-xl shadow-[#a31212]/20 group-hover:rotate-12 transition-transform duration-500">
+                  <Users className="h-6 w-6 text-[#a31212]" />
                 </div>
               </div>
             </CardContent>
@@ -235,18 +235,18 @@ export default function AdminPanel() {
         </div>
         
         <div className="group relative">
-          <div className="absolute inset-0 bg-green-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-          <Card className="relative bg-black/90 backdrop-blur-xl border border-green-500/30 hover:border-green-400/50 transition-all duration-500 hover:scale-105">
+          <div className="absolute inset-0 bg-[#a31212]/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+          <Card className="relative bg-[#181818]/90 backdrop-blur-xl border border-[#a31212]/30 hover:border-[#a31212]/50 transition-all duration-500 hover:scale-105">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-300 text-sm font-medium">Активные пользователи</p>
-                  <p className="text-3xl font-black text-green-400">
+                  <p className="text-[#a0a0a0] text-sm font-medium">Активные пользователи</p>
+                  <p className="text-3xl font-black text-[#a31212]">
                     {users.filter(u => u.status === 'active').length}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-green-500/30 shadow-xl shadow-green-500/20 group-hover:rotate-12 transition-transform duration-500">
-                  <Star className="h-6 w-6 text-green-400" />
+                <div className="w-12 h-12 bg-[#181818] backdrop-blur-xl rounded-2xl flex items-center justify-center border border-[#a31212]/30 shadow-xl shadow-[#a31212]/20 group-hover:rotate-12 transition-transform duration-500">
+                  <Star className="h-6 w-6 text-[#a31212]" />
                 </div>
               </div>
             </CardContent>
@@ -254,18 +254,18 @@ export default function AdminPanel() {
         </div>
         
         <div className="group relative">
-          <div className="absolute inset-0 bg-red-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-          <Card className="relative bg-black/90 backdrop-blur-xl border border-red-500/30 hover:border-red-400/50 transition-all duration-500 hover:scale-105">
+          <div className="absolute inset-0 bg-[#a31212]/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+          <Card className="relative bg-[#181818]/90 backdrop-blur-xl border border-[#a31212]/30 hover:border-[#a31212]/50 transition-all duration-500 hover:scale-105">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-300 text-sm font-medium">Заблокированные</p>
-                  <p className="text-3xl font-black text-red-400">
+                  <p className="text-[#a0a0a0] text-sm font-medium">Заблокированные</p>
+                  <p className="text-3xl font-black text-[#a31212]">
                     {users.filter(u => u.status === 'blocked').length}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-red-500/30 shadow-xl shadow-red-500/20 group-hover:rotate-12 transition-transform duration-500">
-                  <Shield className="h-6 w-6 text-red-400" />
+                <div className="w-12 h-12 bg-[#181818] backdrop-blur-xl rounded-2xl flex items-center justify-center border border-[#a31212]/30 shadow-xl shadow-[#a31212]/20 group-hover:rotate-12 transition-transform duration-500">
+                  <Shield className="h-6 w-6 text-[#a31212]" />
                 </div>
               </div>
             </CardContent>
@@ -273,18 +273,18 @@ export default function AdminPanel() {
         </div>
         
         <div className="group relative">
-          <div className="absolute inset-0 bg-yellow-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-          <Card className="relative bg-black/90 backdrop-blur-xl border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-500 hover:scale-105">
+          <div className="absolute inset-0 bg-[#a31212]/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+          <Card className="relative bg-[#181818]/90 backdrop-blur-xl border border-[#a31212]/30 hover:border-[#a31212]/50 transition-all duration-500 hover:scale-105">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-300 text-sm font-medium">Общий баланс</p>
-                  <p className="text-3xl font-black text-yellow-400">
+                  <p className="text-[#a0a0a0] text-sm font-medium">Общий баланс</p>
+                  <p className="text-3xl font-black text-[#a31212]">
                     {users.reduce((sum, user) => sum + (user.balance || 0), 0).toFixed(2)}₴
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-black/80 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-yellow-500/30 shadow-xl shadow-yellow-500/20 group-hover:rotate-12 transition-transform duration-500">
-                  <DollarSign className="h-6 w-6 text-yellow-400" />
+                <div className="w-12 h-12 bg-[#181818] backdrop-blur-xl rounded-2xl flex items-center justify-center border border-[#a31212]/30 shadow-xl shadow-[#a31212]/20 group-hover:rotate-12 transition-transform duration-500">
+                  <DollarSign className="h-6 w-6 text-[#a31212]" />
                 </div>
               </div>
             </CardContent>
@@ -296,66 +296,66 @@ export default function AdminPanel() {
       
       {/* Users Table */}
       <div className="group relative">
-        <div className="absolute inset-0 bg-purple-500/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-        <Card className="relative bg-black/90 backdrop-blur-xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-500">
+        <div className="absolute inset-0 bg-[#a31212]/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+        <Card className="relative bg-[#181818]/90 backdrop-blur-xl border border-[#a31212]/30 hover:border-[#a31212]/50 transition-all duration-500">
           <CardHeader className="p-6">
             <CardTitle className="flex items-center space-x-3 text-2xl font-black">
-              <div className="w-8 h-8 bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center border border-purple-500/30 shadow-xl shadow-purple-500/20">
-                <Users className="h-5 w-5 text-purple-400" />
+              <div className="w-8 h-8 bg-[#181818] backdrop-blur-xl rounded-xl flex items-center justify-center border border-[#a31212]/30 shadow-xl shadow-[#a31212]/20">
+                <Users className="h-5 w-5 text-[#a31212]" />
               </div>
-              <span className="text-white">ПОЛЬЗОВАТЕЛИ</span>
+              <span className="text-[#f0f0f0]">ПОЛЬЗОВАТЕЛИ</span>
             </CardTitle>
           </CardHeader>
         <CardContent className="p-4 sm:p-6">
           {error && (
-            <div className="mb-4 p-3 sm:p-4 bg-red-900/20 border border-red-700 rounded-lg text-red-400 text-sm sm:text-base">
+            <div className="mb-4 p-3 sm:p-4 bg-[#a31212]/20 border border-[#a31212] rounded-lg text-[#a31212] text-sm sm:text-base">
               {error}
             </div>
           )}
           {loading ? (
             <div className="flex items-center justify-center py-8 sm:py-12">
-              <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin text-blue-500" />
+              <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin text-[#a31212]" />
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-700">
-                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-gray-400 font-medium text-xs sm:text-sm">Пользователь</th>
-                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-gray-400 font-medium text-xs sm:text-sm hidden sm:table-cell">Telegram ID</th>
-                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-gray-400 font-medium text-xs sm:text-sm">Баланс</th>
-                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-gray-400 font-medium text-xs sm:text-sm">Статус</th>
-                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-gray-400 font-medium text-xs sm:text-sm hidden lg:table-cell">Дата регистрации</th>
-                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-gray-400 font-medium text-xs sm:text-sm">Действия</th>
+                  <tr className="border-b border-[#1c1c1c]">
+                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[#a0a0a0] font-medium text-xs sm:text-sm">Пользователь</th>
+                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[#a0a0a0] font-medium text-xs sm:text-sm hidden sm:table-cell">Telegram ID</th>
+                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[#a0a0a0] font-medium text-xs sm:text-sm">Баланс</th>
+                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[#a0a0a0] font-medium text-xs sm:text-sm">Статус</th>
+                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[#a0a0a0] font-medium text-xs sm:text-sm hidden lg:table-cell">Дата регистрации</th>
+                    <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[#a0a0a0] font-medium text-xs sm:text-sm">Действия</th>
                   </tr>
                 </thead>
                 <tbody>
                   {users.map((user, index) => (
-                    <tr key={user.id} className="border-b border-gray-700/50 hover:bg-gray-700/20">
+                    <tr key={user.id} className="border-b border-[#1c1c1c]/50 hover:bg-[#1c1c1c]/20">
                       <td className="py-3 sm:py-4 px-2 sm:px-4">
                         <div className="flex items-center space-x-2 sm:space-x-3">
                           <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
-                            <AvatarFallback className="bg-gray-600 text-white text-xs sm:text-sm">
+                            <AvatarFallback className="bg-[#2a2a2a] text-[#f0f0f0] text-xs sm:text-sm">
                               {user.username?.[0] || 'U'}
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="font-medium text-xs sm:text-sm">
+                            <p className="font-medium text-xs sm:text-sm text-[#f0f0f0]">
                               {user.username || `User ${user.id.slice(0, 8)}`}
                             </p>
-                            <p className="text-xs text-gray-400">ID: {user.id.slice(0, 8)}...</p>
+                            <p className="text-xs text-[#a0a0a0]">ID: {user.id.slice(0, 8)}...</p>
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-gray-300 text-xs sm:text-sm hidden sm:table-cell">
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-[#a0a0a0] text-xs sm:text-sm hidden sm:table-cell">
                         {user.telegram_id}
                       </td>
                       <td className="py-3 sm:py-4 px-2 sm:px-4">
                         <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2">
-                          <span className="font-medium text-green-400 text-xs sm:text-sm">{(user.balance || 0).toFixed(2)}₴</span>
+                          <span className="font-medium text-[#a31212] text-xs sm:text-sm">{(user.balance || 0).toFixed(2)}₴</span>
                           <Button
                             size="sm"
-                            className="h-7 px-3 text-xs bg-green-500 hover:bg-green-400 text-black font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-green-500/25"
+                            className="h-7 px-3 text-xs bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-[#a31212]/25"
                             onClick={() => {
                               const newBalance = prompt(`Введите новый баланс для ${user.username || 'пользователя'}:`, (user.balance || 0).toString());
                               if (newBalance !== null) {
@@ -375,25 +375,25 @@ export default function AdminPanel() {
                       <td className="py-3 sm:py-4 px-2 sm:px-4">
                         <div className="flex flex-col space-y-1">
                           <Badge 
-                            className={`text-xs ${user.status === 'active' ? 'bg-green-600' : 'bg-red-600'}`}
+                            className={`text-xs ${user.status === 'active' ? 'bg-[#a31212] text-white' : 'bg-[#2a2a2a] text-[#a0a0a0]'}`}
                           >
                             {user.status === 'active' ? 'Активен' : 'Заблокирован'}
                           </Badge>
                           {user.status === 'blocked' && user.block_reason && (
-                            <Badge className="bg-red-800 text-xs max-w-xs truncate" title={user.block_reason}>
+                            <Badge className="bg-[#2a2a2a] text-[#a0a0a0] text-xs max-w-xs truncate" title={user.block_reason}>
                               🚫 {user.block_reason}
                             </Badge>
                           )}
                           {user.role && user.role !== 'user' && (
-                            <Badge className="bg-purple-600 text-xs">
+                            <Badge className="bg-[#a31212] text-white text-xs">
                               {user.role === 'admin' ? '👑 Админ' : user.role}
                             </Badge>
                           )}
                         </div>
                       </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-gray-300 text-xs sm:text-sm hidden lg:table-cell">
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-[#a0a0a0] text-xs sm:text-sm hidden lg:table-cell">
                         <div className="flex items-center space-x-1">
-                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-gray-500" />
+                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-[#a0a0a0]" />
                           <span>{user.created_at ? formatDate(user.created_at) : 'Не указано'}</span>
                         </div>
                       </td>
@@ -402,8 +402,8 @@ export default function AdminPanel() {
                           size="sm"
                           className={`h-7 px-3 text-xs font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg ${
                             user.status === 'active' 
-                              ? 'bg-red-500 hover:bg-red-400 text-black shadow-red-500/25' 
-                              : 'bg-green-500 hover:bg-green-400 text-black shadow-green-500/25'
+                              ? 'bg-[#2a2a2a] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white shadow-[#2a2a2a]/25' 
+                              : 'bg-[#a31212] hover:bg-[#8a0f0f] text-white shadow-[#a31212]/25'
                           }`}
                           onClick={() => {
                             const action = user.status === 'active' ? 'заблокировать' : 'разблокировать';
@@ -420,7 +420,7 @@ export default function AdminPanel() {
                 </tbody>
               </table>
               {users.length === 0 && (
-                <div className="text-center py-8 sm:py-12 text-gray-400">
+                <div className="text-center py-8 sm:py-12 text-[#a0a0a0]">
                   <Users className="h-8 w-8 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 opacity-50" />
                   <p className="text-sm sm:text-base">Пользователи не найдены</p>
                 </div>
@@ -434,32 +434,32 @@ export default function AdminPanel() {
   );
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-60"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full opacity-80"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400 rounded-full animate-bounce opacity-40"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-70"></div>
-        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-green-400 rounded-full opacity-90"></div>
-        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-orange-400 rounded-full animate-bounce opacity-50"></div>
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#a31212] rounded-full animate-ping opacity-60"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-[#a31212] rounded-full opacity-80"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-[#a31212] rounded-full animate-bounce opacity-40"></div>
+        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-[#a31212] rounded-full animate-ping opacity-70"></div>
+        <div className="absolute bottom-1/3 right-1/2 w-1 h-1 bg-[#a31212] rounded-full opacity-90"></div>
+        <div className="absolute top-3/4 left-1/2 w-2 h-2 bg-[#a31212] rounded-full animate-bounce opacity-50"></div>
       </div>
 
       {/* Header */}
-      <div className="relative z-10 border-b border-cyan-500/30 bg-black/95 backdrop-blur-xl">
+      <div className="relative z-10 border-b border-[#1c1c1c] bg-[#0e0e0e]/95 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-black/80 backdrop-blur-xl rounded-xl flex items-center justify-center border border-cyan-500/30 shadow-xl shadow-cyan-500/20">
-                <Crown className="h-6 w-6 text-cyan-400" />
+              <div className="w-10 h-10 bg-[#181818] backdrop-blur-xl rounded-xl flex items-center justify-center border border-[#a31212] shadow-xl shadow-[#a31212]/20">
+                <Crown className="h-6 w-6 text-[#a31212]" />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-white">АДМИН ПАНЕЛЬ</h1>
+              <h1 className="text-2xl sm:text-3xl font-black text-[#f0f0f0]">АДМИН ПАНЕЛЬ</h1>
             </div>
             <div className="flex items-center space-x-3">
-              <span className="text-cyan-400 text-sm font-bold hidden sm:block">Администратор</span>
-              <Avatar className="h-8 w-8 border border-cyan-500/30">
+              <span className="text-[#a31212] text-sm font-bold hidden sm:block">Администратор</span>
+              <Avatar className="h-8 w-8 border border-[#a31212]">
                 <AvatarImage src={telegramUser?.photo_url} />
-                <AvatarFallback className="bg-black/80 backdrop-blur-xl text-cyan-400 text-sm font-bold">
+                <AvatarFallback className="bg-[#181818] backdrop-blur-xl text-[#a31212] text-sm font-bold">
                   {telegramUser?.first_name?.[0] || 'A'}
                 </AvatarFallback>
               </Avatar>
@@ -474,8 +474,8 @@ export default function AdminPanel() {
           <button
             className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
               activeTab === 'users' 
-                ? 'bg-blue-500 text-black shadow-2xl shadow-blue-500/25' 
-                : 'bg-black/80 backdrop-blur-xl border border-blue-500/30 text-blue-400 hover:border-blue-400/50 hover:bg-blue-500/10'
+                ? 'bg-[#a31212] text-white shadow-2xl shadow-[#a31212]/25' 
+                : 'bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:bg-[#a31212]/10'
             }`}
             onClick={() => setActiveTab('users')}
           >
@@ -484,8 +484,8 @@ export default function AdminPanel() {
           <button
             className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
               activeTab === 'products' 
-                ? 'bg-green-500 text-black shadow-2xl shadow-green-500/25' 
-                : 'bg-black/80 backdrop-blur-xl border border-green-500/30 text-green-400 hover:border-green-400/50 hover:bg-green-500/10'
+                ? 'bg-[#a31212] text-white shadow-2xl shadow-[#a31212]/25' 
+                : 'bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:bg-[#a31212]/10'
             }`}
             onClick={() => setActiveTab('products')}
           >
@@ -494,8 +494,8 @@ export default function AdminPanel() {
           <button
             className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
               activeTab === 'cases' 
-                ? 'bg-purple-500 text-black shadow-2xl shadow-purple-500/25' 
-                : 'bg-black/80 backdrop-blur-xl border border-purple-500/30 text-purple-400 hover:border-purple-400/50 hover:bg-purple-500/10'
+                ? 'bg-[#a31212] text-white shadow-2xl shadow-[#a31212]/25' 
+                : 'bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:bg-[#a31212]/10'
             }`}
             onClick={() => setActiveTab('cases')}
           >
@@ -504,8 +504,8 @@ export default function AdminPanel() {
           <button
             className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
               activeTab === 'withdrawals' 
-                ? 'bg-orange-500 text-black shadow-2xl shadow-orange-500/25' 
-                : 'bg-black/80 backdrop-blur-xl border border-orange-500/30 text-orange-400 hover:border-orange-400/50 hover:bg-orange-500/10'
+                ? 'bg-[#a31212] text-white shadow-2xl shadow-[#a31212]/25' 
+                : 'bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:bg-[#a31212]/10'
             }`}
             onClick={() => setActiveTab('withdrawals')}
           >
@@ -514,8 +514,8 @@ export default function AdminPanel() {
           <button
             className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
               activeTab === 'roles' 
-                ? 'bg-yellow-500 text-black shadow-2xl shadow-yellow-500/25' 
-                : 'bg-black/80 backdrop-blur-xl border border-yellow-500/30 text-yellow-400 hover:border-yellow-400/50 hover:bg-yellow-500/10'
+                ? 'bg-[#a31212] text-white shadow-2xl shadow-[#a31212]/25' 
+                : 'bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:bg-[#a31212]/10'
             }`}
             onClick={() => setActiveTab('roles')}
           >
@@ -524,8 +524,8 @@ export default function AdminPanel() {
           <button
             className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
               activeTab === 'game-categories' 
-                ? 'bg-purple-500 text-black shadow-2xl shadow-purple-500/25' 
-                : 'bg-black/80 backdrop-blur-xl border border-purple-500/30 text-purple-400 hover:border-purple-400/50 hover:bg-purple-500/10'
+                ? 'bg-[#a31212] text-white shadow-2xl shadow-[#a31212]/25' 
+                : 'bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:bg-[#a31212]/10'
             }`}
             onClick={() => setActiveTab('game-categories')}
           >
