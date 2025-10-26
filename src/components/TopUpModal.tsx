@@ -206,7 +206,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
       <DialogContent className="bg-[#181818] border-[#1c1c1c] max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-[#f0f0f0] text-2xl flex items-center">
-            <CreditCard className="w-6 h-6 mr-3 text-[#a31212]" />
+            <CreditCard className="w-6 h-6 mr-3 text-[#f0f0f0]" />
             Пополнение баланса
           </DialogTitle>
         </DialogHeader>
@@ -224,7 +224,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
               {/* Банковские карты */}
               <div>
                 <h3 className="text-[#f0f0f0] text-lg font-semibold mb-4 flex items-center">
-                  <CreditCard className="w-5 h-5 mr-2 text-[#a31212]" />
+                  <CreditCard className="w-5 h-5 mr-2 text-[#f0f0f0]" />
                   Банковские карты
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -233,20 +233,20 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                     .map((method) => (
                       <Card
                         key={method.id}
-                        className="bg-[#181818] border-[#1c1c1c] hover:border-[#a31212] cursor-pointer transition-all duration-300 hover:scale-105"
+                        className="bg-[#181818] border-[#1c1c1c] hover:border-[#f0f0f0] cursor-pointer transition-all duration-300 hover:scale-105"
                         onClick={() => handleMethodSelect(method)}
                       >
                         <CardContent className="p-4">
                           <div className="flex items-center space-x-3">
-                            <div className="w-12 h-12 bg-[#a31212] rounded-full flex items-center justify-center text-white">
+                            <div className="w-12 h-12 bg-[#2a2a2a] rounded-full flex items-center justify-center text-[#f0f0f0]">
                               {method.icon}
                             </div>
                             <div className="flex-1">
                               <h4 className="text-[#f0f0f0] font-semibold">{method.name}</h4>
                               <p className="text-[#a0a0a0] text-sm">{method.description}</p>
-                              <p className="text-[#a31212] text-xs">Мин. сумма: {method.minAmount}</p>
+                              <p className="text-[#a0a0a0] text-xs">Мин. сумма: {method.minAmount}</p>
                             </div>
-                            <Badge className="bg-[#1c1c1c] text-[#a31212] border-[#1c1c1c]">
+                            <Badge className="bg-[#2a2a2a] text-[#f0f0f0] border-[#2a2a2a]">
                               Выбрать
                             </Badge>
                           </div>
@@ -259,7 +259,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
               {/* Криптовалюты */}
               <div>
                 <h3 className="text-[#f0f0f0] text-lg font-semibold mb-4 flex items-center">
-                  <Coins className="w-5 h-5 mr-2 text-[#a31212]" />
+                  <Coins className="w-5 h-5 mr-2 text-[#f0f0f0]" />
                   Криптовалюты
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -268,20 +268,20 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                     .map((method) => (
                       <Card
                         key={method.id}
-                        className="bg-[#181818] border-[#1c1c1c] hover:border-[#a31212] cursor-pointer transition-all duration-300 hover:scale-105"
+                        className="bg-[#181818] border-[#1c1c1c] hover:border-[#f0f0f0] cursor-pointer transition-all duration-300 hover:scale-105"
                         onClick={() => handleMethodSelect(method)}
                       >
                         <CardContent className="p-4">
                           <div className="flex items-center space-x-3">
-                            <div className="w-12 h-12 bg-[#a31212] rounded-full flex items-center justify-center text-white">
+                            <div className="w-12 h-12 bg-[#2a2a2a] rounded-full flex items-center justify-center text-[#f0f0f0]">
                               {method.icon}
                             </div>
                             <div className="flex-1">
                               <h4 className="text-[#f0f0f0] font-semibold">{method.name}</h4>
                               <p className="text-[#a0a0a0] text-sm">{method.description}</p>
-                              <p className="text-[#a31212] text-xs">Мин. сумма: {method.minAmount}</p>
+                              <p className="text-[#a0a0a0] text-xs">Мин. сумма: {method.minAmount}</p>
                             </div>
-                            <Badge className="bg-[#1c1c1c] text-[#a31212] border-[#1c1c1c]">
+                            <Badge className="bg-[#2a2a2a] text-[#f0f0f0] border-[#2a2a2a]">
                               Выбрать
                             </Badge>
                           </div>
@@ -297,7 +297,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
           {selectedMethod && (
             <div className="space-y-6">
               <div className="text-center">
-                <div className="w-20 h-20 bg-[#a31212] rounded-full flex items-center justify-center text-white mx-auto mb-4">
+                <div className="w-20 h-20 bg-[#2a2a2a] rounded-full flex items-center justify-center text-[#f0f0f0] mx-auto mb-4">
                   {selectedMethod.icon}
                 </div>
                 <h3 className="text-[#f0f0f0] text-2xl font-bold mb-2">{selectedMethod.name}</h3>
@@ -310,19 +310,19 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                     Реквизиты для оплаты
                   </h4>
                   
-                  <div className="bg-[#1c1c1c] rounded-lg p-4 border border-[#1c1c1c]">
+                  <div className="bg-[#1c1c1c] rounded-lg p-4 border border-[#2a2a2a]">
                     <div className="flex items-center justify-between">
-                      <code className="text-[#a31212] text-lg break-all">
+                      <code className="text-[#f0f0f0] text-lg break-all">
                         {selectedMethod.details}
                       </code>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => handleCopy(selectedMethod.details, selectedMethod.id)}
-                        className="ml-4 border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:text-white"
+                        className="ml-4 border-[#2a2a2a] text-[#a0a0a0] hover:bg-[#2a2a2a] hover:text-[#f0f0f0]"
                       >
                         {copied === selectedMethod.id ? (
-                          <CheckCircle className="w-4 h-4 text-[#a31212]" />
+                          <CheckCircle className="w-4 h-4 text-[#f0f0f0]" />
                         ) : (
                           <Copy className="w-4 h-4" />
                         )}
@@ -331,8 +331,8 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                   </div>
 
                   <div className="mt-6 text-center space-y-4">
-                    <div className="bg-[#1c1c1c] border border-[#1c1c1c] rounded-lg p-4">
-                      <p className="text-[#a31212] text-sm">
+                    <div className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg p-4">
+                      <p className="text-[#f0f0f0] text-sm">
                         💡 <strong>Важно:</strong> После оплаты отправьте скриншот чека в поддержку
                       </p>
                     </div>
@@ -353,8 +353,8 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                   disabled={isCheckingBalance || balanceChecked}
                   className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${
                     balanceChecked 
-                      ? 'bg-[#a31212] hover:bg-[#8a0f0f] text-white' 
-                      : 'bg-[#a31212] hover:bg-[#8a0f0f] text-white hover:scale-105'
+                      ? 'bg-[#2a2a2a] hover:bg-[#3a3a3a] text-[#f0f0f0]' 
+                      : 'bg-[#2a2a2a] hover:bg-[#3a3a3a] text-[#f0f0f0] hover:scale-105'
                   }`}
                 >
                   {isCheckingBalance ? (
@@ -376,7 +376,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                 </Button>
                 
                 {balanceChecked && (
-                  <p className="text-[#a31212] text-sm mt-2">
+                  <p className="text-[#f0f0f0] text-sm mt-2">
                     Администратор получил уведомление и проверит оплату
                   </p>
                 )}
@@ -386,13 +386,13 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                 <Button
                   onClick={() => setSelectedMethod(null)}
                   variant="outline"
-                  className="flex-1 border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:text-white"
+                  className="flex-1 border-[#2a2a2a] text-[#a0a0a0] hover:bg-[#2a2a2a] hover:text-[#f0f0f0]"
                 >
                   ← Назад к выбору
                 </Button>
                 <Button
                   onClick={handleClose}
-                  className="flex-1 bg-[#a31212] hover:bg-[#8a0f0f] text-white"
+                  className="flex-1 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-[#f0f0f0]"
                 >
                   Закрыть
                 </Button>
@@ -406,7 +406,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
               <Button
                 onClick={handleClose}
                 variant="outline"
-                className="border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:text-white"
+                className="border-[#2a2a2a] text-[#a0a0a0] hover:bg-[#2a2a2a] hover:text-[#f0f0f0]"
               >
                 <X className="w-4 h-4 mr-2" />
                 Закрыть
