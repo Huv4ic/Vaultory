@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Badge } from '../ui/badge';
-import { Search, Plus, Edit, Trash2, Save, X, Eye } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Save, X, Eye, RefreshCw } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
 
 const emptyProduct: ProductFormData = {
@@ -296,6 +296,36 @@ const AdminProducts = () => {
     }
   };
 
+  const handleSyncAllProducts = async () => {
+    if (!window.confirm('Синхронизировать все товары с основным сайтом? Это может занять некоторое время.')) return;
+
+    try {
+      setLoading(true);
+      
+      // Получаем все товары из admin_products
+      const { data: adminProducts, error: fetchError } = await supabase
+        .from('admin_products')
+        .select('*');
+
+      if (fetchError) throw fetchError;
+
+      console.log('Синхронизируем', adminProducts?.length, 'товаров...');
+
+      // Синхронизируем каждый товар
+      for (const product of adminProducts || []) {
+        await syncProductToMainTable(product);
+      }
+
+      toast(`Синхронизировано ${adminProducts?.length || 0} товаров!`, 'success');
+      
+    } catch (err) {
+      console.error('Error syncing products:', err);
+      toast('Ошибка при синхронизации: ' + (err as any).message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setCurrentProduct(prev => ({
@@ -329,10 +359,20 @@ const AdminProducts = () => {
     <div className="p-3 sm:p-6 bg-gray-900 text-white rounded-xl shadow-xl">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
         <h2 className="text-xl sm:text-2xl font-bold">Управление товарами</h2>
-        <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
-          <Plus className="w-4 h-4 mr-2" />
-          Добавить товар
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button 
+            onClick={handleSyncAllProducts} 
+            className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base"
+            disabled={loading}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+            Синхронизировать с сайтом
+          </Button>
+          <Button onClick={openAddModal} className="bg-green-600 hover:bg-green-700 text-sm sm:text-base">
+            <Plus className="w-4 h-4 mr-2" />
+            Добавить товар
+          </Button>
+        </div>
       </div>
 
       {/* Поиск */}

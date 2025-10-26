@@ -220,6 +220,13 @@ const Index = () => {
     return cards;
   })();
 
+  // Отладка: проверяем что загружается
+  console.log('=== ОТЛАДКА ТОВАРОВ ===');
+  console.log('products.length:', products.length);
+  console.log('products:', products);
+  console.log('loading:', loading);
+  console.log('error:', error);
+
   // Фильтрация товаров - разделяем поиск и категории
   let filteredProducts = [...products]; // Создаем копию массива
 
