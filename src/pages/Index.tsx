@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { CheckCircle, ChevronDown, Crown, Sparkles, Zap, Star, Search, Target } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useProducts, Product } from '@/hooks/useProducts';
+import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/hooks/useCart';
 import { useNotification } from '../hooks/useNotification';
 import Notification from '../components/ui/Notification';
@@ -22,6 +21,7 @@ const Index = () => {
   const [gameCategories, setGameCategories] = useState<any[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const productsSectionRef = useRef<HTMLDivElement>(null);
+  const categoriesSectionRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
@@ -255,83 +255,9 @@ const Index = () => {
     });
   }
 
-  // Фильтрация товаров - разделяем поиск и категории
-  let filteredProducts = [...products]; // Создаем копию массива
-
-  // 1. ПОИСК ПО НАЗВАНИЮ (приоритет над категориями)
-  if (searchQuery.trim()) {
-    console.log('=== ПОИСК ПО НАЗВАНИЮ ===');
-    console.log('Поисковый запрос:', searchQuery);
-    console.log('Всего товаров до поиска:', filteredProducts.length);
-    
-    filteredProducts = filteredProducts.filter(product =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (product.game && product.game.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-    
-    console.log('Товаров после поиска:', filteredProducts.length);
-  }
-  // 2. ФИЛЬТРАЦИЯ ПО КАТЕГОРИЯМ (только если НЕ используется поиск)
-  else if (selectedGameCategory !== 'all') {
-    console.log('=== ФИЛЬТРАЦИЯ ПО КАТЕГОРИИ ===');
-    console.log('selectedGameCategory:', selectedGameCategory);
-    console.log('Всего товаров до фильтрации по категории:', filteredProducts.length);
-    
-    filteredProducts = filteredProducts.filter(product => {
-      // Сначала проверяем game_category_id (приоритет)
-      if (product.game_category_id) {
-        const matches = product.game_category_id === selectedGameCategory;
-        console.log(`Товар "${product.name}" с game_category_id="${product.game_category_id}" ${matches ? 'ПОДХОДИТ' : 'НЕ ПОДХОДИТ'}`);
-        return matches;
-      }
-      // Если game_category_id нет, используем старую логику
-      const gameName = product.game || '';
-      const matchedCategory = matchGameToCategory(gameName);
-      const matches = matchedCategory === selectedGameCategory;
-      console.log(`Товар "${product.name}" с game="${gameName}" -> категория="${matchedCategory}" (ищем: "${selectedGameCategory}") ${matches ? 'ПОДХОДИТ' : 'НЕ ПОДХОДИТ'}`);
-      return matches;
-    });
-    
-    console.log('Товаров после фильтрации по категории:', filteredProducts.length);
-  } else {
-    console.log('=== НЕ ПОКАЗЫВАЕМ ТОВАРЫ (selectedGameCategory = all, searchQuery пустой) ===');
-    console.log('Товары скрыты до выбора категории или поиска');
-    filteredProducts = []; // Не показываем товары до выбора категории
-  }
-
-  // 3. СОРТИРОВКА
-  console.log('Товаров перед сортировкой:', filteredProducts.length);
-  filteredProducts = filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-  console.log('Товаров после сортировки:', filteredProducts.length);
-
-  // Группируем товары по играм - показываем все сразу
-  console.log('=== ГРУППИРОВКА ТОВАРОВ ===');
-  console.log('Начинаем группировку товаров. filteredProducts.length:', filteredProducts.length);
-  
-  const groupedProducts = filteredProducts.reduce((groups, product, index) => {
-    const game = product.game || 'Товары'; // Если нет игры, относим к "Товары"
-    console.log(`Группируем товар ${index + 1}: "${product.name}" -> группа: "${game}"`);
-    
-    if (!groups[game]) {
-      groups[game] = [];
-      console.log(`Создаем новую группу: "${game}"`);
-    }
-    groups[game].push(product);
-    console.log(`Добавлен в группу "${game}". Размер группы: ${groups[game].length}`);
-    return groups;
-  }, {} as Record<string, Product[]>);
-  
-  console.log('=== РЕЗУЛЬТАТ ГРУППИРОВКИ ===');
-  console.log('groupedProducts:', groupedProducts);
-  console.log('Object.keys(groupedProducts).length:', Object.keys(groupedProducts).length);
-  
-  // Показываем каждую группу
-  Object.entries(groupedProducts).forEach(([gameName, gameProducts]) => {
-    console.log(`Группа "${gameName}": ${gameProducts.length} товаров`);
-    gameProducts.forEach((product, index) => {
-      console.log(`  ${index + 1}. "${product.name}"`);
-    });
-  });
+  // На главной странице товары не показываются - только категории
+  const filteredProducts: any[] = [];
+  const groupedProducts: Record<string, any[]> = {};
 
   const faqItems = [
     { 
@@ -455,7 +381,7 @@ const Index = () => {
           )}
           
           {/* Крупные карточки категорий игр */}
-          <div className="mb-16 sm:mb-20">
+          <div ref={categoriesSectionRef} className="mb-16 sm:mb-20">
             <div className="mb-6">
               <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">Категории игр</h2>
             </div>
@@ -471,18 +397,8 @@ const Index = () => {
                 <div
                 key={category.id}
                   onClick={() => {
-                    // Очищаем поиск при выборе категории
-                    setSearchQuery('');
-                    const newCategory = selectedGameCategory === category.id ? 'all' : category.id;
-                    setSelectedGameCategory(newCategory);
-                    // Обновляем URL
-                    navigate(`/?category=${newCategory}`);
-                    // Скроллим к товарам только если выбрана конкретная категория
-                    if (newCategory !== 'all') {
-                      setTimeout(() => {
-                        scrollToProducts();
-                      }, 100); // Небольшая задержка для обновления состояния
-                    }
+                    // Переходим на отдельную страницу категории
+                    navigate(`/category/${category.id}`);
                   }}
                   className={`group relative cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
                     selectedGameCategory === category.id ? 'scale-105 -translate-y-2' : ''
@@ -544,27 +460,9 @@ const Index = () => {
 
 
 
-          {/* Товары по играм - показываем в зависимости от режима */}
+          {/* Сообщение о выборе категории */}
           <div ref={productsSectionRef} className="space-y-16 sm:space-y-20">
-            {(() => {
-              console.log('=== ПРОВЕРКА ОТОБРАЖЕНИЯ ТОВАРОВ ===');
-              console.log('- Object.keys(groupedProducts).length:', Object.keys(groupedProducts).length);
-              console.log('- filteredProducts.length:', filteredProducts.length);
-              console.log('- selectedGameCategory:', selectedGameCategory);
-              console.log('- searchQuery:', searchQuery);
-              
-              const hasProducts = Object.keys(groupedProducts).length > 0 && filteredProducts.length > 0;
-              console.log('- hasProducts:', hasProducts);
-              
-              // Показываем товары если есть хотя бы одна группа
-              if (hasProducts) {
-                console.log('✅ Товары будут отображены');
-                return false; // Показываем товары
-              } else {
-                console.log('❌ Товары НЕ будут отображены');
-                return true; // Показываем сообщение "нет товаров"
-              }
-            })() ? (
+            {(
               /* Сообщение о том, что товаров нет в наличии */
               <div className="text-center py-16 sm:py-20">
                 <div className="max-w-2xl mx-auto">
@@ -616,6 +514,13 @@ const Index = () => {
                           setSelectedGameCategory('all');
                           setSearchQuery('');
                           navigate('/');
+                          // Прокручиваем к разделу с категориями
+                          setTimeout(() => {
+                            categoriesSectionRef.current?.scrollIntoView({ 
+                              behavior: 'smooth', 
+                              block: 'start' 
+                            });
+                          }, 100);
                         }
                       }}
                       className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#a31212]/20"
@@ -627,74 +532,6 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-            ) : (
-              Object.entries(groupedProducts).map(([gameName, gameProducts], gameIndex) => {
-                console.log(`=== ОТОБРАЖЕНИЕ ГРУППЫ "${gameName}" ===`);
-                console.log(`Количество товаров в группе: ${gameProducts.length}`);
-                console.log('Товары в группе:', gameProducts.map(p => p.name));
-                
-                return (
-                  <div key={gameName} className="animate-fade-in" style={{animationDelay: `${gameIndex * 0.2}s`}}>
-                    {/* Заголовок игры */}
-                    <div className="mb-8 sm:mb-12 relative">
-                      <div className="flex items-center justify-center md:justify-start mb-6 sm:mb-8">
-                        <div className="relative group">
-                          <Star className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212] absolute -left-8 sm:-left-10 top-1/2 transform -translate-y-1/2" />
-                          <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#f0f0f0] tracking-wide text-center md:text-left px-2">
-                            {(() => {
-                              const matchedCategory = Object.values(allGameCategories).find((category: any) => 
-                                matchGameToCategory(gameName) === category.id
-                              );
-                              return matchedCategory ? (matchedCategory as any).name.toUpperCase() : gameName.toUpperCase();
-                            })()}
-                          </h3>
-                        </div>
-                      </div>
-                      {/* Декоративная линия */}
-                      <div className="flex items-center justify-center md:justify-start">
-                        <div className="h-1 bg-[#a31212] w-16 sm:w-24 rounded-full"></div>
-                        <div className="h-px bg-[#1c1c1c] w-20 sm:w-32 ml-4 rounded-full"></div>
-                        <div className="h-1 bg-[#a31212] w-16 sm:w-24 ml-4 rounded-full"></div>
-                      </div>
-                    </div>
-                    
-                    {/* Товары этой игры */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8">
-                      {gameProducts.map((product, index) => {
-                        console.log(`Отображаем товар ${index + 1}: "${product.name}"`);
-                        return (
-                          <div 
-                            key={product.id} 
-                            className="animate-fade-in group"
-                            style={{animationDelay: `${(gameIndex * 5 + index) * 0.1}s`}}
-                          >
-                            <div className="relative">
-                              <ProductCard
-                                id={product.id}
-                                name={product.name}
-                                price={product.price}
-                                original_price={product.original_price}
-                                images={product.images}
-                                image_url={product.image_url}
-                                category_id={product.category_id}
-                                game={product.game}
-                                rating={product.rating}
-                                description={product.description}
-                                isInCart={items.some((item) => item.id === product.id)}
-                                onAddToCart={() => handleAddToCart(product)}
-                                onDetails={() => handleProductDetails(product.id)}
-                                onBuyNow={() => handleBuyNow(product)}
-                              />
-                              {/* Светящийся эффект вокруг карточки */}
-                              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-purple-500/5 to-pink-500/5 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100 pointer-events-none"></div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })
             )}
           </div>
         </div>

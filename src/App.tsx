@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Cases from "./pages/Cases";
 import Support from "./pages/Support";
 import ProductPage from "./pages/ProductPage";
+import CategoryPage from "./pages/CategoryPage";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
@@ -59,6 +60,7 @@ const AppContent = () => {
               <Route path="/case/:id" element={<CasePage />} />
               <Route path="/support" element={<Support />} />
               <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/category/:categoryId" element={<CategoryPage />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/auth" element={<Auth />} />
