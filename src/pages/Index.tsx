@@ -294,8 +294,9 @@ const Index = () => {
     
     console.log('Товаров после фильтрации по категории:', filteredProducts.length);
   } else {
-    console.log('=== ПОКАЗЫВАЕМ ВСЕ ТОВАРЫ (selectedGameCategory = all, searchQuery пустой) ===');
-    console.log('Всего товаров для отображения:', filteredProducts.length);
+    console.log('=== НЕ ПОКАЗЫВАЕМ ТОВАРЫ (selectedGameCategory = all, searchQuery пустой) ===');
+    console.log('Товары скрыты до выбора категории или поиска');
+    filteredProducts = []; // Не показываем товары до выбора категории
   }
 
   // 3. СОРТИРОВКА
@@ -581,19 +582,19 @@ const Index = () => {
                   </div>
                   
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#f0f0f0] mb-4">
-                    {searchQuery.trim() ? 'Ничего не найдено' : 'Товары скоро появятся!'}
+                    {searchQuery.trim() ? 'Ничего не найдено' : 'Выберите категорию для просмотра товаров'}
                   </h3>
                   
                   <div className="space-y-4 mb-8">
                     <p className="text-lg sm:text-xl text-[#a0a0a0] leading-relaxed">
                       {searchQuery.trim() 
                         ? 'Попробуйте изменить поисковый запрос или выберите другую категорию'
-                        : 'В данной категории пока нет товаров, но мы активно работаем над пополнением ассортимента.'
+                        : 'Нажмите на любую категорию выше, чтобы увидеть доступные товары в этой игре.'
                       }
                     </p>
                     {!searchQuery.trim() && (
                       <p className="text-base sm:text-lg text-[#a0a0a0]">
-                        Следите за обновлениями - новые товары появляются регулярно!
+                        Или воспользуйтесь поиском для быстрого поиска нужного товара!
                       </p>
                     )}
                   </div>
@@ -609,14 +610,18 @@ const Index = () => {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <button
                       onClick={() => {
-                        setSelectedGameCategory('all');
-                        setSearchQuery('');
-                        navigate('/');
+                        if (searchQuery.trim()) {
+                          setSearchQuery('');
+                        } else {
+                          setSelectedGameCategory('all');
+                          setSearchQuery('');
+                          navigate('/');
+                        }
                       }}
                       className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#a31212]/20"
                     >
                       <span className="flex items-center justify-center">
-                        {searchQuery.trim() ? '🔍 Очистить поиск' : '🔍 Посмотреть все товары'}
+                        {searchQuery.trim() ? '🔍 Очистить поиск' : '🎮 Выбрать категорию'}
                       </span>
                     </button>
                   </div>

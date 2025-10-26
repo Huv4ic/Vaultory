@@ -44,8 +44,8 @@ const Header = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Переходим на главную страницу с параметром поиска и очищаем категорию
-      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}&category=all`);
+      // Переходим на главную страницу с параметром поиска (не сбрасываем категорию)
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
       setShowSearchDropdown(false);
     }
   };
