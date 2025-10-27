@@ -197,7 +197,7 @@ const Support = () => {
                   </div>
                   <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Поддержка 24/7</h3>
                 </div>
-                <p className="text-sm text-[#a0a0a0]">Помощь в любое время дня и ночи</p>
+                <p className="text-base text-[#a0a0a0]">Помощь в любое время дня и ночи</p>
               </div>
             </div>
             
@@ -209,7 +209,7 @@ const Support = () => {
                   </div>
                   <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Быстрый ответ</h3>
                 </div>
-                <p className="text-sm text-[#a0a0a0]">Решаем вопросы в кратчайшие сроки</p>
+                <p className="text-base text-[#a0a0a0]">Решаем вопросы в кратчайшие сроки</p>
               </div>
             </div>
             
@@ -221,7 +221,7 @@ const Support = () => {
                   </div>
                   <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Безопасность</h3>
                 </div>
-                <p className="text-sm text-[#a0a0a0]">Конфиденциальность ваших данных</p>
+                <p className="text-base text-[#a0a0a0]">Конфиденциальность ваших данных</p>
               </div>
             </div>
             
@@ -233,7 +233,7 @@ const Support = () => {
                   </div>
                   <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Качество</h3>
                 </div>
-                <p className="text-sm text-[#a0a0a0]">Профессиональный подход к каждому клиенту</p>
+                <p className="text-base text-[#a0a0a0]">Профессиональный подход к каждому клиенту</p>
               </div>
             </div>
           </div>
