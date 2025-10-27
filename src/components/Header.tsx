@@ -263,7 +263,7 @@ const Header = () => {
               <div className="relative bg-[#181818] backdrop-blur-xl rounded-xl p-3 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
                 {/* Иконка корзины */}
                 <div className="relative z-10">
-                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-[#a31212] group-hover:text-[#8a0f0f] transition-all duration-300 group-hover:scale-105" />
+                  <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-[#f0f0f0] transition-all duration-300 group-hover:scale-105" />
                 </div>
                 
                 {/* Счетчик товаров */}
@@ -293,7 +293,7 @@ const Header = () => {
                     ) : (
                       <User className="w-5 h-5 text-[#a31212]" />
                     )}
-                    <span className="text-[#a31212] font-bold hidden lg:block text-sm">
+                    <span className="text-[#f0f0f0] font-bold hidden lg:block text-sm">
                       {telegramUser.first_name}
                     </span>
                   </button>

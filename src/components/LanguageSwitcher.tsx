@@ -41,7 +41,7 @@ const LanguageSwitcher = ({ currentLanguage, onLanguageChange }: LanguageSwitche
       >
         <span className="text-sm text-[#a31212] font-bold">{currentLang.flag}</span>
         <ChevronDown 
-          className={`w-3 h-3 text-[#a31212] transition-all duration-300 ${isOpen ? 'rotate-180 text-[#a31212]' : ''}`} 
+          className={`w-3 h-3 text-[#f0f0f0] transition-all duration-300 ${isOpen ? 'rotate-180 text-[#f0f0f0]' : ''}`} 
         />
       </button>
 
