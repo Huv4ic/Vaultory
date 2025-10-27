@@ -190,41 +190,49 @@ const Support = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="group relative">
-              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
-                <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]">
-                  <Clock className="w-8 h-8 text-[#a31212]" />
+              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center min-h-[240px] flex flex-col justify-between">
+                <div>
+                  <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]">
+                    <Clock className="w-8 h-8 text-[#a31212]" />
+                  </div>
+                  <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Поддержка 24/7</h3>
                 </div>
-                <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Поддержка 24/7</h3>
                 <p className="text-sm text-[#a0a0a0]">Помощь в любое время дня и ночи</p>
               </div>
             </div>
             
             <div className="group relative">
-              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
-                <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]">
-                  <Zap className="w-8 h-8 text-[#a31212]" />
+              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center min-h-[240px] flex flex-col justify-between">
+                <div>
+                  <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]">
+                    <Zap className="w-8 h-8 text-[#a31212]" />
+                  </div>
+                  <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Быстрый ответ</h3>
                 </div>
-                <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Быстрый ответ</h3>
                 <p className="text-sm text-[#a0a0a0]">Решаем вопросы в кратчайшие сроки</p>
               </div>
             </div>
             
             <div className="group relative">
-              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
-                <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]">
-                  <Shield className="w-8 h-8 text-[#a31212]" />
+              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center min-h-[240px] flex flex-col justify-between">
+                <div>
+                  <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]">
+                    <Shield className="w-8 h-8 text-[#a31212]" />
+                  </div>
+                  <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Безопасность</h3>
                 </div>
-                <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Безопасность</h3>
                 <p className="text-sm text-[#a0a0a0]">Конфиденциальность ваших данных</p>
               </div>
             </div>
             
             <div className="group relative">
-              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
-                <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]">
-                  <Star className="w-8 h-8 text-[#a31212]" />
+              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center min-h-[240px] flex flex-col justify-between">
+                <div>
+                  <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]">
+                    <Star className="w-8 h-8 text-[#a31212]" />
+                  </div>
+                  <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Качество</h3>
                 </div>
-                <h3 className="text-lg font-black text-[#f0f0f0] mb-3">Качество</h3>
                 <p className="text-sm text-[#a0a0a0]">Профессиональный подход к каждому клиенту</p>
               </div>
             </div>
