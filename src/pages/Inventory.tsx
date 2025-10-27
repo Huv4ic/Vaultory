@@ -287,20 +287,20 @@ const Inventory = () => {
               {favoriteCase ? (
                 <>
                   {/* Фото кейса с эффектами - уменьшенное */}
-                  <div className="w-16 h-16 mx-auto mb-3 rounded-xl overflow-hidden bg-gray-800 border border-yellow-500/30 group-hover:scale-105 transition-transform duration-300">
+                  <div className="w-12 h-12 mx-auto mb-2 rounded-lg overflow-hidden bg-gray-800 border border-yellow-500/30">
                     {favoriteCase.case_image_url ? (
                       <img 
                         src={favoriteCase.case_image_url} 
                         alt={favoriteCase.case_name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-yellow-400">
-                        <Trophy className="w-8 h-8" />
+                        <Trophy className="w-6 h-6" />
                       </div>
                     )}
                   </div>
-                  <div className="text-base font-bold text-yellow-400 mb-1 truncate px-2">{favoriteCase.case_name}</div>
+                  <div className="text-sm font-bold text-yellow-400 mb-0.5 truncate px-1">{favoriteCase.case_name}</div>
                   <div className="text-xs text-gray-400">Открыто {favoriteCase.opened_count} раз</div>
                 </>
               ) : (
