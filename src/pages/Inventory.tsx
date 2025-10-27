@@ -250,13 +250,15 @@ const Inventory = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Общая стоимость */}
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
-              <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
-                <DollarSign className="w-10 h-10 text-[#a31212]" />
-              </div>
-              <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Общая стоимость</h3>
-              <div className="text-3xl sm:text-4xl font-black text-[#a31212] mb-2">
-                {formatNumber(parseFloat(totalValue.toFixed(2)))}₴
+            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
+              <div>
+                <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
+                  <DollarSign className="w-10 h-10 text-[#a31212]" />
+                </div>
+                <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Общая стоимость</h3>
+                <div className="text-3xl sm:text-4xl font-black text-[#a31212] mb-4">
+                  {formatNumber(parseFloat(totalValue.toFixed(2)))}₴
+                </div>
               </div>
               <div className="text-sm text-[#a0a0a0]">Стоимость всех предметов</div>
             </div>
@@ -264,13 +266,15 @@ const Inventory = () => {
 
           {/* Количество предметов */}
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
-              <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
-                <Package className="w-10 h-10 text-[#a31212]" />
-              </div>
-              <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Предметов</h3>
-              <div className="text-3xl sm:text-4xl font-black text-[#a31212] mb-2">
-                {displayItems.length}
+            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
+              <div>
+                <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
+                  <Package className="w-10 h-10 text-[#a31212]" />
+                </div>
+                <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Предметов</h3>
+                <div className="text-3xl sm:text-4xl font-black text-[#a31212] mb-4">
+                  {displayItems.length}
+                </div>
               </div>
               <div className="text-sm text-[#a0a0a0]">Уникальных предметов</div>
             </div>
@@ -278,33 +282,37 @@ const Inventory = () => {
 
           {/* Любимый кейс */}
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
-              <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
-                <Crown className="w-10 h-10 text-[#a31212]" />
+            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
+              <div>
+                <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
+                  <Crown className="w-10 h-10 text-[#a31212]" />
+                </div>
+                <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Любимый кейс</h3>
+                
+                {favoriteCase ? (
+                  <>
+                    {/* Фото кейса с эффектами - уменьшенное */}
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-lg overflow-hidden bg-gray-800 border border-yellow-500/30">
+                      {favoriteCase.case_image_url ? (
+                        <img 
+                          src={favoriteCase.case_image_url} 
+                          alt={favoriteCase.case_name}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-yellow-400">
+                          <Trophy className="w-6 h-6" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-sm font-bold text-yellow-400 mb-0.5 truncate px-1">{favoriteCase.case_name}</div>
+                  </>
+                ) : (
+                  <div className="text-gray-400 font-medium text-sm">Нет данных</div>
+                )}
               </div>
-              <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Любимый кейс</h3>
-              
-              {favoriteCase ? (
-                <>
-                  {/* Фото кейса с эффектами - уменьшенное */}
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-lg overflow-hidden bg-gray-800 border border-yellow-500/30">
-                    {favoriteCase.case_image_url ? (
-                      <img 
-                        src={favoriteCase.case_image_url} 
-                        alt={favoriteCase.case_name}
-                        className="w-full h-full object-contain"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-yellow-400">
-                        <Trophy className="w-6 h-6" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="text-sm font-bold text-yellow-400 mb-0.5 truncate px-1">{favoriteCase.case_name}</div>
-                  <div className="text-xs text-gray-400">Открыто {favoriteCase.opened_count} раз</div>
-                </>
-              ) : (
-                <div className="text-gray-400 font-medium text-sm">Нет данных</div>
+              {favoriteCase && (
+                <div className="text-xs text-gray-400">Открыто {favoriteCase.opened_count} раз</div>
               )}
             </div>
           </div>
