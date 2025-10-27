@@ -313,7 +313,7 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] text-[#f0f0f0] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#a31212] mx-auto"></div>
           <p className="mt-4 text-xl">{t('Загрузка товаров...')}</p>
@@ -324,7 +324,7 @@ const Index = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] text-[#f0f0f0] flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4 text-[#a31212]">{t('Ошибка загрузки')}</h1>
           <p className="text-xl mb-4">{error}</p>
@@ -337,12 +337,12 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] relative">
+    <div className="min-h-screen bg-[#121212] text-[#f0f0f0] relative">
       {/* Telegram канал - современное окно с анимированным фоном */}
 
 
       {/* Категории игр */}
-      <section id="products" className="py-16 px-4 relative bg-[#0e0e0e]">
+      <section id="products" className="py-16 px-4 relative bg-[#121212]">
         
         <div className="container mx-auto relative z-10">
           {/* Hero секция */}
