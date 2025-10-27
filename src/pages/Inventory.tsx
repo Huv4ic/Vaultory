@@ -184,7 +184,7 @@ const Inventory = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#a31212] mx-auto mb-4"></div>
           <p className="text-[#a0a0a0] text-lg">Загрузка инвентаря...</p>
@@ -195,7 +195,7 @@ const Inventory = () => {
 
   if (hasError) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
         <div className="text-center">
           <div className="text-[#a31212] text-6xl mb-4">⚠️</div>
           <p className="text-[#a31212] text-lg mb-4">{error}</p>
@@ -208,7 +208,7 @@ const Inventory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] relative">
+    <div className="min-h-screen bg-[#121212] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">

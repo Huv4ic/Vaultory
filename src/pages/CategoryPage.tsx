@@ -127,7 +127,7 @@ export default function CategoryPage() {
 
   if (categoryLoading) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] text-[#f0f0f0] flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#a31212] mb-4"></div>
           <p className="text-[#a0a0a0] text-lg">Загрузка категории...</p>
@@ -138,7 +138,7 @@ export default function CategoryPage() {
 
   if (!gameCategory) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] text-[#f0f0f0] flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">Категория не найдена</h1>
           <button
@@ -153,7 +153,7 @@ export default function CategoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0]">
+    <div className="min-h-screen bg-[#121212] text-[#f0f0f0]">
       <Header />
       
       {/* Hero секция с крупной фотографией категории */}
@@ -176,7 +176,7 @@ export default function CategoryPage() {
           )}
           
           {/* Градиентный оверлей */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent"></div>
           
           {/* Кнопка назад */}
           <div className="absolute top-6 left-6">
@@ -205,7 +205,7 @@ export default function CategoryPage() {
       </section>
 
       {/* Поиск по категории */}
-      <section className="py-8 px-4 bg-[#0e0e0e]">
+      <section className="py-8 px-4 bg-[#121212]">
         <div className="container mx-auto">
           <div className="max-w-2xl mx-auto">
             <div className="relative">
@@ -223,7 +223,7 @@ export default function CategoryPage() {
       </section>
 
       {/* Товары */}
-      <section ref={productsSectionRef} className="py-16 px-4 bg-[#0e0e0e]">
+      <section ref={productsSectionRef} className="py-16 px-4 bg-[#121212]">
         <div className="container mx-auto">
           {/* Заголовок товаров */}
           <div className="text-center mb-12">

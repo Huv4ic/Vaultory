@@ -16,7 +16,7 @@ const NotFound = () => {
   };
   
   return (
-    <div className="min-h-screen bg-[#0e0e0e]">
+    <div className="min-h-screen bg-[#121212]">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">

@@ -132,7 +132,7 @@
 
 /* Анимации для страницы товара - тёмный стиль */
 .product-hero-bg {
-  background: linear-gradient(135deg, #0e0e0e 0%, #1c1c1c 100%);
+  background: linear-gradient(135deg, #121212 0%, #1c1c1c 100%);
 }
 
 .floating-particles {
@@ -336,7 +336,7 @@
 }
 
 .profile-morphing-bg {
-  background: linear-gradient(45deg, #0e0e0e, #1c1c1c, #0e0e0e, #181818);
+  background: linear-gradient(45deg, #121212, #1c1c1c, #121212, #181818);
   background-size: 400% 400%;
   animation: profile-morph 8s ease-in-out infinite;
 }
@@ -555,7 +555,7 @@
 }
 
 .inventory-morphing-bg {
-  background: linear-gradient(45deg, #0e0e0e, #1c1c1c, #181818, #0e0e0e);
+  background: linear-gradient(45deg, #121212, #1c1c1c, #181818, #121212);
   background-size: 400% 400%;
   animation: inventory-morph 10s ease-in-out infinite;
 }

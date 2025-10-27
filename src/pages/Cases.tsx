@@ -13,7 +13,7 @@ const Cases = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#121212] text-[#f0f0f0] flex items-center justify-center px-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-20 w-20 sm:h-24 sm:w-24 md:h-32 md:w-32 border-4 border-[#a31212] mx-auto"></div>
           <p className="mt-4 sm:mt-6 text-lg sm:text-xl text-[#a0a0a0]">{t('Загрузка кейсов...')}</p>
@@ -24,7 +24,7 @@ const Cases = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#121212] text-[#f0f0f0] flex items-center justify-center px-4">
         <div className="text-center">
           <div className="mx-auto w-16 h-16 sm:w-20 sm:h-20 bg-[#181818] rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-[#1c1c1c]">
             <span className="text-[#a31212] text-2xl sm:text-3xl">⚠️</span>
@@ -43,7 +43,7 @@ const Cases = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] relative">
+    <div className="min-h-screen bg-[#121212] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">

@@ -175,7 +175,7 @@ const Profile = () => {
 
   if (!telegramUser) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
         <div className="text-center bg-[#181818] rounded-2xl p-8 border border-[#1c1c1c]">
           <div className="text-6xl mb-6">🔒</div>
           <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">{t('Войдите в аккаунт')}</h1>
@@ -195,7 +195,7 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-4 border-[#a31212] mx-auto mb-4"></div>
           <p className="text-[#a0a0a0] text-xl">{t('Загрузка профиля...')}</p>
@@ -205,7 +205,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] relative">
+    <div className="min-h-screen bg-[#121212] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">

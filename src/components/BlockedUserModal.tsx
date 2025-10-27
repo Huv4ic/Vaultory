@@ -15,7 +15,7 @@ const BlockedUserModal: React.FC<BlockedUserModalProps> = ({ isVisible, reason }
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-[#0e0e0e]/95 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] bg-[#121212]/95 backdrop-blur-sm flex items-center justify-center p-4">
       {/* Основное окно */}
       <div className="relative z-10 w-full max-w-lg mx-auto">
         <div className="bg-[#181818] border-2 border-[#1c1c1c] rounded-2xl p-6 text-center">

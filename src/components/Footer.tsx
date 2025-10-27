@@ -13,7 +13,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#0e0e0e] border-t border-[#1c1c1c] relative">
+    <footer className="bg-[#121212] border-t border-[#1c1c1c] relative">
 
       <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">

@@ -295,7 +295,7 @@ const CasePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0]">
+      <div className="min-h-screen bg-[#121212] text-[#f0f0f0]">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
@@ -310,7 +310,7 @@ const CasePage = () => {
 
   if (error || !caseData) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0]">
+      <div className="min-h-screen bg-[#121212] text-[#f0f0f0]">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-[#a31212] mb-4">{error || 'Кейс не найден'}</h1>
@@ -325,7 +325,7 @@ const CasePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0]">
+    <div className="min-h-screen bg-[#121212] text-[#f0f0f0]">
       <div className="container mx-auto px-4 py-8">
         {/* Кнопка возврата */}
         <div className="mb-6 mt-16 sm:mt-20 md:mt-24">

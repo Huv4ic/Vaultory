@@ -35,7 +35,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, productName })
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-[#0e0e0e]/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] bg-[#121212]/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-[#181818] border border-[#1c1c1c] rounded-2xl p-6 w-full max-w-md mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -62,7 +62,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, productName })
         {/* URL Display */}
         <div className="bg-[#1c1c1c] rounded-xl p-4 mb-6 border border-[#1c1c1c]">
           <p className="text-[#a0a0a0] text-sm mb-2">Ссылка на товар:</p>
-          <div className="bg-[#0e0e0e] rounded-lg p-3 border border-[#1c1c1c]">
+          <div className="bg-[#121212] rounded-lg p-3 border border-[#1c1c1c]">
             <p className="text-[#a31212] text-sm break-all font-mono">{currentUrl}</p>
           </div>
         </div>

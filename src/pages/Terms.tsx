@@ -130,7 +130,7 @@ const Terms = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] relative">
+    <div className="min-h-screen bg-[#121212] relative">
 
       {/* Hero Section */}
       <div className="relative z-10">

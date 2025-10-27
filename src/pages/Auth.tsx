@@ -165,7 +165,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] relative overflow-hidden">
+    <div className="min-h-screen bg-[#121212] relative overflow-hidden">
 
       {/* Hero Section */}
       <div className="relative z-10 container mx-auto px-4 py-12 text-center">

@@ -26,7 +26,7 @@ const OrderSuccess = () => {
 
   if (!telegramUser) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
         <div className="text-center bg-[#181818] rounded-2xl p-8 border border-[#1c1c1c]">
           <div className="text-6xl mb-6">🔒</div>
           <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">Доступ запрещен</h1>
@@ -43,7 +43,7 @@ const OrderSuccess = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e]">
+    <div className="min-h-screen bg-[#121212]">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">

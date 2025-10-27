@@ -108,7 +108,7 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] flex items-center justify-center relative overflow-hidden">
+      <div className="min-h-screen bg-[#121212] flex items-center justify-center relative overflow-hidden">
 
         <div className="relative z-10 text-center max-w-lg mx-auto px-6">
           {/* Главный контейнер с анимацией появления */}
@@ -163,7 +163,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] relative">
+    <div className="min-h-screen bg-[#121212] relative">
 
       {/* Hero Section */}
       <div className="relative overflow-hidden">

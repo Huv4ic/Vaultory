@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0e0e0e]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#121212]">
       {/* Простой тёмный фон */}
-      <div className="absolute inset-0 bg-[#0e0e0e]"></div>
+      <div className="absolute inset-0 bg-[#121212]"></div>
 
       <div className="container mx-auto px-4 z-10">
         <div className="max-w-4xl mx-auto text-center">

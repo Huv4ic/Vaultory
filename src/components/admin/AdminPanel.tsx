@@ -185,7 +185,7 @@ export default function AdminPanel() {
   
   if (!telegramUser || !isAdmin) {
     return (
-      <div className="min-h-screen bg-[#0e0e0e] relative overflow-hidden flex items-center justify-center">
+      <div className="min-h-screen bg-[#121212] relative overflow-hidden flex items-center justify-center">
         {/* Анимированный фон */}
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#a31212] rounded-full animate-ping opacity-60"></div>
@@ -434,7 +434,7 @@ export default function AdminPanel() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0e0e0e] text-[#f0f0f0] relative overflow-hidden">
+    <div className="min-h-screen bg-[#121212] text-[#f0f0f0] relative overflow-hidden">
       {/* Анимированный фон */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#a31212] rounded-full animate-ping opacity-60"></div>
@@ -446,7 +446,7 @@ export default function AdminPanel() {
       </div>
 
       {/* Header */}
-      <div className="relative z-10 border-b border-[#1c1c1c] bg-[#0e0e0e]/95 backdrop-blur-xl">
+      <div className="relative z-10 border-b border-[#1c1c1c] bg-[#121212]/95 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
             <div className="flex items-center space-x-3">

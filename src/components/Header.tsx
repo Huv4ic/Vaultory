@@ -102,8 +102,8 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-[#0e0e0e]/95 backdrop-blur-xl border-b border-[#1c1c1c]' 
-        : 'bg-[#0e0e0e]'
+        ? 'bg-[#121212]/95 backdrop-blur-xl border-b border-[#1c1c1c]' 
+        : 'bg-[#121212]'
     }`}>
       <div className="container mx-auto px-3 sm:px-4">
         <div className="flex items-center justify-between h-16 sm:h-18">
@@ -172,7 +172,7 @@ const Header = () => {
                     }}
                     onFocus={() => setShowSearchDropdown(searchQuery.length > 0)}
                     onKeyDown={handleKeyDown}
-                    className="w-64 pl-10 pr-4 py-2 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-lg focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-sm"
+                    className="w-80 pl-10 pr-4 py-2 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-lg focus:border-[#a31212] focus:ring-2 focus:ring-[#a31212]/20 transition-all duration-300 text-sm"
                   />
                 </div>
               </form>
@@ -270,7 +270,7 @@ const Header = () => {
                 {items.length > 0 && (
                   <div className="absolute -top-2 -right-2">
                     <div className="relative">
-                      <span className="bg-[#a31212] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-[#0e0e0e]">
+                      <span className="bg-[#a31212] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-[#121212]">
                         {items.length}
                       </span>
                     </div>
