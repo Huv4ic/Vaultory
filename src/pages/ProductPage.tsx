@@ -244,6 +244,7 @@ const ProductPage = () => {
                         <span className="text-xl text-[#a0a0a0] line-through">{product.original_price}₴</span>
                       )}
                     </div>
+                  </div>
 
                   {/* Игра */}
                   {product.game && (
