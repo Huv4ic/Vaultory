@@ -6,8 +6,6 @@ export interface AdminProduct {
   image_url: string;
   category: string;
   game: string;
-  rating: number;
-  sales: number;
   description?: string;
   features?: string[];
   game_category_id?: string;
@@ -61,8 +59,6 @@ export interface ProductFormData {
   image_url: string;
   category: string;
   game: string;
-  rating: number;
-  sales: number;
   description: string;
   features: string[];
   game_category_id: string;

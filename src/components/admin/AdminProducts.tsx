@@ -16,8 +16,6 @@ const emptyProduct: ProductFormData = {
   image_url: '',
   category: '',
   game: '',
-  rating: 0,
-  sales: 0,
   description: '',
   features: [],
   game_category_id: '',
@@ -60,8 +58,6 @@ const AdminProducts = () => {
         image_url: productData.image_url,
         game: productData.game,
         game_category_id: productData.game_category_id,
-        rating: productData.rating,
-        sales: productData.sales,
         description: productData.description,
         features: productData.features,
         created_at: productData.created_at,
@@ -158,8 +154,6 @@ const AdminProducts = () => {
       image_url: product.image_url,
       category: product.category,
       game: product.game,
-      rating: product.rating,
-      sales: product.sales,
       description: product.description || '',
       features: product.features || [],
       game_category_id: product.game_category_id || '',
@@ -197,8 +191,6 @@ const AdminProducts = () => {
             image_url: currentProduct.image_url,
             category: currentProduct.category,
             game: currentProduct.game,
-            rating: currentProduct.rating,
-            sales: currentProduct.sales,
             description: currentProduct.description,
             features: currentProduct.features,
             game_category_id: currentProduct.game_category_id,
@@ -234,8 +226,6 @@ const AdminProducts = () => {
             image_url: currentProduct.image_url,
             category: currentProduct.category,
             game: currentProduct.game,
-            rating: currentProduct.rating,
-            sales: currentProduct.sales,
             description: currentProduct.description,
             features: currentProduct.features,
             game_category_id: currentProduct.game_category_id,
@@ -326,11 +316,11 @@ const AdminProducts = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setCurrentProduct(prev => ({
       ...prev,
-      [name]: ['price', 'original_price', 'rating', 'sales'].includes(name) ? Number(value) : value
+      [name]: ['price', 'original_price'].includes(name) ? Number(value) : value
     }));
   };
 
@@ -399,8 +389,6 @@ const AdminProducts = () => {
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Цена</th>
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden sm:table-cell">Категория</th>
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Игра</th>
-              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Рейтинг</th>
-              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden xl:table-cell">Продано</th>
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Действия</th>
             </tr>
           </thead>
@@ -440,15 +428,6 @@ const AdminProducts = () => {
                 </td>
                 <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
                   <Badge variant="outline" className="text-xs">{product.game}</Badge>
-                </td>
-                <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
-                  <div className="flex items-center">
-                    <span className="text-yellow-400">★</span>
-                    <span className="ml-1 text-xs sm:text-sm">{product.rating}</span>
-                  </div>
-                </td>
-                <td className="py-2 px-2 sm:px-4 hidden xl:table-cell">
-                  <div className="text-green-400 font-medium text-xs sm:text-sm">{product.sales}</div>
                 </td>
                 <td className="py-2 px-2 sm:px-4">
                   <div className="flex gap-1 sm:gap-2">
@@ -531,20 +510,6 @@ const AdminProducts = () => {
                     className="bg-gray-700 border-gray-600 text-sm sm:text-base"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Рейтинг</label>
-                  <Input
-                    name="rating"
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    max="5"
-                    value={currentProduct.rating}
-                    onChange={handleChange}
-                    placeholder="0.0"
-                    className="bg-gray-700 border-gray-600 text-sm sm:text-base"
-                  />
-                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -585,18 +550,6 @@ const AdminProducts = () => {
                     </option>
                   ))}
                 </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Количество продаж</label>
-                <Input
-                  name="sales"
-                  type="number"
-                  value={currentProduct.sales}
-                  onChange={handleChange}
-                  placeholder="0"
-                  className="bg-gray-700 border-gray-600 text-sm sm:text-base"
-                />
               </div>
 
               <div>

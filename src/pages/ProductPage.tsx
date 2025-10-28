@@ -244,31 +244,6 @@ const ProductPage = () => {
                         <span className="text-xl text-[#a0a0a0] line-through">{product.original_price}₴</span>
                       )}
                     </div>
-                    {product.original_price && product.original_price > product.price && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                        <Target className="w-4 h-4 text-[#a31212]" />
-                        <span className="text-[#a31212] font-bold">
-                          Скидка {Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Рейтинг и продажи */}
-                  <div className="flex items-center space-x-6 mb-6">
-                    {product.rating && (
-                      <div className="flex items-center space-x-2 px-4 py-2 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                        <Star className="w-5 h-5 text-[#a31212] fill-current" />
-                        <span className="text-[#f0f0f0] font-bold">{product.rating}</span>
-                      </div>
-                    )}
-                    {product.sales && (
-                      <div className="flex items-center space-x-2 px-4 py-2 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                        <TrendingUp className="w-5 h-5 text-[#a31212]" />
-                        <span className="text-[#a0a0a0] font-medium">{product.sales} продаж</span>
-                      </div>
-                    )}
-                  </div>
 
                   {/* Игра */}
                   {product.game && (
