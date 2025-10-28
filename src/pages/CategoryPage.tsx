@@ -153,7 +153,7 @@ export default function CategoryPage() {
         </div>
 
         {subcategories.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {subcategories.map((sub, index) => {
               // Определяем, нужно ли центрировать последние элементы
               const totalItems = subcategories.length;
@@ -166,11 +166,18 @@ export default function CategoryPage() {
                   key={sub.id}
                   onClick={() => handleSubcategoryClick(sub)}
                   className={`group cursor-pointer transform transition-all duration-300 hover:scale-105 ${
-                    shouldCenter ? 'sm:col-start-auto' : ''
+                    shouldCenter ? 'sm:col-start-auto lg:col-start-auto' : ''
                   }`}
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  style={{ 
+                    animationDelay: `${index * 0.1}s`,
+                    ...(shouldCenter && itemsInLastRow === 1 && {
+                      gridColumn: '1 / -1',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    })
+                  }}
                 >
-                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#a31212] transition-all duration-300 w-full max-w-sm">
+                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#a31212] transition-all duration-300">
                     <div className="text-center">
                       <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                         {sub.icon || getSubcategoryIcon(sub.slug)}
