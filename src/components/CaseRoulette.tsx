@@ -641,13 +641,10 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
           try {
             console.log('🔄 Обновляем индивидуальную статистику кейсов для пользователя:', profile.telegram_id);
             
-            // Используем простой запрос для обновления статистики кейсов
-            const { error: statsError } = await supabase
-              .from('profiles')
-              .update({ 
-                cases_opened: (profile.cases_opened || 0) + 1 
-              })
-              .eq('telegram_id', profile.telegram_id);
+            // Используем функцию для обновления статистики кейсов
+            const { error: statsError } = await supabase.rpc('increment_user_cases_opened', {
+              user_telegram_id: profile.telegram_id
+            });
 
             if (statsError) {
               console.error('❌ Error updating user cases statistics:', statsError);

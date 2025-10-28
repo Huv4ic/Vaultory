@@ -195,6 +195,21 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
       setSoldOrAdded(true);
       onSellItem(winningItem, sellPrice);
       
+      // Обновляем статистику проданных предметов
+      try {
+        const { error: statsError } = await supabase.rpc('increment_user_items_sold', {
+          user_telegram_id: telegramUser.id
+        });
+
+        if (statsError) {
+          console.error('Ошибка обновления статистики проданных предметов:', statsError);
+        } else {
+          console.log('Статистика проданных предметов обновлена');
+        }
+      } catch (error) {
+        console.error('Ошибка при обновлении статистики:', error);
+      }
+      
       // Обновляем достижения
       await refreshAchievements();
     } catch (error) {
