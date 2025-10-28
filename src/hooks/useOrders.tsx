@@ -50,6 +50,17 @@ export const useOrders = () => {
         return { success: false, error: 'Ошибка списания средств' };
       }
 
+      // Обновляем статистику покупок
+      const { error: statsError } = await supabase.rpc('update_user_purchase_stats', {
+        user_telegram_id: telegramUser.id,
+        order_amount: totalAmount
+      });
+
+      if (statsError) {
+        console.error('Ошибка обновления статистики покупок:', statsError);
+        // Не прерываем выполнение, так как заказ уже создан
+      }
+
       // Отправляем уведомление в Telegram бота
       await sendOrderNotification(items, totalAmount, orderId);
 
