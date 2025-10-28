@@ -152,7 +152,13 @@ export default function CategoryPage() {
         </div>
 
         {subcategories.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={`grid gap-6 ${
+            subcategories.length === 1 
+              ? 'grid-cols-1 max-w-sm mx-auto' 
+              : subcategories.length === 2 
+                ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto' 
+                : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+          }`}>
             {subcategories.map((sub, index) => (
               <div
                 key={sub.id}

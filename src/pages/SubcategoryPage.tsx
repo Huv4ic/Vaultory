@@ -165,9 +165,6 @@ export default function SubcategoryPage() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white">
             <h1 className="text-4xl md:text-6xl font-black mb-4">{gameCategory.name}</h1>
-            {subcategory && (
-              <h2 className="text-2xl md:text-3xl font-bold text-[#a31212]">{subcategory.name}</h2>
-            )}
           </div>
         </div>
 
