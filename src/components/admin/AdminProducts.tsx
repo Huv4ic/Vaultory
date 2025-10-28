@@ -496,6 +496,24 @@ const AdminProducts = () => {
         }
       }
 
+      // Конвертируем статистику пользователей
+      const { data: userStats, error: userStatsError } = await supabase
+        .from('user_statistics')
+        .select('id, total_spent');
+
+      if (userStatsError) {
+        console.log('Таблица user_statistics не найдена или недоступна:', userStatsError);
+      } else {
+        for (const stat of userStats || []) {
+          const newTotalSpent = stat.total_spent / 42;
+          
+          await supabase
+            .from('user_statistics')
+            .update({ total_spent: newTotalSpent })
+            .eq('id', stat.id);
+        }
+      }
+
       // Конвертируем цены основных кейсов сайта
       const { data: cases, error: casesError } = await supabase
         .from('cases')
