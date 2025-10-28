@@ -458,18 +458,36 @@ const AdminProducts = () => {
       // Конвертируем цены предметов в инвентаре пользователей
       const { data: userInventory, error: userInventoryError } = await supabase
         .from('user_inventory')
-        .select('id, price');
+        .select('id, item_price');
 
       if (userInventoryError) {
         console.log('Таблица user_inventory не найдена или недоступна:', userInventoryError);
       } else {
         for (const item of userInventory || []) {
-          const newPrice = Math.max(1, Math.round(item.price / 42));
+          const newPrice = Math.max(1, Math.round(item.item_price / 42));
           
           await supabase
             .from('user_inventory')
-            .update({ price: newPrice })
+            .update({ item_price: newPrice })
             .eq('id', item.id);
+        }
+      }
+
+      // Конвертируем цены основных кейсов сайта
+      const { data: cases, error: casesError } = await supabase
+        .from('cases')
+        .select('id, price');
+
+      if (casesError) {
+        console.log('Таблица cases не найдена или недоступна:', casesError);
+      } else {
+        for (const caseItem of cases || []) {
+          const newPrice = Math.max(1, Math.round(caseItem.price / 42));
+          
+          await supabase
+            .from('cases')
+            .update({ price: newPrice })
+            .eq('id', caseItem.id);
         }
       }
 
