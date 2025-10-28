@@ -39,6 +39,7 @@ const AdminProducts = () => {
   const syncProductToMainTable = async (productData: any) => {
     try {
       console.log('Синхронизируем товар с основной таблицей:', productData);
+      console.log('subcategory_id в productData:', productData.subcategory_id);
       
       // Проверяем, существует ли товар в основной таблице
       const { data: existingProduct, error: checkError } = await supabase
@@ -60,12 +61,14 @@ const AdminProducts = () => {
         image_url: productData.image_url,
         game: productData.game,
         game_category_id: productData.game_category_id,
-        subcategory_id: productData.subcategory_id,
+        subcategory_id: productData.subcategory_id || null,
         description: productData.description,
         features: productData.features,
         created_at: productData.created_at,
         updated_at: productData.updated_at
       };
+      
+      console.log('productToSync с subcategory_id:', productToSync.subcategory_id);
 
       if (existingProduct) {
         // Обновляем существующий товар
@@ -220,8 +223,11 @@ const AdminProducts = () => {
             updated_at: new Date().toISOString(),
           })
           .eq('id', editingId)
-          .select()
+          .select('*')
           .single();
+        
+        console.log('Обновленный товар из базы:', data);
+        console.log('subcategory_id в обновленном товаре:', data?.subcategory_id);
 
         if (error) {
           console.error('Error updating product:', error);
@@ -256,8 +262,11 @@ const AdminProducts = () => {
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           }])
-          .select()
+          .select('*')
           .single();
+        
+        console.log('Созданный товар из базы:', data);
+        console.log('subcategory_id в созданном товаре:', data?.subcategory_id);
 
         if (error) {
           console.error('Error adding product:', error);

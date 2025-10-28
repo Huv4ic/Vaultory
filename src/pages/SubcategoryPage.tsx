@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts, Product } from '@/hooks/useProducts';
 import { useCart } from '@/hooks/useCart';
 import ProductCard from '@/components/ProductCard';
 import { supabase } from '@/integrations/supabase/client';
@@ -101,21 +101,26 @@ export default function SubcategoryPage() {
       return;
     }
 
-    let filtered = products.filter(product => {
+    console.log('Фильтрация товаров для подкатегории:', subcategory.id);
+    console.log('Всего товаров:', products.length);
+    
+      let filtered = products.filter((product: any) => {
       // Фильтруем по подкатегории
       const matchesSubcategory = product.subcategory_id === subcategory.id;
+      console.log(`Товар "${product.name}": subcategory_id=${product.subcategory_id}, совпадение=${matchesSubcategory}`);
       
       // Если есть поисковый запрос, также фильтруем по нему
       if (searchQuery) {
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                             product.game.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                             product.category.toLowerCase().includes(searchQuery.toLowerCase());
+                             product.game?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             product.description?.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesSubcategory && matchesSearch;
       }
       
       return matchesSubcategory;
     });
 
+    console.log('Отфильтровано товаров:', filtered.length);
     setFilteredProducts(filtered);
   };
 

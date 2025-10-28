@@ -12,6 +12,7 @@ export interface Product {
   category_id?: string;
   game?: string;
   game_category_id?: string;
+  subcategory_id?: string;
   rating?: number;
   sales?: number;
   description?: string;
