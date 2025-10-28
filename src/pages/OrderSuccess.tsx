@@ -85,7 +85,7 @@ const OrderSuccess = () => {
                   <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-[#a31212]" />
                   <span className="text-sm sm:text-base font-semibold text-[#f0f0f0]">Сумма заказа</span>
                 </div>
-                <p className="text-lg sm:text-xl font-bold text-[#f0f0f0]">{orderInfo.total}₴</p>
+                <p className="text-lg sm:text-xl font-bold text-[#f0f0f0]">${orderInfo.total}</p>
               </div>
 
               {/* Дата заказа */}

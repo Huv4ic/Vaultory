@@ -168,7 +168,7 @@ const Cases = () => {
                       <span className="text-xs font-medium">{caseData.game}</span>
                     </div>
                     <span className="text-xl font-black text-[#f0f0f0]">
-                      {caseData.price}₴
+                      ${caseData.price}
                     </span>
                   </div>
                   

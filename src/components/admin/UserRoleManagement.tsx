@@ -264,7 +264,7 @@ export default function UserRoleManagement() {
                       {user.username || `User ${user.telegram_id}`}
                     </h4>
                     <p className="text-gray-400 text-xs sm:text-sm">
-                      ID: {user.telegram_id} • Баланс: {user.balance || 0}₴
+                      ID: {user.telegram_id} • Баланс: ${user.balance || 0}
                     </p>
                     <p className="text-gray-500 text-xs">
                       Создан: {new Date(user.created_at).toLocaleDateString('ru-RU')}

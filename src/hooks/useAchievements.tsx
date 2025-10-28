@@ -49,16 +49,16 @@ export const useAchievements = () => {
     },
     {
       id: 'spend_1000',
-      title: 'Потратить 1000₴',
-      description: 'Потратьте 1000₴ на покупки',
+      title: 'Потратить $1000',
+      description: 'Потратьте $1000 на покупки',
       icon: <TrendingUp className="w-4 h-4 text-amber-400" />,
       requirement: 1000,
       type: 'money_spent'
     },
     {
       id: 'spend_10000',
-      title: 'Потратить 10000₴',
-      description: 'Потратьте 10000₴ на покупки',
+      title: 'Потратить $10000',
+      description: 'Потратьте $10000 на покупки',
       icon: <TrendingUp className="w-4 h-4 text-green-400" />,
       requirement: 10000,
       type: 'money_spent'
@@ -254,7 +254,7 @@ export const useAchievements = () => {
   // Функция для форматирования прогресса
   const formatProgress = (achievement: Achievement) => {
     if (achievement.type === 'money_spent') {
-      return `${achievement.current.toFixed(0)}₴ / ${achievement.requirement}₴`;
+      return `$${achievement.current.toFixed(0)} / $${achievement.requirement}`;
     }
     return `${achievement.current} / ${achievement.requirement}`;
   };

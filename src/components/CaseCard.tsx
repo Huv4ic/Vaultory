@@ -71,7 +71,7 @@ const CaseCard = ({
         </div>
       </CardHeader>
       <CardContent className="text-center relative z-10 space-y-4">
-        <div className="text-3xl font-bold text-[#f0f0f0]">{caseData.price}₴</div>
+        <div className="text-3xl font-bold text-[#f0f0f0]">${caseData.price}</div>
         
         {/* Количество кейсов */}
         <div>
@@ -92,7 +92,7 @@ const CaseCard = ({
         </div>
 
         <div className="text-lg font-semibold text-[#a31212]">
-          {t('Общая стоимость:')}: {caseData.price * openingCount}₴
+          {t('Общая стоимость:')}: ${caseData.price * openingCount}
         </div>
 
         <Button 
@@ -115,7 +115,7 @@ const CaseCard = ({
                   </Badge>
                   <span className="text-[#f0f0f0] truncate">{item.name}</span>
                 </div>
-                <span className="text-[#a31212] font-semibold">{item.price}₴</span>
+                <span className="text-[#a31212] font-semibold">${item.price}</span>
               </div>
             ))}
           </div>

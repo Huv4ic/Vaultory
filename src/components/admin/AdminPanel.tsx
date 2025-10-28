@@ -280,7 +280,7 @@ export default function AdminPanel() {
                 <div>
                   <p className="text-[#a0a0a0] text-sm font-medium">Общий баланс</p>
                   <p className="text-3xl font-black text-[#a31212]">
-                    {users.reduce((sum, user) => sum + (user.balance || 0), 0).toFixed(2)}₴
+                    ${users.reduce((sum, user) => sum + (user.balance || 0), 0).toFixed(2)}
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-[#181818] backdrop-blur-xl rounded-2xl flex items-center justify-center border border-[#a31212]/30 shadow-xl shadow-[#a31212]/20 group-hover:rotate-12 transition-transform duration-500">
@@ -352,7 +352,7 @@ export default function AdminPanel() {
                       </td>
                       <td className="py-3 sm:py-4 px-2 sm:px-4">
                         <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2">
-                          <span className="font-medium text-[#a31212] text-xs sm:text-sm">{(user.balance || 0).toFixed(2)}₴</span>
+                          <span className="font-medium text-[#a31212] text-xs sm:text-sm">${(user.balance || 0).toFixed(2)}</span>
                           <Button
                             size="sm"
                             className="h-7 px-3 text-xs bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-[#a31212]/25"

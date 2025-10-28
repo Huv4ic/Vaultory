@@ -202,7 +202,7 @@ const Cart = () => {
               <div className="relative z-10">
                 <div className="text-3xl mb-3">💰</div>
                 <p className="text-[#f0f0f0] text-sm mb-2">Общая стоимость</p>
-                <p className="text-[#f0f0f0] font-black text-2xl">{formatNumber(total)}₴</p>
+                <p className="text-[#f0f0f0] font-black text-2xl">${formatNumber(total)}</p>
               </div>
             </div>
             
@@ -210,7 +210,7 @@ const Cart = () => {
               <div className="relative z-10">
                 <div className="text-3xl mb-3">💳</div>
                 <p className="text-[#f0f0f0] text-sm mb-2">Ваш баланс</p>
-                <p className="text-[#f0f0f0] font-black text-2xl">{formatNumber(balance)}₴</p>
+                <p className="text-[#f0f0f0] font-black text-2xl">${formatNumber(balance)}</p>
               </div>
             </div>
           </div>
@@ -259,7 +259,7 @@ const Cart = () => {
                     <div className="flex-1 space-y-3">
                       <h3 className="text-lg sm:text-xl font-bold text-[#f0f0f0]">{item.name}</h3>
                       <div className="flex items-center space-x-3">
-                        <span className="text-2xl font-black text-[#f0f0f0]">{item.price}₴</span>
+                        <span className="text-2xl font-black text-[#f0f0f0]">${item.price}</span>
                         <div className="px-3 py-1 bg-[#1c1c1c] text-[#f0f0f0] text-xs font-bold rounded-full border border-[#1c1c1c]">
                           Цена за единицу
                         </div>
@@ -337,7 +337,7 @@ const Cart = () => {
                       <Package className="w-4 h-4 mr-2 text-[#a31212]" />
                       Товары ({items.length})
                     </span>
-                    <span className="text-[#f0f0f0] font-bold">{formatNumber(total)}₴</span>
+                    <span className="text-[#f0f0f0] font-bold">${formatNumber(total)}</span>
                   </div>
                   
                   <div className="flex justify-between items-center p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
@@ -345,13 +345,13 @@ const Cart = () => {
                       <CreditCard className="w-4 h-4 mr-2 text-[#a31212]" />
                       Комиссия
                     </span>
-                    <span className="text-[#f0f0f0] font-bold">0₴</span>
+                    <span className="text-[#f0f0f0] font-bold">$0</span>
                   </div>
                   
                   <div className="border-t border-[#1c1c1c] pt-4">
                     <div className="flex justify-between items-center p-4 bg-[#1c1c1c] rounded-xl border border-[#a31212]">
                       <span className="text-[#f0f0f0] font-bold text-lg">Всего к оплате</span>
-                      <span className="text-[#f0f0f0] font-black text-2xl">{formatNumber(total)}₴</span>
+                      <span className="text-[#f0f0f0] font-black text-2xl">${formatNumber(total)}</span>
                     </div>
                   </div>
                 </div>

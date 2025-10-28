@@ -124,15 +124,15 @@ const AdminStats = () => {
     },
     {
       title: "Общий доход",
-      value: `${stats.totalRevenue}₴`,
+      value: `$${stats.totalRevenue}`,
       subtitle: "От заказов и кейсов",
       icon: TrendingUp,
       color: "text-yellow-400"
     },
     {
       title: "Депозиты",
-      value: `${stats.totalDeposited}₴`,
-      subtitle: `Потрачено: ${stats.totalSpent}₴`,
+      value: `$${stats.totalDeposited}`,
+      subtitle: `Потрачено: $${stats.totalSpent}`,
       icon: DollarSign,
       color: "text-emerald-400"
     }
@@ -183,20 +183,20 @@ const AdminStats = () => {
           <CardContent className="space-y-3 sm:space-y-4 p-3 sm:p-4">
             <div className="flex justify-between items-center">
               <span className="text-gray-300 text-xs sm:text-sm">Общий доход:</span>
-              <span className="text-green-400 font-bold text-xs sm:text-sm">{stats.totalRevenue}₴</span>
+              <span className="text-green-400 font-bold text-xs sm:text-sm">${stats.totalRevenue}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-300 text-xs sm:text-sm">Внесено пользователями:</span>
-              <span className="text-blue-400 font-bold text-xs sm:text-sm">{stats.totalDeposited}₴</span>
+              <span className="text-blue-400 font-bold text-xs sm:text-sm">${stats.totalDeposited}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-300 text-xs sm:text-sm">Потрачено пользователями:</span>
-              <span className="text-red-400 font-bold text-xs sm:text-sm">{stats.totalSpent}₴</span>
+              <span className="text-red-400 font-bold text-xs sm:text-sm">${stats.totalSpent}</span>
             </div>
             <div className="flex justify-between items-center border-t border-gray-600 pt-3 sm:pt-4">
               <span className="text-gray-300 text-xs sm:text-sm">Прибыль:</span>
               <span className="text-yellow-400 font-bold text-xs sm:text-sm">
-                {stats.totalDeposited - stats.totalSpent}₴
+                ${stats.totalDeposited - stats.totalSpent}
               </span>
             </div>
           </CardContent>
@@ -222,7 +222,7 @@ const AdminStats = () => {
             <div className="flex justify-between items-center">
               <span className="text-gray-300 text-xs sm:text-sm">Средний доход с пользователя:</span>
               <span className="text-purple-400 font-bold text-xs sm:text-sm">
-                {stats.totalUsers > 0 ? Math.round(stats.totalRevenue / stats.totalUsers) : 0}₴
+                ${stats.totalUsers > 0 ? Math.round(stats.totalRevenue / stats.totalUsers) : 0}
               </span>
             </div>
             <div className="flex justify-between items-center">

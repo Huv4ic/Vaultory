@@ -163,7 +163,7 @@ const Inventory = () => {
           
           // Баланс уже обновлен в inventoryService.sellItem
           
-          showSuccess(`Предмет "${itemToSell.name}" продан за ${sellPrice.toFixed(2)}₴! Деньги добавлены на баланс.`);
+          showSuccess(`Предмет "${itemToSell.name}" продан за $${sellPrice.toFixed(2)}! Деньги добавлены на баланс.`);
           console.log('Предмет продан:', itemToSell.name, 'за', sellPrice);
         } else {
           console.error('❌ Ошибка при продаже предмета, цена:', sellPrice);
@@ -257,7 +257,7 @@ const Inventory = () => {
                 </div>
                 <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Общая стоимость</h3>
                 <div className="text-3xl sm:text-4xl font-black text-[#a31212] mb-4">
-                  {formatNumber(parseFloat(totalValue.toFixed(2)))}₴
+                  ${formatNumber(parseFloat(totalValue.toFixed(2)))}
                 </div>
               </div>
               <div className="text-sm text-[#a0a0a0]">Стоимость всех предметов</div>
@@ -395,7 +395,7 @@ const Inventory = () => {
                         {item.name || 'Неизвестный предмет'}
                       </h4>
                       <div className="text-lg font-black text-green-400 mb-1 drop-shadow-lg">
-                        {(item.price || 0).toFixed(0)}₴
+                        ${(item.price || 0).toFixed(0)}
                       </div>
                     </div>
                     
@@ -486,7 +486,7 @@ const Inventory = () => {
               </div>
               <h3 className="text-xl font-bold text-white mb-2">Подтверждение продажи</h3>
               <p className="text-gray-300 mb-4">
-                Продать "{itemToSell.name}" за {itemToSell.price}₴?
+                Продать "{itemToSell.name}" за ${itemToSell.price}?
               </p>
               <p className="text-sm text-gray-400 mb-6">
                 Деньги будут добавлены на ваш баланс
@@ -536,7 +536,7 @@ const Inventory = () => {
                   )}
                   <div>
                     <h4 className="text-white font-semibold">{itemToWithdraw.name}</h4>
-                    <p className="text-green-400 text-sm">{itemToWithdraw.price}₴</p>
+                    <p className="text-green-400 text-sm">${itemToWithdraw.price}</p>
                   </div>
                 </div>
               </div>

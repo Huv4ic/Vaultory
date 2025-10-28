@@ -238,10 +238,10 @@ const ProductPage = () => {
                   <div className="mb-6">
                     <div className="flex items-center space-x-4 mb-3">
                       <span className="text-4xl md:text-5xl font-black text-[#f0f0f0]">
-                        {product.price}₴
+                        ${product.price}
                       </span>
                       {product.original_price && product.original_price > product.price && (
-                        <span className="text-xl text-[#a0a0a0] line-through">{product.original_price}₴</span>
+                        <span className="text-xl text-[#a0a0a0] line-through">${product.original_price}</span>
                       )}
                     </div>
                   </div>
@@ -430,7 +430,7 @@ const ProductPage = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <span className="text-2xl font-black text-[#f0f0f0]">
-                          {similarProduct.price}₴
+                          ${similarProduct.price}
                         </span>
                       </div>
                       <Button

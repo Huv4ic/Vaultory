@@ -72,14 +72,14 @@ export const useOrders = () => {
       const chatId = '5931400368';
 
       const itemsList = items.map(item => 
-        `• ${item.name} x${item.quantity} - ${item.price * item.quantity}₴`
+        `• ${item.name} x${item.quantity} - $${item.price * item.quantity}`
       ).join('\n');
 
       const message = `🛒 Новый заказ!\n\n` +
         `👤 Пользователь: ${telegramUser?.username || 'Без username'}\n` +
         `🆔 Telegram ID: ${telegramUser?.id}\n` +
         `📦 Номер заказа: ${orderId}\n` +
-        `💰 Сумма: ${totalAmount}₴\n\n` +
+        `💰 Сумма: $${totalAmount}\n\n` +
         `📋 Товары:\n${itemsList}\n\n` +
         `⚠️ Свяжитесь с пользователем для передачи товаров!`;
 

@@ -292,7 +292,7 @@ const Profile = () => {
                     
                     <div className="mb-6">
                       <div className="text-3xl sm:text-4xl font-black text-[#f0f0f0]">
-                        {formatNumber(balance || 0)}₴
+                        ${formatNumber(balance || 0)}
                       </div>
                       <div className="text-sm text-[#a0a0a0] mt-1">Доступно для покупок</div>
                     </div>
@@ -363,7 +363,7 @@ const Profile = () => {
                 <div className="mx-auto w-16 h-16 bg-[#a31212]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]/30">
                   <TrendingUp className="w-8 h-8 text-[#a31212]" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-[#f0f0f0] mb-2">{formatNumber(stats.totalSpent)}₴</div>
+                <div className="text-2xl sm:text-3xl font-black text-[#f0f0f0] mb-2">${formatNumber(stats.totalSpent)}</div>
                 <p className="text-sm text-[#a0a0a0] font-medium">Потрачено</p>
               </div>
             </div>

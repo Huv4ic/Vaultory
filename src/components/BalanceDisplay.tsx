@@ -17,7 +17,7 @@ const BalanceDisplay = ({ balance }: BalanceDisplayProps) => {
           <DollarSign className="w-3 h-3 text-[#a31212]" />
         </div>
         <span className="text-[#f0f0f0] font-bold">
-          {formatBalance(balance)}₴
+          ${formatBalance(balance)}
         </span>
       </div>
     </div>

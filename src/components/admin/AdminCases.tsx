@@ -360,7 +360,7 @@ const AdminCases = () => {
       
       // Убираем ограничение на максимальную цену - теперь можно ставить любую цену
       // if (currentCaseItem.price > 999999999.99) {
-      //   toast('Цена не может превышать 999,999,999.99₴!', 'error');
+      //   toast('Цена не может превышать 999,999,999.99$!', 'error');
       //   return;
       // }
 
@@ -661,7 +661,7 @@ const AdminCases = () => {
                   <Badge variant="outline" className="text-xs">{gameCase.game}</Badge>
                 </td>
                 <td className="py-2 px-2 sm:px-4">
-                  <div className="font-medium text-xs sm:text-sm">{gameCase.price}₴</div>
+                  <div className="font-medium text-xs sm:text-sm">${gameCase.price}</div>
                 </td>
                 <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
                   <div className="flex items-center gap-2">
@@ -873,7 +873,7 @@ const AdminCases = () => {
                         </td>
                         <td className="py-2 px-2 sm:px-4 hidden md:table-cell">
                           <div className="font-medium text-xs sm:text-sm text-green-400">
-                            {typeof item.price === 'number' ? `${item.price}₴` : '0₴'}
+                            {typeof item.price === 'number' ? `$${item.price}` : '$0'}
                           </div>
                         </td>
                         <td className="py-2 px-2 sm:px-4">
@@ -968,7 +968,7 @@ const AdminCases = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Цена предмета (₴) *</label>
+                <label className="block text-sm font-medium mb-2">Цена предмета ($) *</label>
                 <Input
                   name="price"
                   type="number"

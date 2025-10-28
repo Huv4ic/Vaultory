@@ -372,7 +372,7 @@ const CasePage = () => {
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
               <div className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">
-                {caseData.price}₴
+                ${caseData.price}
               </div>
               <Badge variant="outline" className="text-[#a31212] border-[#a31212] text-sm sm:text-base">
                 <Package className="w-4 h-4 mr-2" />

@@ -42,7 +42,7 @@ const paymentMethods: PaymentMethod[] = [
     color: 'from-purple-500 to-purple-600',
     description: 'Банковская карта',
     details: '4441111062334770',
-    minAmount: '1₴'
+    minAmount: '$1'
   },
   {
     id: 'pumb',
@@ -52,7 +52,7 @@ const paymentMethods: PaymentMethod[] = [
     color: 'from-blue-500 to-blue-600',
     description: 'Банковская карта',
     details: '4314140004183320',
-    minAmount: '1₴'
+    minAmount: '$1'
   },
   {
     id: 'privatbank',
@@ -62,7 +62,7 @@ const paymentMethods: PaymentMethod[] = [
     color: 'from-green-500 to-green-600',
     description: 'Банковская карта',
     details: '5168745126341533',
-    minAmount: '1₴'
+    minAmount: '$1'
   },
   {
     id: 'pumb-us',

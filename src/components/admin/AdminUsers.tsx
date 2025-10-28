@@ -101,7 +101,7 @@ const AdminUsers = () => {
 
       toast({
         title: "Успех",
-        description: `Баланс обновлен на ${newBalance}₴`,
+        description: `Баланс обновлен на $${newBalance}`,
       });
       setEditingBalance(null);
       setNewBalance('');
@@ -420,7 +420,7 @@ const AdminUsers = () => {
                         </div>
                       ) : (
                         <div className="flex items-center space-x-2">
-                          <span className="text-green-400 text-xs sm:text-sm">{user.balance}₴</span>
+                          <span className="text-green-400 text-xs sm:text-sm">${user.balance}</span>
                           <Button
                             size="sm"
                             variant="ghost"
@@ -478,13 +478,13 @@ const AdminUsers = () => {
                       )}
                     </TableCell>
                     <TableCell className="text-red-400 text-xs sm:text-sm hidden xl:table-cell">
-                      {user.total_spent || 0}₴
+                      ${user.total_spent || 0}
                     </TableCell>
                     <TableCell className="text-green-400 text-xs sm:text-sm hidden xl:table-cell">
-                      {user.total_deposited || 0}₴
+                      ${user.total_deposited || 0}
                     </TableCell>
                     <TableCell className="text-purple-400 text-xs sm:text-sm hidden lg:table-cell">
-                      {user.total_orders || 0} ({user.orders_total || 0}₴)
+                      {user.total_orders || 0} (${user.orders_total || 0})
                     </TableCell>
                     <TableCell className="text-gray-300 text-xs sm:text-sm hidden md:table-cell">
                       {new Date(user.created_at).toLocaleDateString('ru-RU')}

@@ -112,15 +112,15 @@ const ProductCard = ({
               {original_price && original_price > price ? (
                 <>
                   <span className="text-[#a0a0a0] line-through text-base font-medium">
-                    {original_price}₴
+                    ${original_price}
                   </span>
                   <span className="text-[#f0f0f0] font-black text-2xl">
-                    {price}₴
+                    ${price}
                   </span>
                 </>
               ) : (
                 <span className="text-[#f0f0f0] font-black text-2xl">
-                  {price}₴
+                  ${price}
                 </span>
               )}
             </div>

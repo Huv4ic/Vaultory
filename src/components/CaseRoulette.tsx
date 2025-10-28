@@ -186,7 +186,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         console.log('🔄 Баланс обновлен в контексте:', newBalance);
       }
       
-      showSuccess(`Предмет "${item.name}" продан за ${item.price || 0}₴! Деньги добавлены на баланс.`);
+      showSuccess(`Предмет "${item.name}" продан за $${item.price || 0}! Деньги добавлены на баланс.`);
       
       // Устанавливаем флаги что предмет продан ПЕРЕД закрытием окна
       setSoldOrAdded(true);
@@ -574,7 +574,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
 
       // Проверяем, достаточно ли средств
       if (currentBalance < casePrice) {
-        showError(`Недостаточно средств! Нужно: ${casePrice}₴, доступно: ${currentBalance}₴`);
+        showError(`Недостаточно средств! Нужно: $${casePrice}, доступно: $${currentBalance}`);
         return;
       }
 
@@ -622,7 +622,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
         console.error('❌ Failed to create transaction:', error);
       }
 
-      showInfo(`Списано ${casePrice}₴ за открытие кейса`);
+      showInfo(`Списано $${casePrice} за открытие кейса`);
       
       // Обновляем статистику трат пользователя (кейсы считаются как покупки)
       try {
@@ -824,7 +824,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                 <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </Button>
             </div>
-            <p className="text-[#a0a0a0] mt-2 text-sm sm:text-base">Стоимость: {casePrice}₴</p>
+            <p className="text-[#a0a0a0] mt-2 text-sm sm:text-base">Стоимость: ${casePrice}</p>
           </div>
 
           {/* Рулетка */}
@@ -1062,7 +1062,7 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
                     
                       {/* Цена с анимацией */}
                       <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500 animate-pulse">
-                        {winnerItem.price || 0}₴
+                        ${winnerItem.price || 0}
                     </div>
                     
                       {/* Значок редкости */}

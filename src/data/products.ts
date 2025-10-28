@@ -71,7 +71,7 @@ export const products: Product[] = [
   // Steam
   {
     id: '4',
-    name: 'Steam Wallet 1000₴',
+    name: 'Steam Wallet 1000$',
     price: 950,
     originalPrice: 1000,
     image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',

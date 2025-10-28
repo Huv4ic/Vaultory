@@ -416,10 +416,10 @@ const AdminProducts = () => {
                   </div>
                 </td>
                 <td className="py-2 px-2 sm:px-4">
-                  <div className="font-medium text-xs sm:text-sm">{product.price}₴</div>
+                  <div className="font-medium text-xs sm:text-sm">${product.price}</div>
                   {product.original_price && (
                     <div className="text-xs text-gray-400 line-through">
-                      {product.original_price}₴
+                      ${product.original_price}
                     </div>
                   )}
                 </td>

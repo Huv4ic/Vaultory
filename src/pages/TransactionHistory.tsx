@@ -244,7 +244,7 @@ const TransactionHistory = () => {
                     </div>
                     <div className="text-right">
                       <div className={`text-lg sm:text-xl font-bold ${transaction.amount > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {transaction.amount > 0 ? '+' : ''}{transaction.amount}₴
+                        {transaction.amount > 0 ? '+' : ''}${transaction.amount}
                       </div>
                       {transaction.order_id && (
                         <div className="text-[#a0a0a0] text-xs sm:text-sm">
