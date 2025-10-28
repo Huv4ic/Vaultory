@@ -323,6 +323,22 @@ const AdminProducts = () => {
     try {
       setLoading(true);
       
+      // Проверяем, не были ли уже конвертированы цены (проверяем по товарам)
+      const { data: sampleProducts } = await supabase
+        .from('products')
+        .select('price')
+        .limit(5);
+
+      if (sampleProducts && sampleProducts.length > 0) {
+        // Если цены уже в долларах (меньше 100), то не конвертируем
+        const avgPrice = sampleProducts.reduce((sum, p) => sum + p.price, 0) / sampleProducts.length;
+        if (avgPrice < 100) {
+          toast('Цены уже конвертированы в доллары!', 'warning');
+          setLoading(false);
+          return;
+        }
+      }
+      
       // Конвертируем цены в admin_products
       const { data: adminProducts, error: fetchError } = await supabase
         .from('admin_products')
@@ -333,8 +349,10 @@ const AdminProducts = () => {
       console.log('Конвертируем цены в', adminProducts?.length, 'товарах...');
 
       for (const product of adminProducts || []) {
-        const newPrice = Math.max(1, Math.round(product.price / 42));
-        const newOriginalPrice = product.original_price ? Math.max(1, Math.round(product.original_price / 42)) : null;
+        const convertedPrice = product.price / 42;
+        const newPrice = convertedPrice < 1 ? 1 : Math.round(convertedPrice);
+        const newOriginalPrice = product.original_price ? 
+          (product.original_price / 42 < 1 ? 1 : Math.round(product.original_price / 42)) : null;
         
         await supabase
           .from('admin_products')
@@ -353,8 +371,10 @@ const AdminProducts = () => {
       if (productsError) throw productsError;
 
       for (const product of products || []) {
-        const newPrice = Math.max(1, Math.round(product.price / 42));
-        const newOriginalPrice = product.original_price ? Math.max(1, Math.round(product.original_price / 42)) : null;
+        const convertedPrice = product.price / 42;
+        const newPrice = convertedPrice < 1 ? 1 : Math.round(convertedPrice);
+        const newOriginalPrice = product.original_price ? 
+          (product.original_price / 42 < 1 ? 1 : Math.round(product.original_price / 42)) : null;
         
         await supabase
           .from('products')
@@ -373,9 +393,9 @@ const AdminProducts = () => {
       if (profilesError) throw profilesError;
 
       for (const profile of profiles || []) {
-        const newBalance = Math.max(1, Math.round(profile.balance / 42));
-        const newTotalSpent = Math.max(1, Math.round(profile.total_spent / 42));
-        const newTotalDeposited = Math.max(1, Math.round(profile.total_deposited / 42));
+        const newBalance = profile.balance / 42;
+        const newTotalSpent = profile.total_spent / 42;
+        const newTotalDeposited = profile.total_deposited / 42;
         
         await supabase
           .from('profiles')
@@ -395,7 +415,7 @@ const AdminProducts = () => {
       if (ordersError) throw ordersError;
 
       for (const order of orders || []) {
-        const newTotalAmount = Math.max(1, Math.round(order.total_amount / 42));
+        const newTotalAmount = Math.round(order.total_amount / 42);
         
         await supabase
           .from('orders')
@@ -411,7 +431,7 @@ const AdminProducts = () => {
       if (transactionsError) throw transactionsError;
 
       for (const transaction of transactions || []) {
-        const newAmount = Math.max(1, Math.round(transaction.amount / 42));
+        const newAmount = Math.round(transaction.amount / 42);
         
         await supabase
           .from('transactions')
@@ -428,7 +448,8 @@ const AdminProducts = () => {
         console.log('Таблица admin_cases не найдена или недоступна:', adminCasesError);
       } else {
         for (const adminCase of adminCases || []) {
-          const newPrice = Math.max(1, Math.round(adminCase.price / 42));
+          const convertedPrice = adminCase.price / 42;
+          const newPrice = convertedPrice < 1 ? 1 : Math.round(convertedPrice);
           
           await supabase
             .from('admin_cases')
@@ -446,7 +467,8 @@ const AdminProducts = () => {
         console.log('Таблица admin_case_items не найдена или недоступна:', adminCaseItemsError);
       } else {
         for (const item of adminCaseItems || []) {
-          const newPrice = Math.max(1, Math.round(item.price / 42));
+          const convertedPrice = item.price / 42;
+          const newPrice = convertedPrice < 1 ? 1 : Math.round(convertedPrice);
           
           await supabase
             .from('admin_case_items')
@@ -464,7 +486,8 @@ const AdminProducts = () => {
         console.log('Таблица user_inventory не найдена или недоступна:', userInventoryError);
       } else {
         for (const item of userInventory || []) {
-          const newPrice = Math.max(1, Math.round(item.item_price / 42));
+          const convertedPrice = item.item_price / 42;
+          const newPrice = convertedPrice < 1 ? 1 : Math.round(convertedPrice);
           
           await supabase
             .from('user_inventory')
@@ -482,7 +505,8 @@ const AdminProducts = () => {
         console.log('Таблица cases не найдена или недоступна:', casesError);
       } else {
         for (const caseItem of cases || []) {
-          const newPrice = Math.max(1, Math.round(caseItem.price / 42));
+          const convertedPrice = caseItem.price / 42;
+          const newPrice = convertedPrice < 1 ? 1 : Math.round(convertedPrice);
           
           await supabase
             .from('cases')
