@@ -153,31 +153,35 @@ export default function CategoryPage() {
         </div>
 
         {subcategories.length > 0 ? (
-          <div className={`grid gap-6 ${
-            subcategories.length === 1 
-              ? 'grid-cols-1 max-w-sm mx-auto' 
-              : subcategories.length === 2 
-                ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto' 
-                : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-          }`}>
-            {subcategories.map((sub, index) => (
-              <div
-                key={sub.id}
-                onClick={() => handleSubcategoryClick(sub)}
-                className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#a31212] transition-all duration-300">
-                  <div className="text-center">
-                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                      {sub.icon || getSubcategoryIcon(sub.slug)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+            {subcategories.map((sub, index) => {
+              // Определяем, нужно ли центрировать последние элементы
+              const totalItems = subcategories.length;
+              const itemsInLastRow = totalItems % 3;
+              const isLastRow = index >= totalItems - itemsInLastRow;
+              const shouldCenter = itemsInLastRow > 0 && itemsInLastRow < 3 && isLastRow;
+              
+              return (
+                <div
+                  key={sub.id}
+                  onClick={() => handleSubcategoryClick(sub)}
+                  className={`group cursor-pointer transform transition-all duration-300 hover:scale-105 ${
+                    shouldCenter ? 'sm:col-start-auto' : ''
+                  }`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#a31212] transition-all duration-300 w-full max-w-sm">
+                    <div className="text-center">
+                      <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                        {sub.icon || getSubcategoryIcon(sub.slug)}
+                      </div>
+                      <h3 className="text-xl font-bold text-white mb-2">{sub.name}</h3>
+                      <p className="text-gray-400 text-sm">Нажмите для просмотра товаров</p>
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{sub.name}</h3>
-                    <p className="text-gray-400 text-sm">Нажмите для просмотра товаров</p>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-16">
