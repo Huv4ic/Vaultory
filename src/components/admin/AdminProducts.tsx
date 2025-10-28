@@ -316,6 +316,124 @@ const AdminProducts = () => {
     }
   };
 
+  // Функция конвертации цен из гривен в доллары
+  const handleConvertPrices = async () => {
+    if (!window.confirm('Конвертировать все цены из гривен в доллары по курсу 42 грн = 1 доллар? Это обновит все товары, заказы, балансы пользователей и транзакции.')) return;
+
+    try {
+      setLoading(true);
+      
+      // Конвертируем цены в admin_products
+      const { data: adminProducts, error: fetchError } = await supabase
+        .from('admin_products')
+        .select('*');
+
+      if (fetchError) throw fetchError;
+
+      console.log('Конвертируем цены в', adminProducts?.length, 'товарах...');
+
+      for (const product of adminProducts || []) {
+        const newPrice = product.price / 42 < 1 ? 1 : Math.round(product.price / 42);
+        const newOriginalPrice = product.original_price ? (product.original_price / 42 < 1 ? 1 : Math.round(product.original_price / 42)) : null;
+        
+        await supabase
+          .from('admin_products')
+          .update({ 
+            price: newPrice,
+            original_price: newOriginalPrice 
+          })
+          .eq('id', product.id);
+      }
+
+      // Конвертируем цены в products
+      const { data: products, error: productsError } = await supabase
+        .from('products')
+        .select('*');
+
+      if (productsError) throw productsError;
+
+      for (const product of products || []) {
+        const newPrice = product.price / 42 < 1 ? 1 : Math.round(product.price / 42);
+        const newOriginalPrice = product.original_price ? (product.original_price / 42 < 1 ? 1 : Math.round(product.original_price / 42)) : null;
+        
+        await supabase
+          .from('products')
+          .update({ 
+            price: newPrice,
+            original_price: newOriginalPrice 
+          })
+          .eq('id', product.id);
+      }
+
+      // Конвертируем балансы пользователей
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, balance, total_spent, total_deposited, orders_total');
+
+      if (profilesError) throw profilesError;
+
+      for (const profile of profiles || []) {
+        const newBalance = profile.balance / 42 < 1 ? 1 : Math.round(profile.balance / 42);
+        const newTotalSpent = profile.total_spent / 42 < 1 ? 1 : Math.round(profile.total_spent / 42);
+        const newTotalDeposited = profile.total_deposited / 42 < 1 ? 1 : Math.round(profile.total_deposited / 42);
+        const newOrdersTotal = profile.orders_total / 42 < 1 ? 1 : Math.round(profile.orders_total / 42);
+        
+        await supabase
+          .from('profiles')
+          .update({ 
+            balance: newBalance,
+            total_spent: newTotalSpent,
+            total_deposited: newTotalDeposited,
+            orders_total: newOrdersTotal
+          })
+          .eq('id', profile.id);
+      }
+
+      // Конвертируем заказы
+      const { data: orders, error: ordersError } = await supabase
+        .from('orders')
+        .select('id, total_amount');
+
+      if (ordersError) throw ordersError;
+
+      for (const order of orders || []) {
+        const newTotalAmount = order.total_amount / 42 < 1 ? 1 : Math.round(order.total_amount / 42);
+        
+        await supabase
+          .from('orders')
+          .update({ total_amount: newTotalAmount })
+          .eq('id', order.id);
+      }
+
+      // Конвертируем транзакции
+      const { data: transactions, error: transactionsError } = await supabase
+        .from('transactions')
+        .select('id, amount');
+
+      if (transactionsError) throw transactionsError;
+
+      for (const transaction of transactions || []) {
+        const newAmount = transaction.amount / 42 < 1 ? 1 : Math.round(transaction.amount / 42);
+        
+        await supabase
+          .from('transactions')
+          .update({ amount: newAmount })
+          .eq('id', transaction.id);
+      }
+
+      toast('Все цены успешно конвертированы в доллары!', 'success');
+      
+      // Перезагружаем товары
+      await fetchProducts();
+      
+    } catch (err) {
+      console.error('Error converting prices:', err);
+      toast('Ошибка при конвертации: ' + (err as any).message, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setCurrentProduct(prev => ({
@@ -350,6 +468,14 @@ const AdminProducts = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
         <h2 className="text-xl sm:text-2xl font-bold">Управление товарами</h2>
         <div className="flex flex-col sm:flex-row gap-2">
+          <Button 
+            onClick={handleConvertPrices} 
+            className="bg-yellow-600 hover:bg-yellow-700 text-sm sm:text-base"
+            disabled={loading}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+            Конвертировать в доллары
+          </Button>
           <Button 
             onClick={handleSyncAllProducts} 
             className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base"
