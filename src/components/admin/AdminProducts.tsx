@@ -333,8 +333,8 @@ const AdminProducts = () => {
       console.log('Конвертируем цены в', adminProducts?.length, 'товарах...');
 
       for (const product of adminProducts || []) {
-        const newPrice = product.price / 42 < 1 ? 1 : Math.round(product.price / 42);
-        const newOriginalPrice = product.original_price ? (product.original_price / 42 < 1 ? 1 : Math.round(product.original_price / 42)) : null;
+        const newPrice = Math.max(1, Math.round(product.price / 42));
+        const newOriginalPrice = product.original_price ? Math.max(1, Math.round(product.original_price / 42)) : null;
         
         await supabase
           .from('admin_products')
@@ -353,8 +353,8 @@ const AdminProducts = () => {
       if (productsError) throw productsError;
 
       for (const product of products || []) {
-        const newPrice = product.price / 42 < 1 ? 1 : Math.round(product.price / 42);
-        const newOriginalPrice = product.original_price ? (product.original_price / 42 < 1 ? 1 : Math.round(product.original_price / 42)) : null;
+        const newPrice = Math.max(1, Math.round(product.price / 42));
+        const newOriginalPrice = product.original_price ? Math.max(1, Math.round(product.original_price / 42)) : null;
         
         await supabase
           .from('products')
@@ -368,23 +368,21 @@ const AdminProducts = () => {
       // Конвертируем балансы пользователей
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('id, balance, total_spent, total_deposited, orders_total');
+        .select('id, balance, total_spent, total_deposited');
 
       if (profilesError) throw profilesError;
 
       for (const profile of profiles || []) {
-        const newBalance = profile.balance / 42 < 1 ? 1 : Math.round(profile.balance / 42);
-        const newTotalSpent = profile.total_spent / 42 < 1 ? 1 : Math.round(profile.total_spent / 42);
-        const newTotalDeposited = profile.total_deposited / 42 < 1 ? 1 : Math.round(profile.total_deposited / 42);
-        const newOrdersTotal = profile.orders_total / 42 < 1 ? 1 : Math.round(profile.orders_total / 42);
+        const newBalance = Math.max(1, Math.round(profile.balance / 42));
+        const newTotalSpent = Math.max(1, Math.round(profile.total_spent / 42));
+        const newTotalDeposited = Math.max(1, Math.round(profile.total_deposited / 42));
         
         await supabase
           .from('profiles')
           .update({ 
             balance: newBalance,
             total_spent: newTotalSpent,
-            total_deposited: newTotalDeposited,
-            orders_total: newOrdersTotal
+            total_deposited: newTotalDeposited
           })
           .eq('id', profile.id);
       }
@@ -397,7 +395,7 @@ const AdminProducts = () => {
       if (ordersError) throw ordersError;
 
       for (const order of orders || []) {
-        const newTotalAmount = order.total_amount / 42 < 1 ? 1 : Math.round(order.total_amount / 42);
+        const newTotalAmount = Math.max(1, Math.round(order.total_amount / 42));
         
         await supabase
           .from('orders')
@@ -413,7 +411,7 @@ const AdminProducts = () => {
       if (transactionsError) throw transactionsError;
 
       for (const transaction of transactions || []) {
-        const newAmount = transaction.amount / 42 < 1 ? 1 : Math.round(transaction.amount / 42);
+        const newAmount = Math.max(1, Math.round(transaction.amount / 42));
         
         await supabase
           .from('transactions')
