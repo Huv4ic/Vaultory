@@ -60,6 +60,7 @@ const AdminProducts = () => {
         image_url: productData.image_url,
         game: productData.game,
         game_category_id: productData.game_category_id,
+        subcategory_id: productData.subcategory_id,
         description: productData.description,
         features: productData.features,
         created_at: productData.created_at,
@@ -215,6 +216,7 @@ const AdminProducts = () => {
             description: currentProduct.description,
             features: currentProduct.features,
             game_category_id: currentProduct.game_category_id,
+            subcategory_id: currentProduct.subcategory_id || null,
             updated_at: new Date().toISOString(),
           })
           .eq('id', editingId)
@@ -250,6 +252,7 @@ const AdminProducts = () => {
             description: currentProduct.description,
             features: currentProduct.features,
             game_category_id: currentProduct.game_category_id,
+            subcategory_id: currentProduct.subcategory_id || null,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           }])
@@ -656,6 +659,7 @@ const AdminProducts = () => {
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Название</th>
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Цена</th>
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden sm:table-cell">Категория</th>
+              <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Подкатегория</th>
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left hidden lg:table-cell">Игра</th>
               <th className="py-2 sm:py-3 px-2 sm:px-4 text-left">Действия</th>
             </tr>
@@ -693,6 +697,14 @@ const AdminProducts = () => {
                 </td>
                 <td className="py-2 px-2 sm:px-4 hidden sm:table-cell">
                   <Badge variant="secondary" className="text-xs">{product.category}</Badge>
+                </td>
+                <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
+                  <Badge variant="secondary" className="text-xs bg-blue-600">
+                    {product.subcategory_id ? 
+                      subcategories.find(sub => sub.id === product.subcategory_id)?.name || 'Неизвестно' 
+                      : 'Не выбрано'
+                    }
+                  </Badge>
                 </td>
                 <td className="py-2 px-2 sm:px-4 hidden lg:table-cell">
                   <Badge variant="outline" className="text-xs">{product.game}</Badge>
