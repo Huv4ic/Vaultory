@@ -170,6 +170,9 @@ const AdminProducts = () => {
   };
 
   const openEditModal = (product: AdminProduct) => {
+    console.log('Открытие формы редактирования для товара:', product);
+    console.log('subcategory_id в товаре:', product.subcategory_id);
+    
     setEditMode('edit');
     setCurrentProduct({
       name: product.name,
@@ -183,6 +186,13 @@ const AdminProducts = () => {
       game_category_id: product.game_category_id || '',
       subcategory_id: product.subcategory_id || '',
     });
+    
+    console.log('currentProduct после установки:', {
+      name: product.name,
+      subcategory_id: product.subcategory_id || '',
+      game_category_id: product.game_category_id || '',
+    });
+    
     setEditingId(product.id);
     setError(null);
     setModalOpen(true);
@@ -198,6 +208,9 @@ const AdminProducts = () => {
   const handleSave = async () => {
     try {
       setError(null);
+      
+      console.log('currentProduct перед сохранением:', currentProduct);
+      console.log('subcategory_id перед сохранением:', currentProduct.subcategory_id);
       
       // Валидация
       if (!currentProduct.name.trim() || !currentProduct.price || !currentProduct.image_url.trim() || !currentProduct.category.trim() || !currentProduct.game.trim() || !currentProduct.game_category_id) {
