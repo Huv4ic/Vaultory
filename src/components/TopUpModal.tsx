@@ -333,7 +333,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                   <div className="mt-6 text-center space-y-4">
                     <div className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg p-4">
                       <p className="text-[#f0f0f0] text-sm">
-                        💡 <strong>Важно:</strong> После оплаты отправьте скриншот чека в поддержку
+                        💡 <strong>Важно:</strong> После оплаты нажмите на кнопку "Я Оплатил"
                       </p>
                     </div>
                     
@@ -370,7 +370,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                   ) : (
                     <>
                       <Bell className="w-5 h-5 mr-2" />
-                      Проверить баланс
+                      Я Оплатил
                     </>
                   )}
                 </Button>
