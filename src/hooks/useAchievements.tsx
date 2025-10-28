@@ -49,18 +49,18 @@ export const useAchievements = () => {
     },
     {
       id: 'spend_1000',
-      title: 'Потратить $1000',
-      description: 'Потратьте $1000 на покупки',
+      title: 'Потратить $24',
+      description: 'Потратьте $24 на покупки',
       icon: <TrendingUp className="w-4 h-4 text-amber-400" />,
-      requirement: 1000,
+      requirement: 24, // 1000 грн / 42 = 23.8, округляем до 24
       type: 'money_spent'
     },
     {
       id: 'spend_10000',
-      title: 'Потратить $10000',
-      description: 'Потратьте $10000 на покупки',
+      title: 'Потратить $238',
+      description: 'Потратьте $238 на покупки',
       icon: <TrendingUp className="w-4 h-4 text-green-400" />,
-      requirement: 10000,
+      requirement: 238, // 10000 грн / 42 = 238.1, округляем до 238
       type: 'money_spent'
     },
     {

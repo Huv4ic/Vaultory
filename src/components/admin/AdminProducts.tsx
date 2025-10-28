@@ -419,6 +419,60 @@ const AdminProducts = () => {
           .eq('id', transaction.id);
       }
 
+      // Конвертируем цены кейсов
+      const { data: adminCases, error: adminCasesError } = await supabase
+        .from('admin_cases')
+        .select('id, price');
+
+      if (adminCasesError) {
+        console.log('Таблица admin_cases не найдена или недоступна:', adminCasesError);
+      } else {
+        for (const adminCase of adminCases || []) {
+          const newPrice = Math.max(1, Math.round(adminCase.price / 42));
+          
+          await supabase
+            .from('admin_cases')
+            .update({ price: newPrice })
+            .eq('id', adminCase.id);
+        }
+      }
+
+      // Конвертируем цены предметов кейсов
+      const { data: adminCaseItems, error: adminCaseItemsError } = await supabase
+        .from('admin_case_items')
+        .select('id, price');
+
+      if (adminCaseItemsError) {
+        console.log('Таблица admin_case_items не найдена или недоступна:', adminCaseItemsError);
+      } else {
+        for (const item of adminCaseItems || []) {
+          const newPrice = Math.max(1, Math.round(item.price / 42));
+          
+          await supabase
+            .from('admin_case_items')
+            .update({ price: newPrice })
+            .eq('id', item.id);
+        }
+      }
+
+      // Конвертируем цены предметов в инвентаре пользователей
+      const { data: userInventory, error: userInventoryError } = await supabase
+        .from('user_inventory')
+        .select('id, price');
+
+      if (userInventoryError) {
+        console.log('Таблица user_inventory не найдена или недоступна:', userInventoryError);
+      } else {
+        for (const item of userInventory || []) {
+          const newPrice = Math.max(1, Math.round(item.price / 42));
+          
+          await supabase
+            .from('user_inventory')
+            .update({ price: newPrice })
+            .eq('id', item.id);
+        }
+      }
+
       toast('Все цены успешно конвертированы в доллары!', 'success');
       
       // Перезагружаем товары
