@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../integrations/supabase/client';
-import { AdminProduct, ProductFormData } from '../../types/admin';
+import { AdminProduct, ProductFormData, GameSubcategory } from '../../types/admin';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -19,11 +19,13 @@ const emptyProduct: ProductFormData = {
   description: '',
   features: [],
   game_category_id: '',
+  subcategory_id: '',
 };
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<AdminProduct[]>([]);
   const [gameCategories, setGameCategories] = useState<any[]>([]);
+  const [subcategories, setSubcategories] = useState<GameSubcategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -96,6 +98,7 @@ const AdminProducts = () => {
   useEffect(() => {
     fetchProducts();
     fetchGameCategories();
+    fetchSubcategories();
   }, []);
 
   const fetchProducts = async () => {
@@ -137,6 +140,23 @@ const AdminProducts = () => {
     }
   };
 
+  const fetchSubcategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('game_subcategories')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (error) throw error;
+      
+      setSubcategories(data || []);
+      
+    } catch (err) {
+      console.error('Error fetching subcategories:', err);
+      toast('Ошибка при загрузке подкатегорий', 'error');
+    }
+  };
+
   const openAddModal = () => {
     setEditMode('add');
     setCurrentProduct(emptyProduct);
@@ -157,6 +177,7 @@ const AdminProducts = () => {
       description: product.description || '',
       features: product.features || [],
       game_category_id: product.game_category_id || '',
+      subcategory_id: product.subcategory_id || '',
     });
     setEditingId(product.id);
     setError(null);
@@ -548,10 +569,19 @@ const AdminProducts = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setCurrentProduct(prev => ({
-      ...prev,
-      [name]: ['price', 'original_price'].includes(name) ? Number(value) : value
-    }));
+    setCurrentProduct(prev => {
+      const newProduct = {
+        ...prev,
+        [name]: ['price', 'original_price'].includes(name) ? Number(value) : value
+      };
+      
+      // Если изменилась главная категория, сбрасываем подкатегорию
+      if (name === 'game_category_id') {
+        newProduct.subcategory_id = '';
+      }
+      
+      return newProduct;
+    });
   };
 
   const handleFeaturesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -787,6 +817,26 @@ const AdminProducts = () => {
                       {category.icon} {category.name}
                     </option>
                   ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Подкатегория</label>
+                <select
+                  name="subcategory_id"
+                  value={currentProduct.subcategory_id || ''}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white text-sm sm:text-base"
+                  disabled={!currentProduct.game_category_id}
+                >
+                  <option value="">Выберите подкатегорию</option>
+                  {subcategories
+                    .filter(sub => sub.game_category_id === currentProduct.game_category_id)
+                    .map(subcategory => (
+                      <option key={subcategory.id} value={subcategory.id}>
+                        {subcategory.name}
+                      </option>
+                    ))}
                 </select>
               </div>
 

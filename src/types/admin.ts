@@ -9,6 +9,7 @@ export interface AdminProduct {
   description?: string;
   features?: string[];
   game_category_id?: string;
+  subcategory_id?: string;
   created_at: string;
   updated_at: string;
 }
@@ -52,6 +53,19 @@ export interface AdminUser {
   updated_at: string | null;
 }
 
+export interface GameSubcategory {
+  id: string;
+  game_category_id: string;
+  name: string;
+  name_en?: string;
+  name_ru?: string;
+  slug: string;
+  order_index: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface ProductFormData {
   name: string;
   price: number;
@@ -62,6 +76,7 @@ export interface ProductFormData {
   description: string;
   features: string[];
   game_category_id: string;
+  subcategory_id?: string;
 }
 
 export interface CaseFormData {

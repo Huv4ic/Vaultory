@@ -12,6 +12,7 @@ import AdminCases from './AdminCases';
 import AdminWithdrawalRequests from './AdminWithdrawalRequests';
 import UserRoleManagement from './UserRoleManagement';
 import AdminGameCategories from './AdminGameCategories';
+import AdminGameSubcategories from './AdminGameSubcategories';
 
 interface User {
   id: string;
@@ -35,7 +36,7 @@ export default function AdminPanel() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases' | 'withdrawals' | 'roles' | 'telegram'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'products' | 'cases' | 'withdrawals' | 'roles' | 'telegram' | 'game-categories' | 'game-subcategories'>('users');
 
 
   useEffect(() => {
@@ -531,6 +532,16 @@ export default function AdminPanel() {
           >
             🎮 Главные категории
           </button>
+          <button
+            className={`px-6 py-3 rounded-2xl font-black transition-all duration-300 text-sm whitespace-nowrap hover:scale-105 ${
+              activeTab === 'game-subcategories' 
+                ? 'bg-[#a31212] text-white shadow-2xl shadow-[#a31212]/25' 
+                : 'bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:bg-[#a31212]/10'
+            }`}
+            onClick={() => setActiveTab('game-subcategories')}
+          >
+            📂 Подкатегории
+          </button>
         </div>
       </div>
 
@@ -542,6 +553,7 @@ export default function AdminPanel() {
         {activeTab === 'withdrawals' && <AdminWithdrawalRequests />}
         {activeTab === 'roles' && <UserRoleManagement />}
         {activeTab === 'game-categories' && <AdminGameCategories />}
+        {activeTab === 'game-subcategories' && <AdminGameSubcategories />}
       </div>
     </div>
   );
