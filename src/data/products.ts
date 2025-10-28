@@ -32,8 +32,8 @@ export const products: Product[] = [
   {
     id: '1',
     name: 'Мега бокс x10',
-    price: 450,
-    originalPrice: 600,
+    price: 11, // 450 грн / 42 = 10.7, округляем до 11
+    originalPrice: 15, // 600 грн / 42 = 14.3, округляем до 15
     image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=300&fit=crop',
     category: 'Боксы',
     game: 'Brawl Stars',
@@ -45,7 +45,7 @@ export const products: Product[] = [
   {
     id: '2',
     name: 'Пропуск на сезон',
-    price: 199,
+    price: 5, // 199 грн / 42 = 4.7, округляем до 5
     image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
     category: 'Пропуски',
     game: 'Brawl Stars',
@@ -57,8 +57,8 @@ export const products: Product[] = [
   {
     id: '3',
     name: 'Гемы 2000 шт',
-    price: 1299,
-    originalPrice: 1499,
+    price: 31, // 1299 грн / 42 = 30.9, округляем до 31
+    originalPrice: 36, // 1499 грн / 42 = 35.7, округляем до 36
     image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'Brawl Stars',
@@ -72,8 +72,8 @@ export const products: Product[] = [
   {
     id: '4',
     name: 'Steam Wallet 1000$',
-    price: 950,
-    originalPrice: 1000,
+    price: 23, // 950 грн / 42 = 22.6, округляем до 23
+    originalPrice: 24, // 1000 грн / 42 = 23.8, округляем до 24
     image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
     category: 'Пополнение',
     game: 'Steam',
@@ -85,7 +85,7 @@ export const products: Product[] = [
   {
     id: '5',
     name: 'Counter-Strike 2 Скины',
-    price: 2500,
+    price: 60, // 2500 грн / 42 = 59.5, округляем до 60
     image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=400&h=300&fit=crop',
     category: 'Скины',
     game: 'Steam',
@@ -99,8 +99,8 @@ export const products: Product[] = [
   {
     id: '6',
     name: 'UC 1800 + 300 бонус',
-    price: 1199,
-    originalPrice: 1399,
+    price: 29, // 1199 грн / 42 = 28.5, округляем до 29
+    originalPrice: 34, // 1399 грн / 42 = 33.3, округляем до 34
     image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'PUBG Mobile',
@@ -112,7 +112,7 @@ export const products: Product[] = [
   {
     id: '7',
     name: 'Королевский пропуск',
-    price: 599,
+    price: 15, // 599 грн / 42 = 14.3, округляем до 15
     image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop',
     category: 'Пропуски',
     game: 'PUBG Mobile',
@@ -126,8 +126,8 @@ export const products: Product[] = [
   {
     id: '8',
     name: 'Золото 10000',
-    price: 799,
-    originalPrice: 999,
+    price: 19, // 799 грн / 42 = 19.0, округляем до 19
+    originalPrice: 24, // 999 грн / 42 = 23.8, округляем до 24
     image: 'https://images.unsplash.com/photo-1579952363873-27d3bfad9c0d?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'Standoff 2',
@@ -141,7 +141,7 @@ export const products: Product[] = [
   {
     id: '9',
     name: 'Золото 6500 + Премиум',
-    price: 1599,
+    price: 39, // 1599 грн / 42 = 38.1, округляем до 39
     image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'WoT Blitz',
@@ -155,8 +155,8 @@ export const products: Product[] = [
   {
     id: '10',
     name: 'Золотые орлы 5000',
-    price: 2299,
-    originalPrice: 2599,
+    price: 55, // 2299 грн / 42 = 54.7, округляем до 55
+    originalPrice: 62, // 2599 грн / 42 = 61.9, округляем до 62
     image: 'https://images.unsplash.com/photo-1544306094-e2dcbcb4e5fc?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'War Thunder',
@@ -170,7 +170,7 @@ export const products: Product[] = [
   {
     id: '11',
     name: 'Звёзды Telegram 1000',
-    price: 899,
+    price: 22, // 899 грн / 42 = 21.4, округляем до 22
     image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'Telegram',
@@ -184,8 +184,8 @@ export const products: Product[] = [
   {
     id: '12',
     name: 'Shark Card 8,000,000$',
-    price: 3599,
-    originalPrice: 3999,
+    price: 86, // 3599 грн / 42 = 85.7, округляем до 86
+    originalPrice: 96, // 3999 грн / 42 = 95.2, округляем до 96
     image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'GTA V',
@@ -199,8 +199,8 @@ export const products: Product[] = [
   {
     id: '13',
     name: 'V-Bucks 13,500',
-    price: 6799,
-    originalPrice: 7999,
+    price: 162, // 6799 грн / 42 = 161.9, округляем до 162
+    originalPrice: 191, // 7999 грн / 42 = 190.5, округляем до 191
     image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'Fortnite',
@@ -214,7 +214,7 @@ export const products: Product[] = [
   {
     id: '14',
     name: 'Robux 4,500',
-    price: 2899,
+    price: 70, // 2899 грн / 42 = 69.0, округляем до 70
     image: 'https://images.unsplash.com/photo-1567593810070-7a3d471af022?w=400&h=300&fit=crop',
     category: 'Валюта',
     game: 'Roblox',
@@ -228,8 +228,8 @@ export const products: Product[] = [
   {
     id: '15',
     name: 'Spotify Premium 12 мес',
-    price: 1899,
-    originalPrice: 2388,
+    price: 46, // 1899 грн / 42 = 45.2, округляем до 46
+    originalPrice: 57, // 2388 грн / 42 = 56.9, округляем до 57
     image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=300&fit=crop',
     category: 'Подписка',
     game: 'Spotify',
