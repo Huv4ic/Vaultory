@@ -624,24 +624,6 @@ const CaseRoulette: React.FC<CaseRouletteProps> = ({
 
       showInfo(`Списано $${casePrice} за открытие кейса`);
       
-      // Обновляем статистику трат пользователя (кейсы считаются как покупки)
-      try {
-        // Используем существующую функцию update_user_balance для обновления статистики
-        const { error: statsError } = await supabase.rpc('update_user_balance', {
-          user_id: profile.telegram_id,
-          amount: -casePrice, // Отрицательная сумма для трат
-          description: 'Открытие кейса'
-        });
-
-        if (statsError) {
-          console.error('❌ Error updating user purchase stats:', statsError);
-        } else {
-          console.log('✅ Статистика трат пользователя обновлена');
-        }
-      } catch (error) {
-        console.error('❌ Failed to update user purchase stats:', error);
-      }
-
       // Обновляем профиль в контексте
       await refreshProfile();
 
