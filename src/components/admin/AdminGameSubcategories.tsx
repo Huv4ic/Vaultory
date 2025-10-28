@@ -18,6 +18,7 @@ interface GameSubcategory {
   name_en?: string;
   name_ru?: string;
   slug: string;
+  icon?: string;
   order_index: number;
   is_active: boolean;
   created_at: string;
@@ -33,6 +34,7 @@ const AdminGameSubcategories: React.FC = () => {
     name_en: '',
     name_ru: '',
     slug: '',
+    icon: '📂',
     order_index: 0,
     is_active: true,
   });
@@ -147,6 +149,7 @@ const AdminGameSubcategories: React.FC = () => {
           name_en: '',
           name_ru: '',
           slug: '',
+          icon: '📂',
           order_index: 0,
           is_active: true,
         });
@@ -170,6 +173,7 @@ const AdminGameSubcategories: React.FC = () => {
       name_en: subcategory.name_en || '',
       name_ru: subcategory.name_ru || '',
       slug: subcategory.slug,
+      icon: subcategory.icon || '📂',
       order_index: subcategory.order_index,
       is_active: subcategory.is_active,
     });
@@ -213,6 +217,7 @@ const AdminGameSubcategories: React.FC = () => {
       name_en: '',
       name_ru: '',
       slug: '',
+      icon: '📂',
       order_index: 0,
       is_active: true,
     });
@@ -314,6 +319,23 @@ const AdminGameSubcategories: React.FC = () => {
           </div>
 
           <div>
+            <label htmlFor="icon" className="block text-sm font-medium text-gray-300 mb-1">
+              Иконка (эмодзи)
+            </label>
+            <input
+              type="text"
+              id="icon"
+              name="icon"
+              value={newSubcategory.icon}
+              onChange={handleInputChange}
+              className="w-full p-2 border border-gray-600 rounded-md bg-[#2a2a2a] text-white focus:ring-red-500 focus:border-red-500"
+              placeholder="Например: 👤"
+              maxLength={2}
+            />
+            <p className="text-xs text-gray-400 mt-1">Введите эмодзи (максимум 2 символа)</p>
+          </div>
+
+          <div>
             <label htmlFor="order_index" className="block text-sm font-medium text-gray-300 mb-1">
               Порядок отображения
             </label>
@@ -373,6 +395,7 @@ const AdminGameSubcategories: React.FC = () => {
                 {getSubcategoriesForCategory(category.id).map((sub) => (
                   <li key={sub.id} className="flex justify-between items-center bg-[#2a2a2a] p-3 rounded-md">
                     <span className="text-gray-200">
+                      <span className="text-2xl mr-2">{sub.icon || '📂'}</span>
                       {sub.name} ({sub.slug}) - Порядок: {sub.order_index} {sub.is_active ? '(Активна)' : '(Неактивна)'}
                     </span>
                     <div>

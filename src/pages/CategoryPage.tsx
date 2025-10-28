@@ -22,6 +22,7 @@ interface GameSubcategory {
   name_en?: string;
   name_ru?: string;
   slug: string;
+  icon?: string;
   order_index: number;
   is_active: boolean;
 }
@@ -169,7 +170,7 @@ export default function CategoryPage() {
                 <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#a31212] transition-all duration-300">
                   <div className="text-center">
                     <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                      {getSubcategoryIcon(sub.slug)}
+                      {sub.icon || getSubcategoryIcon(sub.slug)}
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">{sub.name}</h3>
                     <p className="text-gray-400 text-sm">Нажмите для просмотра товаров</p>

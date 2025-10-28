@@ -60,6 +60,7 @@ export interface GameSubcategory {
   name_en?: string;
   name_ru?: string;
   slug: string;
+  icon?: string;
   order_index: number;
   is_active: boolean;
   created_at: string;
