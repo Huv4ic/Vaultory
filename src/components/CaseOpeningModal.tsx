@@ -51,7 +51,7 @@ const CaseOpeningModal: React.FC<CaseOpeningModalProps> = ({
   const [isSpinning, setIsSpinning] = useState(false);
   const [soldOrAdded, setSoldOrAdded] = useState(false);
 
-  console.log('CaseOpeningModal render:', { isOpen, caseData, winningIndex });
+  
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {

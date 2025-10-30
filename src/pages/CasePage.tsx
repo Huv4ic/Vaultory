@@ -128,33 +128,12 @@ const CasePage = () => {
   };
 
   const handleCaseOpened = async (item: CaseItem, action: 'add' | 'sell') => {
-    console.log('📦 Case opened with action:', action, 'item:', item.name);
     
     // Добавляем предмет в инвентарь только если действие - "add"
     if (action === 'add') {
-      console.log('🎉 Кейс открыт! Выпал предмет:', item);
-      
       // ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА: убеждаемся что addItem вызывается только один раз
-      console.log('🔍 ПРОВЕРКА: addItem будет вызван только один раз для предмета:', item.name);
-    console.log('📦 Данные кейса:', caseData);
-    console.log('🔍 ДЕТАЛЬНАЯ ОТЛАДКА - Полученный предмет:', {
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      rarity: item.rarity,
-      case_id: item.case_id,
-      image_url: item.image_url,
-      drop_after_cases: item.drop_after_cases
-    });
     
     // ПРОВЕРЯЕМ ОБЯЗАТЕЛЬНЫЕ ПОЛЯ
-    console.log('🔍 ПРОВЕРКА ПОЛЕЙ:');
-    console.log('- Название предмета:', item.name ? '✅' : '❌', item.name);
-    console.log('- Цена предмета:', (typeof item.price === 'number' && item.price >= 0) ? '✅' : '❌', item.price);
-    console.log('- Редкость:', item.rarity ? '✅' : '❌', item.rarity);
-    console.log('- ID кейса:', item.case_id ? '✅' : '❌', item.case_id);
-    console.log('- Название кейса:', caseData?.name ? '✅' : '❌', caseData?.name);
-    console.log('- URL изображения:', item.image_url ? '✅' : '❌', item.image_url);
     
     // ДОБАВЛЯЕМ ПРЕДМЕТ В ИНВЕНТАРЬ
     // ВАЖНО: Эта функция вызывается только при нажатии "Добавить в инвентарь"
@@ -172,14 +151,10 @@ const CasePage = () => {
         obtained_at: new Date().toISOString()
       };
       
-      console.log('🎁 Создаем предмет для инвентаря:', inventoryItem);
-      console.log('🔧 Вызываем addItem с предметом:', inventoryItem.name);
-      console.log('💰 Цена предмета:', inventoryItem.price);
-      console.log('🆔 Case ID:', inventoryItem.caseId);
-      console.log('📦 Case Name:', inventoryItem.case_name);
+      
       
       await addItem(inventoryItem);
-      console.log('✅ Предмет успешно добавлен в инвентарь!');
+      
     } catch (error) {
       console.error('❌ Ошибка при добавлении предмета в инвентарь:', error);
       console.error('❌ Детали ошибки:', {
@@ -194,7 +169,6 @@ const CasePage = () => {
       try {
         // caseId уже является строкой из URL параметров
         const caseId = id;
-        console.log('ID кейса из URL:', id, 'Тип:', typeof caseId);
         
         if (!caseId || caseId.trim() === '') {
           console.error('Некорректный ID кейса:', id);
@@ -202,7 +176,6 @@ const CasePage = () => {
         }
         
         await incrementCaseOpened(caseId, caseData.name, caseData.image_url);
-        console.log('Статистика открытий кейса обновлена');
       } catch (err) {
         console.error('Ошибка обновления статистики:', err);
       }
@@ -242,7 +215,6 @@ const CasePage = () => {
 
   // Функция для сортировки предметов по редкости
   const sortItemsByRarity = (items: CaseItem[]) => {
-    console.log('🔍 Сортируем предметы по редкости:', items.map(item => ({ name: item.name, rarity: item.rarity })));
     
     const rarityOrder = {
       'legendary': 4,
@@ -262,12 +234,9 @@ const CasePage = () => {
       const aOrder = rarityOrder[aRarity as keyof typeof rarityOrder] || 0;
       const bOrder = rarityOrder[bRarity as keyof typeof rarityOrder] || 0;
       
-      console.log(`📊 Сравниваем: ${a.name} (${aRarity}: ${aOrder}) vs ${b.name} (${bRarity}: ${bOrder})`);
-      
       return bOrder - aOrder; // Сортировка по убыванию (легендарные выше)
     });
     
-    console.log('✅ Отсортированные предметы:', sortedItems.map(item => ({ name: item.name, rarity: item.rarity })));
     return sortedItems;
   };
 

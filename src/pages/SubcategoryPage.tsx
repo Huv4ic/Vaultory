@@ -102,13 +102,9 @@ export default function SubcategoryPage() {
       return;
     }
 
-    console.log('Фильтрация товаров для подкатегории:', subcategory.id);
-    console.log('Всего товаров:', products.length);
-    
       let filtered = products.filter((product: any) => {
       // Фильтруем по подкатегории
       const matchesSubcategory = product.subcategory_id === subcategory.id;
-      console.log(`Товар "${product.name}": subcategory_id=${product.subcategory_id}, совпадение=${matchesSubcategory}`);
       
       // Если есть поисковый запрос, также фильтруем по нему
       if (searchQuery) {
@@ -128,7 +124,6 @@ export default function SubcategoryPage() {
       return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
     });
 
-    console.log('Отфильтровано товаров:', filtered.length, 'Порядок сортировки:', sortOrder);
     setFilteredProducts(sorted);
   };
 
