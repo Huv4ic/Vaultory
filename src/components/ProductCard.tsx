@@ -103,7 +103,7 @@ const ProductCard = ({
         <div className="relative flex-1 flex flex-col bg-[#1c1c1c] rounded-b-3xl p-5">
           <div className="flex-1 flex flex-col justify-center text-center">
             {/* Название товара */}
-            <h3 className="text-[#f0f0f0] font-bold text-lg mb-4 line-clamp-3 tracking-wide min-h-[3.5rem] flex items-center justify-center text-center leading-tight">
+            <h3 className="text-[#f0f0f0] font-bold text-2xl mb-4 line-clamp-3 tracking-wide min-h-[3.5rem] flex items-center justify-center text-center leading-tight">
               {getProductTranslation(id, 'name', name)}
             </h3>
             
@@ -111,15 +111,15 @@ const ProductCard = ({
             <div className="flex items-center justify-center space-x-4 mb-4">
               {original_price && original_price > price ? (
                 <>
-                  <span className="text-[#a0a0a0] line-through text-base font-medium">
+                  <span className="text-[#a0a0a0] line-through text-lg font-medium">
                     ${original_price}
                   </span>
-                  <span className="text-[#f0f0f0] font-black text-2xl">
+                  <span className="text-[#f0f0f0] font-black text-4xl">
                     ${price}
                   </span>
                 </>
               ) : (
-                <span className="text-[#f0f0f0] font-black text-2xl">
+                <span className="text-[#f0f0f0] font-black text-4xl">
                   ${price}
                 </span>
               )}
@@ -142,8 +142,8 @@ const ProductCard = ({
               >
                 {/* Контент кнопки */}
                 <div className="relative z-10 flex items-center justify-center">
-                  <Zap className="w-4 h-4 mr-1" />
-                  <span className="text-sm">Купить</span>
+                  <Zap className="w-5 h-5 mr-1" />
+                  <span className="text-base">Купить</span>
                 </div>
               </Button>
             )}

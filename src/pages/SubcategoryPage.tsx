@@ -36,6 +36,7 @@ export default function SubcategoryPage() {
   const [categoryLoading, setCategoryLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const productsSectionRef = useRef<HTMLDivElement>(null);
   const { telegramUser } = useAuth();
   const { t } = useLanguage();
@@ -60,7 +61,7 @@ export default function SubcategoryPage() {
 
   useEffect(() => {
     filterProducts();
-  }, [products, subcategory, searchQuery]);
+  }, [products, subcategory, searchQuery, sortOrder]);
 
   const fetchGameCategory = async () => {
     try {
@@ -120,8 +121,19 @@ export default function SubcategoryPage() {
       return matchesSubcategory;
     });
 
-    console.log('Отфильтровано товаров:', filtered.length);
-    setFilteredProducts(filtered);
+    // Сортировка по цене
+    const sorted = [...filtered].sort((a, b) => {
+      const priceA = Number(a.price) || 0;
+      const priceB = Number(b.price) || 0;
+      return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+    });
+
+    console.log('Отфильтровано товаров:', filtered.length, 'Порядок сортировки:', sortOrder);
+    setFilteredProducts(sorted);
+  };
+
+  const toggleSortOrder = () => {
+    setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
   };
 
   const handleSubcategoryClick = (subcategory: GameSubcategory) => {
@@ -221,9 +233,20 @@ export default function SubcategoryPage() {
         ) : (
           // Показываем товары подкатегории
           <div ref={productsSectionRef}>
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-white mb-4">Товары в категории "{subcategory.name}"</h2>
-              <p className="text-gray-400">Найдено товаров: {filteredProducts.length}</p>
+            <div className="mb-8">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-center sm:text-left">
+                  <h2 className="text-3xl font-bold text-white mb-1">Товары в категории "{subcategory.name}"</h2>
+                  <p className="text-gray-400">Найдено товаров: {filteredProducts.length}</p>
+                </div>
+                <button
+                  onClick={toggleSortOrder}
+                  className="px-4 py-2 rounded-lg bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-[#2a2a2a] hover:border-[#a31212] text-white transition-colors"
+                  title="Сортировать по цене"
+                >
+                  {sortOrder === 'desc' ? 'Сортировать: по убыванию' : 'Сортировать: по возрастанию'}
+                </button>
+              </div>
             </div>
 
             {filteredProducts.length > 0 ? (
