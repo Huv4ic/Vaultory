@@ -16,7 +16,19 @@ const Cart = () => {
 
   // Функция для форматирования числа с разделителями
   const formatNumber = (amount: number): string => {
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    // Округляем до 2 знаков после запятой, чтобы избежать проблем с плавающей точкой
+    const rounded = Math.round(amount * 100) / 100;
+    
+    // Разделяем на целую и дробную части
+    const parts = rounded.toFixed(2).split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts[1];
+    
+    // Форматируем только целую часть с разделителями тысяч
+    const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    
+    // Объединяем с дробной частью
+    return `${formattedInteger}.${decimalPart}`;
   };
   const { items, removeItem, clear, updateQuantity } = useCart();
   const { createOrder, isProcessing } = useOrders();
