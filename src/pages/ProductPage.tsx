@@ -49,6 +49,8 @@ const ProductPage = () => {
   useEffect(() => {
     // Прокручиваем страницу наверх при загрузке
     window.scrollTo(0, 0);
+    // Сбрасываем количество при переходе к другому товару
+    setQuantity(1);
     
     if (product && product.images && product.images.length > 0) {
       setSelectedImage(product.images[0]);
@@ -67,7 +69,9 @@ const ProductPage = () => {
         price: product.price,
         image_url: product.image_url || (product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg'),
         image: product.images && product.images.length > 0 ? product.images[0] : (product.image_url || '/placeholder.svg')
-      });
+      }, quantity);
+      // Сбрасываем количество обратно в 1 после добавления
+      setQuantity(1);
     }
   };
 
