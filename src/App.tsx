@@ -26,6 +26,7 @@ import TransactionHistory from "./pages/TransactionHistory";
 import OrderSuccess from "./pages/OrderSuccess";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Background from "@/components/Background";
 import ToastContainer from "@/components/ui/ToastContainer";
 import BlockedUserModal from "@/components/BlockedUserModal";
 
@@ -51,32 +52,41 @@ const AppContent = () => {
     <BlockedUserWrapper>
       <TooltipProvider>
         <ToastContainer />
-        <div className="flex flex-col min-h-screen">
-          {!isAdmin && <Header />}
-          <div className="flex-1">
+        {isAdmin ? (
+          <div className="flex flex-col min-h-screen">
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/cases" element={<Cases />} />
-              <Route path="/case/:id" element={<CasePage />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/product/:id" element={<ProductPage />} />
-              <Route path="/category/:categoryId" element={<CategoryPage />} />
-              <Route path="/category/:categoryId/subcategory/:subcategoryId" element={<SubcategoryPage />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/inventory" element={<Inventory />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/order-success" element={<OrderSuccess />} />
-              <Route path="/transaction-history" element={<TransactionHistory />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="/admin/*" element={<Admin />} />
             </Routes>
           </div>
-          {!isAdmin && <Footer />}
-        </div>
+        ) : (
+          <Background>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <div className="flex-1">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/cases" element={<Cases />} />
+                  <Route path="/case/:id" element={<CasePage />} />
+                  <Route path="/support" element={<Support />} />
+                  <Route path="/product/:id" element={<ProductPage />} />
+                  <Route path="/category/:categoryId" element={<CategoryPage />} />
+                  <Route path="/category/:categoryId/subcategory/:subcategoryId" element={<SubcategoryPage />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/inventory" element={<Inventory />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/order-success" element={<OrderSuccess />} />
+                  <Route path="/transaction-history" element={<TransactionHistory />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
+              <Footer />
+            </div>
+          </Background>
+        )}
       </TooltipProvider>
     </BlockedUserWrapper>
   );

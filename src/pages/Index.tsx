@@ -315,7 +315,7 @@ const Index = () => {
     return (
       <div className="min-h-screen bg-[#121212] text-[#f0f0f0] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#a31212] mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#FFD700] mx-auto"></div>
           <p className="mt-4 text-xl">{t('Загрузка товаров...')}</p>
         </div>
       </div>
@@ -326,9 +326,9 @@ const Index = () => {
     return (
       <div className="min-h-screen bg-[#121212] text-[#f0f0f0] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4 text-[#a31212]">{t('Ошибка загрузки')}</h1>
+          <h1 className="text-4xl font-bold mb-4 text-[#FFD700]">{t('Ошибка загрузки')}</h1>
           <p className="text-xl mb-4">{error}</p>
-          <Button onClick={() => window.location.reload()} className="bg-[#a31212] hover:bg-[#8a0f0f]">
+          <Button onClick={() => window.location.reload()} className="bg-[#FFD700] hover:bg-[#FFC107]">
             {t('Попробовать снова')}
           </Button>
         </div>
@@ -337,19 +337,7 @@ const Index = () => {
   }
 
   return (
-    <div 
-      className="min-h-screen text-[#f0f0f0] relative"
-      style={{
-        backgroundImage: 'url(/background-eye.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed'
-      }}
-    >
-      {/* Затемнение фона для лучшей читаемости контента */}
-      <div className="absolute inset-0 bg-[#121212]/80 backdrop-blur-[1px]"></div>
-      
+    <div className="min-h-screen text-[#f0f0f0] relative">
       {/* Telegram канал - современное окно с анимированным фоном */}
 
 
@@ -360,17 +348,21 @@ const Index = () => {
           {/* Hero секция */}
           <div className="text-center mb-12 sm:mb-16">
             <div className="flex justify-center mb-6">
-              <div className="relative">
-                <Crown className="w-16 h-16 sm:w-20 sm:h-20 text-[#a31212]" />
+              <div className="relative float-animation">
+                <Crown className="w-16 h-16 sm:w-20 sm:h-20 text-[#FFD700] drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
+                <div className="absolute inset-0 blur-xl opacity-30">
+                  <Crown className="w-16 h-16 sm:w-20 sm:h-20 text-[#FFD700]" />
+                </div>
               </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6 text-[#f0f0f0] px-2">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6 text-[#f0f0f0] px-2 slide-in-up relative">
               {t('Популярные игры')}
+              <span className="absolute inset-0 text-[#FFD700] opacity-10 blur-2xl pointer-events-none">Популярные игры</span>
             </h2>
             <div className="flex justify-center items-center space-x-4 mb-8">
-              <div className="h-px bg-[#1c1c1c] w-24"></div>
-              <Sparkles className="w-6 h-6 text-[#a31212]" />
-              <div className="h-px bg-[#1c1c1c] w-24"></div>
+              <div className="h-px bg-gradient-to-r from-transparent via-[#FFD700]/30 to-transparent w-24"></div>
+              <Sparkles className="w-6 h-6 text-[#FFD700] pulse-glow" />
+              <div className="h-px bg-gradient-to-r from-transparent via-[#FFD700]/30 to-transparent w-24"></div>
             </div>
           </div>
           
@@ -384,7 +376,7 @@ const Index = () => {
           {searchQuery.trim() && (
             <div className="mb-8 text-center">
               <div className="inline-flex items-center gap-3 px-6 py-3 bg-[#181818] rounded-2xl border border-[#1c1c1c]">
-                <Target className="w-5 h-5 text-[#a31212]" />
+                <Target className="w-5 h-5 text-[#FFD700]" />
                 <p className="text-[#f0f0f0] text-lg">
                   Найдено товаров: <span className="text-[#f0f0f0] font-black text-xl">{filteredProducts.length}</span>
                 </p>
@@ -400,7 +392,7 @@ const Index = () => {
             
             {categoriesLoading ? (
               <div className="text-center py-8">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#a31212]"></div>
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFD700]"></div>
                 <p className="text-[#a0a0a0] mt-4">Загрузка категорий...</p>
               </div>
             ) : (
@@ -418,17 +410,17 @@ const Index = () => {
                 style={{animationDelay: `${index * 0.1}s`}}
               >
                   {/* Карточка категории */}
-                  <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.color} p-4 sm:p-6 h-32 sm:h-40 border-2 transition-all duration-300 ${
+                  <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.color} p-4 sm:p-6 h-32 sm:h-40 border-2 transition-all duration-500 hover-lift ${
                     selectedGameCategory === category.id 
-                      ? 'border-[#a31212] shadow-2xl shadow-[#a31212]/30' 
-                      : 'border-transparent hover:border-[#a31212]/50'
+                      ? 'border-[#FFD700]/60 shadow-2xl shadow-[#FFD700]/40 neon-border' 
+                      : 'border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-glow'
                   }`}>
                     {/* Молния в углу */}
                     <div className="absolute top-2 left-2 z-10">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 glass ${
                         selectedGameCategory === category.id 
-                          ? 'bg-[#a31212] text-white' 
-                          : 'bg-white/20 text-white'
+                          ? 'bg-[#FFD700] text-white border border-[#FFD700]/60 neon-glow' 
+                          : 'bg-white/20 text-white border border-white/30'
                       }`}>
                         <Zap className="w-4 h-4" />
                       </div>
@@ -462,7 +454,8 @@ const Index = () => {
                     </div>
                     
                     {/* Эффект при наведении */}
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
                 </div>
               ))}
@@ -480,13 +473,13 @@ const Index = () => {
                 <div className="max-w-2xl mx-auto">
                   <div className="relative mb-8">
                     {/* Анимированная иконка */}
-                    <div className="w-24 h-24 mx-auto mb-6 bg-[#a31212]/20 rounded-3xl flex items-center justify-center border border-[#a31212]/30 animate-pulse">
+                    <div className="w-24 h-24 mx-auto mb-6 bg-[#FFD700]/20 rounded-3xl flex items-center justify-center border border-[#FFD700]/30 animate-pulse">
                       <div className="relative">
-                        <div className="w-12 h-12 bg-[#a31212] rounded-2xl flex items-center justify-center">
+                        <div className="w-12 h-12 bg-[#FFD700] rounded-2xl flex items-center justify-center">
                           <span className="text-2xl">📦</span>
                         </div>
                         {/* Светящийся эффект */}
-                        <div className="absolute inset-0 bg-[#a31212]/30 rounded-2xl blur-xl animate-ping"></div>
+                        <div className="absolute inset-0 bg-[#FFD700]/30 rounded-2xl blur-xl animate-ping"></div>
                       </div>
                     </div>
                   </div>
@@ -512,7 +505,7 @@ const Index = () => {
                   {/* Декоративные элементы */}
                   <div className="flex justify-center items-center space-x-4 mb-8">
                     <div className="h-px bg-[#1c1c1c] w-16"></div>
-                    <div className="w-2 h-2 bg-[#a31212] rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-[#FFD700] rounded-full animate-pulse"></div>
                     <div className="h-px bg-[#1c1c1c] w-16"></div>
                   </div>
                   
@@ -535,7 +528,7 @@ const Index = () => {
                           }, 100);
                         }
                       }}
-                      className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#a31212]/20"
+                      className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#FFD700]/20"
                     >
                       <span className="flex items-center justify-center">
                         {searchQuery.trim() ? '🔍 Очистить поиск' : '🎮 Выбрать категорию'}
@@ -555,7 +548,7 @@ const Index = () => {
           <div className="text-center mb-12 sm:mb-16">
             <div className="flex justify-center mb-6">
               <div className="relative">
-                <Sparkles className="w-12 h-12 sm:w-16 sm:h-16 text-[#a31212]" />
+                <Sparkles className="w-12 h-12 sm:w-16 sm:h-16 text-[#FFD700]" />
               </div>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-center mb-6 text-[#f0f0f0]">
@@ -563,7 +556,7 @@ const Index = () => {
             </h2>
             <div className="flex justify-center items-center space-x-4">
               <div className="h-px bg-[#1c1c1c] w-24"></div>
-              <Star className="w-6 h-6 text-[#a31212]" />
+              <Star className="w-6 h-6 text-[#FFD700]" />
               <div className="h-px bg-[#1c1c1c] w-24"></div>
             </div>
           </div>
@@ -573,11 +566,11 @@ const Index = () => {
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`} 
-                className="group bg-[#181818] rounded-2xl border border-[#1c1c1c] px-6 sm:px-8 hover:border-[#a31212] transition-all duration-300"
+                className="group bg-[#181818] rounded-2xl border border-[#1c1c1c] px-6 sm:px-8 hover:border-[#FFD700] transition-all duration-300"
               >
-                <AccordionTrigger className="text-lg sm:text-xl font-bold text-[#f0f0f0] hover:text-[#a31212] transition-colors py-6 sm:py-8 hover:no-underline">
+                <AccordionTrigger className="text-lg sm:text-xl font-bold text-[#f0f0f0] hover:text-[#FFD700] transition-colors py-6 sm:py-8 hover:no-underline">
                   <div className="flex items-center">
-                    <CheckCircle className="w-6 h-6 text-[#a31212] mr-4" />
+                    <CheckCircle className="w-6 h-6 text-[#FFD700] mr-4" />
                     {item.question}
                   </div>
                 </AccordionTrigger>

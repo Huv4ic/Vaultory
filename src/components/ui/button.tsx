@@ -18,7 +18,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        primary: "bg-[#a31212] hover:bg-[#8a0f0f] text-white text-lg py-3 font-bold rounded-lg transition-all duration-300"
+        primary: "bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] text-lg py-3 font-bold rounded-lg transition-all duration-300"
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -45,9 +45,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     let base = 'transition-all duration-300 font-bold rounded-lg';
     if (variant === 'primary') {
-      base += ' bg-[#a31212] hover:bg-[#8a0f0f] text-white text-lg py-3';
+      base += ' bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] text-lg py-3';
     } else if (variant === 'outline') {
-      base += ' border-2 border-[#1c1c1c] text-[#a0a0a0] bg-[#181818] hover:bg-[#1c1c1c] hover:border-[#a31212] hover:text-[#f0f0f0]';
+      base += ' border-2 border-[#1c1c1c] text-[#a0a0a0] bg-[#181818] hover:bg-[#1c1c1c] hover:border-[#FFD700] hover:text-[#f0f0f0]';
     }
     return (
       <Comp

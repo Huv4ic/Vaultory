@@ -13,7 +13,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#121212] border-t border-[#1c1c1c] relative">
+    <footer className="glass-strong border-t border-[#FFD700]/20 relative mt-20">
 
       <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
@@ -21,8 +21,8 @@ const Footer = () => {
           <div className="col-span-1 sm:col-span-2">
             <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6 group">
               {/* Иконка с изображением глаза */}
-              <div className="w-8 h-8 sm:w-10 sm:h-10 relative transform group-hover:scale-105 transition-all duration-300">
-                <div className="absolute inset-0 bg-[#181818] rounded-lg sm:rounded-xl flex items-center justify-center border border-[#1c1c1c] group-hover:border-[#a31212] transition-all duration-300 overflow-hidden">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 relative transform group-hover:scale-110 transition-all duration-300 hover-lift">
+                <div className="absolute inset-0 glass rounded-lg sm:rounded-xl flex items-center justify-center border border-[#FFD700]/30 group-hover:border-[#FFD700]/60 group-hover:neon-border transition-all duration-300 overflow-hidden">
                   <img 
                     src="/logo-eye.png" 
                     alt="Vaultory Logo" 
@@ -39,12 +39,12 @@ const Footer = () => {
                       };
                     }}
                   />
-                  <div className="fallback-v hidden text-[#a31212] font-bold text-lg sm:text-xl tracking-wider">
+                  <div className="fallback-v hidden text-[#FFD700] font-bold text-lg sm:text-xl tracking-wider">
                     V
                   </div>
                 </div>
               </div>
-              <span className="text-xl sm:text-2xl font-bold text-[#f0f0f0] group-hover:text-[#a31212] transition-all duration-300">
+              <span className="text-xl sm:text-2xl font-bold text-[#f0f0f0] group-hover:text-[#FFD700] transition-all duration-300">
                 Vaultory
               </span>
             </div>
@@ -56,7 +56,7 @@ const Footer = () => {
                 href="https://t.me/Vaultory_manager" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-8 h-8 sm:w-10 sm:h-10 bg-[#181818] rounded-full flex items-center justify-center text-[#f0f0f0] hover:bg-[#1c1c1c] transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
+                className="w-8 h-8 sm:w-10 sm:h-10 glass rounded-full flex items-center justify-center text-[#f0f0f0] hover:bg-[#FFD700]/20 transition-all duration-300 hover:scale-110 hover-lift border border-[#FFD700]/30 hover:border-[#FFD700]/60 hover:neon-border"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.48.33-.913.49-1.302.481-.428-.008-1.252-.241-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.178.164.174.213.409.227.575-.001.187-.033.401-.096.614z"/>
@@ -64,7 +64,7 @@ const Footer = () => {
               </a>
               <button 
                 onClick={openGmail}
-                className="w-8 h-8 sm:w-10 sm:h-10 bg-[#181818] rounded-full flex items-center justify-center text-[#f0f0f0] hover:bg-[#1c1c1c] transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
+                className="w-8 h-8 sm:w-10 sm:h-10 glass rounded-full flex items-center justify-center text-[#f0f0f0] hover:bg-[#FFD700]/20 transition-all duration-300 hover:scale-110 hover-lift border border-[#FFD700]/30 hover:border-[#FFD700]/60 hover:neon-border"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -75,7 +75,7 @@ const Footer = () => {
 
           {/* Быстрые ссылки */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold text-[#f0f0f0] mb-3 sm:mb-4 hover:text-[#a31212] transition-colors duration-300">
+            <h3 className="text-base sm:text-lg font-semibold text-[#f0f0f0] mb-3 sm:mb-4 hover:text-[#FFD700] transition-colors duration-300">
               {t('Быстрые ссылки')}
             </h3>
             <ul className="space-y-1.5 sm:space-y-2">
@@ -108,7 +108,7 @@ const Footer = () => {
 
           {/* Поддержка */}
           <div>
-            <h3 className="text-base sm:text-lg font-semibold text-[#f0f0f0] mb-3 sm:mb-4 hover:text-[#a31212] transition-colors duration-300">
+            <h3 className="text-base sm:text-lg font-semibold text-[#f0f0f0] mb-3 sm:mb-4 hover:text-[#FFD700] transition-colors duration-300">
               {t('Поддержка')}
             </h3>
             <ul className="space-y-1.5 sm:space-y-2">
