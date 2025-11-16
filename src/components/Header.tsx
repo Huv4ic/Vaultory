@@ -110,13 +110,26 @@ const Header = () => {
           {/* Логотип с анимацией */}
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="w-10 h-10 sm:w-12 sm:h-12 relative transform group-hover:scale-105 transition-all duration-300">
-              {/* Иконка с буквой V */}
-              <div className="absolute inset-0 bg-[#181818] backdrop-blur-xl rounded-xl flex items-center justify-center border border-[#1c1c1c] group-hover:border-[#a31212] transition-all duration-300">
-                <div className="relative">
-                  {/* Основная буква V */}
-                  <div className="text-[#a31212] font-black text-xl sm:text-2xl tracking-wider group-hover:text-[#8a0f0f] transition-all duration-300">
-                    V
-                  </div>
+              {/* Иконка с изображением глаза */}
+              <div className="absolute inset-0 bg-[#181818] backdrop-blur-xl rounded-xl flex items-center justify-center border border-[#1c1c1c] group-hover:border-[#a31212] transition-all duration-300 overflow-hidden">
+                <img 
+                  src="/logo-eye.png" 
+                  alt="Vaultory Logo" 
+                  className="w-full h-full object-contain p-1"
+                  onError={(e) => {
+                    // Fallback на SVG если PNG не найден
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/logo-eye.svg';
+                    target.onerror = () => {
+                      // Если и SVG не найден, показываем букву V
+                      target.style.display = 'none';
+                      const fallback = target.parentElement?.querySelector('.fallback-v');
+                      if (fallback) fallback.classList.remove('hidden');
+                    };
+                  }}
+                />
+                <div className="fallback-v hidden text-[#a31212] font-black text-xl sm:text-2xl tracking-wider group-hover:text-[#8a0f0f] transition-all duration-300">
+                  V
                 </div>
               </div>
             </div>

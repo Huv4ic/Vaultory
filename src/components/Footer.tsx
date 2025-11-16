@@ -20,10 +20,26 @@ const Footer = () => {
           {/* Логотип и описание */}
           <div className="col-span-1 sm:col-span-2">
             <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6 group">
-              {/* Иконка с буквой V */}
+              {/* Иконка с изображением глаза */}
               <div className="w-8 h-8 sm:w-10 sm:h-10 relative transform group-hover:scale-105 transition-all duration-300">
-                <div className="absolute inset-0 bg-[#181818] rounded-lg sm:rounded-xl flex items-center justify-center border border-[#1c1c1c] group-hover:border-[#a31212] transition-all duration-300">
-                  <div className="text-[#a31212] font-bold text-lg sm:text-xl tracking-wider">
+                <div className="absolute inset-0 bg-[#181818] rounded-lg sm:rounded-xl flex items-center justify-center border border-[#1c1c1c] group-hover:border-[#a31212] transition-all duration-300 overflow-hidden">
+                  <img 
+                    src="/logo-eye.png" 
+                    alt="Vaultory Logo" 
+                    className="w-full h-full object-contain p-1"
+                    onError={(e) => {
+                      // Fallback на SVG если PNG не найден
+                      const target = e.target as HTMLImageElement;
+                      target.src = '/logo-eye.svg';
+                      target.onerror = () => {
+                        // Если и SVG не найден, показываем букву V
+                        target.style.display = 'none';
+                        const fallback = target.parentElement?.querySelector('.fallback-v');
+                        if (fallback) fallback.classList.remove('hidden');
+                      };
+                    }}
+                  />
+                  <div className="fallback-v hidden text-[#a31212] font-bold text-lg sm:text-xl tracking-wider">
                     V
                   </div>
                 </div>
