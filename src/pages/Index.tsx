@@ -375,7 +375,7 @@ const Index = () => {
           {/* Результаты поиска */}
           {searchQuery.trim() && (
             <div className="mb-8 text-center">
-              <div className="inline-flex items-center gap-3 px-6 py-3 bg-[#181818] rounded-2xl border border-[#1c1c1c]">
+              <div className="inline-flex items-center gap-3 px-6 py-3 glass rounded-2xl border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow">
                 <Target className="w-5 h-5 text-[#FFD700]" />
                 <p className="text-[#f0f0f0] text-lg">
                   Найдено товаров: <span className="text-[#f0f0f0] font-black text-xl">{filteredProducts.length}</span>
@@ -419,8 +419,8 @@ const Index = () => {
                     <div className="absolute top-2 left-2 z-10">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 glass ${
                         selectedGameCategory === category.id 
-                          ? 'bg-[#FFD700] text-white border border-[#FFD700]/60 neon-glow' 
-                          : 'bg-white/20 text-white border border-white/30'
+                          ? 'bg-[#FFD700] text-[#121212] border border-[#FFD700]/60 neon-glow' 
+                          : 'bg-white/20 text-[#121212] border border-white/30'
                       }`}>
                         <Zap className="w-4 h-4" />
                       </div>
@@ -448,7 +448,7 @@ const Index = () => {
                     
                     {/* Название категории */}
                     <div className="absolute bottom-2 left-2 right-2">
-                      <h3 className="text-white font-bold text-sm sm:text-base truncate">
+                      <h3 className="text-[#121212] font-bold text-sm sm:text-base truncate">
                         {category.name}
                       </h3>
                     </div>
@@ -504,9 +504,9 @@ const Index = () => {
                   
                   {/* Декоративные элементы */}
                   <div className="flex justify-center items-center space-x-4 mb-8">
-                    <div className="h-px bg-[#1c1c1c] w-16"></div>
+                    <div className="h-px bg-[#FFD700]/20 w-16"></div>
                     <div className="w-2 h-2 bg-[#FFD700] rounded-full animate-pulse"></div>
-                    <div className="h-px bg-[#1c1c1c] w-16"></div>
+                    <div className="h-px bg-[#FFD700]/20 w-16"></div>
                   </div>
                   
                   {/* Кнопка для возврата к поиску */}
@@ -528,7 +528,7 @@ const Index = () => {
                           }, 100);
                         }
                       }}
-                      className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#FFD700]/20"
+                      className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-xl shadow-[#FFD700]/20"
                     >
                       <span className="flex items-center justify-center">
                         {searchQuery.trim() ? '🔍 Очистить поиск' : '🎮 Выбрать категорию'}
@@ -555,9 +555,9 @@ const Index = () => {
               {t('Частые вопросы')}
             </h2>
             <div className="flex justify-center items-center space-x-4">
-              <div className="h-px bg-[#1c1c1c] w-24"></div>
+              <div className="h-px bg-[#FFD700]/20 w-24"></div>
               <Star className="w-6 h-6 text-[#FFD700]" />
-              <div className="h-px bg-[#1c1c1c] w-24"></div>
+              <div className="h-px bg-[#FFD700]/20 w-24"></div>
             </div>
           </div>
           
@@ -566,7 +566,7 @@ const Index = () => {
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`} 
-                className="group bg-[#181818] rounded-2xl border border-[#1c1c1c] px-6 sm:px-8 hover:border-[#FFD700] transition-all duration-300"
+                className="group glass rounded-2xl border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow px-6 sm:px-8 hover:border-[#FFD700] transition-all duration-300"
               >
                 <AccordionTrigger className="text-lg sm:text-xl font-bold text-[#f0f0f0] hover:text-[#FFD700] transition-colors py-6 sm:py-8 hover:no-underline">
                   <div className="flex items-center">

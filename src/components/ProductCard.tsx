@@ -59,10 +59,10 @@ const ProductCard = ({
       title={t('Нажмите для просмотра товара')}
     >
       {/* Основная карточка */}
-      <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-2 group overflow-hidden flex flex-col h-[500px]">
+      <div className="relative glass rounded-3xl border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-2 group overflow-hidden flex flex-col h-[500px]">
         
         {/* Изображение */}
-        <div className="relative h-56 overflow-hidden flex-shrink-0 rounded-t-3xl bg-[#1c1c1c]">
+        <div className="relative h-56 overflow-hidden flex-shrink-0 rounded-t-3xl glass">
           <img
             src={image}
             alt={name}
@@ -72,7 +72,7 @@ const ProductCard = ({
           {/* Скидочный бейдж */}
           {original_price && original_price > price && (
             <div className="absolute top-4 left-4 z-20">
-              <div className="bg-[#a31212] text-white px-3 py-1.5 rounded-full text-xs font-bold">
+              <div className="bg-[#FFD700] text-[#121212] px-3 py-1.5 rounded-full text-xs font-bold">
                 -{Math.round(((original_price - price) / original_price) * 100)}%
               </div>
             </div>
@@ -87,20 +87,20 @@ const ProductCard = ({
             disabled={loading}
             size="sm"
             variant="ghost"
-            className="absolute top-4 right-4 z-20 bg-[#181818] hover:bg-[#1c1c1c] transition-all duration-300 p-2 h-10 w-10 rounded-full border border-[#1c1c1c] hover:border-[#a31212]"
+            className="absolute top-4 right-4 z-20 bg-[#181818] hover:glass transition-all duration-300 p-2 h-10 w-10 rounded-full border border-[#FFD700]/20 hover:border-[#FFD700]/50"
           >
             <Heart 
               className={`w-5 h-5 transition-all duration-300 ${
                 isFavorite(id) 
-                  ? 'text-[#a31212] fill-current' 
-                  : 'text-[#a0a0a0] hover:text-[#a31212]'
+                  ? 'text-[#FFD700] fill-current' 
+                  : 'text-[#a0a0a0] hover:text-[#FFD700]'
               }`} 
             />
           </Button>
         </div>
 
         {/* Нижняя часть с информацией */}
-        <div className="relative flex-1 flex flex-col bg-[#1c1c1c] rounded-b-3xl p-5">
+        <div className="relative flex-1 flex flex-col glass rounded-b-3xl p-5">
           <div className="flex-1 flex flex-col justify-center text-center">
             {/* Название товара */}
             <h3 className="text-[#f0f0f0] font-bold text-2xl mb-4 line-clamp-3 tracking-wide min-h-[3.5rem] flex items-center justify-center text-center leading-tight">
@@ -137,7 +137,7 @@ const ProductCard = ({
                   onBuyNow();
                 }}
                 size="sm"
-                className="flex-1 group relative h-12 px-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
+                className="flex-1 group relative h-12 px-4 bg-[#FFD700] hover:bg-[#FFC107] text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
                 title="Купить сейчас"
               >
                 {/* Контент кнопки */}
@@ -157,8 +157,8 @@ const ProductCard = ({
               size="sm"
               className={`group relative h-12 w-12 p-0 rounded-full transition-all duration-300 hover:scale-105 ${
                 isInCart 
-                  ? 'bg-[#a31212] hover:bg-[#8a0f0f] text-white' 
-                  : 'bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white border border-[#1c1c1c] hover:border-[#a31212]'
+                  ? 'bg-[#FFD700] hover:bg-[#FFC107] text-white' 
+                  : 'glass hover:bg-[#FFD700] text-[#a0a0a0] hover:text-white border border-[#FFD700]/20 hover:border-[#FFD700]/50'
               }`}
               title={isInCart ? t('В корзине') : t('Добавить в корзину')}
             >

@@ -26,14 +26,14 @@ const OrderSuccess = () => {
 
   if (!telegramUser) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
-        <div className="text-center bg-[#181818] rounded-2xl p-8 border border-[#1c1c1c]">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center glass rounded-2xl p-8 border border-[#FFD700]/20">
           <div className="text-6xl mb-6">🔒</div>
           <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">Доступ запрещен</h1>
           <p className="text-[#a0a0a0] mb-6">Эта страница доступна только авторизованным пользователям</p>
           <Button
             onClick={() => navigate('/auth')}
-            className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-xl transition-all duration-300"
+            className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-lg rounded-xl transition-all duration-300"
           >
             Войти в аккаунт
           </Button>
@@ -43,7 +43,7 @@ const OrderSuccess = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
@@ -60,9 +60,9 @@ const OrderSuccess = () => {
       <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         <div className="max-w-4xl mx-auto">
           {/* Карточка заказа */}
-          <div className="bg-[#181818] rounded-xl sm:rounded-2xl md:rounded-3xl border border-[#1c1c1c] p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+          <div className="glass rounded-xl sm:rounded-2xl md:rounded-3xl border border-[#FFD700]/20 p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
             <div className="text-center mb-6 sm:mb-8">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#a31212] rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 border-4 border-[#a31212]/30">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#FFD700] rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 border-4 border-[#FFD700]/30">
                 <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#f0f0f0] mb-2">Детали заказа</h2>
@@ -71,36 +71,36 @@ const OrderSuccess = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
               {/* Номер заказа */}
-              <div className="bg-[#181818] rounded-lg sm:rounded-xl border border-[#1c1c1c] p-3 sm:p-4">
+              <div className="glass rounded-lg sm:rounded-xl border border-[#FFD700]/20 p-3 sm:p-4">
                 <div className="flex items-center space-x-2 sm:space-x-3 mb-2">
-                  <Package className="w-4 h-4 sm:w-5 sm:h-5 text-[#a31212]" />
+                  <Package className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFD700]" />
                   <span className="text-sm sm:text-base font-semibold text-[#f0f0f0]">Номер заказа</span>
                 </div>
                 <p className="text-lg sm:text-xl font-bold text-[#f0f0f0]">{orderInfo.orderId}</p>
               </div>
 
               {/* Сумма заказа */}
-              <div className="bg-[#181818] rounded-lg sm:rounded-xl border border-[#1c1c1c] p-3 sm:p-4">
+              <div className="glass rounded-lg sm:rounded-xl border border-[#FFD700]/20 p-3 sm:p-4">
                 <div className="flex items-center space-x-2 sm:space-x-3 mb-2">
-                  <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-[#a31212]" />
+                  <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFD700]" />
                   <span className="text-sm sm:text-base font-semibold text-[#f0f0f0]">Сумма заказа</span>
                 </div>
                 <p className="text-lg sm:text-xl font-bold text-[#f0f0f0]">${orderInfo.total}</p>
               </div>
 
               {/* Дата заказа */}
-              <div className="bg-[#181818] rounded-lg sm:rounded-xl border border-[#1c1c1c] p-3 sm:p-4">
+              <div className="glass rounded-lg sm:rounded-xl border border-[#FFD700]/20 p-3 sm:p-4">
                 <div className="flex items-center space-x-2 sm:space-x-3 mb-2">
-                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-[#a31212]" />
+                  <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFD700]" />
                   <span className="text-sm sm:text-base font-semibold text-[#f0f0f0]">Дата заказа</span>
                 </div>
                 <p className="text-lg sm:text-xl font-bold text-[#f0f0f0]">{orderInfo.date}</p>
               </div>
 
               {/* Время заказа */}
-              <div className="bg-[#181818] rounded-lg sm:rounded-xl border border-[#1c1c1c] p-3 sm:p-4">
+              <div className="glass rounded-lg sm:rounded-xl border border-[#FFD700]/20 p-3 sm:p-4">
                 <div className="flex items-center space-x-2 sm:space-x-3 mb-2">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[#a31212]" />
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFD700]" />
                   <span className="text-sm sm:text-base font-semibold text-[#f0f0f0]">Время заказа</span>
                 </div>
                 <p className="text-lg sm:text-xl font-bold text-[#f0f0f0]">{orderInfo.time}</p>
@@ -108,16 +108,16 @@ const OrderSuccess = () => {
             </div>
 
             {/* Информация о товарах */}
-            <div className="bg-[#181818] rounded-lg sm:rounded-xl border border-[#1c1c1c] p-3 sm:p-4 mb-6 sm:mb-8">
+            <div className="glass rounded-lg sm:rounded-xl border border-[#FFD700]/20 p-3 sm:p-4 mb-6 sm:mb-8">
               <div className="flex items-center space-x-2 sm:space-x-3 mb-2">
-                <Package className="w-4 h-4 sm:w-5 sm:h-5 text-[#a31212]" />
+                <Package className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFD700]" />
                 <span className="text-sm sm:text-base font-semibold text-[#f0f0f0]">Товары в заказе</span>
               </div>
               <p className="text-sm sm:text-base text-[#a0a0a0]">{orderInfo.items}</p>
             </div>
 
             {/* Контактная информация */}
-            <div className="bg-[#181818] rounded-lg sm:rounded-xl border border-[#1c1c1c] p-3 sm:p-4 mb-6 sm:mb-8">
+            <div className="glass rounded-lg sm:rounded-xl border border-[#FFD700]/20 p-3 sm:p-4 mb-6 sm:mb-8">
               <div className="text-center">
                 <h3 className="text-lg sm:text-xl font-bold text-[#f0f0f0] mb-3 sm:mb-4">
                   Для выдачи товара обратитесь к администратору
@@ -127,7 +127,7 @@ const OrderSuccess = () => {
                 </p>
                 <Button
                   onClick={() => window.open('https://t.me/Vaultory_manager', '_blank')}
-                  className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
+                  className="px-6 sm:px-8 py-2 sm:py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
                 >
                   💬 Написать администратору
                 </Button>
@@ -143,7 +143,7 @@ const OrderSuccess = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Button
               onClick={() => navigate('/')}
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-base sm:text-lg rounded-lg sm:rounded-xl transition-all duration-300"
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-base sm:text-lg rounded-lg sm:rounded-xl transition-all duration-300"
             >
               🛍️ Продолжить покупки
             </Button>
@@ -151,7 +151,7 @@ const OrderSuccess = () => {
             <Button
               onClick={() => navigate('/')}
               variant="outline"
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+              className="px-6 sm:px-8 py-3 sm:py-4 glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700] hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
             >
               <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Вернуться на главную

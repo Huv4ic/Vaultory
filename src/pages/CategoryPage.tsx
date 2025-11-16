@@ -98,7 +98,7 @@ export default function CategoryPage() {
 
   if (categoryLoading) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-white text-xl">Загрузка...</div>
       </div>
     );
@@ -106,14 +106,14 @@ export default function CategoryPage() {
 
   if (!gameCategory) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-white text-xl">Категория не найдена</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="min-h-screen">
       <Header />
       
       {/* Header с изображением категории */}
@@ -138,7 +138,7 @@ export default function CategoryPage() {
         {/* Кнопка назад */}
         <button
           onClick={() => navigate('/')}
-          className="absolute top-4 left-4 px-4 py-2 bg-[#a31212] hover:bg-[#8a0f0f] text-white rounded-lg transition-colors flex items-center gap-2"
+          className="absolute top-4 left-4 px-4 py-2 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift rounded-lg transition-colors flex items-center gap-2"
         >
           <ArrowLeft className="w-4 h-4" />
           Назад
@@ -177,7 +177,7 @@ export default function CategoryPage() {
                     })
                   }}
                 >
-                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#a31212] transition-all duration-300">
+                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
                     <div className="text-center">
                       <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                         {sub.icon || getSubcategoryIcon(sub.slug)}

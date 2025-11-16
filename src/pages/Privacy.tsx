@@ -34,7 +34,7 @@ const Privacy = () => {
   const privacySections = [
     {
       title: "Сбор данных",
-      icon: <Database className="w-6 h-6 text-[#a31212]" />,
+      icon: <Database className="w-6 h-6 text-[#FFD700]" />,
       content: [
         "Мы собираем только необходимые данные для предоставления услуг.",
         "Информация включает: Telegram ID, имя пользователя, баланс, историю покупок.",
@@ -44,7 +44,7 @@ const Privacy = () => {
     },
     {
       title: "Использование данных",
-      icon: <Eye className="w-6 h-6 text-[#a31212]" />,
+      icon: <Eye className="w-6 h-6 text-[#FFD700]" />,
       content: [
         "Данные используются для обработки заказов и платежей.",
         "Аналитика помогает улучшать качество сервиса.",
@@ -54,7 +54,7 @@ const Privacy = () => {
     },
     {
       title: "Безопасность",
-      icon: <Lock className="w-6 h-6 text-[#a31212]" />,
+      icon: <Lock className="w-6 h-6 text-[#FFD700]" />,
       content: [
         "Все данные защищены современными технологиями шифрования.",
         "Доступ к серверам ограничен и контролируется.",
@@ -64,7 +64,7 @@ const Privacy = () => {
     },
     {
       title: "Права пользователей",
-      icon: <User className="w-6 h-6 text-[#a31212]" />,
+      icon: <User className="w-6 h-6 text-[#FFD700]" />,
       content: [
         "Право на доступ к своим персональным данным.",
         "Возможность исправления неточной информации.",
@@ -74,7 +74,7 @@ const Privacy = () => {
     },
     {
       title: "Хранение данных",
-      icon: <Database className="w-6 h-6 text-[#a31212]" />,
+      icon: <Database className="w-6 h-6 text-[#FFD700]" />,
       content: [
         "Данные хранятся на защищенных серверах в ЕС.",
         "Резервные копии создаются регулярно.",
@@ -84,7 +84,7 @@ const Privacy = () => {
     },
     {
       title: "Cookies и трекинг",
-      icon: <Settings className="w-6 h-6 text-[#a31212]" />,
+      icon: <Settings className="w-6 h-6 text-[#FFD700]" />,
       content: [
         "Используем только необходимые cookies для работы сайта.",
         "Не отслеживаем поведение пользователей.",
@@ -98,22 +98,22 @@ const Privacy = () => {
     {
       category: "Основные данные",
       items: ["Telegram ID", "Имя пользователя", "Email (если указан)"],
-      icon: <User className="w-5 h-5 text-[#a31212]" />
+      icon: <User className="w-5 h-5 text-[#FFD700]" />
     },
     {
       category: "Финансовые данные",
       items: ["Баланс аккаунта", "История транзакций", "Методы оплаты"],
-      icon: <CreditCard className="w-5 h-5 text-[#a31212]" />
+      icon: <CreditCard className="w-5 h-5 text-[#FFD700]" />
     },
     {
       category: "Игровые данные",
       items: ["История покупок", "Открытые кейсы", "Полученные предметы"],
-      icon: <Shield className="w-5 h-5 text-[#a31212]" />
+      icon: <Shield className="w-5 h-5 text-[#FFD700]" />
     },
     {
       category: "Технические данные",
       items: ["IP адрес", "Время посещений", "Ошибки системы"],
-      icon: <Database className="w-5 h-5 text-[#a31212]" />
+      icon: <Database className="w-5 h-5 text-[#FFD700]" />
     }
   ];
 
@@ -121,45 +121,45 @@ const Privacy = () => {
     {
       title: "Шифрование",
       description: "Все данные передаются по защищенным SSL соединениям",
-      icon: <Lock className="w-6 h-6 text-[#a31212]" />
+      icon: <Lock className="w-6 h-6 text-[#FFD700]" />
     },
     {
       title: "Аутентификация",
       description: "Двухфакторная аутентификация через Telegram",
-      icon: <Shield className="w-6 h-6 text-[#a31212]" />
+      icon: <Shield className="w-6 h-6 text-[#FFD700]" />
     },
     {
       title: "Мониторинг",
       description: "Постоянный мониторинг безопасности и подозрительной активности",
-      icon: <Eye className="w-6 h-6 text-[#a31212]" />
+      icon: <Eye className="w-6 h-6 text-[#FFD700]" />
     },
     {
       title: "Обновления",
       description: "Регулярные обновления безопасности и исправления уязвимостей",
-      icon: <CheckCircle className="w-6 h-6 text-[#a31212]" />
+      icon: <CheckCircle className="w-6 h-6 text-[#FFD700]" />
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#121212] relative">
+    <div className="min-h-screen relative">
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
           {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#181818] rounded-full mb-6 border border-[#1c1c1c]">
-              <Shield className="w-10 h-10 md:w-12 md:h-12 text-[#a31212]" />
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 glass rounded-full mb-6 border border-[#FFD700]/20">
+              <Shield className="w-10 h-10 md:w-12 md:h-12 text-[#FFD700]" />
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0] text-center">
               ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
             </h1>
-            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
           <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
-            Мы серьезно относимся к <span className="text-[#a31212] font-bold">защите ваших данных</span>. 
+            Мы серьезно относимся к <span className="text-[#FFD700] font-bold">защите ваших данных</span>. 
             Узнайте, как мы <span className="text-[#f0f0f0] font-bold">собираем, используем и защищаем</span> вашу информацию.
           </p>
         </div>
@@ -170,9 +170,9 @@ const Privacy = () => {
         {/* Краткая информация */}
         <div className="mb-16">
           <div className="group relative max-w-4xl mx-auto">
-            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-12 hover:border-[#a31212] transition-all duration-300 text-center">
-              <div className="mx-auto w-24 h-24 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-8 border border-[#a31212]">
-                <Shield className="w-12 h-12 text-[#a31212]" />
+            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-12 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 text-center">
+              <div className="mx-auto w-24 h-24 glass rounded-2xl flex items-center justify-center mb-8 border border-[#FFD700]">
+                <Shield className="w-12 h-12 text-[#FFD700]" />
               </div>
               <h3 className="text-3xl font-black text-[#f0f0f0] mb-6">
                 Ваша конфиденциальность - наш приоритет
@@ -191,7 +191,7 @@ const Privacy = () => {
             <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
               КАКИЕ ДАННЫЕ МЫ СОБИРАЕМ
             </h2>
-            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {dataTypes.map((type, index) => (
@@ -199,9 +199,9 @@ const Privacy = () => {
                 key={index}
                 className="group relative"
               >
-                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 bg-[#a31212]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#a31212]/30">
+                    <div className="w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#FFD700]/30">
                       {type.icon}
                     </div>
                     <h3 className="text-xl font-black text-[#f0f0f0]">{type.category}</h3>
@@ -209,7 +209,7 @@ const Privacy = () => {
                   <div className="space-y-3">
                     {type.items.map((item, itemIndex) => (
                       <div key={itemIndex} className="flex items-center space-x-3">
-                        <CheckCircle className="w-5 h-5 text-[#a31212] flex-shrink-0" />
+                        <CheckCircle className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
                         <span className="text-sm text-[#a0a0a0]">{item}</span>
                       </div>
                     ))}
@@ -226,7 +226,7 @@ const Privacy = () => {
             <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
               ОСНОВНЫЕ РАЗДЕЛЫ
             </h2>
-            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {privacySections.map((section, index) => (
@@ -234,9 +234,9 @@ const Privacy = () => {
                 key={index}
                 className="group relative"
               >
-                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 bg-[#a31212]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#a31212]/30">
+                    <div className="w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#FFD700]/30">
                       {section.icon}
                     </div>
                     <h3 className="text-xl font-black text-[#f0f0f0]">{section.title}</h3>
@@ -254,7 +254,7 @@ const Privacy = () => {
             <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
               МЕРЫ БЕЗОПАСНОСТИ
             </h2>
-            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {securityMeasures.map((measure, index) => (
@@ -262,8 +262,8 @@ const Privacy = () => {
                 key={index}
                 className="group relative"
               >
-                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 text-center">
-                  <div className="mx-auto w-16 h-16 bg-[#a31212]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#a31212]/30">
+                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-6 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 text-center">
+                  <div className="mx-auto w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#FFD700]/30">
                     {measure.icon}
                   </div>
                   <h3 className="text-lg font-black text-[#f0f0f0] mb-3">{measure.title}</h3>
@@ -277,22 +277,22 @@ const Privacy = () => {
         {/* Права пользователей */}
         <div className="mb-16">
           <div className="group relative max-w-6xl mx-auto">
-            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
               <h3 className="text-2xl font-black text-[#f0f0f0] text-center mb-8">Ваши права</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
                   <h4 className="text-[#f0f0f0] font-black text-lg">Что вы можете делать:</h4>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
-                      <Download className="w-5 h-5 text-[#a31212] flex-shrink-0" />
+                      <Download className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
                       <span className="text-[#a0a0a0] text-sm">Запросить копию ваших данных</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <Settings className="w-5 h-5 text-[#a31212] flex-shrink-0" />
+                      <Settings className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
                       <span className="text-[#a0a0a0] text-sm">Изменить настройки конфиденциальности</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <Trash2 className="w-5 h-5 text-[#a31212] flex-shrink-0" />
+                      <Trash2 className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
                       <span className="text-[#a0a0a0] text-sm">Удалить свой аккаунт</span>
                     </div>
                   </div>
@@ -302,20 +302,20 @@ const Privacy = () => {
                   <h4 className="text-[#f0f0f0] font-black text-lg">Как связаться с нами:</h4>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
-                      <Mail className="w-5 h-5 text-[#a31212] flex-shrink-0" />
+                      <Mail className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
                       <button 
                         onClick={openGmail}
-                        className="text-[#a0a0a0] hover:text-[#a31212] transition-colors duration-300 text-sm underline"
+                        className="text-[#a0a0a0] hover:text-[#FFD700] transition-colors duration-300 text-sm underline"
                       >
                         Email: vaultorypoderjka@gmail.com
                       </button>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <Shield className="w-5 h-5 text-[#a31212] flex-shrink-0" />
+                      <Shield className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
                       <span className="text-[#a0a0a0] text-sm">Telegram: @Vaultory_manager</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <Info className="w-5 h-5 text-[#a31212] flex-shrink-0" />
+                      <Info className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
                       <span className="text-[#a0a0a0] text-sm">Время ответа: до 24 часов</span>
                     </div>
                   </div>
@@ -328,7 +328,7 @@ const Privacy = () => {
         {/* Контактная информация */}
         <div className="text-center">
           <div className="group relative max-w-2xl mx-auto">
-            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
               <h3 className="text-2xl font-black text-[#f0f0f0] mb-4">
                 Вопросы по конфиденциальности?
               </h3>
@@ -338,7 +338,7 @@ const Privacy = () => {
               </p>
               <Button
                 onClick={openGmail}
-                className="w-full bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black text-lg rounded-2xl transition-all duration-300 py-4"
+                className="w-full bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-black text-lg rounded-2xl transition-all duration-300 py-4"
               >
                 <Mail className="w-5 h-5 mr-2" />
                 Связаться с нами
@@ -352,7 +352,7 @@ const Privacy = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-8 py-3 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-2xl text-lg"
+            className="px-8 py-3 glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700] hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-white transition-all duration-300 rounded-2xl text-lg"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Вернуться на главную

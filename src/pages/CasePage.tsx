@@ -258,17 +258,17 @@ const CasePage = () => {
     const name = caseName.toLowerCase();
     
     // Единый стиль для всех кейсов
-    return "bg-[#a31212] hover:bg-[#8a0f0f] text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 border-0 text-sm sm:text-base";
+    return "bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 border-0 text-sm sm:text-base";
     
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#121212] text-[#f0f0f0]">
+      <div className="min-h-screen text-[#f0f0f0]">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 border-4 border-[#a31212] mx-auto"></div>
+              <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 border-4 border-[#FFD700] mx-auto"></div>
               <p className="mt-4 text-lg sm:text-xl text-[#a0a0a0]">Загрузка кейса...</p>
             </div>
           </div>
@@ -279,11 +279,11 @@ const CasePage = () => {
 
   if (error || !caseData) {
     return (
-      <div className="min-h-screen bg-[#121212] text-[#f0f0f0]">
+      <div className="min-h-screen text-[#f0f0f0]">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#a31212] mb-4">{error || 'Кейс не найден'}</h1>
-            <Button onClick={() => navigate('/cases')} className="bg-[#a31212] hover:bg-[#8a0f0f] px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#FFD700] mb-4">{error || 'Кейс не найден'}</h1>
+            <Button onClick={() => navigate('/cases')} className="bg-[#FFD700] hover:bg-[#FFC107] px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Вернуться к кейсам
             </Button>
@@ -294,13 +294,13 @@ const CasePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] text-[#f0f0f0]">
+    <div className="min-h-screen text-[#f0f0f0]">
       <div className="container mx-auto px-4 py-8">
         {/* Кнопка возврата */}
         <div className="mb-6 mt-16 sm:mt-20 md:mt-24">
           <Button 
             onClick={() => navigate('/cases')} 
-            className="bg-[#a31212] hover:bg-[#8a0f0f] text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+            className="bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
             Вернуться к кейсам
@@ -328,7 +328,7 @@ const CasePage = () => {
           <div className="space-y-4 sm:space-y-6">
             <div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#f0f0f0] mb-2 sm:mb-3">{caseData.name}</h1>
-              <Badge variant="outline" className="text-[#a31212] border-[#a31212] text-sm sm:text-lg px-3 sm:px-4 py-1 sm:py-2">
+              <Badge variant="outline" className="text-[#FFD700] border-[#FFD700] text-sm sm:text-lg px-3 sm:px-4 py-1 sm:py-2">
                 {caseData.game}
               </Badge>
             </div>
@@ -343,7 +343,7 @@ const CasePage = () => {
               <div className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">
                 ${caseData.price}
               </div>
-              <Badge variant="outline" className="text-[#a31212] border-[#a31212] text-sm sm:text-base">
+              <Badge variant="outline" className="text-[#FFD700] border-[#FFD700] text-sm sm:text-base">
                 <Package className="w-4 h-4 mr-2" />
                 {caseItems.length} предметов
               </Badge>
@@ -352,7 +352,7 @@ const CasePage = () => {
             {/* Кнопка открытия кейса */}
             <Button
               onClick={handleOpenCase}
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg sm:text-xl rounded-xl transition-all duration-300 hover:scale-105"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-lg sm:text-xl rounded-xl transition-all duration-300 hover:scale-105"
             >
               <Package className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
               Открыть кейс
@@ -367,7 +367,7 @@ const CasePage = () => {
           {caseItems.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {sortItemsByRarity(caseItems).map((item, index) => (
-                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative bg-[#181818] rounded-xl p-3 sm:p-4 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 h-full flex flex-col">
+                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative glass rounded-xl p-3 sm:p-4 border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 h-full flex flex-col">
                   {/* Изображение предмета */}
                   <div className="relative mx-auto flex-shrink-0">
                     <img

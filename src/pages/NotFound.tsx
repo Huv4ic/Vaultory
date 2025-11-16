@@ -16,7 +16,7 @@ const NotFound = () => {
   };
   
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
@@ -37,9 +37,9 @@ const NotFound = () => {
             Что делать дальше?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
-            <div className="bg-[#181818] rounded-xl sm:rounded-2xl border border-[#1c1c1c] p-4 sm:p-6 text-center hover:border-[#a31212] transition-all duration-300">
-              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-[#1c1c1c] rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-[#a31212]">
-                <Home className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212]" />
+            <div className="glass rounded-xl sm:rounded-2xl border border-[#FFD700]/20 p-4 sm:p-6 text-center hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 glass rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-[#FFD700]">
+                <Home className="w-6 h-6 sm:w-8 sm:h-8 text-[#FFD700]" />
               </div>
               <h3 className="text-sm sm:text-base font-semibold text-[#f0f0f0] mb-2">Вернуться на главную</h3>
               <p className="text-xs sm:text-sm text-[#a0a0a0]">
@@ -47,9 +47,9 @@ const NotFound = () => {
               </p>
             </div>
             
-            <div className="bg-[#181818] rounded-xl sm:rounded-2xl border border-[#1c1c1c] p-4 sm:p-6 text-center hover:border-[#a31212] transition-all duration-300">
-              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-[#1c1c1c] rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-[#a31212]">
-                <Search className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212]" />
+            <div className="glass rounded-xl sm:rounded-2xl border border-[#FFD700]/20 p-4 sm:p-6 text-center hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 glass rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-[#FFD700]">
+                <Search className="w-6 h-6 sm:w-8 sm:h-8 text-[#FFD700]" />
               </div>
               <h3 className="text-sm sm:text-base font-semibold text-[#f0f0f0] mb-2">Поиск</h3>
               <p className="text-xs sm:text-sm text-[#a0a0a0]">
@@ -57,9 +57,9 @@ const NotFound = () => {
               </p>
             </div>
             
-            <div className="bg-[#181818] rounded-xl sm:rounded-2xl border border-[#1c1c1c] p-4 sm:p-6 text-center hover:border-[#a31212] transition-all duration-300">
-              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-[#1c1c1c] rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-[#a31212]">
-                <HelpCircle className="w-6 h-6 sm:w-8 sm:h-8 text-[#a31212]" />
+            <div className="glass rounded-xl sm:rounded-2xl border border-[#FFD700]/20 p-4 sm:p-6 text-center hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+              <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 glass rounded-full flex items-center justify-center mb-3 sm:mb-4 border border-[#FFD700]">
+                <HelpCircle className="w-6 h-6 sm:w-8 sm:h-8 text-[#FFD700]" />
               </div>
               <h3 className="text-sm sm:text-base font-semibold text-[#f0f0f0] mb-2">Поддержка</h3>
               <p className="text-xs sm:text-sm text-[#a0a0a0]">
@@ -74,7 +74,7 @@ const NotFound = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8">
             <Button
               onClick={() => navigate('/')}
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
             >
               <Home className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               На главную
@@ -83,7 +83,7 @@ const NotFound = () => {
             <Button
               onClick={() => navigate('/')}
               variant="outline"
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#181818] border border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 glass border border-[#FFD700]/20 text-[#a0a0a0] hover:bg-[#FFD700] hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
             >
               <Search className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               В каталог
@@ -92,7 +92,7 @@ const NotFound = () => {
             <Button
               onClick={() => navigate('/support')}
               variant="outline"
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#181818] border border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 glass border border-[#FFD700]/20 text-[#a0a0a0] hover:bg-[#FFD700] hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
             >
               <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Поддержка

@@ -55,7 +55,7 @@ const CaseCard = ({
   };
 
   return (
-    <Card className="bg-[#181818] backdrop-blur-sm border border-[#1c1c1c] transform hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-[#a31212]/20 animate-fade-in">
+    <Card className="glass border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transform hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-[#FFD700]/20 animate-fade-in">
       <CardHeader className="text-center relative overflow-hidden">
         <div className={`absolute inset-0 bg-gradient-to-br ${caseData.gradient} opacity-20`}></div>
         <div className="relative z-10">
@@ -83,7 +83,7 @@ const CaseCard = ({
                 variant={openingCount === count ? "default" : "outline"}
                 size="sm"
                 onClick={() => onOpeningCountChange(count)}
-                className={openingCount === count ? "bg-[#a31212] hover:bg-[#8a0f0f]" : "border-[#1c1c1c] text-[#a0a0a0] hover:border-[#a31212] hover:text-[#f0f0f0]"}
+                className={openingCount === count ? "bg-[#FFD700] hover:bg-[#FFC107]" : "border-[#FFD700]/20 text-[#a0a0a0] hover:border-[#FFD700]/50 hover:text-[#f0f0f0]"}
               >
                 {count}
               </Button>
@@ -91,14 +91,14 @@ const CaseCard = ({
           </div>
         </div>
 
-        <div className="text-lg font-semibold text-[#a31212]">
+        <div className="text-lg font-semibold text-[#FFD700]">
           {t('Общая стоимость:')}: ${caseData.price * openingCount}
         </div>
 
         <Button 
           onClick={() => onOpenCase(caseData)}
           disabled={balance < caseData.price * openingCount}
-          className={`w-full bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg py-3 rounded-lg transition-all duration-300`}
+          className={`w-full bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-lg py-3 rounded-lg transition-all duration-300`}
         >
           {balance < caseData.price * openingCount ? t('Загрузка товара...') : t('Открыть кейс')}
         </Button>
@@ -115,7 +115,7 @@ const CaseCard = ({
                   </Badge>
                   <span className="text-[#f0f0f0] truncate">{item.name}</span>
                 </div>
-                <span className="text-[#a31212] font-semibold">${item.price}</span>
+                <span className="text-[#FFD700] font-semibold">${item.price}</span>
               </div>
             ))}
           </div>

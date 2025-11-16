@@ -141,7 +141,7 @@ export default function SubcategoryPage() {
 
   if (categoryLoading) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-white text-xl">Загрузка...</div>
       </div>
     );
@@ -149,14 +149,14 @@ export default function SubcategoryPage() {
 
   if (!gameCategory) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-white text-xl">Категория не найдена</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="min-h-screen">
       {/* Header с изображением категории */}
       <div className="relative">
         {gameCategory.image_url ? (
@@ -178,7 +178,7 @@ export default function SubcategoryPage() {
         {/* Кнопка назад */}
         <button
           onClick={handleBackToCategories}
-          className="absolute top-4 left-4 px-4 py-2 bg-[#a31212] hover:bg-[#8a0f0f] text-white rounded-lg transition-colors"
+          className="absolute top-4 left-4 px-4 py-2 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift rounded-lg transition-colors"
         >
           ← Назад к категориям
         </button>
@@ -202,7 +202,7 @@ export default function SubcategoryPage() {
                   className="group cursor-pointer transform transition-all duration-300 hover:scale-105"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#a31212] transition-all duration-300">
+                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-700 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
                     <div className="text-center">
                       <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                         {sub.slug === 'accounts' && '👤'}
@@ -236,7 +236,7 @@ export default function SubcategoryPage() {
                 </div>
                 <button
                   onClick={toggleSortOrder}
-                  className="px-4 py-2 rounded-lg bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-[#2a2a2a] hover:border-[#a31212] text-white transition-colors"
+                  className="px-4 py-2 rounded-lg bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-[#2a2a2a] hover:border-[#FFD700]/50 hover-lift hover-glow text-white transition-colors"
                   title="Сортировать по цене"
                 >
                   {sortOrder === 'desc' ? 'Сортировать: по убыванию' : 'Сортировать: по возрастанию'}

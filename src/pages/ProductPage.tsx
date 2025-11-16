@@ -83,9 +83,9 @@ const ProductPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#a31212] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#FFD700] mx-auto mb-4"></div>
           <p className="text-[#a0a0a0] text-xl">Загрузка товара...</p>
         </div>
       </div>
@@ -94,8 +94,8 @@ const ProductPage = () => {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
-        <div className="text-center bg-[#181818] rounded-2xl p-8 border border-[#1c1c1c]">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center glass rounded-2xl p-8 border border-[#FFD700]/20">
           <div className="text-6xl mb-6">❌</div>
           <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">Товар не найден</h1>
           <p className="text-[#a0a0a0] mb-6">
@@ -103,7 +103,7 @@ const ProductPage = () => {
           </p>
           <Button
             onClick={() => navigate('/')}
-            className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105"
+            className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105"
           >
             Вернуться в каталог
           </Button>
@@ -113,7 +113,7 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] relative">
+    <div className="min-h-screen relative">
 
       {/* Основной контент */}
       <div className="relative z-10 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
@@ -121,7 +121,7 @@ const ProductPage = () => {
         <div className="mb-8 pt-20">
           <Button
             onClick={() => navigate(-1)}
-            className="px-6 py-3 bg-[#181818] border border-[#1c1c1c] text-[#a0a0a0] hover:text-[#f0f0f0] hover:border-[#a31212] font-bold rounded-2xl transition-all duration-300 hover:scale-105"
+            className="px-6 py-3 glass border border-[#FFD700]/20 text-[#a0a0a0] hover:text-[#f0f0f0] hover:border-[#FFD700] font-bold rounded-2xl transition-all duration-300 hover:scale-105"
           >
             <div className="flex items-center gap-3">
               <ArrowLeft className="w-5 h-5" />
@@ -132,16 +132,16 @@ const ProductPage = () => {
 
         {loading ? (
           <div className="text-center py-12 sm:py-16">
-            <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 border-b-2 border-[#a31212] mx-auto mb-4 sm:mb-6"></div>
+            <div className="animate-spin rounded-full h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 border-b-2 border-[#FFD700] mx-auto mb-4 sm:mb-6"></div>
             <p className="text-lg sm:text-xl text-[#a0a0a0]">Загрузка товара...</p>
           </div>
         ) : error ? (
           <div className="text-center py-12 sm:py-16">
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#a31212] mb-4 sm:mb-6">Ошибка загрузки</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#FFD700] mb-4 sm:mb-6">Ошибка загрузки</h2>
             <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Не удалось загрузить информацию о товаре</p>
             <Button
               onClick={() => navigate('/')}
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
             >
               Вернуться в каталог
             </Button>
@@ -152,8 +152,8 @@ const ProductPage = () => {
             <div className="space-y-6">
               {/* Главное изображение */}
               <div className="group relative">
-                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300">
-                  <div className="aspect-square rounded-2xl overflow-hidden bg-[#1c1c1c] border border-[#1c1c1c] relative">
+                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-6 hover:border-[#FFD700]/50 hover-lift transition-all duration-300">
+                  <div className="aspect-square rounded-2xl overflow-hidden glass border border-[#FFD700]/20 relative">
                     <img
                       src={selectedImage}
                       alt={product.name}
@@ -166,9 +166,9 @@ const ProductPage = () => {
               {/* Миниатюры */}
               {product.images && product.images.length > 1 && (
                 <div className="group relative">
-                  <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300">
+                  <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-6 hover:border-[#FFD700]/50 hover-lift transition-all duration-300">
                     <h3 className="text-lg font-black text-[#f0f0f0] mb-4 flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-[#a31212]" />
+                      <Sparkles className="w-5 h-5 text-[#FFD700]" />
                       Другие изображения
                     </h3>
                     <div className="grid grid-cols-4 gap-3">
@@ -178,8 +178,8 @@ const ProductPage = () => {
                           onClick={() => setSelectedImage(image)}
                           className={`group/thumb aspect-square rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-105 relative ${
                             selectedImage === image
-                              ? 'border-[#a31212]'
-                              : 'border-[#1c1c1c] hover:border-[#a31212]'
+                              ? 'border-[#FFD700]'
+                              : 'border-[#FFD700]/20 hover:border-[#FFD700]'
                           }`}
                         >
                           <img
@@ -188,8 +188,8 @@ const ProductPage = () => {
                             className="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-300"
                           />
                           {selectedImage === image && (
-                            <div className="absolute inset-0 bg-[#a31212]/20 flex items-center justify-center">
-                              <CheckCircle className="w-6 h-6 text-[#a31212]" />
+                            <div className="absolute inset-0 bg-[#FFD700]/20 flex items-center justify-center">
+                              <CheckCircle className="w-6 h-6 text-[#FFD700]" />
                             </div>
                           )}
                         </button>
@@ -204,14 +204,14 @@ const ProductPage = () => {
             <div className="space-y-6">
               {/* Основная информация */}
               <div className="group relative">
-                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift transition-all duration-300">
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex-1">
                       <h1 className="text-3xl md:text-4xl font-black text-[#f0f0f0] mb-2">
                         {product.name}
                       </h1>
                       <div className="flex items-center gap-2">
-                        <Gem className="w-5 h-5 text-[#a31212]" />
+                        <Gem className="w-5 h-5 text-[#FFD700]" />
                         <span className="text-[#a0a0a0] text-sm">Премиум товар</span>
                       </div>
                     </div>
@@ -219,7 +219,7 @@ const ProductPage = () => {
                       <Button
                         onClick={handleShare}
                         size="sm"
-                        className="w-12 h-12 p-0 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white rounded-xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
+                        className="w-12 h-12 p-0 glass hover:bg-[#FFD700] text-[#a0a0a0] hover:text-[#FFD700] rounded-xl transition-all duration-300 hover:scale-105 border border-[#FFD700]/20 hover:border-[#FFD700]/50"
                       >
                         <Share2 className="w-5 h-5" />
                       </Button>
@@ -229,8 +229,8 @@ const ProductPage = () => {
                         disabled={favoritesLoading}
                         className={`w-12 h-12 p-0 rounded-xl transition-all duration-300 hover:scale-105 border ${
                           isFavorite(product.id)
-                            ? 'bg-[#a31212] hover:bg-[#8a0f0f] text-white border-[#a31212]'
-                            : 'bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white border-[#1c1c1c] hover:border-[#a31212]'
+                            ? 'bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift border-[#FFD700]'
+                            : 'glass hover:bg-[#FFD700] text-[#a0a0a0] hover:text-[#FFD700] border-[#FFD700]/20 hover:border-[#FFD700]'
                         }`}
                       >
                         <Heart className={`w-5 h-5 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
@@ -253,9 +253,9 @@ const ProductPage = () => {
                   {/* Игра */}
                   {product.game && (
                     <div className="mb-6">
-                      <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                        <Crown className="w-4 h-4 text-[#a31212]" />
-                        <span className="text-[#a31212] font-bold">{product.game}</span>
+                      <div className="inline-flex items-center gap-2 px-4 py-2 glass rounded-xl border border-[#FFD700]/20">
+                        <Crown className="w-4 h-4 text-[#FFD700]" />
+                        <span className="text-[#FFD700] font-bold">{product.game}</span>
                       </div>
                     </div>
                   )}
@@ -264,7 +264,7 @@ const ProductPage = () => {
                   {product.description && (
                     <div className="mb-6">
                       <h3 className="text-lg font-black text-[#f0f0f0] mb-3 flex items-center gap-2">
-                        <Flame className="w-5 h-5 text-[#a31212]" />
+                        <Flame className="w-5 h-5 text-[#FFD700]" />
                         Описание
                       </h3>
                       <p className="text-[#a0a0a0] leading-relaxed">{product.description}</p>
@@ -274,14 +274,14 @@ const ProductPage = () => {
                   {/* Количество */}
                   <div className="mb-6">
                     <label className="block text-lg font-black text-[#f0f0f0] mb-3 flex items-center gap-2">
-                      <Target className="w-5 h-5 text-[#a31212]" />
+                      <Target className="w-5 h-5 text-[#FFD700]" />
                       Количество
                     </label>
                     <div className="flex items-center space-x-4">
                       <Button
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
                         size="sm"
-                        className="w-12 h-12 p-0 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white rounded-xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
+                        className="w-12 h-12 p-0 glass hover:bg-[#FFD700] text-[#a0a0a0] hover:text-[#FFD700] rounded-xl transition-all duration-300 hover:scale-105 border border-[#FFD700]/20 hover:border-[#FFD700]/50"
                       >
                         -
                       </Button>
@@ -291,7 +291,7 @@ const ProductPage = () => {
                       <Button
                         onClick={() => setQuantity(quantity + 1)}
                         size="sm"
-                        className="w-12 h-12 p-0 bg-[#a31212] hover:bg-[#8a0f0f] text-white rounded-xl transition-all duration-300 hover:scale-105"
+                        className="w-12 h-12 p-0 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift rounded-xl transition-all duration-300 hover:scale-105"
                       >
                         +
                       </Button>
@@ -306,7 +306,7 @@ const ProductPage = () => {
                         handleAddToCart();
                         navigate('/cart');
                       }}
-                      className="w-full py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105"
+                      className="w-full py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105"
                     >
                       <Zap className="w-6 h-6 mr-3" />
                       Купить сейчас
@@ -315,7 +315,7 @@ const ProductPage = () => {
                     <Button
                       onClick={handleAddToCart}
                       disabled={isInCart}
-                      className="w-full py-4 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full py-4 glass hover:bg-[#FFD700] text-[#a0a0a0] hover:text-[#FFD700] font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#FFD700]/20 hover:border-[#FFD700]/50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isInCart ? (
                         <>
@@ -332,7 +332,7 @@ const ProductPage = () => {
                     
                     <Button
                       onClick={() => navigate('/cart')}
-                      className="w-full py-4 bg-[#1c1c1c] hover:bg-[#a31212] text-[#a0a0a0] hover:text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#1c1c1c] hover:border-[#a31212]"
+                      className="w-full py-4 glass hover:bg-[#FFD700] text-[#a0a0a0] hover:text-[#FFD700] font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#FFD700]/20 hover:border-[#FFD700]/50"
                     >
                       <Eye className="w-6 h-6 mr-3" />
                       Перейти в корзину
@@ -343,22 +343,22 @@ const ProductPage = () => {
 
               {/* Информация о доставке */}
               <div className="group relative">
-                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300">
+                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift transition-all duration-300">
                   <h3 className="text-2xl font-black text-[#f0f0f0] mb-6 flex items-center gap-3">
-                    <Rocket className="w-6 h-6 text-[#a31212]" />
+                    <Rocket className="w-6 h-6 text-[#FFD700]" />
                     Доставка и гарантия
                   </h3>
                   <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                      <Clock className="w-5 h-5 text-[#a31212]" />
+                    <div className="flex items-center space-x-3 p-3 glass rounded-xl border border-[#FFD700]/20">
+                      <Clock className="w-5 h-5 text-[#FFD700]" />
                       <span className="text-[#f0f0f0] font-medium">Мгновенная доставка</span>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                      <Shield className="w-5 h-5 text-[#a31212]" />
+                    <div className="flex items-center space-x-3 p-3 glass rounded-xl border border-[#FFD700]/20">
+                      <Shield className="w-5 h-5 text-[#FFD700]" />
                       <span className="text-[#f0f0f0] font-medium">Гарантия качества</span>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
-                      <CheckCircle className="w-5 h-5 text-[#a31212]" />
+                    <div className="flex items-center space-x-3 p-3 glass rounded-xl border border-[#FFD700]/20">
+                      <CheckCircle className="w-5 h-5 text-[#FFD700]" />
                       <span className="text-[#f0f0f0] font-medium">Официальный товар</span>
                     </div>
                   </div>
@@ -368,12 +368,12 @@ const ProductPage = () => {
           </div>
         ) : (
           <div className="text-center py-12 sm:py-16">
-            <Package className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-4 sm:mb-6 text-[#a31212]" />
+            <Package className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mx-auto mb-4 sm:mb-6 text-[#FFD700]" />
             <h2 className="text-xl sm:text-2xl font-bold text-[#a0a0a0] mb-2">Товар не найден</h2>
             <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Запрашиваемый товар не существует</p>
             <Button
               onClick={() => navigate('/')}
-              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
+              className="px-6 sm:px-8 py-2 sm:py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold rounded-lg sm:rounded-xl transition-all duration-300 text-sm sm:text-base"
             >
               Вернуться в каталог
             </Button>
@@ -388,9 +388,9 @@ const ProductPage = () => {
           <h2 className="text-4xl md:text-5xl font-black mb-4 text-[#f0f0f0]">
             ПОХОЖИЕ ТОВАРЫ
           </h2>
-          <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full mb-6"></div>
+          <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full mb-6"></div>
           <p className="text-[#a0a0a0] text-lg max-w-2xl mx-auto">
-            Откройте для себя другие <span className="text-[#a31212] font-bold">удивительные товары</span> из этой категории
+            Откройте для себя другие <span className="text-[#FFD700] font-bold">удивительные товары</span> из этой категории
           </p>
         </div>
         
@@ -405,10 +405,10 @@ const ProductPage = () => {
                 className="group relative cursor-pointer"
                 onClick={() => navigate(`/product/${similarProduct.id}`)}
               >
-                <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-6 hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-6 hover:border-[#FFD700]/50 hover-lift transition-all duration-300 hover:scale-105">
                   {/* Изображение */}
                   <div className="relative mb-6">
-                    <div className="w-full h-40 bg-[#1c1c1c] rounded-2xl flex items-center justify-center overflow-hidden border border-[#1c1c1c]">
+                    <div className="w-full h-40 glass rounded-2xl flex items-center justify-center overflow-hidden border border-[#FFD700]/20">
                       <img
                         src={
                           (similarProduct.images && similarProduct.images.length > 0) 
@@ -439,7 +439,7 @@ const ProductPage = () => {
                       </div>
                       <Button
                         size="sm"
-                        className="w-12 h-12 p-0 bg-[#a31212] hover:bg-[#8a0f0f] text-white rounded-xl transition-all duration-300 hover:scale-105"
+                        className="w-12 h-12 p-0 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift rounded-xl transition-all duration-300 hover:scale-105"
                         onClick={(e) => {
                           e.stopPropagation();
                           addItem({
@@ -466,42 +466,42 @@ const ProductPage = () => {
           <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
             ПОЧЕМУ ВЫБИРАЮТ НАС
           </h2>
-          <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
+          <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
-              <div className="w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#a31212]">
-                <Award className="w-10 h-10 text-[#a31212]" />
+            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift transition-all duration-300 hover:scale-105 text-center">
+              <div className="w-20 h-20 glass rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#FFD700]">
+                <Award className="w-10 h-10 text-[#FFD700]" />
               </div>
               <h4 className="text-2xl font-black text-[#f0f0f0] mb-4">Гарантия качества</h4>
               <p className="text-[#a0a0a0] leading-relaxed">
-                Все товары <span className="text-[#a31212] font-bold">официальные</span> и лицензированные. Мы гарантируем подлинность каждого продукта.
+                Все товары <span className="text-[#FFD700] font-bold">официальные</span> и лицензированные. Мы гарантируем подлинность каждого продукта.
               </p>
             </div>
           </div>
           
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
-              <div className="w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#a31212]">
-                <Zap className="w-10 h-10 text-[#a31212]" />
+            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift transition-all duration-300 hover:scale-105 text-center">
+              <div className="w-20 h-20 glass rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#FFD700]">
+                <Zap className="w-10 h-10 text-[#FFD700]" />
               </div>
               <h4 className="text-2xl font-black text-[#f0f0f0] mb-4">Быстрая доставка</h4>
               <p className="text-[#a0a0a0] leading-relaxed">
-                Товары доставляются <span className="text-[#a31212] font-bold">мгновенно</span> после оплаты. Никаких ожиданий - получайте сразу!
+                Товары доставляются <span className="text-[#FFD700] font-bold">мгновенно</span> после оплаты. Никаких ожиданий - получайте сразу!
               </p>
             </div>
           </div>
           
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-8 hover:border-[#a31212] transition-all duration-300 hover:scale-105 text-center">
-              <div className="w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#a31212]">
-                <TrendingUp className="w-10 h-10 text-[#a31212]" />
+            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift transition-all duration-300 hover:scale-105 text-center">
+              <div className="w-20 h-20 glass rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#FFD700]">
+                <TrendingUp className="w-10 h-10 text-[#FFD700]" />
               </div>
               <h4 className="text-2xl font-black text-[#f0f0f0] mb-4">Популярность</h4>
               <p className="text-[#a0a0a0] leading-relaxed">
-                Высокий рейтинг и много <span className="text-[#a31212] font-bold">положительных отзывов</span> от довольных клиентов по всему миру.
+                Высокий рейтинг и много <span className="text-[#FFD700] font-bold">положительных отзывов</span> от довольных клиентов по всему миру.
               </p>
             </div>
           </div>

@@ -199,7 +199,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
 
             {/* Загрузка нового файла */}
             <div className="space-y-4">
-              <div className="border-2 border-dashed border-[#1c1c1c] rounded-lg p-6 text-center hover:border-[#a31212] transition-colors">
+              <div className="border-2 border-dashed border-[#FFD700]/20 rounded-lg p-6 text-center hover:border-[#FFD700] transition-colors">
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -210,7 +210,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
                 <Button
                   onClick={() => fileInputRef.current?.click()}
                   variant="outline"
-                  className="bg-transparent border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white"
+                  className="bg-transparent border-[#FFD700]/20 text-[#a0a0a0] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover:text-[#FFD700]"
                 >
                   <Upload className="w-4 h-4 mr-2" />
                   Выбрать изображение
@@ -224,7 +224,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
               {previewUrl && (
                 <div className="text-center">
                   <h4 className="text-[#f0f0f0] text-sm mb-2">Предварительный просмотр</h4>
-                  <div className="mx-auto w-20 h-20 rounded-full overflow-hidden border-2 border-[#a31212]">
+                  <div className="mx-auto w-20 h-20 rounded-full overflow-hidden border-2 border-[#FFD700]">
                     <img
                       src={previewUrl}
                       alt="Preview"
@@ -240,7 +240,7 @@ export default function EditProfileModal({ isOpen, onClose, onAvatarUpdate }: Ed
               <Button
                 onClick={handleUpload}
                 disabled={!selectedFile || uploading}
-                className="flex-1 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold"
+                className="flex-1 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold"
               >
                 {uploading ? 'Загрузка...' : 'Сохранить'}
               </Button>

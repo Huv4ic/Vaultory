@@ -80,11 +80,11 @@ const TransactionHistory = () => {
       case 'withdrawal':
         return <TrendingDown className="w-5 h-5 text-red-400" />;
       case 'case_opening':
-        return <Gift className="w-5 h-5 text-[#a31212]" />;
+        return <Gift className="w-5 h-5 text-[#FFD700]" />;
       case 'purchase':
-        return <ShoppingCart className="w-5 h-5 text-[#a31212]" />;
+        return <ShoppingCart className="w-5 h-5 text-[#FFD700]" />;
       case 'refund':
-        return <Wallet className="w-5 h-5 text-[#a31212]" />;
+        return <Wallet className="w-5 h-5 text-[#FFD700]" />;
       default:
         return <Clock className="w-5 h-5 text-[#a0a0a0]" />;
     }
@@ -146,9 +146,9 @@ const TransactionHistory = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#a31212] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#FFD700] mx-auto mb-4"></div>
           <p className="text-[#a0a0a0] text-xl">Загрузка истории транзакций...</p>
         </div>
       </div>
@@ -156,7 +156,7 @@ const TransactionHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="relative z-10 container mx-auto px-4 py-12 sm:py-16 md:py-20 text-center">
@@ -173,9 +173,9 @@ const TransactionHistory = () => {
       <div className="relative z-20 container mx-auto px-4 pb-12 sm:pb-16 md:pb-20">
         {/* Фильтры */}
         <div className="mb-6 sm:mb-8">
-          <div className="bg-[#181818] rounded-xl sm:rounded-2xl border border-[#1c1c1c] p-4 sm:p-6">
+          <div className="glass rounded-xl sm:rounded-2xl border border-[#FFD700]/20 p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-bold text-[#f0f0f0] mb-3 sm:mb-4 flex items-center">
-              <Filter className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-[#a31212]" />
+              <Filter className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-[#FFD700]" />
               Фильтры
             </h2>
             <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -192,8 +192,8 @@ const TransactionHistory = () => {
                   variant={filter === filterOption.value ? "default" : "outline"}
                   className={`px-3 sm:px-4 py-2 text-xs sm:text-sm rounded-lg sm:rounded-xl transition-all duration-300 ${
                     filter === filterOption.value
-                      ? 'bg-[#a31212] hover:bg-[#8a0f0f] text-white'
-                      : 'bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white'
+                      ? 'bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift'
+                      : 'glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700] hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-white'
                   }`}
                 >
                   <span className="mr-1 sm:mr-2">{filterOption.icon}</span>
@@ -208,7 +208,7 @@ const TransactionHistory = () => {
         <div className="space-y-3 sm:space-y-4">
           {loading ? (
             <div className="text-center py-12 sm:py-16">
-              <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-[#a31212] mx-auto mb-4 sm:mb-6"></div>
+              <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-[#FFD700] mx-auto mb-4 sm:mb-6"></div>
               <p className="text-lg sm:text-xl text-[#a0a0a0]">Загрузка транзакций...</p>
             </div>
           ) : filteredTransactions.length === 0 ? (
@@ -223,7 +223,7 @@ const TransactionHistory = () => {
             </div>
           ) : (
             filteredTransactions.map((transaction) => (
-              <Card key={transaction.id} className="bg-[#181818] border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300">
+              <Card key={transaction.id} className="glass border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
                 <CardContent className="p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-3 sm:space-y-0">
                     <div className="flex items-center space-x-3 sm:space-x-4">
@@ -264,7 +264,7 @@ const TransactionHistory = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="px-6 sm:px-8 py-2 sm:py-3 glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700] hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную

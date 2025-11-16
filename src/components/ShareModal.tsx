@@ -63,14 +63,14 @@ const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, productName })
         <div className="bg-[#1c1c1c] rounded-xl p-4 mb-6 border border-[#1c1c1c]">
           <p className="text-[#a0a0a0] text-sm mb-2">Ссылка на товар:</p>
           <div className="bg-[#121212] rounded-lg p-3 border border-[#1c1c1c]">
-            <p className="text-[#a31212] text-sm break-all font-mono">{currentUrl}</p>
+            <p className="text-[#FFD700] text-sm break-all font-mono">{currentUrl}</p>
           </div>
         </div>
 
         {/* Copy Button */}
         <Button
           onClick={handleCopy}
-          className="w-full bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold py-3 rounded-xl transition-all duration-300 hover:scale-105"
+          className="w-full bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold py-3 rounded-xl transition-all duration-300 hover:scale-105"
         >
           {copied ? (
             <>

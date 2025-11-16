@@ -184,9 +184,9 @@ const Inventory = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#a31212] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#FFD700] mx-auto mb-4"></div>
           <p className="text-[#a0a0a0] text-lg">Загрузка инвентаря...</p>
         </div>
       </div>
@@ -195,11 +195,11 @@ const Inventory = () => {
 
   if (hasError) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-[#a31212] text-6xl mb-4">⚠️</div>
-          <p className="text-[#a31212] text-lg mb-4">{error}</p>
-          <Button onClick={() => window.location.reload()} className="bg-[#a31212] hover:bg-[#8a0f0f]">
+          <div className="text-[#FFD700] text-6xl mb-4">⚠️</div>
+          <p className="text-[#FFD700] text-lg mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()} className="bg-[#FFD700] hover:bg-[#FFC107]">
             Попробовать снова
           </Button>
         </div>
@@ -208,26 +208,26 @@ const Inventory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] relative">
+    <div className="min-h-screen relative">
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
           {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 bg-[#181818] rounded-full mb-6 border border-[#1c1c1c]">
-              <Package className="w-10 h-10 md:w-12 md:h-12 text-[#a31212]" />
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 glass rounded-full mb-6 border border-[#FFD700]/20">
+              <Package className="w-10 h-10 md:w-12 md:h-12 text-[#FFD700]" />
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0] text-center">
               ИНВЕНТАРЬ
             </h1>
-            <div className="w-32 h-1 bg-[#a31212] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
           <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
-            Ваша <span className="text-[#a31212] font-bold">коллекция предметов</span>! 
-            Здесь вы можете <span className="text-[#f0f0f0] font-bold">продавать</span> и <span className="text-[#a31212] font-bold">выводить</span> выигранные предметы.
+            Ваша <span className="text-[#FFD700] font-bold">коллекция предметов</span>! 
+            Здесь вы можете <span className="text-[#f0f0f0] font-bold">продавать</span> и <span className="text-[#FFD700] font-bold">выводить</span> выигранные предметы.
           </p>
         </div>
       </div>
@@ -239,7 +239,7 @@ const Inventory = () => {
           <Button
             onClick={() => navigate(-1)}
             variant="outline"
-            className="px-6 py-3 bg-[#181818] border border-[#1c1c1c] text-[#a0a0a0] hover:text-[#f0f0f0] hover:border-[#a31212] transition-all duration-300 rounded-xl text-sm font-medium hover:scale-105"
+            className="px-6 py-3 glass border border-[#FFD700]/20 text-[#a0a0a0] hover:text-[#f0f0f0] hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 rounded-xl text-sm font-medium hover:scale-105"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Назад
@@ -250,13 +250,13 @@ const Inventory = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Общая стоимость */}
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
+            <div className="relative glass rounded-3xl p-8 text-center border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
               <div>
-                <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
-                  <DollarSign className="w-10 h-10 text-[#a31212]" />
+                <div className="mx-auto w-20 h-20 glass rounded-2xl flex items-center justify-center mb-6 border border-[#FFD700]/20 group-hover:scale-105 transition-transform duration-300">
+                  <DollarSign className="w-10 h-10 text-[#FFD700]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Общая стоимость</h3>
-                <div className="text-3xl sm:text-4xl font-black text-[#a31212] mb-4">
+                <div className="text-3xl sm:text-4xl font-black text-[#FFD700] mb-4">
                   ${formatNumber(parseFloat(totalValue.toFixed(2)))}
                 </div>
               </div>
@@ -266,13 +266,13 @@ const Inventory = () => {
 
           {/* Количество предметов */}
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
+            <div className="relative glass rounded-3xl p-8 text-center border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
               <div>
-                <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
-                  <Package className="w-10 h-10 text-[#a31212]" />
+                <div className="mx-auto w-20 h-20 glass rounded-2xl flex items-center justify-center mb-6 border border-[#FFD700]/20 group-hover:scale-105 transition-transform duration-300">
+                  <Package className="w-10 h-10 text-[#FFD700]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Предметов</h3>
-                <div className="text-3xl sm:text-4xl font-black text-[#a31212] mb-4">
+                <div className="text-3xl sm:text-4xl font-black text-[#FFD700] mb-4">
                   {displayItems.length}
                 </div>
               </div>
@@ -282,10 +282,10 @@ const Inventory = () => {
 
           {/* Любимый кейс */}
           <div className="group relative">
-            <div className="relative bg-[#181818] rounded-3xl p-8 text-center border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
+            <div className="relative glass rounded-3xl p-8 text-center border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105 min-h-[320px] flex flex-col justify-between">
               <div>
-                <div className="mx-auto w-20 h-20 bg-[#1c1c1c] rounded-2xl flex items-center justify-center mb-6 border border-[#1c1c1c] group-hover:scale-105 transition-transform duration-300">
-                  <Crown className="w-10 h-10 text-[#a31212]" />
+                <div className="mx-auto w-20 h-20 glass rounded-2xl flex items-center justify-center mb-6 border border-[#FFD700]/20 group-hover:scale-105 transition-transform duration-300">
+                  <Crown className="w-10 h-10 text-[#FFD700]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#f0f0f0] mb-4">Любимый кейс</h3>
                 
@@ -325,7 +325,7 @@ const Inventory = () => {
             <h3 className="text-2xl md:text-3xl font-black text-[#f0f0f0] mb-4">
               Предметы в инвентаре
             </h3>
-            <div className="w-24 h-1 bg-[#a31212] mx-auto rounded-full mb-4"></div>
+            <div className="w-24 h-1 bg-[#FFD700] mx-auto rounded-full mb-4"></div>
             <div className="text-[#a0a0a0] font-medium">
               Найдено предметов: <span className="text-[#f0f0f0] font-bold">{displayItems.length}</span>
             </div>
@@ -333,9 +333,9 @@ const Inventory = () => {
           
           {displayItems.length === 0 ? (
             <div className="group relative">
-              <div className="relative bg-[#181818] rounded-3xl border border-[#1c1c1c] p-16 text-center hover:border-[#a31212] transition-all duration-300">
-                <div className="w-24 h-24 mx-auto mb-6 bg-[#a31212]/20 rounded-2xl flex items-center justify-center border border-[#a31212]/30">
-                  <Package className="w-12 h-12 text-[#a31212]" />
+              <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-16 text-center hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+                <div className="w-24 h-24 mx-auto mb-6 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center border border-[#FFD700]/30">
+                  <Package className="w-12 h-12 text-[#FFD700]" />
                 </div>
                 <h4 className="text-2xl font-black text-[#f0f0f0] mb-3">Инвентарь пуст</h4>
                 <p className="text-[#a0a0a0] text-lg mb-6 max-w-md mx-auto leading-relaxed">
@@ -344,7 +344,7 @@ const Inventory = () => {
                 
                 <button
                   onClick={() => navigate('/cases')}
-                  className="px-8 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-black rounded-2xl transition-all duration-300"
+                  className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-black rounded-2xl transition-all duration-300"
                 >
                   🎁 Открыть кейсы
                 </button>

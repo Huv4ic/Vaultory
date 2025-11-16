@@ -120,11 +120,11 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#121212] flex items-center justify-center relative overflow-hidden">
+      <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
 
         <div className="relative z-10 text-center max-w-lg mx-auto px-6">
           {/* Главный контейнер с анимацией появления */}
-          <div className="bg-[#181818] rounded-3xl p-12 border border-[#1c1c1c] animate-fade-in-up relative overflow-hidden">
+          <div className="glass rounded-3xl p-12 border border-[#FFD700]/30/20 animate-fade-in-up relative overflow-hidden">
             
             {/* Иконка корзины */}
             <div className="relative mb-8">
@@ -141,7 +141,7 @@ const Cart = () => {
               
               {/* Декоративная линия под заголовком */}
               <div className="flex justify-center mt-4">
-                <div className="h-1 w-16 bg-[#a31212] rounded-full"></div>
+                <div className="h-1 w-16 bg-[#FFD700] rounded-full"></div>
               </div>
             </div>
 
@@ -154,7 +154,7 @@ const Cart = () => {
             <div className="relative">
               <Button
                 onClick={() => navigate('/')}
-                className="px-10 py-4 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105"
+                className="px-10 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105"
               >
                 <span className="flex items-center justify-center">
                   <ShoppingBag className="w-5 h-5 mr-3" />
@@ -175,7 +175,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] relative">
+    <div className="min-h-screen relative">
 
       {/* Hero Section */}
       <div className="relative overflow-hidden">
@@ -191,7 +191,7 @@ const Cart = () => {
             </h1>
             
             <div className="flex justify-center mt-4 mb-8">
-              <div className="h-1 w-20 bg-[#a31212] rounded-full"></div>
+              <div className="h-1 w-20 bg-[#FFD700] rounded-full"></div>
             </div>
           </div>
 
@@ -202,7 +202,7 @@ const Cart = () => {
           
           {/* Статистика корзины с улучшенным дизайном */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-            <div className="group relative bg-[#181818] rounded-2xl p-6 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+            <div className="group relative glass rounded-2xl p-6 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">📦</div>
                 <p className="text-[#f0f0f0] text-sm mb-2">Товаров в корзине</p>
@@ -210,7 +210,7 @@ const Cart = () => {
               </div>
             </div>
             
-            <div className="group relative bg-[#181818] rounded-2xl p-6 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+            <div className="group relative glass rounded-2xl p-6 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">💰</div>
                 <p className="text-[#f0f0f0] text-sm mb-2">Общая стоимость</p>
@@ -218,7 +218,7 @@ const Cart = () => {
               </div>
             </div>
             
-            <div className="group relative bg-[#181818] rounded-2xl p-6 border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-105">
+            <div className="group relative glass rounded-2xl p-6 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">💳</div>
                 <p className="text-[#f0f0f0] text-sm mb-2">Ваш баланс</p>
@@ -240,21 +240,21 @@ const Cart = () => {
                 Выбранные товары
               </h2>
               <div className="flex mt-3">
-                <div className="h-1 w-16 bg-[#a31212] rounded-full"></div>
+                <div className="h-1 w-16 bg-[#FFD700] rounded-full"></div>
               </div>
             </div>
             
             {items.map((item, index) => (
               <div 
                 key={item.id}
-                className="group relative bg-[#181818] rounded-2xl border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 hover:scale-[1.02] overflow-hidden"
+                className="group relative glass rounded-2xl border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-[1.02] overflow-hidden"
               >
                 
                 <div className="relative z-10 p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
                     {/* Изображение товара */}
                     <div className="relative">
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#1c1c1c] rounded-2xl overflow-hidden border border-[#1c1c1c]">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 glass rounded-2xl overflow-hidden border border-[#FFD700]/30/20">
                         <img
                           src={item.image_url || item.image || '/placeholder.svg'}
                           alt={item.name}
@@ -272,26 +272,26 @@ const Cart = () => {
                       <h3 className="text-lg sm:text-xl font-bold text-[#f0f0f0]">{item.name}</h3>
                       <div className="flex items-center space-x-3">
                         <span className="text-2xl font-black text-[#f0f0f0]">${item.price}</span>
-                        <div className="px-3 py-1 bg-[#1c1c1c] text-[#f0f0f0] text-xs font-bold rounded-full border border-[#1c1c1c]">
+                        <div className="px-3 py-1 glass text-[#f0f0f0] text-xs font-bold rounded-full border border-[#FFD700]/30/20">
                           Цена за единицу
                         </div>
                       </div>
                       
                       {/* Управление количеством */}
                       <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-3 bg-[#1c1c1c] rounded-xl p-3 border border-[#1c1c1c]">
+                        <div className="flex items-center space-x-3 glass rounded-xl p-3 border border-[#FFD700]/30/20">
                           <Button
                             onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                             size="sm"
-                            className="w-10 h-10 p-0 bg-[#1c1c1c] hover:bg-[#a31212] border border-[#1c1c1c] hover:border-[#a31212] text-[#a0a0a0] hover:text-white transition-all duration-300 rounded-lg font-bold"
+                            className="w-10 h-10 p-0 glass hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 text-[#a0a0a0] hover:text-[#FFD700] transition-all duration-300 rounded-lg font-bold"
                           >
                             -
                           </Button>
-                          <span className="text-[#f0f0f0] font-bold text-lg min-w-[3rem] text-center bg-[#181818] rounded-lg py-2 px-4 border border-[#1c1c1c]">{item.quantity}</span>
+                          <span className="text-[#f0f0f0] font-bold text-lg min-w-[3rem] text-center glass rounded-lg py-2 px-4 border border-[#FFD700]/30/20">{item.quantity}</span>
                           <Button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             size="sm"
-                            className="w-10 h-10 p-0 bg-[#a31212] hover:bg-[#8a0f0f] border border-[#a31212] hover:border-[#8a0f0f] text-white hover:text-white transition-all duration-300 rounded-lg font-bold"
+                            className="w-10 h-10 p-0 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift border border-[#FFD700]/30 hover:border-[#FFC107] text-white hover:text-[#FFD700] transition-all duration-300 rounded-lg font-bold"
                           >
                             +
                           </Button>
@@ -300,7 +300,7 @@ const Cart = () => {
                         <Button
                           onClick={() => removeItem(item.id)}
                           size="sm"
-                          className="w-12 h-12 p-0 bg-[#1c1c1c] hover:bg-[#a31212] border border-[#1c1c1c] hover:border-[#a31212] text-[#a0a0a0] hover:text-white transition-all duration-300 rounded-lg"
+                          className="w-12 h-12 p-0 glass hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 text-[#a0a0a0] hover:text-[#FFD700] transition-all duration-300 rounded-lg"
                         >
                           <Trash2 className="w-5 h-5" />
                         </Button>
@@ -314,12 +314,12 @@ const Cart = () => {
             
             {items.length === 0 && (
               <div className="text-center py-12 sm:py-16">
-                <ShoppingBag className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 text-[#a31212]" />
+                <ShoppingBag className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 text-[#FFD700]" />
                 <h3 className="text-lg sm:text-xl font-semibold text-[#f0f0f0] mb-2">Корзина пуста</h3>
                 <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Добавьте товары из каталога</p>
                 <Button
                   onClick={() => navigate('/')}
-                  className="px-6 sm:px-8 py-2 sm:py-3 bg-[#a31212] hover:bg-[#8a0f0f] text-white font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                  className="px-6 sm:px-8 py-2 sm:py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
                 >
                   Перейти в каталог
                 </Button>
@@ -330,7 +330,7 @@ const Cart = () => {
           {/* Правая панель */}
           <div className="space-y-6">
             {/* Итого */}
-            <div className="group relative bg-[#181818] rounded-2xl border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 p-6">
+            <div className="group relative glass rounded-2xl border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 p-6">
               <div className="relative z-10">
                 {/* Заголовок секции */}
                 <div className="mb-6">
@@ -338,30 +338,30 @@ const Cart = () => {
                     Итого
                   </h3>
                   <div className="flex mt-2">
-                    <div className="h-1 w-12 bg-[#a31212] rounded-full"></div>
+                    <div className="h-1 w-12 bg-[#FFD700] rounded-full"></div>
                   </div>
                 </div>
 
                 {/* Детали заказа */}
                 <div className="space-y-4 mb-6">
-                  <div className="flex justify-between items-center p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                  <div className="flex justify-between items-center p-3 glass rounded-xl border border-[#FFD700]/30/20">
                     <span className="text-[#f0f0f0] flex items-center">
-                      <Package className="w-4 h-4 mr-2 text-[#a31212]" />
+                      <Package className="w-4 h-4 mr-2 text-[#FFD700]" />
                       Товары ({items.length})
                     </span>
                     <span className="text-[#f0f0f0] font-bold">${formatNumber(total)}</span>
                   </div>
                   
-                  <div className="flex justify-between items-center p-3 bg-[#1c1c1c] rounded-xl border border-[#1c1c1c]">
+                  <div className="flex justify-between items-center p-3 glass rounded-xl border border-[#FFD700]/30/20">
                     <span className="text-[#f0f0f0] flex items-center">
-                      <CreditCard className="w-4 h-4 mr-2 text-[#a31212]" />
+                      <CreditCard className="w-4 h-4 mr-2 text-[#FFD700]" />
                       Комиссия
                     </span>
                     <span className="text-[#f0f0f0] font-bold">$0</span>
                   </div>
                   
-                  <div className="border-t border-[#1c1c1c] pt-4">
-                    <div className="flex justify-between items-center p-4 bg-[#1c1c1c] rounded-xl border border-[#a31212]">
+                  <div className="border-t border-[#FFD700]/20 pt-4">
+                    <div className="flex justify-between items-center p-4 glass rounded-xl border border-[#FFD700]/30">
                       <span className="text-[#f0f0f0] font-bold text-lg">Всего к оплате</span>
                       <span className="text-[#f0f0f0] font-black text-2xl">${formatNumber(total)}</span>
                     </div>
@@ -372,12 +372,12 @@ const Cart = () => {
                 <Button
                   onClick={handleCheckout}
                   disabled={items.length === 0 || !telegramUser || isProcessing}
-                  className="w-full py-4 bg-[#a31212] hover:bg-[#8a0f0f] border-2 border-[#a31212] hover:border-[#8a0f0f] text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[#1c1c1c] disabled:border-[#1c1c1c]"
+                  className="w-full py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift border-2 border-[#FFD700] hover:border-[#FFC107] font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:glass disabled:border-[#FFD700]/20"
                 >
                   <span className="flex items-center justify-center">
                     {isProcessing ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#121212] mr-3"></div>
                         Обработка...
                       </>
                     ) : (
@@ -392,10 +392,10 @@ const Cart = () => {
             </div>
 
             {/* Информация о безопасности */}
-            <div className="group relative bg-[#181818] rounded-2xl border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 p-6 text-center">
+            <div className="group relative glass rounded-2xl border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 p-6 text-center">
               <div className="relative z-10">
-                <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-full flex items-center justify-center mb-4 border border-[#a31212]">
-                  <Shield className="w-8 h-8 text-[#a31212]" />
+                <div className="mx-auto w-16 h-16 glass rounded-full flex items-center justify-center mb-4 border border-[#FFD700]/30">
+                  <Shield className="w-8 h-8 text-[#FFD700]" />
                 </div>
                 <h4 className="text-[#f0f0f0] font-bold mb-2 text-lg">Безопасная оплата</h4>
                 <p className="text-[#a0a0a0] text-sm">
@@ -404,10 +404,10 @@ const Cart = () => {
               </div>
             </div>
             
-            <div className="group relative bg-[#181818] rounded-2xl border border-[#1c1c1c] hover:border-[#a31212] transition-all duration-300 p-6 text-center">
+            <div className="group relative glass rounded-2xl border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 p-6 text-center">
               <div className="relative z-10">
-                <div className="mx-auto w-16 h-16 bg-[#1c1c1c] rounded-full flex items-center justify-center mb-4 border border-[#a31212]">
-                  <MessageCircle className="w-8 h-8 text-[#a31212]" />
+                <div className="mx-auto w-16 h-16 glass rounded-full flex items-center justify-center mb-4 border border-[#FFD700]/30">
+                  <MessageCircle className="w-8 h-8 text-[#FFD700]" />
                 </div>
                 <h4 className="text-[#f0f0f0] font-bold mb-2 text-lg">Поддержка 24/7</h4>
                 <p className="text-[#a0a0a0] text-sm">
@@ -423,7 +423,7 @@ const Cart = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 bg-[#181818] border border-[#1c1c1c] text-[#a0a0a0] hover:bg-[#a31212] hover:border-[#a31212] hover:text-white transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="px-6 sm:px-8 py-2 sm:py-3 glass border border-[#FFD700]/30/20 text-[#a0a0a0] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover:text-[#FFD700] transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную

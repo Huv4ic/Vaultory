@@ -203,7 +203,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-[#181818] border-[#1c1c1c] max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="glass border-[#FFD700]/20 max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-[#f0f0f0] text-2xl flex items-center">
             <CreditCard className="w-6 h-6 mr-3 text-[#f0f0f0]" />
@@ -233,7 +233,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                     .map((method) => (
                       <Card
                         key={method.id}
-                        className="bg-[#181818] border-[#1c1c1c] hover:border-[#f0f0f0] cursor-pointer transition-all duration-300 hover:scale-105"
+                        className="glass border-[#FFD700]/20 hover:border-[#f0f0f0] cursor-pointer transition-all duration-300 hover:scale-105"
                         onClick={() => handleMethodSelect(method)}
                       >
                         <CardContent className="p-4">
@@ -268,7 +268,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                     .map((method) => (
                       <Card
                         key={method.id}
-                        className="bg-[#181818] border-[#1c1c1c] hover:border-[#f0f0f0] cursor-pointer transition-all duration-300 hover:scale-105"
+                        className="glass border-[#FFD700]/20 hover:border-[#f0f0f0] cursor-pointer transition-all duration-300 hover:scale-105"
                         onClick={() => handleMethodSelect(method)}
                       >
                         <CardContent className="p-4">
@@ -304,13 +304,13 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                 <p className="text-[#a0a0a0]">{selectedMethod.description}</p>
               </div>
 
-              <Card className="bg-[#181818] border-[#1c1c1c]">
+              <Card className="glass border-[#FFD700]/20">
                 <CardContent className="p-6">
                   <h4 className="text-[#f0f0f0] font-semibold mb-4 text-center">
                     Реквизиты для оплаты
                   </h4>
                   
-                  <div className="bg-[#1c1c1c] rounded-lg p-4 border border-[#2a2a2a]">
+                  <div className="glass rounded-lg p-4 border border-[#2a2a2a]">
                     <div className="flex items-center justify-between">
                       <code className="text-[#f0f0f0] text-lg break-all">
                         {selectedMethod.details}
@@ -331,7 +331,7 @@ export default function TopUpModal({ isOpen, onClose }: TopUpModalProps) {
                   </div>
 
                   <div className="mt-6 text-center space-y-4">
-                    <div className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg p-4">
+                    <div className="glass border border-[#2a2a2a] rounded-lg p-4">
                       <p className="text-[#f0f0f0] text-sm">
                         💡 <strong>Важно:</strong> После оплаты нажмите на кнопку "Я Оплатил"
                       </p>
