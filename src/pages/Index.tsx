@@ -337,12 +337,24 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#121212] text-[#f0f0f0] relative">
+    <div 
+      className="min-h-screen text-[#f0f0f0] relative"
+      style={{
+        backgroundImage: 'url(/background-eye.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Затемнение фона для лучшей читаемости контента */}
+      <div className="absolute inset-0 bg-[#121212]/80 backdrop-blur-[1px]"></div>
+      
       {/* Telegram канал - современное окно с анимированным фоном */}
 
 
       {/* Категории игр */}
-      <section id="products" className="py-16 px-4 relative bg-[#121212]">
+      <section id="products" className="py-16 px-4 relative z-10">
         
         <div className="container mx-auto relative z-10">
           {/* Hero секция */}
