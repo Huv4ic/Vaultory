@@ -217,8 +217,7 @@ export default function SubcategoryPage() {
                         {sub.slug === 'keys' && '🔑'}
                         {!['accounts', 'currency', 'promotions', 'skins', 'items', 'boost', 'money', 'uc', 'robux', 'keys'].includes(sub.slug) && '📂'}
                       </div>
-                      <h3 className="text-xl font-bold text-white mb-2">{sub.name}</h3>
-                      <p className="text-gray-400 text-sm">Нажмите для просмотра товаров</p>
+                      <h3 className="text-xl font-bold text-white">{sub.name}</h3>
                     </div>
                   </div>
                 </div>
