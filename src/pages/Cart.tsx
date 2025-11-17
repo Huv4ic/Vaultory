@@ -101,15 +101,15 @@ const Cart = () => {
   if (!telegramUser) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
-        <div className="text-center bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800/40 backdrop-blur-xl rounded-2xl p-8 border border-amber-500/30 shadow-2xl shadow-amber-500/20">
+        <div className="text-center glass rounded-2xl p-8 border border-white/9">
           <div className="text-6xl mb-6">🔒</div>
-          <h1 className="text-3xl font-bold text-white mb-4">{t('Войдите через Telegram')}</h1>
-          <p className="text-gray-300 mb-6 max-w-md">
+          <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">{t('Войдите через Telegram')}</h1>
+          <p className="text-base text-[#a0a0a0] mb-6 max-w-md">
             {t('Для доступа к корзине и покупкам необходимо авторизоваться через Telegram')}
           </p>
           <Button
             onClick={() => navigate('/auth')}
-            className="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 shadow-2xl shadow-amber-500/30"
+            className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold text-base rounded-2xl transition-all duration-300"
           >
             {t('Войти в аккаунт')}
           </Button>
@@ -124,29 +124,29 @@ const Cart = () => {
 
         <div className="relative z-10 text-center max-w-lg mx-auto px-6">
           {/* Главный контейнер с анимацией появления */}
-          <div className="glass rounded-3xl p-12 border border-[#FFD700]/30/20 animate-fade-in-up relative overflow-hidden">
+          <div className="glass rounded-2xl p-8 md:p-10 border border-white/9 animate-fade-in-up relative overflow-hidden">
             
             {/* Иконка корзины */}
             <div className="relative mb-8">
-              <div className="text-8xl mb-4 transform transition-all duration-500 hover:scale-110">
+              <div className="text-6xl md:text-7xl mb-4">
                 🛒
               </div>
             </div>
 
             {/* Заголовок с анимированным текстом */}
             <div className="mb-6">
-              <h1 className="text-4xl font-black text-[#f0f0f0] mb-2 tracking-wide relative">
+              <h1 className="text-3xl md:text-4xl font-bold text-[#f0f0f0] mb-2 tracking-wide relative">
                 <span className="relative z-10">{t('Корзина пуста')}</span>
               </h1>
               
               {/* Декоративная линия под заголовком */}
               <div className="flex justify-center mt-4">
-                <div className="h-1 w-16 bg-[#FFD700] rounded-full"></div>
+                <div className="h-1 w-16 bg-white/20 rounded-full"></div>
               </div>
             </div>
 
             {/* Описание */}
-            <p className="text-[#a0a0a0] mb-8 text-lg leading-relaxed max-w-sm mx-auto">
+            <p className="text-[#a0a0a0] mb-8 text-base leading-relaxed max-w-sm mx-auto">
               {t('Добавьте товары из каталога, чтобы начать покупки')}
             </p>
 
@@ -154,7 +154,7 @@ const Cart = () => {
             <div className="relative">
               <Button
                 onClick={() => navigate('/')}
-                className="px-10 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105"
+                className="px-10 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold text-base rounded-2xl transition-all duration-300"
               >
                 <span className="flex items-center justify-center">
                   <ShoppingBag className="w-5 h-5 mr-3" />
@@ -186,43 +186,43 @@ const Cart = () => {
               <div className="text-6xl md:text-7xl">🛒</div>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-black text-[#f0f0f0] mb-4 tracking-wide">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#f0f0f0] mb-4 tracking-wide">
               {t('Корзина')}
             </h1>
             
             <div className="flex justify-center mt-4 mb-8">
-              <div className="h-1 w-20 bg-[#FFD700] rounded-full"></div>
+              <div className="h-1 w-20 bg-white/20 rounded-full"></div>
             </div>
           </div>
 
-          <p className="text-lg md:text-xl text-[#a0a0a0] mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-[#a0a0a0] mb-12 max-w-3xl mx-auto leading-relaxed">
             Проверьте выбранные товары и оформите заказ. Мы гарантируем безопасность 
             и быстроту обработки всех покупок.
           </p>
           
           {/* Статистика корзины с улучшенным дизайном */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
-            <div className="group relative glass rounded-2xl p-6 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105">
+            <div className="group relative glass rounded-2xl p-5 md:p-6 border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">📦</div>
                 <p className="text-[#f0f0f0] text-sm mb-2">Товаров в корзине</p>
-                <p className="text-[#f0f0f0] font-black text-2xl">{items.length}</p>
+                <p className="text-[#f0f0f0] font-bold text-2xl">{items.length}</p>
               </div>
             </div>
             
-            <div className="group relative glass rounded-2xl p-6 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105">
+            <div className="group relative glass rounded-2xl p-5 md:p-6 border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">💰</div>
                 <p className="text-[#f0f0f0] text-sm mb-2">Общая стоимость</p>
-                <p className="text-[#f0f0f0] font-black text-2xl">${formatNumber(total)}</p>
+                <p className="text-[#f0f0f0] font-bold text-2xl">${formatNumber(total)}</p>
               </div>
             </div>
             
-            <div className="group relative glass rounded-2xl p-6 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-105">
+            <div className="group relative glass rounded-2xl p-5 md:p-6 border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
               <div className="relative z-10">
                 <div className="text-3xl mb-3">💳</div>
                 <p className="text-[#f0f0f0] text-sm mb-2">Ваш баланс</p>
-                <p className="text-[#f0f0f0] font-black text-2xl">${formatNumber(balance)}</p>
+                <p className="text-[#f0f0f0] font-bold text-2xl">${formatNumber(balance)}</p>
               </div>
             </div>
           </div>
@@ -236,25 +236,25 @@ const Cart = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Заголовок секции */}
             <div className="relative mb-8">
-              <h2 className="text-2xl sm:text-3xl font-black text-[#f0f0f0] tracking-wide">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0] tracking-wide">
                 Выбранные товары
               </h2>
               <div className="flex mt-3">
-                <div className="h-1 w-16 bg-[#FFD700] rounded-full"></div>
+                <div className="h-1 w-16 bg-white/20 rounded-full"></div>
               </div>
             </div>
             
             {items.map((item, index) => (
               <div 
                 key={item.id}
-                className="group relative glass rounded-2xl border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 hover:scale-[1.02] overflow-hidden"
+                className="group relative glass rounded-2xl border border-white/9 hover:border-white/15 hover-lift transition-all duration-300 overflow-hidden"
               >
                 
-                <div className="relative z-10 p-6">
+                <div className="relative z-10 p-5 md:p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
                     {/* Изображение товара */}
                     <div className="relative">
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 glass rounded-2xl overflow-hidden border border-[#FFD700]/30/20">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 glass rounded-2xl overflow-hidden border border-white/9">
                         <img
                           src={item.image_url || item.image || '/placeholder.svg'}
                           alt={item.name}
@@ -269,29 +269,29 @@ const Cart = () => {
                     
                     {/* Информация о товаре */}
                     <div className="flex-1 space-y-3">
-                      <h3 className="text-lg sm:text-xl font-bold text-[#f0f0f0]">{item.name}</h3>
+                      <h3 className="text-lg sm:text-xl font-semibold text-[#f0f0f0]">{item.name}</h3>
                       <div className="flex items-center space-x-3">
-                        <span className="text-2xl font-black text-[#f0f0f0]">${item.price}</span>
-                        <div className="px-3 py-1 glass text-[#f0f0f0] text-xs font-bold rounded-full border border-[#FFD700]/30/20">
+                        <span className="text-2xl font-bold text-[#f0f0f0]">${item.price}</span>
+                        <div className="px-3 py-1 glass text-[#a0a0a0] text-xs font-medium rounded-full border border-white/9">
                           Цена за единицу
                         </div>
                       </div>
                       
                       {/* Управление количеством */}
                       <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-3 glass rounded-xl p-3 border border-[#FFD700]/30/20">
+                        <div className="flex items-center space-x-3 glass rounded-xl p-3 border border-white/9">
                           <Button
                             onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                             size="sm"
-                            className="w-10 h-10 p-0 glass hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 text-[#a0a0a0] hover:text-[#FFD700] transition-all duration-300 rounded-lg font-bold"
+                            className="w-10 h-10 p-0 glass hover:bg-white/5 hover:border-white/15 border border-white/9 text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 rounded-lg font-semibold"
                           >
                             -
                           </Button>
-                          <span className="text-[#f0f0f0] font-bold text-lg min-w-[3rem] text-center glass rounded-lg py-2 px-4 border border-[#FFD700]/30/20">{item.quantity}</span>
+                          <span className="text-[#f0f0f0] font-semibold text-lg min-w-[3rem] text-center glass rounded-lg py-2 px-4 border border-white/9">{item.quantity}</span>
                           <Button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             size="sm"
-                            className="w-10 h-10 p-0 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift border border-[#FFD700]/30 hover:border-[#FFC107] text-white hover:text-[#FFD700] transition-all duration-300 rounded-lg font-bold"
+                            className="w-10 h-10 p-0 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift border border-[#FFD700] transition-all duration-300 rounded-lg font-semibold"
                           >
                             +
                           </Button>
@@ -300,7 +300,7 @@ const Cart = () => {
                         <Button
                           onClick={() => removeItem(item.id)}
                           size="sm"
-                          className="w-12 h-12 p-0 glass hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 text-[#a0a0a0] hover:text-[#FFD700] transition-all duration-300 rounded-lg"
+                          className="w-12 h-12 p-0 glass hover:bg-white/5 hover:border-white/15 border border-white/9 text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 rounded-lg"
                         >
                           <Trash2 className="w-5 h-5" />
                         </Button>
@@ -319,7 +319,7 @@ const Cart = () => {
                 <p className="text-[#a0a0a0] text-sm sm:text-base mb-6">Добавьте товары из каталога</p>
                 <Button
                   onClick={() => navigate('/')}
-                  className="px-6 sm:px-8 py-2 sm:py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 text-sm sm:text-base"
+                  className="px-6 sm:px-8 py-2 sm:py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold rounded-xl transition-all duration-300 text-sm sm:text-base"
                 >
                   Перейти в каталог
                 </Button>
@@ -330,40 +330,40 @@ const Cart = () => {
           {/* Правая панель */}
           <div className="space-y-6">
             {/* Итого */}
-            <div className="group relative glass rounded-2xl border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 p-6">
+            <div className="group relative glass rounded-2xl border border-white/9 hover:border-white/15 hover-lift transition-all duration-300 p-5 md:p-6">
               <div className="relative z-10">
                 {/* Заголовок секции */}
                 <div className="mb-6">
-                  <h3 className="text-2xl font-black text-[#f0f0f0] tracking-wide">
+                  <h3 className="text-2xl font-bold text-[#f0f0f0] tracking-wide">
                     Итого
                   </h3>
                   <div className="flex mt-2">
-                    <div className="h-1 w-12 bg-[#FFD700] rounded-full"></div>
+                    <div className="h-1 w-12 bg-white/20 rounded-full"></div>
                   </div>
                 </div>
 
                 {/* Детали заказа */}
                 <div className="space-y-4 mb-6">
-                  <div className="flex justify-between items-center p-3 glass rounded-xl border border-[#FFD700]/30/20">
+                  <div className="flex justify-between items-center p-3 glass rounded-xl border border-white/9">
                     <span className="text-[#f0f0f0] flex items-center">
                       <Package className="w-4 h-4 mr-2 text-[#FFD700]" />
                       Товары ({items.length})
                     </span>
-                    <span className="text-[#f0f0f0] font-bold">${formatNumber(total)}</span>
+                    <span className="text-[#f0f0f0] font-semibold">${formatNumber(total)}</span>
                   </div>
                   
-                  <div className="flex justify-between items-center p-3 glass rounded-xl border border-[#FFD700]/30/20">
+                  <div className="flex justify-between items-center p-3 glass rounded-xl border border-white/9">
                     <span className="text-[#f0f0f0] flex items-center">
                       <CreditCard className="w-4 h-4 mr-2 text-[#FFD700]" />
                       Комиссия
                     </span>
-                    <span className="text-[#f0f0f0] font-bold">$0</span>
+                    <span className="text-[#f0f0f0] font-semibold">$0</span>
                   </div>
                   
-                  <div className="border-t border-[#FFD700]/20 pt-4">
-                    <div className="flex justify-between items-center p-4 glass rounded-xl border border-[#FFD700]/30">
-                      <span className="text-[#f0f0f0] font-bold text-lg">Всего к оплате</span>
-                      <span className="text-[#f0f0f0] font-black text-2xl">${formatNumber(total)}</span>
+                  <div className="border-t border-white/9 pt-4">
+                    <div className="flex justify-between items-center p-4 glass rounded-xl border border-white/9">
+                      <span className="text-[#f0f0f0] font-semibold text-lg">Всего к оплате</span>
+                      <span className="text-[#f0f0f0] font-bold text-2xl">${formatNumber(total)}</span>
                     </div>
                   </div>
                 </div>
@@ -372,7 +372,7 @@ const Cart = () => {
                 <Button
                   onClick={handleCheckout}
                   disabled={items.length === 0 || !telegramUser || isProcessing}
-                  className="w-full py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift border-2 border-[#FFD700] hover:border-[#FFC107] font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:glass disabled:border-[#FFD700]/20"
+                  className="w-full py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift border-2 border-[#FFD700] hover:border-[#FFC107] font-semibold text-base rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:glass disabled:border-white/9"
                 >
                   <span className="flex items-center justify-center">
                     {isProcessing ? (
@@ -392,24 +392,24 @@ const Cart = () => {
             </div>
 
             {/* Информация о безопасности */}
-            <div className="group relative glass rounded-2xl border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 p-6 text-center">
+            <div className="group relative glass rounded-2xl border border-white/9 hover:border-white/15 hover-lift transition-all duration-300 p-5 md:p-6 text-center">
               <div className="relative z-10">
-                <div className="mx-auto w-16 h-16 glass rounded-full flex items-center justify-center mb-4 border border-[#FFD700]/30">
-                  <Shield className="w-8 h-8 text-[#FFD700]" />
+                <div className="mx-auto w-14 h-14 glass rounded-full flex items-center justify-center mb-4 border border-white/9">
+                  <Shield className="w-7 h-7 text-[#FFD700]" />
                 </div>
-                <h4 className="text-[#f0f0f0] font-bold mb-2 text-lg">Безопасная оплата</h4>
+                <h4 className="text-[#f0f0f0] font-semibold mb-2 text-base">Безопасная оплата</h4>
                 <p className="text-[#a0a0a0] text-sm">
                   Все платежи защищены и обрабатываются безопасно
                 </p>
               </div>
             </div>
             
-            <div className="group relative glass rounded-2xl border border-[#FFD700]/30/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 p-6 text-center">
+            <div className="group relative glass rounded-2xl border border-white/9 hover:border-white/15 hover-lift transition-all duration-300 p-5 md:p-6 text-center">
               <div className="relative z-10">
-                <div className="mx-auto w-16 h-16 glass rounded-full flex items-center justify-center mb-4 border border-[#FFD700]/30">
-                  <MessageCircle className="w-8 h-8 text-[#FFD700]" />
+                <div className="mx-auto w-14 h-14 glass rounded-full flex items-center justify-center mb-4 border border-white/9">
+                  <MessageCircle className="w-7 h-7 text-[#FFD700]" />
                 </div>
-                <h4 className="text-[#f0f0f0] font-bold mb-2 text-lg">Поддержка 24/7</h4>
+                <h4 className="text-[#f0f0f0] font-semibold mb-2 text-base">Поддержка 24/7</h4>
                 <p className="text-[#a0a0a0] text-sm">
                   Помощь по любым вопросам в любое время
                 </p>
@@ -423,7 +423,7 @@ const Cart = () => {
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="px-6 sm:px-8 py-2 sm:py-3 glass border border-[#FFD700]/30/20 text-[#a0a0a0] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover:text-[#FFD700] transition-all duration-300 rounded-lg sm:rounded-xl text-sm sm:text-base"
+            className="px-6 sm:px-8 py-2 sm:py-3 glass border border-white/9 text-[#a0a0a0] hover:bg-white/5 hover:border-white/15 hover:text-[#f0f0f0] transition-all duration-300 rounded-xl text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Вернуться на главную

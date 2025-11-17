@@ -176,15 +176,15 @@ const Profile = () => {
   if (!telegramUser) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center glass rounded-2xl p-8 border border-[#FFD700]/20">
+        <div className="text-center glass rounded-2xl p-8 border border-white/9">
           <div className="text-6xl mb-6">🔒</div>
           <h1 className="text-3xl font-bold text-[#f0f0f0] mb-4">{t('Войдите в аккаунт')}</h1>
-          <p className="text-[#a0a0a0] mb-6 max-w-md">
+          <p className="text-base text-[#a0a0a0] mb-6 max-w-md">
             {t('Для просмотра профиля необходимо войти через Telegram')}
           </p>
           <Button
             onClick={() => navigate('/auth')}
-            className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105"
+            className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold text-base rounded-2xl transition-all duration-300"
           >
             {t('Войти в аккаунт')}
           </Button>
@@ -197,8 +197,8 @@ const Profile = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-4 border-[#FFD700] mx-auto mb-4"></div>
-          <p className="text-[#a0a0a0] text-xl">{t('Загрузка профиля...')}</p>
+          <div className="animate-spin rounded-full h-32 w-32 border-4 border-white/20 mx-auto mb-4"></div>
+          <p className="text-[#a0a0a0] text-base">{t('Загрузка профиля...')}</p>
         </div>
       </div>
     );
@@ -209,22 +209,22 @@ const Profile = () => {
 
       {/* Hero Section */}
       <div className="relative z-10">
-        <div className="container mx-auto px-4 py-16 md:py-24 text-center">
+        <div className="container mx-auto px-4 py-16 md:py-20 text-center">
           {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 glass rounded-full mb-6 border border-[#FFD700]/20">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 glass rounded-full mb-6 border border-white/9">
               <User className="w-10 h-10 md:w-12 md:h-12 text-[#FFD700]" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0] text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-[#f0f0f0] text-center">
               ПРОФИЛЬ
             </h1>
-            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-white/20 mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
-          <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
-            Добро пожаловать, <span className="text-[#FFD700] font-bold">{profile?.username || telegramUser?.first_name}</span>! 
-            Здесь вы можете <span className="text-[#f0f0f0] font-bold">управлять своим аккаунтом</span> и просматривать статистику.
+          <p className="text-base md:text-lg text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
+            Добро пожаловать, <span className="text-[#FFD700] font-semibold">{profile?.username || telegramUser?.first_name}</span>! 
+            Здесь вы можете <span className="text-[#f0f0f0] font-medium">управлять своим аккаунтом</span> и просматривать статистику.
           </p>
         </div>
       </div>
@@ -235,8 +235,8 @@ const Profile = () => {
         <div className="mb-8 sm:mb-12">
           <div className="group relative">
             {/* Основная карточка */}
-            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="relative glass rounded-2xl border border-white/9 p-6 md:p-7 hover:border-white/15 hover-lift transition-all duration-300">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
                 {/* Аватар и основная информация */}
                 <div className="text-center lg:text-left">
                   <div className="relative mx-auto lg:mx-0 w-24 h-24 sm:w-28 sm:h-28 mb-6">
@@ -258,7 +258,7 @@ const Profile = () => {
                   </div>
                   
                   <div className="space-y-3">
-                    <h2 className="text-2xl sm:text-3xl font-black text-[#f0f0f0]">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">
                       {profile?.username || telegramUser.first_name}
                     </h2>
                     <p className="text-[#a0a0a0] text-sm sm:text-base font-medium">@{telegramUser.username || 'user'}</p>
@@ -282,16 +282,16 @@ const Profile = () => {
 
                 {/* Баланс */}
                 <div className="text-center lg:text-left">
-                  <div className="glass rounded-2xl p-6 border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+                  <div className="glass rounded-2xl p-5 md:p-6 border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
                     <div className="flex items-center justify-center lg:justify-start mb-4">
-                      <div className="w-10 h-10 bg-[#FFD700]/20 rounded-xl flex items-center justify-center mr-3 border border-[#FFD700]/30">
+                      <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center mr-3 border border-white/9">
                         <Wallet className="w-5 h-5 text-[#FFD700]" />
                       </div>
-                      <h3 className="text-xl font-bold text-[#f0f0f0]">Баланс</h3>
+                      <h3 className="text-lg md:text-xl font-semibold text-[#f0f0f0]">Баланс</h3>
                     </div>
                     
                     <div className="mb-6">
-                      <div className="text-3xl sm:text-4xl font-black text-[#f0f0f0]">
+                      <div className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">
                         ${formatNumber(balance || 0)}
                       </div>
                       <div className="text-sm text-[#a0a0a0] mt-1">Доступно для покупок</div>
@@ -299,7 +299,7 @@ const Profile = () => {
                     
                     <Button
                       onClick={handleTopUp}
-                      className="w-full px-6 py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-black rounded-xl transition-all duration-300 text-sm"
+                      className="w-full px-6 py-3 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold rounded-xl transition-all duration-300 text-sm"
                     >
                       <CreditCard className="w-4 h-4 mr-2" />
                       Пополнить баланс
@@ -309,13 +309,13 @@ const Profile = () => {
 
                 {/* Быстрые действия */}
                 <div className="text-center lg:text-left">
-                  <div className="glass rounded-2xl p-6 border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-                    <h3 className="text-xl font-bold text-[#f0f0f0] mb-6">Быстрые действия</h3>
+                  <div className="glass rounded-2xl p-5 md:p-6 border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
+                    <h3 className="text-lg md:text-xl font-semibold text-[#f0f0f0] mb-6">Быстрые действия</h3>
                     <div className="space-y-4">
                       <Button
                         onClick={() => navigate('/')}
                         variant="outline"
-                        className="w-full py-3 glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-[#FFD700] transition-all duration-300 rounded-xl text-sm font-medium"
+                        className="w-full py-3 glass border border-white/9 text-[#f0f0f0] hover:bg-white/5 hover:border-white/15 hover-lift hover:text-[#f0f0f0] transition-all duration-300 rounded-xl text-sm font-medium"
                       >
                         <ShoppingBag className="w-4 h-4 mr-2" />
                         Каталог товаров
@@ -323,7 +323,7 @@ const Profile = () => {
                       <Button
                         onClick={() => navigate('/cases')}
                         variant="outline"
-                        className="w-full py-3 glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-[#FFD700] transition-all duration-300 rounded-xl text-sm font-medium"
+                        className="w-full py-3 glass border border-white/9 text-[#f0f0f0] hover:bg-white/5 hover:border-white/15 hover-lift hover:text-[#f0f0f0] transition-all duration-300 rounded-xl text-sm font-medium"
                       >
                         <Gift className="w-4 h-4 mr-2" />
                         Открыть кейсы
@@ -337,55 +337,55 @@ const Profile = () => {
         </div>
 
         {/* Статистика */}
-        <div className="mb-12 sm:mb-16">
+        <div className="mb-12 sm:mb-16 md:mb-20">
           <div className="text-center mb-8">
-            <h2 className="text-3xl sm:text-4xl font-black text-[#f0f0f0] mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#f0f0f0] mb-4">
               Ваша статистика
             </h2>
-            <div className="w-24 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-white/20 mx-auto rounded-full"></div>
           </div>
           
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {/* Покупки */}
             <div className="group relative">
-              <div className="relative glass rounded-2xl p-6 text-center border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-                <div className="mx-auto w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#FFD700]/30">
-                  <ShoppingBag className="w-8 h-8 text-[#FFD700]" />
+              <div className="relative glass rounded-2xl p-5 md:p-6 text-center border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
+                <div className="mx-auto w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/9">
+                  <ShoppingBag className="w-7 h-7 text-[#FFD700]" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-[#f0f0f0] mb-2">{stats.totalPurchases}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-[#f0f0f0] mb-2">{stats.totalPurchases}</div>
                 <p className="text-sm text-[#a0a0a0] font-medium">Покупки</p>
               </div>
             </div>
 
             {/* Потрачено */}
             <div className="group relative">
-              <div className="relative glass rounded-2xl p-6 text-center border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-                <div className="mx-auto w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#FFD700]/30">
-                  <TrendingUp className="w-8 h-8 text-[#FFD700]" />
+              <div className="relative glass rounded-2xl p-5 md:p-6 text-center border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
+                <div className="mx-auto w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/9">
+                  <TrendingUp className="w-7 h-7 text-[#FFD700]" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-[#f0f0f0] mb-2">${formatNumber(stats.totalSpent)}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-[#f0f0f0] mb-2">${formatNumber(stats.totalSpent)}</div>
                 <p className="text-sm text-[#a0a0a0] font-medium">Потрачено</p>
               </div>
             </div>
 
             {/* Кейсы открыто */}
             <div className="group relative">
-              <div className="relative glass rounded-2xl p-6 text-center border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-                <div className="mx-auto w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#FFD700]/30">
-                  <Gift className="w-8 h-8 text-[#FFD700]" />
+              <div className="relative glass rounded-2xl p-5 md:p-6 text-center border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
+                <div className="mx-auto w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/9">
+                  <Gift className="w-7 h-7 text-[#FFD700]" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-[#f0f0f0] mb-2">{stats.casesOpened}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-[#f0f0f0] mb-2">{stats.casesOpened}</div>
                 <p className="text-sm text-[#a0a0a0] font-medium">Кейсы открыто</p>
               </div>
             </div>
 
             {/* Предметы продано */}
             <div className="group relative">
-              <div className="relative glass rounded-2xl p-6 text-center border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-                <div className="mx-auto w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#FFD700]/30">
-                  <Star className="w-8 h-8 text-[#FFD700]" />
+              <div className="relative glass rounded-2xl p-5 md:p-6 text-center border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
+                <div className="mx-auto w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/9">
+                  <Star className="w-7 h-7 text-[#FFD700]" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-[#f0f0f0] mb-2">{stats.itemsSold}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-[#f0f0f0] mb-2">{stats.itemsSold}</div>
                 <p className="text-sm text-[#a0a0a0] font-medium">Предметы продано</p>
               </div>
             </div>
@@ -393,20 +393,20 @@ const Profile = () => {
         </div>
 
         {/* Достижения и настройки */}
-        <div className="mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="mb-12 md:mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="group relative">
-              <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+              <div className="relative glass rounded-2xl border border-white/9 p-6 md:p-7 hover:border-white/15 hover-lift transition-all duration-300">
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#FFD700]/30">
+                  <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mr-4 border border-white/9">
                     <Award className="w-6 h-6 text-[#FFD700]" />
                   </div>
-                  <h3 className="text-2xl font-black text-[#f0f0f0]">Достижения</h3>
+                  <h3 className="text-2xl font-bold text-[#f0f0f0]">Достижения</h3>
                 </div>
                 
                 {achievementsLoading ? (
                   <div className="flex items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#FFD700] border-t-transparent"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-white/20 border-t-transparent"></div>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -415,14 +415,14 @@ const Profile = () => {
                       const progress = getProgress(achievement);
                       
                       return (
-                        <div key={achievement.id} className="p-4 glass rounded-2xl border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+                        <div key={achievement.id} className="p-4 glass rounded-2xl border border-white/9 hover:border-white/15 hover-lift transition-all duration-300">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center space-x-3">
-                              <div className="w-10 h-10 bg-[#FFD700]/20 rounded-xl flex items-center justify-center border border-[#FFD700]/30">
+                              <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/9">
                                 {achievement.icon}
                               </div>
                               <div>
-                                <span className="text-[#f0f0f0] font-bold">{achievement.title}</span>
+                                <span className="text-[#f0f0f0] font-semibold">{achievement.title}</span>
                                 <p className="text-[#a0a0a0] text-sm">{achievement.description}</p>
                               </div>
                             </div>
@@ -459,19 +459,19 @@ const Profile = () => {
             </div>
 
             <div className="group relative">
-              <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+              <div className="relative glass rounded-2xl border border-white/9 p-6 md:p-7 hover:border-white/15 hover-lift transition-all duration-300">
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#FFD700]/30">
+                  <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mr-4 border border-white/9">
                     <Settings className="w-6 h-6 text-[#FFD700]" />
                   </div>
-                  <h3 className="text-2xl font-black text-[#f0f0f0]">Настройки</h3>
+                  <h3 className="text-2xl font-bold text-[#f0f0f0]">Настройки</h3>
                 </div>
                 
                 <div className="space-y-4">
                   <Button
                     onClick={() => navigate('/transaction-history')}
                     variant="outline"
-                    className="w-full glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-[#FFD700] transition-all duration-300 rounded-xl font-medium"
+                    className="w-full glass border border-white/9 text-[#f0f0f0] hover:bg-white/5 hover:border-white/15 hover-lift hover:text-[#f0f0f0] transition-all duration-300 rounded-xl font-medium"
                   >
                     <History className="w-4 h-4 mr-2" />
                     История транзакций
@@ -480,7 +480,7 @@ const Profile = () => {
                   <Button
                     onClick={() => setShowEditModal(true)}
                     variant="outline"
-                    className="w-full glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-[#FFD700] transition-all duration-300 rounded-xl font-medium"
+                    className="w-full glass border border-white/9 text-[#f0f0f0] hover:bg-white/5 hover:border-white/15 hover-lift hover:text-[#f0f0f0] transition-all duration-300 rounded-xl font-medium"
                   >
                     <User className="w-4 h-4 mr-2" />
                     Редактировать профиль
@@ -497,7 +497,7 @@ const Profile = () => {
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="px-8 py-3 glass border border-[#FFD700]/30 text-[#FFD700] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover:text-[#FFD700] transition-all duration-300 rounded-xl font-medium"
+              className="px-8 py-3 glass border border-white/9 text-[#f0f0f0] hover:bg-white/5 hover:border-white/15 hover:text-[#f0f0f0] transition-all duration-300 rounded-xl font-medium"
             >
               <LogOut className="w-5 h-5 mr-2" />
               Выйти из аккаунта
@@ -506,7 +506,7 @@ const Profile = () => {
             <Button
               onClick={() => navigate('/')}
               variant="outline"
-              className="px-8 py-3 glass border border-[#FFD700]/20 text-[#f0f0f0] hover:bg-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow hover:text-[#FFD700] transition-all duration-300 rounded-xl font-medium"
+              className="px-8 py-3 glass border border-white/9 text-[#f0f0f0] hover:bg-white/5 hover:border-white/15 hover-lift hover:text-[#f0f0f0] transition-all duration-300 rounded-xl font-medium"
             >
               <Shield className="w-5 h-5 mr-2" />
               Вернуться на главную

@@ -148,19 +148,19 @@ const Privacy = () => {
         <div className="container mx-auto px-4 py-16 md:py-24 text-center">
           {/* Главный заголовок */}
           <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 glass rounded-full mb-6 border border-[#FFD700]/20">
+            <div className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 glass rounded-full mb-6 border border-white/9">
               <Shield className="w-10 h-10 md:w-12 md:h-12 text-[#FFD700]" />
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-[#f0f0f0] text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-[#f0f0f0] text-center">
               ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
             </h1>
-            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-white/20 mx-auto rounded-full"></div>
           </div>
           
           {/* Описание */}
-          <p className="text-lg md:text-xl lg:text-2xl text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
-            Мы серьезно относимся к <span className="text-[#FFD700] font-bold">защите ваших данных</span>. 
-            Узнайте, как мы <span className="text-[#f0f0f0] font-bold">собираем, используем и защищаем</span> вашу информацию.
+          <p className="text-base md:text-lg text-[#a0a0a0] mb-12 max-w-4xl mx-auto leading-relaxed">
+            Мы серьезно относимся к <span className="text-[#FFD700] font-semibold">защите ваших данных</span>. 
+            Узнайте, как мы <span className="text-[#f0f0f0] font-medium">собираем, используем и защищаем</span> вашу информацию.
           </p>
         </div>
       </div>
@@ -170,14 +170,14 @@ const Privacy = () => {
         {/* Краткая информация */}
         <div className="mb-16">
           <div className="group relative max-w-4xl mx-auto">
-            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-12 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 text-center">
-              <div className="mx-auto w-24 h-24 glass rounded-2xl flex items-center justify-center mb-8 border border-[#FFD700]">
-                <Shield className="w-12 h-12 text-[#FFD700]" />
+            <div className="relative glass rounded-2xl border border-white/9 p-6 md:p-7 hover:border-white/15 hover-lift transition-all duration-300 text-center">
+              <div className="mx-auto w-20 h-20 glass rounded-2xl flex items-center justify-center mb-6 border border-white/9">
+                <Shield className="w-10 h-10 text-[#FFD700]" />
               </div>
-              <h3 className="text-3xl font-black text-[#f0f0f0] mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold text-[#f0f0f0] mb-6">
                 Ваша конфиденциальность - наш приоритет
               </h3>
-              <p className="text-xl text-[#a0a0a0] max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base md:text-lg text-[#a0a0a0] max-w-3xl mx-auto leading-relaxed">
                 Мы используем современные технологии для защиты ваших данных и никогда не передаем 
                 персональную информацию третьим лицам без вашего согласия.
               </p>
@@ -188,23 +188,23 @@ const Privacy = () => {
         {/* Типы собираемых данных */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#f0f0f0]">
               КАКИЕ ДАННЫЕ МЫ СОБИРАЕМ
             </h2>
-            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-white/20 mx-auto rounded-full"></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
             {dataTypes.map((type, index) => (
               <div 
                 key={index}
                 className="group relative"
               >
-                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+                <div className="relative glass rounded-2xl border border-white/9 p-6 md:p-7 hover:border-white/15 hover-lift transition-all duration-300">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#FFD700]/30">
+                    <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mr-4 border border-white/9">
                       {type.icon}
                     </div>
-                    <h3 className="text-xl font-black text-[#f0f0f0]">{type.category}</h3>
+                    <h3 className="text-lg md:text-xl font-semibold text-[#f0f0f0]">{type.category}</h3>
                   </div>
                   <div className="space-y-3">
                     {type.items.map((item, itemIndex) => (
@@ -223,25 +223,25 @@ const Privacy = () => {
         {/* Основные разделы */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#f0f0f0]">
               ОСНОВНЫЕ РАЗДЕЛЫ
             </h2>
-            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-white/20 mx-auto rounded-full"></div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
             {privacySections.map((section, index) => (
               <div 
                 key={index}
                 className="group relative"
               >
-                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
+                <div className="relative glass rounded-2xl border border-white/9 p-6 md:p-7 hover:border-white/15 hover-lift transition-all duration-300">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mr-4 border border-[#FFD700]/30">
+                    <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mr-4 border border-white/9">
                       {section.icon}
                     </div>
-                    <h3 className="text-xl font-black text-[#f0f0f0]">{section.title}</h3>
+                    <h3 className="text-lg md:text-xl font-semibold text-[#f0f0f0]">{section.title}</h3>
                   </div>
-                  <p className="text-sm text-[#a0a0a0] leading-relaxed">{section.description}</p>
+                  <p className="text-sm md:text-base text-[#a0a0a0] leading-relaxed">{section.description}</p>
                 </div>
               </div>
             ))}
@@ -249,25 +249,25 @@ const Privacy = () => {
         </div>
 
         {/* Меры безопасности */}
-        <div className="mb-16">
+        <div className="mb-16 md:mb-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#f0f0f0]">
               МЕРЫ БЕЗОПАСНОСТИ
             </h2>
-            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-white/20 mx-auto rounded-full"></div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
             {securityMeasures.map((measure, index) => (
               <div 
                 key={index}
                 className="group relative"
               >
-                <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-6 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 text-center">
-                  <div className="mx-auto w-16 h-16 bg-[#FFD700]/20 rounded-2xl flex items-center justify-center mb-4 border border-[#FFD700]/30">
+                <div className="relative glass rounded-2xl border border-white/9 p-5 md:p-6 hover:border-white/15 hover-lift transition-all duration-300 text-center">
+                  <div className="mx-auto w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/9">
                     {measure.icon}
                   </div>
-                  <h3 className="text-lg font-black text-[#f0f0f0] mb-3">{measure.title}</h3>
-                  <p className="text-sm text-[#a0a0a0]">{measure.description}</p>
+                  <h3 className="text-lg font-semibold text-[#f0f0f0] mb-3">{measure.title}</h3>
+                  <p className="text-sm md:text-base text-[#a0a0a0]">{measure.description}</p>
                 </div>
               </div>
             ))}
@@ -275,13 +275,13 @@ const Privacy = () => {
         </div>
 
         {/* Права пользователей */}
-        <div className="mb-16">
+        <div className="mb-16 md:mb-20">
           <div className="group relative max-w-6xl mx-auto">
-            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-              <h3 className="text-2xl font-black text-[#f0f0f0] text-center mb-8">Ваши права</h3>
+            <div className="relative glass rounded-2xl border border-white/9 p-6 md:p-7 hover:border-white/15 hover-lift transition-all duration-300">
+              <h3 className="text-2xl font-bold text-[#f0f0f0] text-center mb-8">Ваши права</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <h4 className="text-[#f0f0f0] font-black text-lg">Что вы можете делать:</h4>
+                  <h4 className="text-[#f0f0f0] font-bold text-lg">Что вы можете делать:</h4>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Download className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
@@ -299,7 +299,7 @@ const Privacy = () => {
                 </div>
                 
                 <div className="space-y-4">
-                  <h4 className="text-[#f0f0f0] font-black text-lg">Как связаться с нами:</h4>
+                  <h4 className="text-[#f0f0f0] font-bold text-lg">Как связаться с нами:</h4>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Mail className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
@@ -328,17 +328,17 @@ const Privacy = () => {
         {/* Контактная информация */}
         <div className="text-center">
           <div className="group relative max-w-2xl mx-auto">
-            <div className="relative glass rounded-3xl border border-[#FFD700]/20 p-8 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-              <h3 className="text-2xl font-black text-[#f0f0f0] mb-4">
+            <div className="relative glass rounded-2xl border border-white/9 p-6 md:p-7 hover:border-white/15 hover-lift transition-all duration-300">
+              <h3 className="text-2xl font-bold text-[#f0f0f0] mb-4">
                 Вопросы по конфиденциальности?
               </h3>
-              <p className="text-lg text-[#a0a0a0] mb-6">
+              <p className="text-base md:text-lg text-[#a0a0a0] mb-6">
                 Если у вас есть вопросы по нашей политике конфиденциальности, 
                 не стесняйтесь обращаться к нам.
               </p>
               <Button
                 onClick={openGmail}
-                className="w-full bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-black text-lg rounded-2xl transition-all duration-300 py-4"
+                className="w-full bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold text-base rounded-2xl transition-all duration-300 py-4"
               >
                 <Mail className="w-5 h-5 mr-2" />
                 Связаться с нами

@@ -175,7 +175,7 @@ const Auth = () => {
             <h1 className="text-6xl font-bold mb-4 text-[#f0f0f0]">
               🔐 {t('Авторизация')}
             </h1>
-            <div className="w-24 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-white/20 mx-auto rounded-full"></div>
           </div>
           
           {/* Подзаголовок с анимацией */}
@@ -185,15 +185,15 @@ const Auth = () => {
           
           {/* Дополнительная информация */}
           <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
-            <div className="text-center p-4 glass rounded-xl border border-[#FFD700]/20">
+            <div className="text-center p-4 glass rounded-xl border border-white/9">
               <div className="text-2xl mb-2">🔒</div>
               <p className="text-[#a0a0a0] text-sm">Безопасно</p>
             </div>
-            <div className="text-center p-4 glass rounded-xl border border-[#FFD700]/20">
+            <div className="text-center p-4 glass rounded-xl border border-white/9">
               <div className="text-2xl mb-2">⚡</div>
               <p className="text-[#a0a0a0] text-sm">Быстро</p>
             </div>
-            <div className="text-center p-4 glass rounded-xl border border-[#FFD700]/20">
+            <div className="text-center p-4 glass rounded-xl border border-white/9">
               <div className="text-2xl mb-2">🛡️</div>
               <p className="text-[#a0a0a0] text-sm">Надежно</p>
             </div>
@@ -204,11 +204,11 @@ const Auth = () => {
       {/* Форма авторизации */}
       <div className="relative z-20 container mx-auto px-4 pb-12">
         <div className="max-w-2xl mx-auto">
-          <Card className="glass border-[#FFD700]/20">
+          <Card className="glass border-white/9">
             <CardContent className="p-8">
               {!loading && !error ? (
                 <div className="text-center">
-                  <div className="mx-auto w-20 h-20 glass rounded-full flex items-center justify-center mb-6 border border-[#FFD700]">
+                  <div className="mx-auto w-20 h-20 glass rounded-full flex items-center justify-center mb-6 border border-white/9">
                     <FaTelegramPlane className="w-10 h-10 text-[#FFD700]" />
                   </div>
                   
@@ -226,7 +226,7 @@ const Auth = () => {
                       handleTelegramLogin();
                     }}
                     disabled={loading}
-                    className="w-full py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-bold rounded-xl transition-all duration-300 hover:scale-105 text-base"
+                    className="w-full py-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] hover-lift font-semibold rounded-2xl transition-all duration-300 text-base"
                   >
                     <FaTelegramPlane className="w-5 h-5 mr-2" />
                     {loading ? 'Загрузка...' : 'Обновить виджет'}
