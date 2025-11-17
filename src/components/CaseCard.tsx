@@ -55,7 +55,7 @@ const CaseCard = ({
   };
 
   return (
-    <Card className="glass border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transform hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-[#FFD700]/20 animate-fade-in">
+    <Card className="glass border border-white/9 hover:border-white/15 hover-lift transition-all duration-300 rounded-2xl animate-fade-in">
       <CardHeader className="text-center relative overflow-hidden">
         <div className={`absolute inset-0 bg-gradient-to-br ${caseData.gradient} opacity-20`}></div>
         <div className="relative z-10">
@@ -83,7 +83,7 @@ const CaseCard = ({
                 variant={openingCount === count ? "default" : "outline"}
                 size="sm"
                 onClick={() => onOpeningCountChange(count)}
-                className={openingCount === count ? "bg-[#FFD700] hover:bg-[#FFC107]" : "border-[#FFD700]/20 text-[#a0a0a0] hover:border-[#FFD700]/50 hover:text-[#f0f0f0]"}
+                className={openingCount === count ? "bg-[#FFD700] hover:bg-[#FFC107] text-[#121212]" : "border-white/9 text-[#a0a0a0] hover:border-white/15 hover:text-[#f0f0f0] hover:bg-white/5"}
               >
                 {count}
               </Button>
@@ -108,7 +108,7 @@ const CaseCard = ({
           <h4 className="text-sm font-semibold mb-2 text-[#a0a0a0]">Возможные предметы:</h4>
           <div className="space-y-2 max-h-32 overflow-y-auto">
             {caseData.items.map((item, index) => (
-              <div key={index} className="flex items-center justify-between bg-[#1c1c1c] p-2 rounded text-xs">
+              <div key={index} className="flex items-center justify-between glass p-3 rounded-lg text-xs">
                 <div className="flex items-center space-x-2">
                   <Badge className={`${getRarityColor(item.rarity)} text-white text-xs`}>
                     {item.rarity}

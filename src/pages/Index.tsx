@@ -342,27 +342,23 @@ const Index = () => {
 
 
       {/* Категории игр */}
-      <section id="products" className="py-16 px-4 relative z-10">
+      <section id="products" className="py-16 md:py-20 px-4 relative z-10">
         
         <div className="container mx-auto relative z-10">
           {/* Hero секция */}
           <div className="text-center mb-12 sm:mb-16">
             <div className="flex justify-center mb-6">
-              <div className="relative float-animation">
-                <Crown className="w-16 h-16 sm:w-20 sm:h-20 text-[#FFD700] drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
-                <div className="absolute inset-0 blur-xl opacity-30">
-                  <Crown className="w-16 h-16 sm:w-20 sm:h-20 text-[#FFD700]" />
-                </div>
+              <div className="relative">
+                <Crown className="w-12 h-12 sm:w-16 sm:h-16 text-[#FFD700]" />
               </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6 text-[#f0f0f0] px-2 slide-in-up relative">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6 text-[#f0f0f0] px-2">
               {t('Популярные игры')}
-              <span className="absolute inset-0 text-[#FFD700] opacity-10 blur-2xl pointer-events-none">Популярные игры</span>
             </h2>
             <div className="flex justify-center items-center space-x-4 mb-8">
-              <div className="h-px bg-gradient-to-r from-transparent via-[#FFD700]/30 to-transparent w-24"></div>
-              <Sparkles className="w-6 h-6 text-[#FFD700] pulse-glow" />
-              <div className="h-px bg-gradient-to-r from-transparent via-[#FFD700]/30 to-transparent w-24"></div>
+              <div className="h-px bg-white/20 w-24"></div>
+              <Sparkles className="w-5 h-5 text-[#a0a0a0]" />
+              <div className="h-px bg-white/20 w-24"></div>
             </div>
           </div>
           
@@ -375,10 +371,10 @@ const Index = () => {
           {/* Результаты поиска */}
           {searchQuery.trim() && (
             <div className="mb-8 text-center">
-              <div className="inline-flex items-center gap-3 px-6 py-3 glass rounded-2xl border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow">
-                <Target className="w-5 h-5 text-[#FFD700]" />
-                <p className="text-[#f0f0f0] text-lg">
-                  Найдено товаров: <span className="text-[#f0f0f0] font-black text-xl">{filteredProducts.length}</span>
+              <div className="inline-flex items-center gap-3 px-6 py-3 glass rounded-2xl border border-white/9 hover:border-white/15 hover-lift">
+                <Target className="w-5 h-5 text-[#a0a0a0]" />
+                <p className="text-[#f0f0f0] text-base">
+                  Найдено товаров: <span className="text-[#f0f0f0] font-semibold text-lg">{filteredProducts.length}</span>
                 </p>
               </div>
             </div>
@@ -386,17 +382,17 @@ const Index = () => {
           
           {/* Крупные карточки категорий игр */}
           <div ref={categoriesSectionRef} className="mb-16 sm:mb-20">
-            <div className="mb-6">
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#f0f0f0]">Категории игр</h2>
+            <div className="mb-8">
+              <h3 className="text-2xl sm:text-3xl font-semibold text-[#f0f0f0]">Категории игр</h3>
             </div>
             
             {categoriesLoading ? (
               <div className="text-center py-8">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#FFD700]"></div>
-                <p className="text-[#a0a0a0] mt-4">Загрузка категорий...</p>
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white/20"></div>
+                <p className="text-[#a0a0a0] mt-4 text-base">Загрузка категорий...</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
                 {gameCategoriesCards.map((category, index) => (
                 <div
                 key={category.id}
@@ -404,23 +400,23 @@ const Index = () => {
                     // Переходим на отдельную страницу категории
                     navigate(`/category/${category.id}`);
                   }}
-                  className={`group relative cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 ${
-                    selectedGameCategory === category.id ? 'scale-105 -translate-y-2' : ''
+                  className={`group relative cursor-pointer transform transition-all duration-300 ${
+                    selectedGameCategory === category.id ? '' : ''
                 }`}
                 style={{animationDelay: `${index * 0.1}s`}}
               >
                   {/* Карточка категории */}
-                  <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.color} p-4 sm:p-6 h-32 sm:h-40 border-2 transition-all duration-500 hover-lift ${
+                  <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${category.color} p-5 sm:p-6 h-32 sm:h-40 border transition-all duration-300 hover-lift ${
                     selectedGameCategory === category.id 
-                      ? 'border-[#FFD700]/60 shadow-2xl shadow-[#FFD700]/40 neon-border' 
-                      : 'border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-glow'
+                      ? 'border-white/15 shadow-lg' 
+                      : 'border-white/9 hover:border-white/15'
                   }`}>
                     {/* Молния в углу */}
                     <div className="absolute top-2 left-2 z-10">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 glass ${
                         selectedGameCategory === category.id 
-                          ? 'bg-[#FFD700] text-[#121212] border border-[#FFD700]/60 neon-glow' 
-                          : 'bg-white/20 text-[#121212] border border-white/30'
+                          ? 'bg-[#FFD700] text-[#121212] border border-[#FFD700]' 
+                          : 'bg-white/10 text-white border border-white/20'
                       }`}>
                         <Zap className="w-4 h-4" />
                       </div>
@@ -443,19 +439,16 @@ const Index = () => {
                       </div>
                     )}
                     
-                    {/* Градиентный оверлей */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    {/* Градиентный оверлей для читаемости текста */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     
                     {/* Название категории */}
                     <div className="absolute bottom-2 left-2 right-2">
-                      <h3 className="text-[#121212] font-bold text-sm sm:text-base truncate">
+                      <h3 className="text-white font-bold text-sm sm:text-base truncate drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                         {category.name}
                       </h3>
                     </div>
                     
-                    {/* Эффект при наведении */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
                 </div>
               ))}
@@ -543,38 +536,33 @@ const Index = () => {
       </section>
 
       {/* FAQ с новым дизайном */}
-      <section className="py-16 px-4 bg-transparent relative">
+      <section className="py-16 md:py-20 px-4 bg-transparent relative">
         <div className="container mx-auto max-w-4xl relative z-10">
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="flex justify-center mb-6">
-              <div className="relative">
-                <Sparkles className="w-12 h-12 sm:w-16 sm:h-16 text-[#FFD700]" />
-              </div>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-center mb-6 text-[#f0f0f0]">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6 text-[#f0f0f0]">
               {t('Частые вопросы')}
             </h2>
             <div className="flex justify-center items-center space-x-4">
-              <div className="h-px bg-[#FFD700]/20 w-24"></div>
-              <Star className="w-6 h-6 text-[#FFD700]" />
-              <div className="h-px bg-[#FFD700]/20 w-24"></div>
+              <div className="h-px bg-white/20 w-24"></div>
+              <Star className="w-5 h-5 text-[#a0a0a0]" />
+              <div className="h-px bg-white/20 w-24"></div>
             </div>
           </div>
           
-          <Accordion type="single" collapsible className="space-y-6">
+          <Accordion type="single" collapsible className="space-y-4">
             {faqItems.map((item, index) => (
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`} 
-                className="group glass rounded-2xl border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow px-6 sm:px-8 hover:border-[#FFD700] transition-all duration-300"
+                className="group glass rounded-2xl border border-white/9 hover:border-white/15 hover-lift px-6 py-4 transition-all duration-300 data-[state=open]:subtle-glow"
               >
-                <AccordionTrigger className="text-lg sm:text-xl font-bold text-[#f0f0f0] hover:text-[#FFD700] transition-colors py-6 sm:py-8 hover:no-underline">
+                <AccordionTrigger className="text-base sm:text-lg font-semibold text-[#f0f0f0] hover:text-[#f0f0f0] transition-colors py-4 hover:no-underline">
                   <div className="flex items-center">
-                    <CheckCircle className="w-6 h-6 text-[#FFD700] mr-4" />
+                    <CheckCircle className="w-5 h-5 text-[#a0a0a0] mr-3" />
                     {item.question}
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="text-[#f0f0f0] pb-6 sm:pb-8 text-base sm:text-lg leading-relaxed">
+                <AccordionContent className="text-[#a0a0a0] pb-4 text-base leading-relaxed">
                   {item.answer}
                 </AccordionContent>
               </AccordionItem>

@@ -385,17 +385,17 @@ const ProductPage = () => {
       <div className="mt-32 max-w-[1920px] mx-auto px-4 relative">
         {/* Заголовок секции */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black mb-4 text-[#f0f0f0]">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#f0f0f0]">
             ПОХОЖИЕ ТОВАРЫ
           </h2>
-          <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full mb-6"></div>
-          <p className="text-[#a0a0a0] text-lg max-w-2xl mx-auto">
-            Откройте для себя другие <span className="text-[#FFD700] font-bold">удивительные товары</span> из этой категории
+          <div className="w-32 h-1 bg-white/20 mx-auto rounded-full mb-6"></div>
+          <p className="text-[#a0a0a0] text-base max-w-2xl mx-auto">
+            Откройте для себя другие <span className="text-[#FFD700] font-semibold">удивительные товары</span> из этой категории
           </p>
         </div>
         
         {/* Сетка товаров */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {products
             .filter(p => p.id !== product.id && p.category_id === product.category_id)
             .slice(0, 4)

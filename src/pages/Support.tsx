@@ -242,10 +242,10 @@ const Support = () => {
         {/* Часто задаваемые вопросы */}
         <div className="mb-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black mb-4 text-[#f0f0f0]">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#f0f0f0]">
               ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
             </h2>
-            <div className="w-32 h-1 bg-[#FFD700] mx-auto rounded-full"></div>
+            <div className="w-32 h-1 bg-white/20 mx-auto rounded-full"></div>
           </div>
           <div className="max-w-4xl mx-auto">
             <Accordion type="single" collapsible className="space-y-4">
@@ -255,11 +255,11 @@ const Support = () => {
                   value={`item-${index}`}
                   className="group relative"
                 >
-                  <div className="relative glass border border-[#FFD700]/20 rounded-3xl hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300">
-                    <AccordionTrigger className="px-6 py-4 text-left text-base font-black text-[#f0f0f0] hover:text-[#FFD700] transition-colors">
+                  <div className="relative glass border border-white/9 rounded-2xl hover:border-white/15 hover-lift transition-all duration-300 data-[state=open]:subtle-glow">
+                    <AccordionTrigger className="px-6 py-4 text-left text-base font-semibold text-[#f0f0f0] hover:text-[#f0f0f0] transition-colors">
                       {item.question}
                     </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-4 text-sm text-[#f0f0f0]">
+                    <AccordionContent className="px-6 pb-4 text-base text-[#a0a0a0] leading-relaxed">
                       {item.answer}
                     </AccordionContent>
                   </div>

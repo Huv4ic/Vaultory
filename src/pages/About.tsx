@@ -200,7 +200,7 @@ const About = () => {
                 </Button>
                 <Button
                   onClick={openGmail}
-                  className="px-8 py-4 glass hover:bg-[#FFD700]/20 hover:text-[#FFD700] font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow"
+                  className="px-8 py-4 bg-[#FFD700]/30 hover:bg-[#FFD700]/50 text-white hover:text-white font-black text-lg rounded-2xl transition-all duration-300 hover:scale-105 border border-[#FFD700]/40 hover:border-[#FFD700]/60 hover-lift hover-glow"
                 >
                   Связаться с нами
                 </Button>

@@ -102,16 +102,16 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled 
-        ? 'glass-strong border-b border-[#FFD700]/20 shadow-lg shadow-[#FFD700]/10' 
+        ? 'glass-strong border-b border-white/9' 
         : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-3 sm:px-4">
         <div className="flex items-center justify-between h-16 sm:h-18">
           {/* Логотип с анимацией */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 relative transform group-hover:scale-110 transition-all duration-300 hover-lift">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 relative transform group-hover:scale-105 transition-all duration-300">
               {/* Иконка с изображением глаза */}
-              <div className="absolute inset-0 glass rounded-xl flex items-center justify-center border border-[#FFD700]/30 group-hover:border-[#FFD700]/60 group-hover:neon-border transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 glass rounded-xl flex items-center justify-center border border-white/9 group-hover:border-white/15 transition-all duration-300 overflow-hidden">
                 <img 
                   src="/logo-eye.png" 
                   alt="Vaultory Logo" 
@@ -133,9 +133,8 @@ const Header = () => {
                 </div>
               </div>
             </div>
-            <span className="text-xl sm:text-2xl md:text-3xl font-black text-[#f0f0f0] group-hover:text-[#FFD700] transition-all duration-300 relative">
+            <span className="text-xl sm:text-2xl md:text-3xl font-black text-[#f0f0f0] transition-all duration-300 relative">
               Vaultory
-              <span className="absolute inset-0 text-[#FFD700] opacity-0 group-hover:opacity-20 blur-sm transition-all duration-300">Vaultory</span>
             </span>
           </Link>
 
@@ -143,38 +142,38 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               to="/" 
-              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 hover:scale-105 font-bold relative group text-base px-2 py-1 rounded-lg hover:bg-[#FFD700]/10"
+              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 font-medium relative group text-base px-2 py-1 rounded-lg hover:bg-white/5"
             >
               {t('Главная')}
-              <span className="absolute -bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-2 right-2 h-0.5 bg-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
             </Link>
             <Link 
               to="/cases" 
-              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 hover:scale-105 font-bold relative group text-base px-2 py-1 rounded-lg hover:bg-[#FFD700]/10"
+              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 font-medium relative group text-base px-2 py-1 rounded-lg hover:bg-white/5"
             >
               {t('Кейсы')}
-              <span className="absolute -bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-2 right-2 h-0.5 bg-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
             </Link>
             <Link 
               to="/about" 
-              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 hover:scale-105 font-bold relative group text-base px-2 py-1 rounded-lg hover:bg-[#FFD700]/10"
+              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 font-medium relative group text-base px-2 py-1 rounded-lg hover:bg-white/5"
             >
               {t('О нас')}
-              <span className="absolute -bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-2 right-2 h-0.5 bg-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
             </Link>
             <Link 
               to="/support" 
-              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 hover:scale-105 font-bold relative group text-base px-2 py-1 rounded-lg hover:bg-[#FFD700]/10"
+              className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-all duration-300 font-medium relative group text-base px-2 py-1 rounded-lg hover:bg-white/5"
             >
               {t('Поддержка')}
-              <span className="absolute -bottom-1 left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-2 right-2 h-0.5 bg-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
             </Link>
             
             {/* Поисковая строка с выпадающим меню */}
             <div ref={searchRef} className="hidden lg:block relative">
               <form onSubmit={handleSearch}>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#FFD700]" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#a0a0a0]" />
                   <Input
                     type="text"
                     placeholder="Найти игру или сервис"
@@ -186,7 +185,7 @@ const Header = () => {
                     }}
                     onFocus={() => setShowSearchDropdown(searchQuery.length > 0)}
                     onKeyDown={handleKeyDown}
-                    className="w-80 pl-10 pr-4 py-2 bg-[#181818] border border-[#1c1c1c] text-[#f0f0f0] placeholder-[#a0a0a0] rounded-lg focus:border-[#FFD700] focus:ring-2 focus:ring-[#FFD700]/20 transition-all duration-300 text-sm"
+                    className="w-80 pl-10 pr-4 py-2 bg-[#181818] border border-white/9 text-[#f0f0f0] placeholder-[#a0a0a0] rounded-lg focus:border-white/15 focus:ring-1 focus:ring-white/10 transition-all duration-300 text-sm"
                   />
                 </div>
               </form>
@@ -274,7 +273,7 @@ const Header = () => {
               to="/cart" 
               className="relative group"
             >
-              <div className="relative bg-[#181818] backdrop-blur-xl rounded-xl p-3 border border-[#1c1c1c] hover:border-[#FFD700] transition-all duration-300 hover:scale-105">
+              <div className="relative bg-[#181818] backdrop-blur-xl rounded-xl p-3 border border-white/9 hover:border-white/15 transition-all duration-300">
                 {/* Иконка корзины */}
                 <div className="relative z-10">
                   <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-[#f0f0f0] transition-all duration-300 group-hover:scale-105" />
@@ -297,7 +296,7 @@ const Header = () => {
             {telegramUser ? (
               <div className="hidden md:flex items-center space-x-3">
                 <div className="relative group">
-                  <button className="flex items-center space-x-2 p-2 rounded-xl bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] hover:border-[#FFD700] transition-all duration-300 hover:scale-105">
+                  <button className="flex items-center space-x-2 p-2 rounded-xl bg-[#181818] backdrop-blur-xl border border-white/9 hover:border-white/15 transition-all duration-300">
                     {profile?.avatar_url ? (
                       <img
                         src={profile.avatar_url}
@@ -313,10 +312,10 @@ const Header = () => {
                   </button>
                   
                   {/* Выпадающее меню профиля */}
-                  <div className="absolute right-0 mt-2 w-56 bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="absolute right-0 mt-2 w-56 bg-[#181818] backdrop-blur-xl border border-white/9 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                     <div className="p-3">
                       {/* Баланс */}
-                      <div className="mb-3 pb-3 border-b border-[#1c1c1c]">
+                        <div className="mb-3 pb-3 border-b border-white/9">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-[#a0a0a0] text-sm">Баланс</span>
                           <div className="flex items-center space-x-1">
@@ -337,24 +336,24 @@ const Header = () => {
                       <div className="space-y-1">
                         <Link 
                           to="/profile" 
-                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
+                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-white/5 transition-colors duration-200 group/item"
                         >
-                          <Settings className="w-4 h-4 text-[#FFD700] group-hover/item:text-[#FFC107]" />
+                          <Settings className="w-4 h-4 text-[#a0a0a0] group-hover/item:text-[#f0f0f0]" />
                           <span className="text-[#a0a0a0] group-hover/item:text-[#f0f0f0] text-sm">{t('Профиль')}</span>
                         </Link>
                         <Link 
                           to="/inventory" 
-                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
+                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-white/5 transition-colors duration-200 group/item"
                         >
-                          <Package className="w-4 h-4 text-[#FFD700] group-hover/item:text-[#FFC107]" />
+                          <Package className="w-4 h-4 text-[#a0a0a0] group-hover/item:text-[#f0f0f0]" />
                           <span className="text-[#a0a0a0] group-hover/item:text-[#f0f0f0] text-sm">Инвентарь</span>
                         </Link>
                         <button 
                           onClick={handleLogout}
-                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-[#1c1c1c] transition-colors duration-200 group/item"
+                          className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-white/5 transition-colors duration-200 group/item"
                         >
-                          <LogOut className="w-4 h-4 text-[#FFD700] group-hover/item:text-[#FFC107]" />
-                          <span className="text-[#FFD700] group-hover/item:text-[#FFC107] text-sm">{t('Выйти')}</span>
+                          <LogOut className="w-4 h-4 text-[#a0a0a0] group-hover/item:text-[#f0f0f0]" />
+                          <span className="text-[#a0a0a0] group-hover/item:text-[#f0f0f0] text-sm">{t('Выйти')}</span>
                         </button>
                       </div>
                     </div>
@@ -373,12 +372,12 @@ const Header = () => {
             {/* Мобильное меню */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-xl bg-[#181818] backdrop-blur-xl border border-[#1c1c1c] hover:border-[#FFD700] transition-all duration-300"
+              className="md:hidden p-2 rounded-xl bg-[#181818] backdrop-blur-xl border border-white/9 hover:border-white/15 transition-all duration-300"
             >
               {isMenuOpen ? (
-                <X className="w-6 h-6 text-[#FFD700]" />
+                <X className="w-6 h-6 text-[#f0f0f0]" />
               ) : (
-                <Menu className="w-6 h-6 text-[#FFD700]" />
+                <Menu className="w-6 h-6 text-[#f0f0f0]" />
               )}
             </button>
           </div>
@@ -386,10 +385,10 @@ const Header = () => {
 
         {/* Мобильное меню */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-[#1c1c1c]">
+          <div className="md:hidden py-4 border-t border-white/9">
             {/* Мобильный профиль и баланс (только для авторизованных пользователей) */}
             {telegramUser && (
-              <div className="mb-4 pb-4 border-b border-[#1c1c1c]">
+              <div className="mb-4 pb-4 border-b border-white/9">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-3">
                     {profile?.avatar_url ? (
@@ -399,15 +398,15 @@ const Header = () => {
                         className="w-8 h-8 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-8 h-8 bg-[#181818] backdrop-blur-xl rounded-full flex items-center justify-center border border-[#1c1c1c]">
-                        <User className="w-4 h-4 text-[#FFD700]" />
+                      <div className="w-8 h-8 bg-[#181818] backdrop-blur-xl rounded-full flex items-center justify-center border border-white/9">
+                        <User className="w-4 h-4 text-[#a0a0a0]" />
                       </div>
                     )}
                     <span className="text-[#f0f0f0] font-bold">{telegramUser.first_name}</span>
                   </div>
                 </div>
                 <div className="mb-2">
-                  <div className="flex items-center justify-between p-3 bg-[#181818] rounded-lg border border-[#1c1c1c]">
+                  <div className="flex items-center justify-between p-3 bg-[#181818] rounded-lg border border-white/9">
                     <span className="text-[#a0a0a0] text-sm">Баланс</span>
                     <div className="flex items-center space-x-1">
                       <span className="text-[#f0f0f0] font-bold text-lg">{balance?.toLocaleString() || '0'}</span>
@@ -428,28 +427,28 @@ const Header = () => {
               <Link 
                 to="/" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-bold text-base px-3 py-2 rounded-lg hover:bg-[#1c1c1c]"
+                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-medium text-base px-3 py-2 rounded-lg hover:bg-white/5"
               >
                 {t('Главная')}
               </Link>
               <Link 
                 to="/cases" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-bold text-base px-3 py-2 rounded-lg hover:bg-[#1c1c1c]"
+                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-medium text-base px-3 py-2 rounded-lg hover:bg-white/5"
               >
                 {t('Кейсы')}
               </Link>
               <Link 
                 to="/about" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-bold text-base px-3 py-2 rounded-lg hover:bg-[#1c1c1c]"
+                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-medium text-base px-3 py-2 rounded-lg hover:bg-white/5"
               >
                 {t('О нас')}
               </Link>
               <Link 
                 to="/support" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-bold text-base px-3 py-2 rounded-lg hover:bg-[#1c1c1c]"
+                className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-medium text-base px-3 py-2 rounded-lg hover:bg-white/5"
               >
                 {t('Поддержка')}
               </Link>
@@ -476,7 +475,7 @@ const Header = () => {
                       handleLogout();
                       setIsMenuOpen(false);
                     }}
-                    className="text-[#FFD700] hover:text-[#FFC107] transition-colors duration-200 font-bold text-base px-3 py-2 rounded-lg hover:bg-[#1c1c1c] flex items-center space-x-3 w-full text-left"
+                    className="text-[#a0a0a0] hover:text-[#f0f0f0] transition-colors duration-200 font-medium text-base px-3 py-2 rounded-lg hover:bg-white/5 flex items-center space-x-3 w-full text-left"
                   >
                     <LogOut className="w-5 h-5" />
                     <span>{t('Выйти')}</span>

@@ -365,9 +365,9 @@ const CasePage = () => {
               </h3>
           
           {caseItems.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8">
               {sortItemsByRarity(caseItems).map((item, index) => (
-                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative glass rounded-xl p-3 sm:p-4 border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 h-full flex flex-col">
+                <div key={item.id} className="text-center space-y-2 sm:space-y-3 group relative glass rounded-2xl p-4 sm:p-5 border border-white/9 hover:border-white/15 hover-lift transition-all duration-300 h-full flex flex-col">
                   {/* Изображение предмета */}
                   <div className="relative mx-auto flex-shrink-0">
                     <img

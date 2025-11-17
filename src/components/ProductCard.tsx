@@ -59,10 +59,10 @@ const ProductCard = ({
       title={t('Нажмите для просмотра товара')}
     >
       {/* Основная карточка */}
-      <div className="relative glass rounded-3xl border border-[#FFD700]/20 hover:border-[#FFD700]/50 hover-lift hover-glow transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-2 group overflow-hidden flex flex-col h-[500px]">
+      <div className="relative glass rounded-2xl border border-white/9 hover:border-white/15 hover-lift transition-all duration-300 group overflow-hidden flex flex-col h-[500px]">
         
         {/* Изображение */}
-        <div className="relative h-56 overflow-hidden flex-shrink-0 rounded-t-3xl glass">
+        <div className="relative h-56 overflow-hidden flex-shrink-0 rounded-t-2xl">
           <img
             src={image}
             alt={name}
@@ -87,23 +87,23 @@ const ProductCard = ({
             disabled={loading}
             size="sm"
             variant="ghost"
-            className="absolute top-4 right-4 z-20 bg-[#181818] hover:glass transition-all duration-300 p-2 h-10 w-10 rounded-full border border-[#FFD700]/20 hover:border-[#FFD700]/50"
+            className="absolute top-4 right-4 z-20 bg-[#181818]/80 backdrop-blur-sm transition-all duration-300 p-2 h-10 w-10 rounded-full border border-white/9 hover:border-white/15"
           >
             <Heart 
               className={`w-5 h-5 transition-all duration-300 ${
                 isFavorite(id) 
                   ? 'text-[#FFD700] fill-current' 
-                  : 'text-[#a0a0a0] hover:text-[#FFD700]'
+                  : 'text-[#a0a0a0] hover:text-[#f0f0f0]'
               }`} 
             />
           </Button>
         </div>
 
         {/* Нижняя часть с информацией */}
-        <div className="relative flex-1 flex flex-col glass rounded-b-3xl p-5">
+        <div className="relative flex-1 flex flex-col rounded-b-2xl p-6">
           <div className="flex-1 flex flex-col justify-center text-center">
             {/* Название товара */}
-            <h3 className="text-[#f0f0f0] font-bold text-2xl mb-4 line-clamp-3 tracking-wide min-h-[3.5rem] flex items-center justify-center text-center leading-tight">
+            <h3 className="text-[#f0f0f0] font-semibold text-lg mb-4 line-clamp-3 tracking-wide min-h-[3.5rem] flex items-center justify-center text-center leading-tight">
               {getProductTranslation(id, 'name', name)}
             </h3>
             
@@ -137,7 +137,7 @@ const ProductCard = ({
                   onBuyNow();
                 }}
                 size="sm"
-                className="flex-1 group relative h-12 px-4 bg-[#FFD700] hover:bg-[#FFC107] text-white font-bold rounded-xl transition-all duration-300 hover:scale-105"
+                className="flex-1 group relative h-12 px-4 bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] font-semibold rounded-xl transition-all duration-300"
                 title="Купить сейчас"
               >
                 {/* Контент кнопки */}
@@ -155,10 +155,10 @@ const ProductCard = ({
                 onAddToCart();
               }}
               size="sm"
-              className={`group relative h-12 w-12 p-0 rounded-full transition-all duration-300 hover:scale-105 ${
+              className={`group relative h-12 w-12 p-0 rounded-full transition-all duration-300 border ${
                 isInCart 
-                  ? 'bg-[#FFD700] hover:bg-[#FFC107] text-white' 
-                  : 'glass hover:bg-[#FFD700] text-[#a0a0a0] hover:text-white border border-[#FFD700]/20 hover:border-[#FFD700]/50'
+                  ? 'bg-[#FFD700] hover:bg-[#FFC107] text-[#121212] border-[#FFD700]' 
+                  : 'glass hover:bg-white/5 text-[#a0a0a0] hover:text-[#f0f0f0] border-white/9 hover:border-white/15'
               }`}
               title={isInCart ? t('В корзине') : t('Добавить в корзину')}
             >
